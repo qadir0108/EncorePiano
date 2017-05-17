@@ -1,0 +1,181 @@
+﻿@model string
+
+<div id="main-container" class="container">
+    <!-- Upload -->
+    <div class="row">
+        <div class="col-md-6">
+
+            <form id="frmUpload" role="form">
+                <!-- Text input-->
+                <div class="form-group">
+                    <div class="input-group">
+                        <input id="txtUploadFile_@Model" class="inputfile" type="file">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <button type="button" class="btn btn-default" id="btnUpload_@Model">Upload File</button>
+                        &nbsp;<a id="linkDownload_@Model" href="#" class="btn btn-default">Download</a>&nbsp;&nbsp;<a id="linkDelete_@Model" href="#" class="btn btn-default" data-file="">Delete</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+    <script type="text/javascript">
+
+        var wfp = wfp || {};
+
+        $(document).ready(function () {
+
+            var selectedFile;
+            var txtSelectedFile = $('#@Model');
+            var inputfile = $('#txtUploadFile_@Model');
+            var btnUpload = $('#btnUpload_@Model');
+            var linkDownload = $('#linkDownload_@Model');
+            var linkDelete = $('#linkDelete_@Model');
+            var ifHtmlImageFiles = '@(Model == "HtmlImageFiles" || Model == "CompanyLogo")';
+
+            //debugger;
+            if (txtSelectedFile.val() === '') {
+                linkDownload.hide();
+                linkDelete.hide();
+            } else {
+                linkDownload.attr('href', '../../File/DownloadFile?file=' + txtSelectedFile.val());
+                linkDelete.data('file', txtSelectedFile.val());
+                linkDownload.show();
+                linkDelete.show();
+            }
+
+
+            inputfile.change(function (e) {
+
+                var isSelected = false;
+                if (ifHtmlImageFiles === 'True') {
+                    selectedFile = e.target.files[0];
+                    isSelected = true;
+                }
+                else if (e.target.files[0].type === "application/vnd.ms-excel" && e.target.files[0].name.match(".csv$")) 
+                {
+                    selectedFile = e.target.files[0];
+                    isSelected = true;
+                } else {
+                    wfp.showError("Please select valid csv file to upload.");
+                    isSelected = false;
+                }
+                return isSelected;
+            });
+
+            btnUpload.click(function (e) {
+
+               btnUpload.prop('disabled', true);
+
+                e.preventDefault();
+                //if (files && files.length > 0) {
+                if(selectedFile) {
+                    //var selectedFile = $('input[type=file]')[0].files[0];
+
+                        if (window.FormData !== undefined) {
+                            var formData = new FormData();
+                            debugger;
+                            formData.append('selectedFile', selectedFile);
+
+                            $.ajax({
+                                type: "POST",
+                                url: '/File/UploadFile',
+                                contentType: false,
+                                processData: false,
+                                data: formData,
+                                success: function (result) {
+                                    if (result.IsSucess === true) {
+                                        wfp.showSuccess('Uploaded Successfully.');
+                                        btnUpload.prop('disabled', false);
+                                        txtSelectedFile.attr('value', result.Result);
+                                        linkDownload.attr('href', '../../File/DownloadFile?file=' + result.Result);
+                                        linkDelete.data('file', result.Result);
+                                        linkDownload.show();
+                                        linkDelete.show();
+                                    }
+                                    else {
+                                        wfp.showError(result.ErrorMessage);
+                                    }
+                                },
+                                error: function (xhr, status, p3, p4) {
+                                    debugger;
+                                    var err = "Error " + " " + status + " " + p3 + " " + p4;
+                                    if (xhr.responseText && xhr.responseText[0] === "{")
+                                        err = JSON.parse(xhr.responseText).Message;
+                                    console.log(err);
+                                    wfp.showError('There is erorr in service call.');
+                                },
+                                failure: function (response) {
+                                    debugger;
+                                    wfp.showError('There is erorr in service call.');
+                                },
+                                complete: function () {
+                                }
+                            });
+                        } else {
+                            wfp.showError("This browser doesn't support HTML5 file uploads!");
+                            btnUpload.prop('disabled', false);
+
+                        }
+                }
+                else {
+                    wfp.showError("Please select file to upload.");
+                    btnUpload.prop('disabled', false);
+
+                }
+
+            });
+
+            linkDelete.click(function (e) {
+
+                linkDelete.prop('disabled', true);
+
+                e.preventDefault();
+
+                var dataToPost = {
+                    file: linkDelete.data('file')
+                };
+
+                $.ajax({
+                    type: "POST",
+                    data: JSON.stringify(dataToPost),
+                    contentType: "application/json; charset=utf-8",
+                    url: '/File/DeleteFile',
+                    success: function (result) {
+                        if (result.IsSucess === true) {
+                            wfp.showSuccess('File has been deleted Successfully.');
+                            linkDelete.prop('disabled', false);
+                            linkDownload.hide();
+                            linkDelete.hide();
+                            txtSelectedFile.attr('value', '');
+                        }
+                        else {
+                            wfp.showError(result.ErrorMessage);
+                        }
+                    },
+                    error: function (xhr, status, p3, p4) {
+                        debugger;
+                        var err = "Error " + " " + status + " " + p3 + " " + p4;
+                        if (xhr.responseText && xhr.responseText[0] === "{")
+                            err = JSON.parse(xhr.responseText).Message;
+                        console.log(err);
+                        wfp.showError('There is erorr in service call.');
+                    },
+                    failure: function (response) {
+                        debugger;
+                        wfp.showError('There is erorr in service call.');
+                    },
+                    complete: function () {
+                    }
+                });
+
+            });
+
+
+        });
+
+    </script>

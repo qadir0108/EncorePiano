@@ -1,0 +1,226 @@
+﻿{
+  "IsSucess": true,
+  "ErrorMessage": null,
+  "Result": [
+    {
+      "CampaignName": "New Test Campaign",
+      "IONumber": "ADS2199",
+      "StartDate": "3/23/2017 8:48:00 PM",
+      "EmailsSent": "5000",
+      "EmailsOpened": "4124",
+      "EmailsClicked": "4124",
+      "LinkBreakout": [
+        {
+          "Link": "http://www.loufuszchryslerjeepdodge.net/dealership/directions.htm?utm_source=conquest&utm_campaign=emmarc&utm_medium=email&utm_content=directions",
+          "Quantity": "294"
+        },
+        {
+          "Link": "http://www.loufuszchryslerjeepdodge.net/new-inventory/index.htm?utm_source=conquest&utm_campaign=emmarc&utm_medium=email&utm_content=background",
+          "Quantity": "466"
+        },
+        {
+          "Link": "http://www.dealerrater.com/dealer/Lou-Fusz-Chrysler-Jeep-Dodge-Ram-review-8638/?utm_source=conquest&utm_campaign=emmarc&utm_medium=email&utm_content=dealerrater",
+          "Quantity": "13"
+        },
+        {
+          "Link": "http://www.loufuszchryslerjeepdodge.net/new-inventory/index.htm?search=&year=2017&bodyStyle=Truck%20Quad%20Cab&saveFacetState=true&lastFacetInteracted=inventory-listing1-facet-anchor-bodyStyle-8&utm_source=conquest&utm_medium=email&utm_campaign=emmarc&utm_content=171500quad",
+          "Quantity": "99"
+        },
+        {
+          "Link": "https://twitter.com/loufuszcjd?utm_source=conquest&utm_campaign=emmarc&utm_medium=email&utm_content=twitter",
+          "Quantity": "25"
+        },
+        {
+          "Link": "http://www.loufuszchryslerjeepdodge.net/new-inventory/index.htm?utm_source=conquest&utm_campaign=emmarc&utm_medium=email&utm_content=familypledge",
+          "Quantity": "64"
+        },
+        {
+          "Link": "https://plus.google.com/115536637370101289309?utm_source=conquest&utm_campaign=emmarc&utm_medium=email&utm_content=google",
+          "Quantity": "28"
+        },
+        {
+          "Link": "http://www.loufuszchryslerjeepdodge.net/specials/service.htm?utm_source=conquest&utm_campaign=emmarc&utm_medium=email&utm_content=oilchange",
+          "Quantity": "90"
+        },
+        {
+          "Link": "http://www.loufuszchryslerjeepdodge.net/new-inventory/index.htm?search=&year=2017&make=Dodge&model=Journey&saveFacetState=true&lastFacetInteracted=inventory-listing1-facet-anchor-model-4&utm_source=conquest&utm_campaign=emmarc&utm_medium=email&utm_content=17journey",
+          "Quantity": "395"
+        },
+        {
+          "Link": "http://www.loufuszchryslerjeepdodge.net/dealership/directions.htm?utm_source=conquest&utm_campaign=emmarc&utm_medium=email&utm_content=directions",
+          "Quantity": "39"
+        },
+        {
+          "Link": "http://www.loufuszchryslerjeepdodge.net/new-inventory/index.htm?search=&year=2017&make=Ram&model=ProMaster%20City&bodyStyle=&saveFacetState=true&lastFacetInteracted=inventory-listing1-facet-anchor-model-8&utm_source=conquest&utm_medium=email&utm_campaign=emmarc&utm_content=17ram1500promaster",
+          "Quantity": "71"
+        },
+        {
+          "Link": "tel:+6369282345",
+          "Quantity": "293"
+        },
+        {
+          "Link": "http://www.loufuszchryslerjeepdodge.net/new-inventory/index.htm?search=&year=2017&make=Jeep&model=Cherokee&trim=Sport%20FWD&saveFacetState=true&lastFacetInteracted=inventory-listing1-facet-anchor-trim-4&utm_source=conquest&utm_campaign=emmarc&utm_medium=email&utm_content=17cherokee",
+          "Quantity": "104"
+        },
+        {
+          "Link": "http://www.loufuszchryslerjeepdodge.net/new-inventory/index.htm?search=v-8&year=2017&trim=Express&bodyStyle=Truck%20Quad%20Cab&saveFacetState=true&lastFacetInteracted=&utm_source=conquest&utm_medium=email&utm_campaign=emmarc&utm_content=17expressv8",
+          "Quantity": "78"
+        },
+        {
+          "Link": "https://www.facebook.com/fuszcjd?utm_source=conquest&utm_campaign=emmarc&utm_medium=email&utm_content=facebook",
+          "Quantity": "30"
+        },
+        {
+          "Link": "http://www.loufuszchryslerjeepdodge.net/service/index.htm?utm_source=conquest&utm_campaign=emmarc&utm_medium=email&utm_content=battery",
+          "Quantity": "90"
+        },
+        {
+          "Link": "http://www.loufuszchryslerjeepdodge.net/new-inventory/index.htm?search=v-6&year=2017&trim=Express&bodyStyle=Truck%20Quad%20Cab&saveFacetState=true&lastFacetInteracted=&utm_source=conquest&utm_medium=email&utm_campaign=emmarc&utm_content=17expressv6",
+          "Quantity": "82"
+        },
+        {
+          "Link": "http://www.loufuszchryslerjeepdodge.net/new-inventory/index.htm?search=&model=Pacifica&trim=Touring&bodyStyle=&saveFacetState=true&lastFacetInteracted=inventory-listing1-facet-anchor-trim-2&utm_source=conquest&utm_medium=email&utm_campaign=emmarc&utm_content=17pacifica",
+          "Quantity": "428"
+        },
+        {
+          "Link": "http://www.loufuszchryslerjeepdodge.net/new-commercial-inventory/index.htm?model=2500&trim=Tradesman&saveFacetState=true&lastFacetInteracted=inventory-listing1-facet-anchor-trim-2&utm_source=conquest&utm_medium=email&utm_campaign=emmarc&utm_content=172500crew",
+          "Quantity": "86"
+        },
+        {
+          "Link": "http://www.loufuszchryslerjeepdodge.net/new-inventory/index.htm?utm_source=conquest&utm_campaign=emmarc&utm_medium=email&utm_content=springclearance",
+          "Quantity": "357"
+        },
+        {
+          "Link": "http://www.loufuszchryslerjeepdodge.net/?utm_source=conquest&utm_campaign=emmarc&utm_medium=email&utm_content=visit",
+          "Quantity": "349"
+        },
+        {
+          "Link": "http://www.loufuszchryslerjeepdodge.net/?utm_source=conquest&utm_campaign=emmarc&utm_medium=email&utm_content=home",
+          "Quantity": "428"
+        },
+        {
+          "Link": "http://www.loufuszchryslerjeepdodge.net/march-mania-giveaway.htm?utm_source=conquest&utm_campaign=emmarc&utm_medium=email&utm_content=moreoffers",
+          "Quantity": "47"
+        },
+        {
+          "Link": "http://www.loufuszchryslerjeepdodge.net/new-inventory/index.htm?search=&year=2016&make=Jeep&model=Renegade&trim=Trailhawk%204x4&bodyStyle=&saveFacetState=true&lastFacetInteracted=inventory-listing1-facet-anchor-year-1&utm_source=conquest&utm_medium=email&utm_campaign=emmarc&utm_content=16renegade",
+          "Quantity": "92"
+        },
+        {
+          "Link": "http://www.loufuszchryslerjeepdodge.net/new-inventory/index.htm?search=&year=2017&trim=Tradesman&bodyStyle=Truck%20Crew%20Cab&saveFacetState=true&lastFacetInteracted=inventory-listing1-facet-anchor-trim-7&utm_source=conquest&utm_medium=email&utm_campaign=emmarc&utm_content=171500crew",
+          "Quantity": "76"
+        }
+      ]
+    },
+    {
+      "CampaignName": "test",
+      "IONumber": "ADS2199",
+      "StartDate": "3/23/2017 8:48:00 PM",
+      "EmailsSent": "5000",
+      "EmailsOpened": "4124",
+      "EmailsClicked": "4124",
+      "LinkBreakout": [
+        {
+          "Link": "http://www.loufuszchryslerjeepdodge.net/new-inventory/index.htm?search=&year=2017&bodyStyle=Truck%20Quad%20Cab&saveFacetState=true&lastFacetInteracted=inventory-listing1-facet-anchor-bodyStyle-8&utm_source=conquest&utm_medium=email&utm_campaign=emmarc&utm_content=171500quad",
+          "Quantity": "99"
+        },
+        {
+          "Link": "https://plus.google.com/115536637370101289309?utm_source=conquest&utm_campaign=emmarc&utm_medium=email&utm_content=google",
+          "Quantity": "28"
+        },
+        {
+          "Link": "http://www.loufuszchryslerjeepdodge.net/new-inventory/index.htm?search=&model=Pacifica&trim=Touring&bodyStyle=&saveFacetState=true&lastFacetInteracted=inventory-listing1-facet-anchor-trim-2&utm_source=conquest&utm_medium=email&utm_campaign=emmarc&utm_content=17pacifica",
+          "Quantity": "428"
+        },
+        {
+          "Link": "tel:+6369282345",
+          "Quantity": "293"
+        },
+        {
+          "Link": "http://www.loufuszchryslerjeepdodge.net/new-inventory/index.htm?search=&year=2017&make=Dodge&model=Journey&saveFacetState=true&lastFacetInteracted=inventory-listing1-facet-anchor-model-4&utm_source=conquest&utm_campaign=emmarc&utm_medium=email&utm_content=17journey",
+          "Quantity": "395"
+        },
+        {
+          "Link": "http://www.loufuszchryslerjeepdodge.net/dealership/directions.htm?utm_source=conquest&utm_campaign=emmarc&utm_medium=email&utm_content=directions",
+          "Quantity": "39"
+        },
+        {
+          "Link": "http://www.loufuszchryslerjeepdodge.net/new-inventory/index.htm?utm_source=conquest&utm_campaign=emmarc&utm_medium=email&utm_content=familypledge",
+          "Quantity": "64"
+        },
+        {
+          "Link": "http://www.loufuszchryslerjeepdodge.net/new-inventory/index.htm?search=&year=2016&make=Jeep&model=Renegade&trim=Trailhawk%204x4&bodyStyle=&saveFacetState=true&lastFacetInteracted=inventory-listing1-facet-anchor-year-1&utm_source=conquest&utm_medium=email&utm_campaign=emmarc&utm_content=16renegade",
+          "Quantity": "92"
+        },
+        {
+          "Link": "http://www.loufuszchryslerjeepdodge.net/dealership/directions.htm?utm_source=conquest&utm_campaign=emmarc&utm_medium=email&utm_content=directions",
+          "Quantity": "294"
+        },
+        {
+          "Link": "http://www.loufuszchryslerjeepdodge.net/new-inventory/index.htm?search=&year=2017&trim=Tradesman&bodyStyle=Truck%20Crew%20Cab&saveFacetState=true&lastFacetInteracted=inventory-listing1-facet-anchor-trim-7&utm_source=conquest&utm_medium=email&utm_campaign=emmarc&utm_content=171500crew",
+          "Quantity": "76"
+        },
+        {
+          "Link": "http://www.loufuszchryslerjeepdodge.net/new-inventory/index.htm?utm_source=conquest&utm_campaign=emmarc&utm_medium=email&utm_content=background",
+          "Quantity": "466"
+        },
+        {
+          "Link": "http://www.loufuszchryslerjeepdodge.net/new-inventory/index.htm?search=&year=2017&make=Ram&model=ProMaster%20City&bodyStyle=&saveFacetState=true&lastFacetInteracted=inventory-listing1-facet-anchor-model-8&utm_source=conquest&utm_medium=email&utm_campaign=emmarc&utm_content=17ram1500promaster",
+          "Quantity": "71"
+        },
+        {
+          "Link": "http://www.loufuszchryslerjeepdodge.net/specials/service.htm?utm_source=conquest&utm_campaign=emmarc&utm_medium=email&utm_content=oilchange",
+          "Quantity": "90"
+        },
+        {
+          "Link": "http://www.loufuszchryslerjeepdodge.net/new-inventory/index.htm?search=v-8&year=2017&trim=Express&bodyStyle=Truck%20Quad%20Cab&saveFacetState=true&lastFacetInteracted=&utm_source=conquest&utm_medium=email&utm_campaign=emmarc&utm_content=17expressv8",
+          "Quantity": "78"
+        },
+        {
+          "Link": "http://www.loufuszchryslerjeepdodge.net/new-commercial-inventory/index.htm?model=2500&trim=Tradesman&saveFacetState=true&lastFacetInteracted=inventory-listing1-facet-anchor-trim-2&utm_source=conquest&utm_medium=email&utm_campaign=emmarc&utm_content=172500crew",
+          "Quantity": "86"
+        },
+        {
+          "Link": "https://www.facebook.com/fuszcjd?utm_source=conquest&utm_campaign=emmarc&utm_medium=email&utm_content=facebook",
+          "Quantity": "30"
+        },
+        {
+          "Link": "http://www.loufuszchryslerjeepdodge.net/service/index.htm?utm_source=conquest&utm_campaign=emmarc&utm_medium=email&utm_content=battery",
+          "Quantity": "90"
+        },
+        {
+          "Link": "https://twitter.com/loufuszcjd?utm_source=conquest&utm_campaign=emmarc&utm_medium=email&utm_content=twitter",
+          "Quantity": "25"
+        },
+        {
+          "Link": "http://www.loufuszchryslerjeepdodge.net/new-inventory/index.htm?utm_source=conquest&utm_campaign=emmarc&utm_medium=email&utm_content=springclearance",
+          "Quantity": "357"
+        },
+        {
+          "Link": "http://www.loufuszchryslerjeepdodge.net/new-inventory/index.htm?search=&year=2017&make=Jeep&model=Cherokee&trim=Sport%20FWD&saveFacetState=true&lastFacetInteracted=inventory-listing1-facet-anchor-trim-4&utm_source=conquest&utm_campaign=emmarc&utm_medium=email&utm_content=17cherokee",
+          "Quantity": "104"
+        },
+        {
+          "Link": "http://www.loufuszchryslerjeepdodge.net/?utm_source=conquest&utm_campaign=emmarc&utm_medium=email&utm_content=visit",
+          "Quantity": "349"
+        },
+        {
+          "Link": "http://www.loufuszchryslerjeepdodge.net/?utm_source=conquest&utm_campaign=emmarc&utm_medium=email&utm_content=home",
+          "Quantity": "428"
+        },
+        {
+          "Link": "http://www.dealerrater.com/dealer/Lou-Fusz-Chrysler-Jeep-Dodge-Ram-review-8638/?utm_source=conquest&utm_campaign=emmarc&utm_medium=email&utm_content=dealerrater",
+          "Quantity": "13"
+        },
+        {
+          "Link": "http://www.loufuszchryslerjeepdodge.net/march-mania-giveaway.htm?utm_source=conquest&utm_campaign=emmarc&utm_medium=email&utm_content=moreoffers",
+          "Quantity": "47"
+        },
+        {
+          "Link": "http://www.loufuszchryslerjeepdodge.net/new-inventory/index.htm?search=v-6&year=2017&trim=Express&bodyStyle=Truck%20Quad%20Cab&saveFacetState=true&lastFacetInteracted=&utm_source=conquest&utm_medium=email&utm_campaign=emmarc&utm_content=17expressv6",
+          "Quantity": "82"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+﻿<div class="modal fade" id="searchModal" role="dialog" aria-labelledby="myModalLabel" tabindex="-1" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form id="frmSearchAdvanced" role="form" method="post">
+                <input type="hidden" id="searchType" name="searchType" value="advanced" />
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Search </h4>
+                </div>
+                <div class="modal-body" id="model-body">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-6">
+
+                                <div class="row">
+                                    <div class="col-md-6 form-group">
+                                        <label class="control-label" for="txtName">Office</label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon">
+                                                <span class="glyphicon glyphicon-globe"></span>
+                                            </div>
+                                           
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" id="btnSearch">Search</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#dateFrom").datepicker({
+            dateFormat: 'dd/mm/yy'
+        });
+        $("#dateTo").datepicker({
+            dateFormat: 'dd/mm/yy'
+        });
+
+        $('#btnSearch').click(function () {
+            debugger;
+            $('form#frmSearchAdvanced').submit();
+
+            $('#searchModal').modal('hide');
+        });
+
+    });
+</script>
+

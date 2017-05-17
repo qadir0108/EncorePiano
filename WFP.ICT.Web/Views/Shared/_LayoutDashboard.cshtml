@@ -1,0 +1,72 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@((Session["company"] == null) ? "WFP Pakistan" : (Session["company"] as WFP.ICT.Data.Entities.Company).Name) Apps - @ViewBag.Title</title>
+    @*@Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")*@
+    @Styles.Render("~/Theme/CSS")
+
+    @Scripts.Render("~/Theme/JS")
+    @Scripts.Render("~/Theme/jQueryUI")
+
+    <script src="~/js/highcharts/highcharts.js"></script>
+    <script src="~/js/highcharts/modules/exporting.js"></script>
+</head>
+<body>
+    <div id="divBodyContent">
+        @Html.Partial("_Header")
+
+        <div class="container body-content">
+            @RenderBody()
+
+            <footer class="print-hide">
+                <p>
+                    &copy; @DateTime.Now.Year -
+                    @((Session["company"] == null) ? "WFP Pakistan" : (Session["company"] as WFP.ICT.Data.Entities.Company).Name)
+                </p>
+            </footer>
+        </div>
+
+    </div>
+    @*@Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")*@
+    <script>
+        var wfp = wfp || {};
+
+        $(document).ajaxStart(function ()
+        {
+            wfp.blockUI({
+                target: $('#divBodyContent'),
+                boxed: true,
+                message: 'Processing...'
+            });
+
+        })
+        .ajaxStop(function ()
+        {
+            wfp.unblockUI($('#divBodyContent'))
+        });
+
+        $(document).ajaxError(function (e, xhr) {
+            debugger;
+            if (xhr.status == 403) {
+                var response = $.parseJSON(xhr.responseText);
+                window.location = response.LogOnUrl;
+            }
+        });
+
+        $(document).ready(function () {
+
+            $('.tp-pagination .pagination > li.PagedList-skipToNext > a').text("Next");
+            $('.tp-pagination .pagination > li.PagedList-skipToLast > a').text("Last");
+            $('.tp-pagination .pagination > li.PagedList-skipToFirst > a').text("First");
+            $('.tp-pagination .pagination > li.PagedList-skipToPrevious > a').text("Previous");
+
+        });
+
+    </script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

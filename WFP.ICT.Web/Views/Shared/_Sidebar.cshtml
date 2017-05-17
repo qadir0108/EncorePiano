@@ -1,0 +1,249 @@
+﻿@using System.Configuration
+@using System.Linq;
+@using System.Security.Claims;
+
+@{
+    bool isAdmin = false, isUser = false;
+}
+@if (Session != null && Session["user"] != null)
+{
+    var userIdentity = HttpContext.Current.User.Identity as ClaimsIdentity;
+    var roles = userIdentity.Claims.Where(x => x.Type == ClaimTypes.Role).Select(claim => claim.Value).ToArray();
+    var claims = userIdentity.Claims.Where(x => x.Type == ClaimTypes.UserData).Select(claim => claim.Value).ToList();
+
+    isAdmin = roles.Contains(WFP.ICT.Common.SecurityConstants.RoleAdmin);
+    bool isPrivateUser = roles.Contains(WFP.ICT.Common.SecurityConstants.RolePrivateUser);
+    isUser = isPrivateUser;
+}
+<!-- BEGIN SIDEBAR -->
+<div class="page-sidebar-wrapper">
+    <!-- BEGIN SIDEBAR -->
+    <!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
+    <!-- DOC: Change data-auto-speed="200" to adjust the sub menu slide up/down speed -->
+    <div class="page-sidebar navbar-collapse collapse">
+        <!-- BEGIN SIDEBAR MENU -->
+        <!-- DOC: Apply "page-sidebar-menu-light" class right after "page-sidebar-menu" to enable light sidebar menu style(without borders) -->
+        <!-- DOC: Apply "page-sidebar-menu-hover-submenu" class right after "page-sidebar-menu" to enable hoverable(hover vs accordion) sub menu mode -->
+        <!-- DOC: Apply "page-sidebar-menu-closed" class right after "page-sidebar-menu" to collapse("page-sidebar-closed" class must be applied to the body element) the sidebar sub menu mode -->
+        <!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
+        <!-- DOC: Set data-keep-expand="true" to keep the submenues expanded -->
+        <!-- DOC: Set data-auto-speed="200" to adjust the sub menu slide up/down speed -->
+        <ul class="page-sidebar-menu" data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
+            @if(isAdmin)
+            {
+                <li class="nav-item start active">
+                    <a href="javascript:;" class="nav-link nav-toggle">
+                        <i class="icon-home"></i>
+                        <span class="title">Dashboard</span>
+                        <span class="selected"></span>
+                        <span class="arrow open"></span>
+                    </a>
+                    <ul class="sub-menu">
+                        <li class="nav-item start ">
+                            <a href="/Home/Index" class="nav-link ">
+                                <i class="icon-screen-desktop"></i>
+                                <span class="title">Orders</span>
+                                <span class="selected"></span>
+                            </a>
+                        </li>
+                        <li class="nav-item start ">
+                            <a href="/Home/Index3" class="nav-link ">
+                                <i class="icon-bulb"></i>
+                                <span class="title">Warehouse</span>
+                                @*<span class="badge badge-success">1</span>*@
+                            </a>
+                        </li>
+                        <li class="nav-item start ">
+                            <a href="/Home/Index2" class="nav-link ">
+                                <i class="icon-graph"></i>
+                                <span class="title">Delivery</span>
+                                @*<span class="badge badge-danger">5</span>*@
+                            </a>
+                        </li>
+                        <li class="nav-item start ">
+                            <a href="/Home/Index3" class="nav-link ">
+                                <i class="icon-graph"></i>
+                                <span class="title">Accounts</span>
+                                @*<span class="badge badge-danger">5</span>*@
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            }
+          
+            @if (isUser)
+            {
+                <li class="nav-item start active">
+                    <a href="javascript:;" class="nav-link nav-toggle">
+                        <i class="icon-screen-desktop"></i>
+                        <span class="title">Orders</span>
+                        <span class="arrow"></span>
+                    </a>
+                    <ul class="sub-menu">
+                        <li class="nav-item start ">
+                            <a href="/Home/Index" class="nav-link ">
+                                <i class="icon-screen-desktop"></i>
+                                <span class="title">
+                                    Orders
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item start ">
+                            <a href="/Home/NewOrder" class="nav-link ">
+                                <i class="icon-screen-desktop"></i>
+                                <span class="title">
+                                    Place Order
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item  ">
+                            <a href="form_controls.html" class="nav-link ">
+                                <i class="icon-screen-desktop"></i>
+                                <span class="title">
+                                    Order Status
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item  ">
+                            <a href="form_controls_md.html" class="nav-link ">
+                                <i class="icon-screen-desktop"></i>
+                                <span class="title">
+                                    Orders Completed
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            }
+            
+            @if (isAdmin)
+            {
+                <li class="nav-item start active">
+                    <a href="javascript:;" class="nav-link nav-toggle">
+                        <i class="icon-diamond"></i>
+                        <span class="title">Inventory</span>
+                        <span class="arrow"></span>
+                    </a>
+                    <ul class="sub-menu">
+                        <li class="nav-item start">
+                            <a href="index.html" class="nav-link ">
+                                <i class="icon-bar-chart"></i>
+                                <span class="title">Inventory</span>
+                                <span class="selected"></span>
+                            </a>
+                        </li>
+                        <li class="nav-item start ">
+                            <a href="dashboard_2.html" class="nav-link ">
+                                <i class="icon-bulb"></i>
+                                <span class="title">Warehouse</span>
+                                <span class="badge badge-success">1</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="nav-item start active ">
+                    <a href="javascript:;" class="nav-link nav-toggle">
+                        <i class="icon-diamond"></i>
+                        <span class="title">Delivery</span>
+                        <span class="arrow"></span>
+                    </a>
+                    <ul class="sub-menu">
+                        <li class="nav-item start">
+                            <a href="index.html" class="nav-link ">
+                                <i class="icon-bar-chart"></i>
+                                <span class="title">Consignments</span>
+                                <span class="selected"></span>
+                            </a>
+                        </li>
+                        <li class="nav-item start ">
+                            <a href="dashboard_2.html" class="nav-link ">
+                                <i class="icon-bulb"></i>
+                                <span class="title">Proof of Delivery</span>
+                                <span class="badge badge-success">1</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="nav-item start active ">
+                    <a href="javascript:;" class="nav-link nav-toggle">
+                        <i class="icon-diamond"></i>
+                        <span class="title">Accounting</span>
+                        <span class="arrow"></span>
+                    </a>
+                    <ul class="sub-menu">
+                        <li class="nav-item start ">
+                            <a href="index.html" class="nav-link ">
+                                <i class="icon-bar-chart"></i>
+                                <span class="title">Accounts</span>
+                                <span class="selected"></span>
+                            </a>
+                        </li>
+                        <li class="nav-item start ">
+                            <a href="dashboard_2.html" class="nav-link ">
+                                <i class="icon-bulb"></i>
+                                <span class="title">Invoices</span>
+                                <span class="badge badge-success">1</span>
+                            </a>
+                        </li>
+                        <li class="nav-item start ">
+                            <a href="dashboard_2.html" class="nav-link ">
+                                <i class="icon-bulb"></i>
+                                <span class="title">Payments</span>
+                                <span class="badge badge-success">1</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="nav-item start active open ">
+                    <a href="javascript:;" class="nav-link nav-toggle">
+                        <i class="icon-settings"></i>
+                        <span class="title">Settings</span>
+                        <span class="arrow"></span>
+                    </a>
+                    <ul class="sub-menu">
+                        <li class="nav-item  ">
+                            <a href="/Company/Settings" class="nav-link ">
+                                <i class="icon-wrench"></i>
+                                <span class="title">
+                                    Company
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item  ">
+                            <a href="/Company/Permissions" class="nav-link ">
+                                <i class="icon-wrench"></i>
+                                <span class="title">
+                                    Permissions
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item  ">
+                            <a href="/Company/Roles" class="nav-link ">
+                                <i class="icon-wrench"></i>
+                                <span class="title">
+                                    Roles
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item  ">
+                            <a href="/Company/Users" class="nav-link ">
+                                <i class="icon-wrench"></i>
+                                <span class="title">
+                                    Users
+                                </span>
+                            </a>
+                        </li>
+
+                    </ul>
+                </li>
+            }
+       
+        </ul>
+        <!-- END SIDEBAR MENU -->
+    </div>
+    <!-- END SIDEBAR -->
+</div>
+<!-- END SIDEBAR -->

@@ -1,0 +1,355 @@
+﻿@model List<WFP.ICT.Web.Models.CompanyRoleVM>
+@{
+    ViewBag.Title = "Roles";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="main-container">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="col-md-6">
+                    <div class="dashboard-page-head">
+                        <div class="page-header">
+                            <h1> Roles Managment</h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5 form-group" id="divSearch">
+                    <div class="form-group has-feedback">
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <span class="glyphicon glyphicon-search"></span>
+                            </div>
+                            <input type="text" id="search" class="form-control input-md" placeholder="Type to search">
+                            <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                        </div> 
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <button class="btn btn-default" href="#" data-toggle="modal" data-target="#myModal" data-action="add">
+                        <span class="glyphicon">+</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 my-listing-dashboard">
+                <div class="table-head">
+                    <div class="row">
+                        <div class="col-md-2"><span class="th-title">Name</span></div>
+                        <div class="col-md-2"><span class="th-title">Description</span></div>
+                        <div class="col-md-1"><span class="th-title">Users</span></div>
+                        <div class="col-md-6"><span class="th-title">Permissions</span></div>
+                        <div class="col-md-1"><span class="th-title">Action</span></div>
+                    </div>
+                </div>
+                @foreach (var role in Model)
+                {
+                    var btnDelete = "btnDelete" + role.Id;
+                    <div class="listing-row" id="@role.Id">
+                        <!-- listing row -->
+                        <div class="row">
+                            <div class="col-md-2 listing-title"><h2>@role.Name</h2></div>
+                            <div class="col-md-2 listing-title">@role.Description</div>
+                            <div class="col-md-1 listing-title">@role.InUsers</div>
+                            <div class="col-md-6 listing-title">
+                                <select class="permissions" multiple="multiple" style="width:100%" id="@role.Id">
+                                        @foreach (var item in role.Permissions)
+                                        {
+                                            var selected = @item.Selected ? "selected" : "";
+                                            <option value="@item.Value" @selected>@item.Text</option>
+                                        }
+                                </select>
+                            </div>
+                            <div class="col-md-1 listing-action">
+                                @if (role.IsEditable)
+                                {
+                                    <a href="#" data-toggle="modal" data-target="#myModal" class="btnEdit" data-action="edit" data-id="@role.Id" data-name="@role.Name" data-description="@role.Description">
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                    </a>
+                                }
+                                
+                                @if (role.IsDeletable)
+                                {
+                                    <a href="#" class="btnDelete" id="@btnDelete"><span class="glyphicon glyphicon-trash"></span></a>
+                                }
+                            </div>
+                        </div>
+                    </div><!-- listing row -->
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Update Role</h4>
+            </div>
+            <form id="frm" role="form">
+                <div class="modal-body">
+                    <input id="Id" name="Id" type="hidden">
+                    
+                    <!-- Text input-->
+                    <div class="form-group has-feedback">
+                        <label class="control-label" for="txtName">Role Name<span class="required">*</span></label>
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="glyphicon glyphicon-lock"></i>
+                            </div>
+                            <input id="Name" name="Name" type="text" data-minlength="3" placeholder="Role Name" class="form-control input-md" required>
+                        </div>
+                        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                    </div>
+
+                    <!-- Text input-->
+                    <div class="form-group has-feedback">
+                        <label class="control-label" for="txtName">Role Description</label>
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="glyphicon glyphicon-lock"></i>
+                            </div>
+                            <input id="Description" name="Description" type="text" data-minlength="3" placeholder="Role Description" class="form-control input-md">
+                        </div>
+                        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" id="btnSave">Save</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+    var wfp = wfp || {};
+
+    $(".permissions").select2();
+
+    $('.permissions').on("select2:selecting", function (e) {
+        debugger;
+        var select = $(this);
+        var currentVals = select.val() != null ? select.val() : [];
+        var roleId = $(this).attr('id');
+        var permissionId = e.params.args.data.id;
+        var dataToPost = {
+            Id: roleId,
+            Action: 'add',
+            PermissionId: permissionId
+        };
+
+        e.preventDefault();
+
+        wfp.showSwal("Are you sure?", function () {
+            debugger;
+            currentVals.push(permissionId);
+            select.val(currentVals).trigger("change");
+
+            $.ajax({
+                type: "POST",
+                url: "/Company/ChangeRolePermission",
+                data: dataToPost,
+                success: function (response) {
+                    debugger;
+                    if (response === "") wfp.reload();
+                    if (response.IsSucess) {
+                        wfp.showSuccess('Permission has been added successfully.');
+                    } else {
+                        wfp.showError(response.ErrorMessage);
+                    }
+                },
+                failure: function (response) {
+                    wfp.showError('There is erorr in service call.');
+                },
+                complete: function () {
+                }
+            });
+
+            return true;
+
+        }, function () {
+            debugger;
+            select.select2("close");
+            return false;
+        });
+
+    });
+
+    $('.permissions').on("select2:unselecting", function (e) {
+        debugger;
+        var select = $(this);
+        var currentVals = select.val() != null ? select.val() : [];
+        var roleId = $(this).attr('id');
+        var permissionId = e.params.args.data.id;
+        var dataToPost = {
+            Id: roleId,
+            Action: 'remove',
+            PermissionId: permissionId
+        };
+
+        e.preventDefault();
+
+        wfp.showSwal("Are you sure?", function () {
+            debugger;
+            currentVals.remove(permissionId);
+            select.val(currentVals).trigger("change");
+
+            $.ajax({
+                type: "POST",
+                url: "/Company/ChangeRolePermission",
+                data: dataToPost,
+                success: function (response) {
+                    debugger;
+                    if (response === "") wfp.reload();
+                    if (response.IsSucess) {
+                        wfp.showSuccess('Permission has been removed successfully.');
+                    } else {
+                        wfp.showError(response.ErrorMessage);
+                    }
+                },
+                failure: function (response) {
+                    wfp.showError('There is erorr in service call.');
+                },
+                complete: function () {
+                }
+            });
+
+            return true;
+
+        }, function () {
+            debugger;
+            select.select2("close");
+            return false;
+        });
+
+    });
+
+    $('#myModal').on('show.bs.modal', function (event) {
+
+        var button = $(event.relatedTarget);
+        var modal = $(this);
+
+        var id = button.data('id');
+        if (id) {
+            modal.find('.modal-title').text('Editing ' + button.data('name'));
+            $('#Id').val(id);
+            $('#Name').val(button.data('name'));
+            $('#Description').val(button.data('description'));
+        }
+        else {
+            modal.find('.modal-title').text('Add new role');
+            $('#Id').val('');
+            $('#frm')[0].reset();
+        }
+
+    })
+
+    $('#btnSave').click(function () {
+        debugger;
+
+        var form = $("#frm");
+
+                form.validator('validate').on('submit', function (e) {
+                    debugger;
+                    if (e.isDefaultPrevented()) {
+
+                    } else {
+
+                        e.preventDefault();
+
+                        var dataToPost = form.serialize();
+                        debugger;
+                        $.ajax({
+                            type: "POST",
+                            url: "/Company/SaveRole",
+                            data: dataToPost,
+                            success: function (response) {
+                                debugger;
+                                if (response === "") wfp.reload();
+                                if (response.IsSucess) {
+                                    wfp.showSuccess('Role has been saved successfully.');
+                                    $('#myModal').modal('hide');
+                                    wfp.redirectTo('/Company/Roles');
+                                } else {
+                                    wfp.showError(response.ErrorMessage);
+                                }
+                            },
+                            failure: function (response) {
+                                wfp.showError('There is erorr in service call.');
+                            },
+                            complete: function () {
+                            }
+                        });
+                        // everything looks good!
+                    }
+                }) //end validator
+    });
+
+   $('.btnDelete').click(function () {
+
+       var btnDelete = $(this);
+       var id = btnDelete.attr('id').replace('btnDelete', '');
+       var divRow = $('#' + id);
+       var dataToPost = "{Id : '" + id + "'}";
+
+       wfp.showSwal("Are you sure to delete?", function () {
+           debugger;
+
+           $.ajax({
+               type: "POST",
+               url: '/Company/DeleteRole',
+               data: dataToPost,
+               contentType: "application/json; charset=utf-8",
+               success: function (response) {
+                   debugger;
+                   if (response === "") wfp.reload();
+                   if (response.IsSucess) {
+                       wfp.showSuccess('Role has been deleted successfully.');
+                       divRow.fadeOut(1000).animate({ "opacity": "0" }, function () { divRow.remove(); });
+
+                   } else {
+                       wfp.showError(response.ErrorMessage);
+                   }
+               },
+               failure: function (response) {
+                   wfp.showError('There is erorr in service call.');
+               },
+               complete: function () {
+               }
+           });
+
+       });
+
+   });
+
+   var $rows = $('.listing-row');
+   $('#search').keyup(function () {
+       var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+       debugger;
+
+       if (val === '') {
+           $('.table-head').show();
+           $('.header-container').show();
+       } else {
+           $('.table-head').hide();
+           $('.header-container').hide();
+       }
+
+       $rows.show().filter(function () {
+           var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+           return !~text.indexOf(val);
+       }).hide();
+   });
+
+</script>
+

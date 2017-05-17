@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="RegistryDatasetType" targetNamespace="http://tempuri.org/RegistryDatasetType.xsd" xmlns:mstns="http://tempuri.org/RegistryDatasetType.xsd" xmlns="http://tempuri.org/RegistryDatasetType.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="RegistryDatasetType" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="RegistryDatasetType" msprop:Generator_UserDSName="RegistryDatasetType">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="CampaignDT" msprop:Generator_TableClassName="CampaignDTDataTable" msprop:Generator_TableVarName="tableCampaignDT" msprop:Generator_TablePropName="CampaignDT" msprop:Generator_RowDeletingName="CampaignDTRowDeleting" msprop:Generator_RowChangingName="CampaignDTRowChanging" msprop:Generator_RowEvHandlerName="CampaignDTRowChangeEventHandler" msprop:Generator_RowDeletedName="CampaignDTRowDeleted" msprop:Generator_UserTableName="CampaignDT" msprop:Generator_RowChangedName="CampaignDTRowChanged" msprop:Generator_RowEvArgName="CampaignDTRowChangeEvent" msprop:Generator_RowClassName="CampaignDTRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="OrderNumber" msprop:Generator_ColumnVarNameInTable="columnOrderNumber" msprop:Generator_ColumnPropNameInRow="OrderNumber" msprop:Generator_ColumnPropNameInTable="OrderNumberColumn" msprop:Generator_UserColumnName="OrderNumber" type="xs:string" minOccurs="0" />
+              <xs:element name="CampaignName" msprop:Generator_ColumnVarNameInTable="columnCampaignName" msprop:Generator_ColumnPropNameInRow="CampaignName" msprop:Generator_ColumnPropNameInTable="CampaignNameColumn" msprop:Generator_UserColumnName="CampaignName" type="xs:string" minOccurs="0" />
+              <xs:element name="Status" msprop:Generator_ColumnVarNameInTable="columnStatus" msprop:Generator_ColumnPropNameInRow="Status" msprop:Generator_ColumnPropNameInTable="StatusColumn" msprop:Generator_UserColumnName="Status" type="xs:string" minOccurs="0" />
+              <xs:element name="WhiteLabel" msprop:Generator_ColumnVarNameInTable="columnWhiteLabel" msprop:Generator_ColumnPropNameInRow="WhiteLabel" msprop:Generator_ColumnPropNameInTable="WhiteLabelColumn" msprop:Generator_UserColumnName="WhiteLabel" type="xs:string" minOccurs="0" />
+              <xs:element name="ReceivedFrom" msprop:Generator_ColumnVarNameInTable="columnReceivedFrom" msprop:Generator_ColumnPropNameInRow="ReceivedFrom" msprop:Generator_ColumnPropNameInTable="ReceivedFromColumn" msprop:Generator_UserColumnName="ReceivedFrom" type="xs:string" minOccurs="0" />
+              <xs:element name="Quantity" msprop:Generator_ColumnVarNameInTable="columnQuantity" msprop:Generator_ColumnPropNameInRow="Quantity" msprop:Generator_ColumnPropNameInTable="QuantityColumn" msprop:Generator_UserColumnName="Quantity" type="xs:string" minOccurs="0" />
+              <xs:element name="Clicked" msprop:Generator_ColumnVarNameInTable="columnClicked" msprop:Generator_ColumnPropNameInRow="Clicked" msprop:Generator_ColumnPropNameInTable="ClickedColumn" msprop:Generator_UserColumnName="Clicked" type="xs:string" minOccurs="0" />
+              <xs:element name="Opened" msprop:Generator_ColumnVarNameInTable="columnOpened" msprop:Generator_ColumnPropNameInRow="Opened" msprop:Generator_ColumnPropNameInTable="OpenedColumn" msprop:Generator_UserColumnName="Opened" type="xs:string" minOccurs="0" />
+              <xs:element name="IONumber" msdata:Caption="Opened" msprop:Generator_ColumnVarNameInTable="columnIONumber" msprop:Generator_ColumnPropNameInRow="IONumber" msprop:Generator_ColumnPropNameInTable="IONumberColumn" msprop:Generator_UserColumnName="IONumber" type="xs:string" minOccurs="0" />
+              <xs:element name="StartDate" msdata:Caption="Opened" msprop:Generator_ColumnVarNameInTable="columnStartDate" msprop:Generator_ColumnPropNameInRow="StartDate" msprop:Generator_ColumnPropNameInTable="StartDateColumn" msprop:Generator_UserColumnName="StartDate" type="xs:string" minOccurs="0" />
+              <xs:element name="EmailsSent" msdata:Caption="Opened" msprop:Generator_ColumnVarNameInTable="columnEmailsSent" msprop:Generator_ColumnPropNameInRow="EmailsSent" msprop:Generator_ColumnPropNameInTable="EmailsSentColumn" msprop:Generator_UserColumnName="EmailsSent" type="xs:string" minOccurs="0" />
+              <xs:element name="OpenedPercentage" msprop:Generator_ColumnVarNameInTable="columnOpenedPercentage" msprop:Generator_ColumnPropNameInRow="OpenedPercentage" msprop:Generator_ColumnPropNameInTable="OpenedPercentageColumn" msprop:Generator_UserColumnName="OpenedPercentage" type="xs:string" minOccurs="0" />
+              <xs:element name="ClickedPercentage" msdata:Caption="OpenedPercentage" msprop:Generator_ColumnVarNameInTable="columnClickedPercentage" msprop:Generator_ColumnPropNameInRow="ClickedPercentage" msprop:Generator_ColumnPropNameInTable="ClickedPercentageColumn" msprop:Generator_UserColumnName="ClickedPercentage" type="xs:string" minOccurs="0" />
+              <xs:element name="CTRPercentage" msdata:Caption="OpenedPercentage" msprop:Generator_ColumnVarNameInTable="columnCTRPercentage" msprop:Generator_ColumnPropNameInRow="CTRPercentage" msprop:Generator_ColumnPropNameInTable="CTRPercentageColumn" msprop:Generator_UserColumnName="CTRPercentage" type="xs:string" minOccurs="0" />
+              <xs:element name="Link" msdata:Caption="OpenedPercentage" msprop:Generator_ColumnVarNameInTable="columnLink" msprop:Generator_ColumnPropNameInRow="Link" msprop:Generator_ColumnPropNameInTable="LinkColumn" msprop:Generator_UserColumnName="Link" type="xs:string" minOccurs="0" />
+              <xs:element name="QuantityDetail" msdata:Caption="OpenedPercentage" msprop:Generator_ColumnVarNameInTable="columnQuantityDetail" msprop:Generator_ColumnPropNameInRow="QuantityDetail" msprop:Generator_ColumnPropNameInTable="QuantityDetailColumn" msprop:Generator_UserColumnName="QuantityDetail" type="xs:string" minOccurs="0" />
+              <xs:element name="OrderDate" msprop:Generator_ColumnVarNameInTable="columnOrderDate" msprop:Generator_ColumnPropNameInRow="OrderDate" msprop:Generator_ColumnPropNameInTable="OrderDateColumn" msprop:Generator_UserColumnName="OrderDate" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

@@ -1,0 +1,35 @@
+﻿@model System.Web.Mvc.HandleErrorInfo
+
+@{
+    ViewBag.Title = ViewBag.Title ?? "Internal Server Error";
+}
+
+<div class="main-container">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="error-block mb80">
+                    <h1></h1>
+                    <h2><i class="fa fa-warning">Error : @ViewBag.Title</i></h2>
+                    <p>
+                        @if (Model != null && HttpContext.Current.IsDebuggingEnabled)
+                        {
+                            <div>
+                                <p style="text-align:left">
+                                    <b>Exception:</b> @Model.Exception.Message<br />
+                                    <b>Controller:</b> @Model.ControllerName / 
+                                    <b>Action:</b> @Model.ActionName
+                                </p>
+                                @if (!string.IsNullOrEmpty(Model.Exception.StackTrace))
+                                {
+                                    <div style="overflow: scroll;text-align:left">
+                                        @Model.Exception.StackTrace
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>

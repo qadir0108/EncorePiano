@@ -1,0 +1,43 @@
+﻿@using System.Linq;
+@using System.Security.Claims;
+@using WFP.ICT.Data.Entities
+@using WFP.ICT.Enum
+@{
+    var LoggedInUser = Session["user"] as WFPUser;
+    var IsLoggedIn = LoggedInUser != null;
+    var IsAdmin = LoggedInUser != null && (LoggedInUser.UserType == (int)UserTypeEnum.Admin);
+}
+@if (Session["id"] != null)
+{
+    <div class="container">
+        <div class="row" style="padding-bottom: 5px">
+            <div class="col-md-10 headertab">
+                Order #: @Session["OrderNumber"]
+            </div>
+            <div class="col-md-2">
+                @Html.ActionLink("Back to Orders", "Index", "Campaigns", null, new {@class = "btn btn-default btn-xs"})
+                @Html.ActionLink("Complete", "MoveTo", "Copy", new { id = Session["id"], to = "Complete" }, new { @class = "btn btn-default btn-sm" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+                @Html.ActionLink("Testing", "MoveTo", "Copy", new {id = Session["id"], to = "Testing"}, new {@class = "btn btn-default btn-sm" })
+            </div>
+            <div class="col-md-2">
+                @Html.ActionLink("Creative", "MoveTo", "Copy", new {id = Session["id"], to = "Creative"}, new {@class = "btn btn-default btn-sm" })
+            </div>
+            <div class="col-md-2">
+                @Html.ActionLink("Approved", "MoveTo", "Copy", new {id = Session["id"], to = "Approved"}, new {@class = "btn btn-default btn-sm" })
+            </div>
+            <div class="col-md-2">
+                @Html.ActionLink("Status", "Index", "CampaignStatus", new { searchType = "basic", searchString = Session["OrderNumber"] }, new {@class = "btn btn-default btn-sm" })
+            </div>
+            <div class="col-md-2">
+                @Html.ActionLink("Tracking", "ViewReport", "Report", new { id = Session["id"] }, new { @class = "btn btn-default btn-sm" })
+            </div>
+            <div class="col-md-2">
+                @Html.ActionLink("ReBroadcast", "MoveTo", "Copy", new {id = Session["id"], to = "ReBroadcast"}, new {@class = "btn btn-default btn-sm" })
+            </div>
+        </div>
+    </div>
+}

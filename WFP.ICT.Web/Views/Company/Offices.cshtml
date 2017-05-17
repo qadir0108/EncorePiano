@@ -1,0 +1,244 @@
+﻿@model List<WFP.ICT.Web.Models.CompanyOfficeVM>
+@{
+    ViewBag.Title = "Offices";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="main-container">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <div class="col-md-6">
+                    <div class="dashboard-page-head">
+                        <div class="page-header">
+                            <h1> Offices Managment</h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5 form-group" id="divSearch">
+                    <div class="form-group has-feedback">
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <span class="glyphicon glyphicon-search"></span>
+                            </div>
+                            <input type="text" id="search" class="form-control input-md" placeholder="Type to search">
+                            <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                        </div> 
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <button class="btn btn-default" href="#" data-toggle="modal" data-target="#myModal" data-action="add">
+                        <span class="glyphicon">+</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1 my-listing-dashboard">
+                <div class="table-head">
+                    <div class="row">
+                        <div class="col-md-5"><span class="th-title">Code</span></div>
+                        <div class="col-md-5"><span class="th-title">Name</span></div>
+                        <div class="col-md-2"><span class="th-title">Action</span></div>
+                    </div>
+                </div>
+                @foreach (var officeVm in Model)
+                {
+                    var btnDelete = "btnDelete" + officeVm.Id;
+                    <div class="listing-row" id="@officeVm.Id">
+                        <!-- listing row -->
+                        <div class="row">
+                            <div class="col-md-5 listing-title search"><h2>@officeVm.Code</h2></div>
+                            <div class="col-md-5 listing-title search">@officeVm.OfficeName</div>
+                            <div class="col-md-2 listing-action">
+                                @if (officeVm.IsEditable)
+                                {
+                                    <a href="#" data-toggle="modal" data-target="#myModal" class="btnEdit" data-action="edit" data-id="@officeVm.Id" data-code="@officeVm.Code" data-name="@officeVm.OfficeName">
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                    </a>
+                                }
+                                
+                                @if (officeVm.IsDeletable)
+                                {
+                                    <a href="#" class="btnDelete" id="@btnDelete"><span class="glyphicon glyphicon-trash"></span></a>
+                                }
+                            </div>
+                        </div>
+                    </div><!-- listing row -->
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Update Office</h4>
+            </div>
+            <form id="frm" role="form">
+                <div class="modal-body">
+                    <input id="Id" name="Id" type="hidden">
+                    <!-- Text input-->
+                    <div class="form-group has-feedback">
+                        <label class="control-label" for="txtName">Code<span class="required">*</span></label>
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="glyphicon glyphicon-lock"></i>
+                            </div>
+                            <input id="Code" name="Code" type="text" placeholder="Office Code" class="form-control input-md" required>
+                        </div>
+                        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                    </div>
+                    <!-- Text input-->
+                    <div class="form-group has-feedback">
+                        <label class="control-label" for="txtName">Name<span class="required">*</span></label>
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="glyphicon glyphicon-lock"></i>
+                            </div>
+                            <input id="OfficeName" name="OfficeName" type="text" data-minlength="1" placeholder="Office Name" class="form-control input-md" required>
+                        </div>
+                        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" id="btnSave">Save</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+    var wfp = wfp || {};
+
+    $('#myModal')
+        .on('show.bs.modal',
+            function(event) {
+
+                var button = $(event.relatedTarget);
+                var modal = $(this);
+
+                var id = button.data('id');
+                if (id) {
+                    modal.find('.modal-title').text('Editing ' + button.data('name'));
+                    $('#Id').val(id);
+                    $('#Code').val(button.data('code'));
+                    $('#OfficeName').val(button.data('name'));
+                } else {
+                    modal.find('.modal-title').text('Add new permission');
+                    $('#Id').val('');
+                    $('#frm')[0].reset();
+                }
+
+            });
+
+    $('#btnSave')
+        .click(function() {
+            debugger;
+
+            var form = $("#frm");
+
+            form.validator('validate')
+                .on('submit',
+                    function(e) {
+                        debugger;
+                        if (e.isDefaultPrevented()) {
+
+                        } else {
+
+                            e.preventDefault();
+
+                            var dataToPost = form.serialize();
+                            debugger;
+                            $.ajax({
+                                type: "POST",
+                                url: "/Company/SaveOffice",
+                                data: dataToPost,
+                                success: function(response) {
+                                    debugger;
+                                    if (response === "") wfp.reload();
+                                    if (response.IsSucess) {
+                                        wfp.showSuccess('Office has been saved successfully.');
+                                        $('#myModal').modal('hide');
+                                        wfp.redirectTo('/Company/Offices');
+                                    } else {
+                                        wfp.showError(response.ErrorMessage);
+                                    }
+                                },
+                                failure: function(response) {
+                                    wfp.showError('There is erorr in service call.');
+                                },
+                                complete: function() {
+                                }
+                            });
+                            // everything looks good!
+                        }
+                    }); //end validator
+        });
+
+   $('.btnDelete').click(function () {
+
+       var btnDelete = $(this);
+       var id = btnDelete.attr('id').replace('btnDelete', '');
+       var divRow = $('#' + id);
+       var dataToPost = "{Id : '" + id + "'}";
+
+       wfp.showSwal("Are you sure to delete?",
+           function() {
+
+               debugger;
+               $.ajax({
+                   type: "POST",
+                   url: '/Company/DeleteOffice',
+                   data: dataToPost,
+                   contentType: "application/json; charset=utf-8",
+                   success: function(response) {
+                       debugger;
+                       if (response === "") wfp.reload();
+                       if (response.IsSucess) {
+                           wfp.showSuccess('Office has been deleted successfully.');
+                           divRow.fadeOut(1000).animate({ "opacity": "0" }, function() { divRow.remove(); });
+
+                       } else {
+                           wfp.showError(response.ErrorMessage);
+                       }
+                   },
+                   failure: function(response) {
+                       wfp.showError('There is erorr in service call.');
+                   },
+                   complete: function() {
+                   }
+               });
+           });
+   });
+
+   var $rows = $('.listing-row');
+   $('#search').keyup(function () {
+       var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+       //debugger;
+
+       if (val === '') {
+           $('.table-head').show();
+           $('.header-container').show();
+       } else {
+           $('.table-head').hide();
+           $('.header-container').hide();
+       }
+
+       $rows.show().filter(function () {
+           debugger;
+           var text = $(this).children('div').children('div .search').text().replace(/\s+/g, ' ').toLowerCase();
+           return !~text.indexOf(val);
+       }).hide();
+   });
+
+</script>
+

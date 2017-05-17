@@ -1,0 +1,279 @@
+﻿@model WFP.ICT.Web.Models.CompanySettingsVM
+@{
+    ViewBag.Title = "Settings";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="main-container">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-push-2">
+                <div class="dashboard-page-head">
+                    <div class="page-header">
+                        <h1>Company Settings<small></small></h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-push-2 add-listing-dashboard">
+                <div class="row">
+                    <div class="col-md-12 dashboard-form">
+                        <div class="bg-white pinside40 mb30">
+
+                            <form id="frm" class="form">
+                                @Html.HiddenFor(x => x.ID)
+                                <div class="form-group has-feedback">
+                                    <label class="control-label" for="txtName">Company Name<span class="required">*</span></label>
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <span class="glyphicon glyphicon-home"></span>
+                                        </div>
+                                        @Html.TextBoxFor(m => m.Name, new { @id = "txtName", @placeholder = "Company name", @class = "form-control input-md", @required = "required" })
+                                        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group has-feedback">
+                                    <label class="control-label" for="txtName">Company Details<span class="required">*</span></label>
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <span class="glyphicon glyphicon-edit"></span>
+                                        </div>
+                                        @Html.TextAreaFor(m => m.Details, new { @id = "txtDetails", @placeholder = "Company details", @class = "form-control input-md", @required = "required" })
+                                        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group has-feedback">
+                                    <label class="control-label" for="txtName">Company Website<span class="required">*</span></label>
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <span class="glyphicon glyphicon-globe"></span>
+                                        </div>
+                                        @Html.TextBoxFor(m => m.WebSite, new { @id = "txtWebsite", @placeholder = "Company Website", @class = "form-control input-md", @required = "required" })
+                                        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group has-feedback">
+                                    <label class="control-label" for="txtName">Company Logo<span class="required">*</span></label>
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <span class="glyphicon glyphicon-inbox"></span>
+                                        </div>
+                                        @Html.TextBoxFor(m => m.Logo, new { @id = "txtLogo", @placeholder = "Company Logo", @class = "form-control input-md", @required = "required" })
+                                        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                                    </div>
+                                </div>
+
+                                <h2 class="form-title" style="margin-top:30px;">
+                                    Active Directory Settings
+                                    <span class="text-right pull-right">
+                                        <a href="#" id="testActiveDirecotory"><span class="glyphicon glyphicon-check">Test</span></a>
+                                    </span>
+                                </h2>
+                                <div class="form-group has-feedback">
+                                    <label class="control-label" for="txtName">Domain Name<span class="required">*</span></label>
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <span class="glyphicon glyphicon-cloud"></span>
+                                        </div>
+                                        @Html.TextBoxFor(m => m.ActiveDiretoryDomain, new { @id = "txtActiveDiretoryDomain", @placeholder = "Active Diretory Domain", @class = "form-control input-md", @required = "required" })
+                                        <span class="glyphicon form-control-feedback" aria-hidden="false"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group has-feedback">
+                                    <label class="control-label" for="txtName">User Name<span class="required">*</span></label>
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <span class="glyphicon glyphicon-user"></span>
+                                        </div>
+                                        @Html.TextBoxFor(m => m.ActiveDiretoryUserName, new { @id = "txtActiveDiretoryUserName", @placeholder = "Active Diretory User Name", @class = "form-control input-md", @required = "required" })
+                                        <span class="form-control-feedback glyphicon" aria-hidden="false"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group has-feedback">
+                                    <label class="control-label" for="txtName">Password<span class="required">*</span></label>
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <span class="glyphicon glyphicon-lock"></span>
+                                        </div>
+                                        <input type="password" name="ActiveDiretoryPassword" id="ActiveDiretoryPassword" value="@Model.ActiveDiretoryPassword" placeholder="Active Diretory Password" class="form-control input-md" required />
+                                        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                                    </div>
+                                </div>
+
+                                <h2 class="form-title" style="margin-top:30px;">
+                                    Email Server Settings
+                                    <span class="text-right pull-right">
+                                        <a href="#" id="testEmail"><span class="glyphicon glyphicon-check">Test</span></a>
+                                    </span>
+                                </h2>
+                                <div class="form-group has-feedback">
+                                    <label class="control-label" for="txtEmailServer">Email Server<span class="required">*</span></label>
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <span class="glyphicon glyphicon-cloud"></span>
+                                        </div>
+                                        @Html.TextBoxFor(m => m.EmailServer, new { @id = "txtEmailServer", @placeholder = "Email Server", @class = "form-control input-md", @required = "required" })
+                                        <span class="glyphicon form-control-feedback" aria-hidden="false"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group has-feedback">
+                                    <label class="control-label" for="txtEmailUserName">User Name<span class="required">*</span></label>
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <span class="glyphicon glyphicon-user"></span>
+                                        </div>
+                                        @Html.TextBoxFor(m => m.EmailUserName, new { @id = "txtEmailUserName", @placeholder = "Email User Name", @class = "form-control input-md", @required = "required" })
+                                        <span class="form-control-feedback glyphicon" aria-hidden="false"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group has-feedback">
+                                    <label class="control-label" for="txtName">Password<span class="required">*</span></label>
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <span class="glyphicon glyphicon-lock"></span>
+                                        </div>
+                                        <input type="password" name="EmailPassword" id="EmailPassword" value="@Model.EmailPassword" placeholder="Email Password" class="form-control input-md" required />
+                                        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <div class="text-right">
+                                                <button id="btnUpdate" name="btnUpdate" class="btn btn-default">Save</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    var wfp = wfp || {};
+
+    $('#testActiveDirecotory').click(function () {
+
+        if ($('#txtActiveDiretoryDomain').val() == '' || $('#txtActiveDiretoryUserName').val() == '' || $('#ActiveDiretoryPassword').val() == '')
+        {
+            wfp.showError('Please enter Active Directory Credentials');
+        } else
+        {
+            var dataToPost = {
+                ActiveDiretoryDomain: $('#txtActiveDiretoryDomain').val(),
+                ActiveDiretoryUserName: $('#txtActiveDiretoryUserName').val(),
+                ActiveDiretoryPassword: $('#ActiveDiretoryPassword').val()
+            };
+
+            $.ajax({
+                type: "POST",
+                url: "/Company/CheckADSettings",
+                data: JSON.stringify(dataToPost),
+                contentType: "application/json; charset=utf-8",
+                success: function (response) {
+                    debugger;
+                    if (response === "") wfp.reload();
+                    if (response.IsSucess) {
+                        wfp.showSuccess('Active directory credentials are correct.');
+                    } else {
+                        wfp.showError(response.ErrorMessage);
+                    }
+                },
+                failure: function (response) {
+                    wfp.showError('There is erorr in service call.');
+                },
+                complete: function () {
+                }
+            });
+        }
+        return false;
+    });
+
+    $('#testEmail').click(function () {
+
+        if ($('#txtEmailServer').val() == '' || $('#txtEmailUserName').val() == '' || $('#EmailPassword').val() == '') {
+            wfp.showError('Please enter Mail server Credentials');
+        } else {
+            var dataToPost = {
+                EmailServer: $('#txtEmailServer').val(),
+                EmailUserName: $('#txtEmailUserName').val(),
+                EmailPassword: $('#EmailPassword').val()
+            };
+
+            $.ajax({
+                type: "POST",
+                url: "/Company/CheckMailSettings",
+                data: JSON.stringify(dataToPost),
+                contentType: "application/json; charset=utf-8",
+                success: function (response) {
+                    debugger;
+                    if (response === "") wfp.reload();
+                    if (response.IsSucess) {
+                        wfp.showSuccess('Mail server credentials are correct.');
+                    } else {
+                        wfp.showError(response.ErrorMessage);
+                    }
+                },
+                failure: function (response) {
+                    wfp.showError('There is erorr in service call.');
+                },
+                complete: function () {
+                }
+            });
+        }
+        return false;
+    });
+
+   $('#btnUpdate').click(function () {
+        debugger;
+
+        var form = $("#frm");
+
+                form.validator('validate').on('submit', function (e) {
+                    debugger;
+                    if (e.isDefaultPrevented()) {
+
+                    } else {
+
+                        e.preventDefault();
+
+                        var dataToPost = form.serialize();
+
+                        $.ajax({
+                            type: "POST",
+                            url: "/Company/Settings",
+                            data: dataToPost,
+                            //contentType: "application/json; charset=utf-8",
+                            success: function (response) {
+                                debugger;
+                                if (response === "") wfp.reload();
+                                if (response.IsSucess) {
+                                    wfp.showSuccess('Settings has been saved successfully.');
+                                    wfp.redirectTo('/Home/Index');
+                                } else {
+                                    wfp.showError(response.ErrorMessage);
+                                }
+                            },
+                            failure: function (response) {
+                                wfp.showError('There is erorr in service call.');
+                            },
+                            complete: function () {
+                            }
+                        });
+                        // everything looks good!
+                    }
+                }) //end validator
+    });
+
+</script>
+

@@ -1,0 +1,625 @@
+﻿@model List<WFP.ICT.Web.Models.CompanyUsersGroupedVM>
+@{
+    ViewBag.Title = "Users";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="main-container">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="col-md-7">
+                    <div class="dashboard-page-head">
+                        <div class="page-header">
+                            <h1> Users Management</h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 form-group" id="divSearch">
+                    <div class="form-group has-feedback">
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <span class="glyphicon glyphicon-search"></span>
+                            </div>
+                            <input type="text" id="search" class="form-control input-md" placeholder="Type to search">
+                            <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <button class="btn btn-default" href="#" data-toggle="modal" data-target="#searchModal" data-tooltip="tooltip" title="Search">
+                        <span class="glyphicon glyphicon-search"></span>
+                    </button>
+                    <button class="btn btn-default" href="#" data-toggle="modal" data-target="#createUserModal" data-action="add" data-tooltip="tooltip" title="Create New User">
+                        <span class="glyphicon">+</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+@{
+    Html.RenderPartial("_Search");
+}
+
+@foreach (var group in Model)
+{
+    <div class="container header-container">
+        <div class="row">
+            <div class="col-md-10 col-md-push-1">
+                <div class="dashboard-page-head">
+                    <div class="page-header" style="text-align:center;margin-top:5px">
+                        <h1>Office : @group.OfficeName, Unit : @group.UnitName</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 my-listing-dashboard">
+                <div class="table-head">
+                    <div class="row">
+                        <div class="col-md-2"><span class="th-title">Name</span></div>
+                        <div class="col-md-2"><span class="th-title">Office</span></div>
+                        <div class="col-md-2"><span class="th-title">Unit</span></div>
+                        <div class="col-md-3"><span class="th-title">Roles</span></div>
+                        <div class="col-md-1"><span class="th-title">Status</span></div>
+                        <div class="col-md-2"><span class="th-title">Action</span></div>
+                    </div>
+                </div>
+                @foreach (var acc in group.Users)
+                {
+                    var rowId = "row" + acc.ID;
+
+                    <div class="listing-row">
+                        <!-- listing row -->
+                        <div class="row" id="@rowId">
+                            <div class="col-md-2 listing-title search"><h2>@acc.Name</h2></div>
+                            <div class="col-md-2 listing-title">
+                            </div>
+                            <div class="col-md-2 listing-title">
+                            </div>
+                            <div class="col-md-3"><span class="th-title">
+                                <select class="roles" multiple="multiple" style="width:100%" id="@acc.ID">
+                                    @foreach (var item in acc.Roles)
+                                    {
+                                        var selected = @item.Selected ? "selected" : "";
+                                        <option value="@item.Value" @selected>@item.Text</option>
+                                    }
+                                </select>
+                                </span></div>
+
+                            <div class="col-md-1 listing-price">@acc.Status</div>
+                            <div class="col-md-2 listing-action">
+                                @if (acc.Status == "Active")
+                                {
+                                    
+                                    <a href="#" id="btnLock" class="btn btn-default btnLock" title="Lock" data-id="@acc.ID"><i class="fa fa-lock" aria-hidden="true"></i></a>
+                                }
+                                else
+                                {
+                                    <a href="#" id="btnUnLock" class="btn btn-default btnLock" title="Un-lock" data-id="@acc.ID"><i class="fa fa-unlock" aria-hidden="true"></i></a>
+                                }
+                                @*<a href="#" id="btnOpenRoles" class="btn btn-default btnOpenRoles" title="Roles"><i class="fa fa-list-ol" aria-hidden="true"></i></a>*@
+                                @if (acc.IsLocalUser)
+                                {
+                                    <a href="#" id="btnOpenChangePassword" name="btnOpenChangePassword" class="btn btn-default btnOpenChangePassword" title="Change Password"
+                                       data-toggle="modal" data-target="#myModal" data-id="@acc.ID" data-user="@acc.Name"><i class="fa fa-key" aria-hidden="true"></i></a>
+                                    <a href="#" id="btnDelete" class="btn btn-default btnDelete" title="Delete" data-id="@acc.ID"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                                }
+                                
+                            </div>
+                        </div>
+                    </div><!-- listing row -->
+                }
+            </div>
+        </div>
+    </div>
+}
+   
+</div>
+
+<div class="modal fade" id="createUserModal" role="dialog" aria-labelledby="myModalLabel" tabindex="-1" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">New User</h4>
+            </div>
+            <form id="frmCreate" role="form">
+                <div class="modal-body">
+
+                    <div class="form-group has-feedback">
+                        <label class="control-label" for="txtUserName">User Name<span class="required">*</span></label>
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="glyphicon glyphicon-lock"></i>
+                            </div>
+                            <input id="txtUserName" name="txtUserName" type="text" data-minlength="3" placeholder="User Name" class="form-control input-md" required>
+                        </div>
+                        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                    </div>
+
+                    <div class="form-group has-feedback">
+                        <label class="control-label" for="txtFirstName">First Name<span class="required">*</span></label>
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="glyphicon glyphicon-lock"></i>
+                            </div>
+                            <input id="txtFirstName" name="txtFirstName" type="text" data-minlength="3" placeholder="First Name" class="form-control input-md" required>
+                        </div>
+                        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                    </div>
+
+                    <div class="form-group has-feedback">
+                        <label class="control-label" for="txtLastName">Last Name<span class="required">*</span></label>
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="glyphicon glyphicon-lock"></i>
+                            </div>
+                            <input id="txtLastName" name="txtLastName" type="text" data-minlength="3" placeholder="Last Name" class="form-control input-md" required>
+                        </div>
+                        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                    </div>
+                    <!-- Text input-->
+                    <div class="form-group has-feedback">
+                        <label class="control-label" for="txtPassword">Password<span class="required">*</span></label>
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="glyphicon glyphicon-lock"></i>
+                            </div>
+                            <input id="txtPasswordCreate" name="txtPasswordCreate" type="text" data-minlength="6" placeholder="Password" class="form-control input-md" required>
+                        </div>
+                        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                        <div class="help-block"></div>
+                    </div>
+
+                    <!-- Text input-->
+                    <div class="form-group has-feedback">
+                        <label class="control-label" for="txtPasswordRetype">Re-type Password<span class="required">*</span></label>
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="glyphicon glyphicon-lock"></i>
+                            </div>
+                            <input id="txtPasswordRetypeCreate" name="txtPasswordRetypeCreate" type="text" placeholder="Re-type Password" class="form-control input-md" data-match="#txtPasswordCreate" data-match-error="Password and Re-type Password don't match." required>
+                        </div>
+                        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" id="btnCreate">Create</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="myModal" role="dialog" aria-labelledby="myModalLabel" tabindex="-1" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Change Password</h4>
+            </div>
+            <form id="frm" role="form">
+                <div class="modal-body">
+                    <input id="txtId" name="txtId" type="hidden">
+                  
+                    <!-- Text input-->
+                    <div class="form-group has-feedback">
+                        <label class="control-label" for="txtPassword">Password<span class="required">*</span></label>
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="glyphicon glyphicon-lock"></i>
+                            </div>
+                            <input id="txtPassword" name="txtPassword" type="text" data-minlength="6" placeholder="Password" class="form-control input-md" required>
+                        </div>
+                        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                        <div class="help-block"></div>
+                    </div>
+
+                    <!-- Text input-->
+                    <div class="form-group has-feedback">
+                        <label class="control-label" for="txtPasswordRetype">Re-type Password<span class="required">*</span></label>
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="glyphicon glyphicon-lock"></i>
+                            </div>
+                            <input id="txtPasswordRetype" name="txtPasswordRetype" type="text" placeholder="Re-type Password" class="form-control input-md" data-match="#txtPassword" data-match-error="Password and Re-type Password don't match." required>
+                        </div>
+                        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary btnChangePassword" id="btnChangePassword">Change Password</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+    var wfp = wfp || {};
+
+    $("#searchOfficeId").select2();
+    $(".roles").select2();
+
+    $(".officeID").select2().on("change", function (e) {
+        debugger;
+        if ($(this).val() === '') return;
+
+        var userId = $(this).parent().parent().attr('id').replace('row', '');
+        var officeId = $(this).val();
+
+        var dataToPost = {
+            ID: userId,
+            OfficeID: officeId,
+            Action: 'changeOffice'
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/Company/SaveUser",
+            data: dataToPost,
+            success: function (response) {
+                debugger;
+                if (response === "") wfp.reload();
+                if (response.IsSucess) {
+                    wfp.showSuccess('User has been updated successfully.');
+                    //wfp.reload('/Company/Users');
+                } else {
+                    wfp.showError(response.ErrorMessage);
+                }
+            },
+            failure: function (response) {
+                wfp.showError('There is erorr in service call.');
+            },
+            complete: function () {
+            }
+        });
+    });
+
+    $(".unitID").select2().on("change", function (e) {
+        debugger;
+        if ($(this).val() === '') return;
+
+        var userId = $(this).parent().parent().attr('id').replace('row', '');
+        var unitID = $(this).val();
+
+        var dataToPost = {
+            ID: userId,
+            UnitID: unitID,
+            Action: 'changeUnit'
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/Company/SaveUser",
+            data: dataToPost,
+            success: function (response) {
+                debugger;
+                if (response === "") wfp.reload();
+                if (response.IsSucess) {
+                    wfp.showSuccess('User has been updated successfully.');
+                    //wfp.reload('/Company/Users');
+                } else {
+                    wfp.showError(response.ErrorMessage);
+                }
+            },
+            failure: function (response) {
+                wfp.showError('There is erorr in service call.');
+            },
+            complete: function () {
+            }
+        });
+    });;
+
+    $('.roles').on("select2:selecting", function (e) {
+        
+        debugger;
+        var select = $(this);
+        var currentVals = select.val() != null ? select.val() : [];
+        var userId = $(this).attr('id');
+        var roleId = e.params.args.data.id;
+        var roleName = e.params.args.data.text;
+
+        var dataToPost = {
+            ID: userId,
+            Role: roleName,
+            Action: 'add'
+        };
+
+        e.preventDefault();
+
+        wfp.showSwal("Are you sure?", function () {
+            debugger;
+            currentVals.push(roleId);
+            select.val(currentVals).trigger("change");
+
+            $.ajax({
+                type: "POST",
+                url: "/Company/ChangeUserRole",
+                data: dataToPost,
+                success: function (response) {
+                    debugger;
+                    if (response === "") wfp.reload();
+                    if (response.IsSucess) {
+                        wfp.showSuccess('Role has been added successfully.');
+                    } else {
+                        wfp.showError(response.ErrorMessage);
+                    }
+                },
+                failure: function (response) {
+                    wfp.showError('There is erorr in service call.');
+                },
+                complete: function () {
+                }
+            });
+            return true;
+
+        }, function () {
+            debugger;
+            select.select2("close");
+            return false;
+        });
+
+    });
+
+    $('.roles').on("select2:unselecting", function (e) {
+       
+        debugger;
+        var select = $(this);
+        var currentVals = select.val() != null ? select.val() : [];
+        var userId = $(this).attr('id');
+        var roleId = e.params.args.data.id;
+        var roleName = e.params.args.data.text;
+
+        var dataToPost = {
+            ID: userId,
+            Role: roleName,
+            Action: 'remove'
+        };
+
+        e.preventDefault();
+
+        wfp.showSwal("Are you sure?", function () {
+            debugger;
+            currentVals.remove(roleId);
+            select.val(currentVals).trigger("change");
+
+            $.ajax({
+                type: "POST",
+                url: "/Company/ChangeUserRole",
+                data: dataToPost,
+                success: function (response) {
+                    debugger;
+                    if (response === "") wfp.reload();
+                    if (response.IsSucess) {
+                        wfp.showSuccess('Role has been removed successfully.');
+                    } else {
+                        wfp.showError(response.ErrorMessage);
+                    }
+                },
+                failure: function (response) {
+                    wfp.showError('There is erorr in service call.');
+                },
+                complete: function () {
+                }
+            });
+
+            return true;
+
+        }, function () {
+            debugger;
+            select.select2("close");
+            return false;
+        });
+
+
+    });
+
+    $('#myModal')
+        .on('show.bs.modal',
+            function(event) {
+
+                var button = $(event.relatedTarget);
+                var modal = $(this);
+
+                debugger;
+                var id = button.data('id');
+                if (id) {
+                    $('#txtId').val(id);
+                    modal.find('.modal-title').text('Change Password : ' + button.data('user'));
+                }
+            });
+
+    $('.btnLock').click(function (e) {
+        debugger;
+        e.preventDefault();
+
+        var dataToPost = {
+            ID: $(this).data('id'),
+            Action: 'lock'
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/Company/SaveUser",
+            data: dataToPost,
+            success: function (response) {
+                debugger;
+                if (response === "") wfp.reload();
+                if (response.IsSucess) {
+                    wfp.showSuccess('User has been updated successfully.');
+                    wfp.reload('/Company/Users');
+                } else {
+                    wfp.showError(response.ErrorMessage);
+                }
+            },
+            failure: function (response) {
+                wfp.showError('There is erorr in service call.');
+            },
+            complete: function () {
+            }
+        });
+    });
+
+    $('.btnDelete').click(function (e) {
+        debugger;
+        e.preventDefault();
+
+        var dataToPost = {
+            ID: $(this).data('id'),
+            Action: 'delete'
+        };
+
+        wfp.showSwal("Are you sure to delete?", function () {
+
+        $.ajax({
+            type: "POST",
+            url: "/Company/SaveUser",
+            data: dataToPost,
+            success: function (response) {
+                debugger;
+                if (response === "") wfp.reload();
+                if (response.IsSucess) {
+                    wfp.showSuccess('User has been deleted successfully.');
+                    wfp.reload('/Company/Users');
+                } else {
+                    wfp.showError(response.ErrorMessage);
+                }
+            },
+            failure: function (response) {
+                wfp.showError('There is erorr in service call.');
+            },
+            complete: function () {
+            }
+        });
+
+        });
+    });
+
+    $('#btnCreate').click(function () {
+        debugger;
+
+        var form = $("#frmCreate");
+        form.validator('validate')
+            .on('submit',
+                function(e) {
+                    debugger;
+                    if (e.isDefaultPrevented()) {
+
+                    } else {
+
+                        e.preventDefault();
+
+                        var dataToPost1 = {
+                            Action: 'create',
+                            Name: $('#txtUserName').val(),
+                            FirstName: $('#txtFirstName').val(),
+                            LastName: $('#txtLastName').val(),
+                            Password: $('#txtPasswordCreate').val()
+                        };
+
+                        $.ajax({
+                            type: "POST",
+                            url: "/Company/SaveUser",
+                            data: dataToPost1,
+                            success: function (response) {
+                                debugger;
+                                if (response === "") wfp.reload();
+                                if (response.IsSucess) {
+                                    $('#createUserModal').modal('hide');
+                                    wfp.showSuccess('New user has been created successfully.');
+                                    wfp.reload('/Company/Users');
+                                } else {
+                                    wfp.showError(response.ErrorMessage);
+                                }
+                            },
+                            failure: function (response) {
+                                wfp.showError('There is erorr in service call.');
+                            },
+                            complete: function () {
+                            }
+                        });
+
+                        // everything looks good!
+                    }
+                }); //end validator
+    });
+
+    $('#btnChangePassword').click(function () {
+        debugger;
+
+        var form = $("#frm");
+        form.validator('validate')
+            .on('submit',
+                function (e) {
+                    debugger;
+                    if (e.isDefaultPrevented()) {
+
+                    } else {
+
+                        e.preventDefault();
+                        
+                        var dataToPost = {
+                            ID: $('#txtId').val(),
+                            Action: 'password',
+                            Password: $('#txtPassword').val()
+                        };
+
+                        $.ajax({
+                            type: "POST",
+                            url: "/Company/SaveUser",
+                            data: dataToPost,
+                            success: function (response) {
+                                debugger;
+                                if (response === "") wfp.reload();
+                                if (response.IsSucess) {
+                                    wfp.showSuccess('Password has been changed successfully.');
+                                    $('#myModal').modal('hide');
+                                } else {
+                                    wfp.showError(response.ErrorMessage);
+                                }
+                            },
+                            failure: function (response) {
+                                wfp.showError('There is erorr in service call.');
+                            },
+                            complete: function () {
+                            }
+                        });
+
+                        // everything looks good!
+                    }
+                }); //end validator
+    });
+
+    var $rows = $('.listing-row');
+    $('#search').keyup(function () {
+        var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+        //debugger;
+
+        if (val === '') {
+            $('.table-head').show();
+            $('.header-container').show();
+        } else {
+            $('.table-head').hide();
+            $('.header-container').hide();
+        }
+
+        $rows.show().filter(function () {
+            debugger;
+            var text = $(this).children('div').children('div .search').text().replace(/\s+/g, ' ').toLowerCase();
+            return !~text.indexOf(val);
+        }).hide();
+    });
+
+</script>
+
