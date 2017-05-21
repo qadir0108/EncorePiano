@@ -20,6 +20,8 @@ namespace WFP.ICT.Data.Entities
 
         //public DateTime? OrderDate { get; set; } // CreatedAt
 
+        public DateTime? PreferredPickupDateTime { get; set; }
+
         public DateTime? PickupDate { get; set; }
         public DateTime? DeliveryDate { get; set; }
 

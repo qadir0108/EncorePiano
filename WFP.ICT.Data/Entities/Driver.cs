@@ -13,7 +13,7 @@ namespace WFP.ICT.Data.Entities
         public string Code { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-
+        public string Password { get; set; }
         public Guid? DefaultVehicleID { get; set; }
 
         public virtual ICollection<PianoConsignment> Consignments { get; set; }

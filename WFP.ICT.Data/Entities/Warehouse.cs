@@ -12,7 +12,8 @@ namespace WFP.ICT.Data.Entities
         public string Name { get; set; }
         public string Code { get; set; }
 
-        public virtual Address Location { get; set; }
+        public Guid? AddressId { get; set; }
+        public virtual Address Address { get; set; }
 
         public virtual ICollection<Piano> Inventory { get; set; }
 

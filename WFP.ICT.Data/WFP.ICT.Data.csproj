@@ -66,6 +66,7 @@
     <Compile Include="Entities\CustomerPayment.cs" />
     <Compile Include="Entities\CustomerInvoice.cs" />
     <Compile Include="Entities\Customer.cs" />
+    <Compile Include="Entities\DriverLogin.cs" />
     <Compile Include="Entities\Driver.cs" />
     <Compile Include="Entities\PianoConsignment.cs" />
     <Compile Include="Entities\PianoConsignmentRoute.cs" />
@@ -89,9 +90,9 @@
     <Compile Include="Entities\BaseEntity.cs" />
     <Compile Include="Entities\iBaseEntity.cs" />
     <Compile Include="EntityManager\CompanyManager.cs" />
-    <Compile Include="Migrations\201705121000129_Initial.cs" />
-    <Compile Include="Migrations\201705121000129_Initial.Designer.cs">
-      <DependentUpon>201705121000129_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\201705211542350_Initial.cs" />
+    <Compile Include="Migrations\201705211542350_Initial.Designer.cs">
+      <DependentUpon>201705211542350_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Repository\GenericRepository.cs" />
     <Compile Include="Repository\UnitOfWork.cs" />
@@ -104,6 +105,8 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Entities\WFPICTContext.cs" />
+    <Compile Include="TestDataSeeder.cs" />
+    <Compile Include="SecurityDataSeeder.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -125,8 +128,8 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201705121000129_Initial.resx">
-      <DependentUpon>201705121000129_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201705211542350_Initial.resx">
+      <DependentUpon>201705211542350_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

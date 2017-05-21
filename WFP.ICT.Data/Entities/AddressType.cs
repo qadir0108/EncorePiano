@@ -20,6 +20,7 @@ namespace WFP.ICT.Data.Entities
         }
     
         public System.Guid Id { get; set; }
+        public string Code { get; set; }
         public string Name { get; set; }
     
         public virtual ICollection<Address> Addresses { get; set; }

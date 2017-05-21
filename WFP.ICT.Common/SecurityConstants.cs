@@ -6,12 +6,14 @@ namespace WFP.ICT.Common
     public class SecurityConstants
     {
         public const string UserAdmin = "encore.admin";
-        public const string TestPrivateUser = "test.user";
-        public const string UserAllUserPassword = "P@kist@n123#$#!@#";
+        public const string TestEmployeeUser = "test.user";
         public const string UserAdminPassword = "P@kistan1";
 
         public const string RoleAdmin = "Encore Admin Role";
-        public const string RolePrivateUser = "Encore Private User Role";
+        public const string RoleEmployee = "Encore Employee Role";
+        public const string RolePrivate = "Encore Private Role";
+        public const string RoleDealer = "Encore Dealer Role";
+        public const string RoleManufacturer = "Encore Manufacturer Role";
 
         public static string[] ClaimsDefault = new string[] { "order.create", "order.read", "order.update", "order.delete" };
         public static string[] ClaimsPermissions = new string[] { "permissions.create", "permissions.read", "permissions.update", "permissions.delete" };

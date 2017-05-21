@@ -10,7 +10,7 @@ namespace WFP.ICT.Data.Entities
         public Guid Id { get; set; }
 
         public string Lat { get; set; }
-        public string Long { get; set; }
+        public string Lng { get; set; }
         public string Order { get; set; }
 
         public Guid? PianoConsignmentId { get; set; }

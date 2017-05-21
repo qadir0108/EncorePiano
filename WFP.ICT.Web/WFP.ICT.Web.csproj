@@ -261,21 +261,19 @@
     <Compile Include="Controllers\FileController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ConsigmentsController.cs" />
+    <Compile Include="Controllers\OrdersController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\AjaxAuthorizeAttribute.cs" />
     <Compile Include="Helpers\AuthorizeRole.cs" />
     <Compile Include="Helpers\AuthorizeClaim.cs" />
-    <Compile Include="Helpers\EmailThreadParams.cs" />
     <Compile Include="Helpers\ExcelUtility.cs" />
-    <Compile Include="Helpers\FileManager.cs" />
-    <Compile Include="Helpers\FileProcessor.cs" />
     <Compile Include="Helpers\FileUploader.cs" />
     <Compile Include="Helpers\KeyGenerator.cs" />
     <Compile Include="Helpers\ListExtensions.cs" />
     <Compile Include="Helpers\MultipleButtonAttribute.cs" />
-    <Compile Include="Helpers\S3FileManager.cs" />
     <Compile Include="Helpers\SortSearchExtension.cs" />
     <Compile Include="Helpers\StringHelper.cs" />
     <Compile Include="Helpers\Extensions.cs" />
@@ -283,33 +281,21 @@
     <Compile Include="Helpers\ExceptionHelper.cs" />
     <Compile Include="Helpers\FileHelper.cs" />
     <Compile Include="Helpers\GatePassGenerator.cs" />
-    <Compile Include="Models\CampaignReportDetailVM.cs" />
-    <Compile Include="Models\CampaignReportVM.cs" />
+    <Compile Include="Models\ConsigmentVm.cs" />
+    <Compile Include="Models\ConsignmentRouteVm.cs" />
+    <Compile Include="Models\PianoServiceVm.cs" />
     <Compile Include="Models\CompanyOfficeVM.cs" />
     <Compile Include="Models\CompanySettingsVM.cs" />
     <Compile Include="Models\CompanyUnitVM.cs" />
-    <Compile Include="Models\CommonVM.cs" />
-    <Compile Include="Models\HtmlProcessResult.cs" />
-    <Compile Include="Models\ProDataResponse.cs" />
-    <Compile Include="Models\VisitSearchVM.cs" />
     <Compile Include="Models\OrderVm.cs" />
-    <Compile Include="Models\StationerySearchVM.cs" />
     <Compile Include="Models\AddressVm.cs" />
-    <Compile Include="Models\RequestFlowEntryVM.cs" />
-    <Compile Include="Models\GatepassSearchVM.cs" />
     <Compile Include="Models\CompanyPermissionVM.cs" />
     <Compile Include="Models\CompanyUsersGroupedVM.cs" />
     <Compile Include="Models\CompanyRoleVM.cs" />
-    <Compile Include="Models\CampaignSearchVM.cs" />
-    <Compile Include="Models\RegistryDashboardVM.cs" />
-    <Compile Include="Models\GatepassRequestedItemVM.cs" />
     <Compile Include="Models\OfficeUserVM.cs" />
     <Compile Include="Models\CompanyUsersVM.cs" />
     <Compile Include="Models\JsonResponse.cs" />
-    <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\UserProfileVM.cs" />
-    <Compile Include="Models\PrintingProcessVM.cs" />
-    <Compile Include="Models\PrintingDashboardVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reports\CampaignDatasetType.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -2349,6 +2335,8 @@
     <Content Include="assets\global\plugins\bootstrap-daterangepicker\daterangepicker.js" />
     <Content Include="assets\global\plugins\bootstrap-daterangepicker\daterangepicker.min.css" />
     <Content Include="assets\global\plugins\bootstrap-daterangepicker\daterangepicker.min.js" />
+    <Content Include="assets\global\plugins\bootstrap-datetimepicker2\css\bootstrap-datetimepicker.min.css" />
+    <Content Include="assets\global\plugins\bootstrap-datetimepicker2\js\bootstrap-datetimepicker.min.js" />
     <Content Include="assets\global\plugins\bootstrap-datetimepicker\css\bootstrap-datetimepicker.css" />
     <Content Include="assets\global\plugins\bootstrap-datetimepicker\css\bootstrap-datetimepicker.min.css" />
     <Content Include="assets\global\plugins\bootstrap-datetimepicker\js\bootstrap-datetimepicker.js" />
@@ -6259,14 +6247,14 @@
     <Content Include="Views\Shared\Notification.cshtml" />
     <Content Include="Views\Shared\Success.cshtml" />
     <Content Include="Views\Shared\_UploadFile.cshtml" />
-    <Content Include="Views\Home\NewOrder.cshtml" />
+    <Content Include="Views\Orders\New.cshtml" />
     <Content Include="Views\Shared\_HeaderCopy.cshtml" />
     <Content Include="Views\Shared\_QuickNavigation.cshtml" />
     <Content Include="Views\Shared\_TopMenu.cshtml" />
     <Content Include="Views\Shared\_Footer.cshtml" />
     <Content Include="Views\Shared\_Sidebar.cshtml" />
     <Content Include="Views\Shared\_SidebarQuick.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Orders\Index.cshtml" />
     <Content Include="Views\Company\Offices.cshtml" />
     <Content Include="Views\Company\Permissions.cshtml" />
     <Content Include="Views\Company\Roles.cshtml" />
@@ -6278,6 +6266,12 @@
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Admin\Index2.cshtml" />
     <Content Include="Views\Admin\Index3.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Consignments\Index.cshtml" />
+    <Content Include="Views\Consignments\New.cshtml" />
+    <Content Include="Views\Consignments\Map.cshtml" />
+    <Content Include="Views\Orders\Status.cshtml" />
+    <Content Include="Views\Orders\Completed.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

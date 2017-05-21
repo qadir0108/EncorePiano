@@ -6,7 +6,6 @@ using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using WFP.ICT.S3;
 using WFP.ICT.Web.Models;
 
 namespace WFP.ICT.Web.Controllers
@@ -34,8 +33,6 @@ namespace WFP.ICT.Web.Controllers
 
                         amazonFileKey = string.Format("{0:yyyyMMdd_HHmmss}_{1}", DateTime.Now, fileContent.FileName);
 
-                        S3FileManager.Upload(amazonFileKey, filePath);
-
                         // Delete local
                         //string fullPath = Path.Combine(UploadPath, fileContent.FileName);
                         //if (System.IO.File.Exists(fullPath))
@@ -59,8 +56,6 @@ namespace WFP.ICT.Web.Controllers
             //if (!System.IO.File.Exists(filePath))
             // return null;
 
-            S3FileManager.Download(file, filePath);
-
             return File(filePath, "text/csv", file);
         }
 
@@ -69,8 +64,6 @@ namespace WFP.ICT.Web.Controllers
         {
             try
             {
-                S3FileManager.Delete(file);
-
                 //string fullPath = Path.Combine(UploadPath, Server.UrlEncode(file));
                 //if (!System.IO.File.Exists(fullPath))
                 //    throw new Exception("File does not exists.");

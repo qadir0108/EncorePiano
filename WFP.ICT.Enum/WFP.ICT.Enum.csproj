@@ -44,6 +44,7 @@
     <Compile Include="BillingTypeEnum.cs" />
     <Compile Include="PianoTypeEnum.cs" />
     <Compile Include="ServiceStatusEnum.cs" />
+    <Compile Include="AddressTypeEnum.cs" />
     <Compile Include="ServiceTypeEnum.cs" />
     <Compile Include="PaymentTypeEnum.cs" />
     <Compile Include="InvoiceStatusEnum.cs" />
@@ -58,8 +59,6 @@
     <Compile Include="StringConstants.cs" />
     <Compile Include="PictureTypeEnum.cs" />
     <Compile Include="TextValuePair.cs" />
-    <Compile Include="UploadFileTypeEnum.cs" />
-    <Compile Include="UploadFileStatusEnum.cs" />
     <Compile Include="UserTypeEnum.cs" />
     <Compile Include="UserStatusEnum.cs" />
   </ItemGroup>

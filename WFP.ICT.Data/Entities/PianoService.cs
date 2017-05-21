@@ -9,6 +9,7 @@ namespace WFP.ICT.Data.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public Guid Id { get; set; }
 
+        public int ServiceCode { get; set; }
         public int ServiceType { get; set; } // ServiceTypeEnum
         public int ServiceStatus { get; set; } // ServiceStatusEnum
         public string ServiceDetails { get; set; }

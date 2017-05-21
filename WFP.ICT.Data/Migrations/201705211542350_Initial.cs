@@ -12,7 +12,6 @@ namespace WFP.ICT.Data.Migrations
                 c => new
                     {
                         Id = c.Guid(nullable: false),
-                        Code = c.String(),
                         Name = c.String(),
                         Address1 = c.String(),
                         Address2 = c.String(),
@@ -21,8 +20,11 @@ namespace WFP.ICT.Data.Migrations
                         State = c.String(),
                         PostCode = c.String(),
                         PhoneNumber = c.String(),
+                        Lat = c.String(),
+                        Lng = c.String(),
                         AddressTypeId = c.Guid(),
                         CustomerId = c.Guid(),
+                        WarehouseId = c.Guid(),
                         CreatedAt = c.DateTime(nullable: false),
                         CreatedBy = c.String(),
                     })
@@ -37,6 +39,7 @@ namespace WFP.ICT.Data.Migrations
                 c => new
                     {
                         Id = c.Guid(nullable: false),
+                        Code = c.String(),
                         Name = c.String(),
                         CreatedAt = c.DateTime(nullable: false),
                         CreatedBy = c.String(),
@@ -50,8 +53,7 @@ namespace WFP.ICT.Data.Migrations
                         Id = c.Guid(nullable: false),
                         AccountCode = c.String(),
                         CompanyLogo = c.String(),
-                        FirstName = c.String(),
-                        LastName = c.String(),
+                        Name = c.String(),
                         PhoneNumber = c.String(),
                         EmailAddress = c.String(),
                         Comment = c.String(),
@@ -91,6 +93,7 @@ namespace WFP.ICT.Data.Migrations
                         SalesOrderNumber = c.String(),
                         IsStairs = c.Boolean(nullable: false),
                         Notes = c.String(),
+                        PreferredPickupDateTime = c.DateTime(),
                         PickupDate = c.DateTime(),
                         DeliveryDate = c.DateTime(),
                         PickupAddressId = c.Guid(),
@@ -234,13 +237,13 @@ namespace WFP.ICT.Data.Migrations
                         Id = c.Guid(nullable: false),
                         Name = c.String(),
                         Code = c.String(),
+                        AddressId = c.Guid(),
                         CreatedAt = c.DateTime(nullable: false),
                         CreatedBy = c.String(),
-                        Location_Id = c.Guid(),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Address", t => t.Location_Id)
-                .Index(t => t.Location_Id);
+                .ForeignKey("dbo.Address", t => t.AddressId)
+                .Index(t => t.AddressId);
             
             CreateTable(
                 "dbo.PianoConsignment",
@@ -248,6 +251,7 @@ namespace WFP.ICT.Data.Migrations
                     {
                         Id = c.Guid(nullable: false),
                         ConsignmentNumber = c.String(),
+                        WarehouseStartId = c.Guid(),
                         VehicleId = c.Guid(),
                         DriverId = c.Guid(),
                         PianoOrderId = c.Guid(),
@@ -265,6 +269,8 @@ namespace WFP.ICT.Data.Migrations
                 .ForeignKey("dbo.PianoConsignmentForm", t => t.PianoConsignmentFormId)
                 .ForeignKey("dbo.PianoPOD", t => t.PianoPODId)
                 .ForeignKey("dbo.Vehicle", t => t.VehicleId)
+                .ForeignKey("dbo.Warehouse", t => t.WarehouseStartId)
+                .Index(t => t.WarehouseStartId)
                 .Index(t => t.VehicleId)
                 .Index(t => t.DriverId)
                 .Index(t => t.PianoPODId)
@@ -278,6 +284,7 @@ namespace WFP.ICT.Data.Migrations
                         Code = c.String(),
                         Name = c.String(),
                         Description = c.String(),
+                        Password = c.String(),
                         DefaultVehicleID = c.Guid(),
                         CreatedAt = c.DateTime(nullable: false),
                         CreatedBy = c.String(),
@@ -304,7 +311,7 @@ namespace WFP.ICT.Data.Migrations
                     {
                         Id = c.Guid(nullable: false),
                         Lat = c.String(),
-                        Long = c.String(),
+                        Lng = c.String(),
                         Order = c.String(),
                         PianoConsignmentId = c.Guid(),
                         CreatedAt = c.DateTime(nullable: false),
@@ -348,6 +355,7 @@ namespace WFP.ICT.Data.Migrations
                 c => new
                     {
                         Id = c.Guid(nullable: false),
+                        ServiceCode = c.Int(nullable: false),
                         ServiceType = c.Int(nullable: false),
                         ServiceStatus = c.Int(nullable: false),
                         ServiceDetails = c.String(),
@@ -477,6 +485,18 @@ namespace WFP.ICT.Data.Migrations
                 .PrimaryKey(t => t.Id);
             
             CreateTable(
+                "dbo.DriverLogin",
+                c => new
+                    {
+                        Id = c.Guid(nullable: false),
+                        Token = c.String(),
+                        ExpiryTime = c.DateTime(),
+                        CreatedAt = c.DateTime(nullable: false),
+                        CreatedBy = c.String(),
+                    })
+                .PrimaryKey(t => t.Id);
+            
+            CreateTable(
                 "dbo.PianoQuote",
                 c => new
                     {
@@ -589,14 +609,15 @@ namespace WFP.ICT.Data.Migrations
             DropForeignKey("dbo.PianoService", "PianoOrderId", "dbo.PianoOrder");
             DropForeignKey("dbo.PianoOrder", "PickupAddressId", "dbo.Address");
             DropForeignKey("dbo.PianoOrder", "PianoConsignmentId", "dbo.PianoConsignment");
+            DropForeignKey("dbo.PianoConsignment", "WarehouseStartId", "dbo.Warehouse");
             DropForeignKey("dbo.PianoConsignment", "VehicleId", "dbo.Vehicle");
             DropForeignKey("dbo.Vehicle", "VehicleTypeId", "dbo.VehicleType");
             DropForeignKey("dbo.PianoConsignmentRoute", "PianoConsignmentId", "dbo.PianoConsignment");
             DropForeignKey("dbo.PianoConsignment", "PianoPODId", "dbo.PianoPOD");
             DropForeignKey("dbo.PianoConsignment", "PianoConsignmentFormId", "dbo.PianoConsignmentForm");
             DropForeignKey("dbo.PianoConsignment", "DriverId", "dbo.Driver");
-            DropForeignKey("dbo.Warehouse", "Location_Id", "dbo.Address");
             DropForeignKey("dbo.Piano", "WarehouseId", "dbo.Warehouse");
+            DropForeignKey("dbo.Warehouse", "AddressId", "dbo.Address");
             DropForeignKey("dbo.PianoPicture", "PianoPodId", "dbo.PianoPOD");
             DropForeignKey("dbo.PianoPicture", "PianoId", "dbo.Piano");
             DropForeignKey("dbo.Piano", "PianoTypeId", "dbo.PianoType");
@@ -629,7 +650,8 @@ namespace WFP.ICT.Data.Migrations
             DropIndex("dbo.PianoConsignment", new[] { "PianoPODId" });
             DropIndex("dbo.PianoConsignment", new[] { "DriverId" });
             DropIndex("dbo.PianoConsignment", new[] { "VehicleId" });
-            DropIndex("dbo.Warehouse", new[] { "Location_Id" });
+            DropIndex("dbo.PianoConsignment", new[] { "WarehouseStartId" });
+            DropIndex("dbo.Warehouse", new[] { "AddressId" });
             DropIndex("dbo.PianoPicture", new[] { "PianoPodId" });
             DropIndex("dbo.PianoPicture", new[] { "PianoId" });
             DropIndex("dbo.Piano", new[] { "PianoQuote_Id" });
@@ -651,6 +673,7 @@ namespace WFP.ICT.Data.Migrations
             DropTable("dbo.AspNetUserClaims");
             DropTable("dbo.AspNetUsers");
             DropTable("dbo.PianoQuote");
+            DropTable("dbo.DriverLogin");
             DropTable("dbo.Company");
             DropTable("dbo.AspNetUserRoles");
             DropTable("dbo.AspNetRoles");

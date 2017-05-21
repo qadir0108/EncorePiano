@@ -1,0 +1,136 @@
+﻿@{
+    ViewBag.Title = "Map";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Info windows</title>
+    <style>
+         /* Always set the map height explicitly to define the size of the div
+        * element that contains the map. */
+         #map {
+      width: 400px;
+      height: 400px;
+    }
+        /* Optional: Makes the sample page fill the window. */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+    <script src="http://maps.google.com/maps/api/js?key=AIzaSyAnRxR1BIFZMEmhwyFB6QXrzbsCoFeTVKA"></script>
+    <script src="../../assets/global/plugins/gmaps/gmaps.js"></script>
+    
+</head>
+<body>
+    
+<!-- BEGIN ROUTES PORTLET-->
+<div class="portlet light portlet-fit bordered">
+    <div class="portlet-title">
+        <div class="caption">
+            <i class="icon-layers font-blue"></i>
+            <span class="caption-subject font-blue bold uppercase">Route</span>
+        </div>
+        <div class="actions">
+            <input type="button" id="gmap_routes_start" class="btn green" value="Calculate Route" />
+        </div>
+    </div>
+    <div class="portlet-body">
+        <div class="label label-danger visible-ie8"> Not supported in Internet Explorer 8 </div>
+        <div id="gmap_routes" class="gmaps"> </div>
+        <ol id="gmap_routes_instructions"> </ol>
+    </div>
+</div>
+<!-- END ROUTES PORTLET-->
+<script>
+    
+    var wfp = wfp || {};
+
+    var latlng1;
+    var latlng2;
+    var polylines = [];
+
+    var map = new GMaps({
+        el: '#gmap_routes',
+        lat: 33.892162,
+        lng: -118.024756
+    });
+
+    var initMap = function (pickupAddress, deliveryAddress) {
+        //debugger;
+        pickupAddress = pickupAddress.replace(new RegExp("<br />", 'g'), "");
+        deliveryAddress = deliveryAddress.replace(new RegExp("<br />", 'g'), "");
+        GMaps.geocode({
+            address: pickupAddress,
+            callback: function (results, status) {
+                //debugger;
+                if (status === 'OK') {
+                    var latlng = results[0].geometry.location;
+                    map.setCenter(latlng.lat(), latlng.lng());
+                    map.addMarker({
+                        lat: latlng.lat(),
+                        lng: latlng.lng(),
+                        infoWindow: {
+                            content: '<p><h2>Pickup</h2></p><p>' + pickupAddress + '</p>'
+                        }
+                    });
+                    latlng1 = latlng;
+                }
+            }
+        });
+
+        GMaps.geocode({
+            address: deliveryAddress,
+            callback: function (results, status) {
+                //debugger;
+                if (status === 'OK') {
+                    var latlng = results[0].geometry.location;
+                    map.setCenter(latlng.lat(), latlng.lng());
+                    map.addMarker({
+                        lat: latlng.lat(),
+                        lng: latlng.lng(),
+                        infoWindow: {
+                            content: '<p><h2>Delivery</h2></p><p>' + deliveryAddress + '</p>'
+                        }
+                    });
+                    latlng2 = latlng;
+                }
+            }
+        });
+    };
+
+    $('#gmap_routes_start').click(function (e) {
+        debugger;
+        $('#gmap_routes_instructions').empty();
+        e.preventDefault();
+        App.scrollTo($(this), 400);
+        map.travelRoute({
+            origin: [latlng1.lat(), latlng1.lng()],
+            destination: [latlng2.lat(), latlng2.lng()],
+            travelMode: 'driving',
+            step: function (e) {
+                $('#gmap_routes_instructions').append('<li>' + e.instructions + '</li>');
+                $('#gmap_routes_instructions li:eq(' + e.step_number + ')').delay(800 * e.step_number).fadeIn(500, function () {
+                    map.setCenter(e.end_location.lat(), e.end_location.lng());
+                    map.drawPolyline({
+                        path: e.path,
+                        strokeColor: '#131540',
+                        strokeOpacity: 0.6,
+                        strokeWeight: 6
+                    });
+                    var obj = {};
+                    obj["Lat"] = e.end_location.lat();
+                    obj["Lng"] = e.end_location.lng();
+                    polylines.push(obj);
+                    $("#Paths").val(JSON.stringify(polylines));
+                });
+            }
+        });
+    });
+
+</script>
+</body></html>

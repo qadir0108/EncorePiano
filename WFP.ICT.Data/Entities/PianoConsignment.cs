@@ -8,6 +8,9 @@ namespace WFP.ICT.Data.Entities
         public Guid Id { get; set; }
         public string ConsignmentNumber { get; set; }
 
+        public Guid? WarehouseStartId { get; set; }
+        public virtual Warehouse WarehouseStart { get; set; }
+
         public Guid? VehicleId { get; set; }
         public virtual Vehicle Vehicle { get; set; }
 

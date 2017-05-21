@@ -63,6 +63,7 @@ namespace WFP.ICT.Data.Entities
         public DbSet<VehicleType> VehicleTypes { get; set; }
         public DbSet<Vehicle> Vehicles { get; set; }
         public DbSet<Driver> Drivers { get; set; }
+        public DbSet<DriverLogin> DriverLogins { get; set; }
 
         // Accounting
         public DbSet<CustomerInvoice> CustomerInvoices { get; set; }

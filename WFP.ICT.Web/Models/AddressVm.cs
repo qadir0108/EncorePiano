@@ -28,9 +28,24 @@ namespace WFP.ICT.Web.Models
             get
             {
                 if (_address == null) return "";
-                var pickupAddress = string.Format("{0} {1} {2} {3} <br/> {4} {5} {6}",
-                    _address.Name, _address.Address1, _address.Address2, _address.PhoneNumber, _address.PostCode, _address.Suburb, _address.State);
-                return pickupAddress;
+                var pickupAddress = string.Format("{0}, <br /> {1} {2}, <br /> {3}, {4} {5} <br />{6}",
+                    _address.Name, _address.Address1, _address.Address2,
+                    _address.Suburb, _address.State,
+                    _address.PostCode, _address.PhoneNumber).Trim("<br />".ToCharArray());
+                return "<br />" + pickupAddress;
+            }
+        }
+
+        public string AddressToStringWithOutPhone
+        {
+            get
+            {
+                if (_address == null) return "";
+                var pickupAddress = string.Format("{0}, <br /> {1} {2}, <br /> {3}, {4} {5}",
+                    _address.Name, _address.Address1, _address.Address2,
+                    _address.Suburb, _address.State,
+                    _address.PostCode).Trim("<br />".ToCharArray());
+                return "<br />" + pickupAddress;
             }
         }
     }
