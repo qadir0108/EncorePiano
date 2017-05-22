@@ -34,7 +34,6 @@ namespace WFP.ICT.Data.Entities
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
         }
 
-
         public DbSet<APIRequestLog> APIRequestLogs { get; set; }
         public DbSet<Company> Companys { get; set; }
         public DbSet<AspNetClaims> Claims { get; set; }
@@ -50,9 +49,14 @@ namespace WFP.ICT.Data.Entities
         public DbSet<PianoService> PianoServices { get; set; }
         public DbSet<PianoOrderBilling> PianoOrderBillings { get; set; }
         public DbSet<PianoOrderStatus> PianoOrderStatuses { get; set; }
-        public DbSet<PianoPicture> PianoPictures { get; set; }
         public DbSet<PianoQuote> PianoQuotes { get; set; }
+
+        // POD Lookups
         public DbSet<Warehouse> Warehouses { get; set; }
+        public DbSet<VehicleType> VehicleTypes { get; set; }
+        public DbSet<Vehicle> Vehicles { get; set; }
+        public DbSet<Driver> Drivers { get; set; }
+        public DbSet<DriverLogin> DriverLogins { get; set; }
 
         // POD
         public DbSet<PianoConsignment> PianoConsignments { get; set; }
@@ -60,10 +64,7 @@ namespace WFP.ICT.Data.Entities
         public DbSet<PianoConsignmentForm> PianoConsignmentForms { get; set; }
         public DbSet<PianoStatus> PianoStatuses { get; set; }
         public DbSet<PianoPOD> PianoPODs { get; set; }
-        public DbSet<VehicleType> VehicleTypes { get; set; }
-        public DbSet<Vehicle> Vehicles { get; set; }
-        public DbSet<Driver> Drivers { get; set; }
-        public DbSet<DriverLogin> DriverLogins { get; set; }
+        public DbSet<PianoPicture> PianoPictures { get; set; }
 
         // Accounting
         public DbSet<CustomerInvoice> CustomerInvoices { get; set; }

@@ -35,7 +35,8 @@ namespace WFP.ICT.Web.Models
         public AddressVm DeliveryAddress { get; set; }
 
         public List<PianoServiceVm> Services { get; set; }
-        public string ServiceIds { get; set; }
+
+        public string PickupTicket { get; set; }
 
     }
 }

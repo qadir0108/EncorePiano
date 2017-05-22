@@ -28,6 +28,9 @@ namespace WFP.ICT.Data.Entities
 
         public virtual ICollection<PianoConsignmentRoute> Route { get; set; }
 
+        public string PickupTicket { get; set; }
+        public DateTime? PickupTicketGenerationTime { get; set; }
+
         public long EstimatedTime { get; set; } // In Minutes
         public bool isStarted { get; set; }
         public DateTime? StartTime { get; set; }

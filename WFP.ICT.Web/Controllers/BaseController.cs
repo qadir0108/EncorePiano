@@ -48,5 +48,14 @@ namespace WFP.ICT.Web.Controllers
             }
         }
 
+        public string ImagesPath
+        {
+            get
+            {
+                string uploadPath = Server.MapPath("~/assets/global/img");
+                return uploadPath;
+            }
+        }
+
     }
 }

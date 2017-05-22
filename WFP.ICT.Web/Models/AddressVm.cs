@@ -12,6 +12,8 @@ namespace WFP.ICT.Web.Models
         public string State { get; set; }
         public string PostCode { get; set; }
         public string PhoneNumber { get; set; }
+        public string Lat { get; set; }
+        public string Lng { get; set; }
 
         public AddressVm()
         {

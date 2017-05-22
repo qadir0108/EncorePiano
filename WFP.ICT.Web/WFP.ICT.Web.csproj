@@ -107,6 +107,18 @@
       <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.WebForms.140.1.291.2731477-rc\lib\net40\Microsoft.SqlServer.Types.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="MigraDoc.DocumentObjectModel, Version=1.50.4000.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\PDFsharp-MigraDoc.1.50.4000-beta3b\lib\net20\MigraDoc.DocumentObjectModel.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MigraDoc.Rendering, Version=1.50.4000.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\PDFsharp-MigraDoc.1.50.4000-beta3b\lib\net20\MigraDoc.Rendering.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MigraDoc.RtfRendering, Version=1.50.4000.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\PDFsharp-MigraDoc.1.50.4000-beta3b\lib\net20\MigraDoc.RtfRendering.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="MySql.Data, Version=6.9.9.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -120,8 +132,17 @@
       <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="PdfSharp, Version=1.50.4000.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\PDFsharp-MigraDoc.1.50.4000-beta3b\lib\net20\PdfSharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PdfSharp.Charting, Version=1.50.4000.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\PDFsharp-MigraDoc.1.50.4000-beta3b\lib\net20\PdfSharp.Charting.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -195,6 +216,14 @@
       <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
+    <Reference Include="zxing, Version=0.15.0.0, Culture=neutral, PublicKeyToken=4e88037ac681fe60, processorArchitecture=MSIL">
+      <HintPath>..\packages\ZXing.Net.0.15.0\lib\net45\zxing.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="zxing.presentation, Version=0.15.0.0, Culture=neutral, PublicKeyToken=4e88037ac681fe60, processorArchitecture=MSIL">
+      <HintPath>..\packages\ZXing.Net.0.15.0\lib\net45\zxing.presentation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="EntityFramework">
@@ -253,6 +282,11 @@
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="App_Start\UnityMvcActivator.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Async\EmailHelper.cs" />
+    <Compile Include="Async\EmailThreadParams.cs" />
+    <Compile Include="Async\PdfSharpp.cs" />
+    <Compile Include="Async\QRCodeGenerator.cs" />
+    <Compile Include="Async\ZingCoder.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\BaseControllerLists.cs" />
@@ -271,13 +305,13 @@
     <Compile Include="Helpers\AuthorizeClaim.cs" />
     <Compile Include="Helpers\ExcelUtility.cs" />
     <Compile Include="Helpers\FileUploader.cs" />
+    <Compile Include="Helpers\GeneratorHelper.cs" />
     <Compile Include="Helpers\KeyGenerator.cs" />
     <Compile Include="Helpers\ListExtensions.cs" />
     <Compile Include="Helpers\MultipleButtonAttribute.cs" />
     <Compile Include="Helpers\SortSearchExtension.cs" />
     <Compile Include="Helpers\StringHelper.cs" />
     <Compile Include="Helpers\Extensions.cs" />
-    <Compile Include="Helpers\EmailHelper.cs" />
     <Compile Include="Helpers\ExceptionHelper.cs" />
     <Compile Include="Helpers\FileHelper.cs" />
     <Compile Include="Helpers\GatePassGenerator.cs" />
@@ -336,6 +370,7 @@
     <Content Include="assets\global\img\ajax-loading.gif" />
     <Content Include="assets\global\img\ajax-modal-loading.gif" />
     <Content Include="assets\global\img\datatable-row-openclose.png" />
+    <Content Include="assets\global\img\encore_logo.png" />
     <Content Include="assets\global\img\flags\ad.png" />
     <Content Include="assets\global\img\flags\ae.png" />
     <Content Include="assets\global\img\flags\af.png" />
@@ -6272,6 +6307,7 @@
     <Content Include="Views\Consignments\Map.cshtml" />
     <Content Include="Views\Orders\Status.cshtml" />
     <Content Include="Views\Orders\Completed.cshtml" />
+    <Content Include="Views\Consignments\PickTickets.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -6314,16 +6350,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
-          <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>56162</DevelopmentServerPort>
-          <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:49816/</IISUrl>
-          <NTLMAuthentication>False</NTLMAuthentication>
-          <UseCustomServer>False</UseCustomServer>
-          <CustomServerUrl>
-          </CustomServerUrl>
-          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+          <SaveServerSettingsInUserFile>True</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
     </VisualStudio>

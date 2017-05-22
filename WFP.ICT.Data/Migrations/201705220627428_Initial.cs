@@ -257,6 +257,8 @@ namespace WFP.ICT.Data.Migrations
                         PianoOrderId = c.Guid(),
                         PianoPODId = c.Guid(),
                         PianoConsignmentFormId = c.Guid(),
+                        PickupTicket = c.String(),
+                        PickupTicketGenerationTime = c.DateTime(),
                         EstimatedTime = c.Long(nullable: false),
                         isStarted = c.Boolean(nullable: false),
                         StartTime = c.DateTime(),

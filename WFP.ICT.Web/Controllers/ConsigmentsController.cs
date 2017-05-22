@@ -5,6 +5,7 @@ using System.Data.Entity;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Amazon.Runtime.Internal;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Newtonsoft.Json;
@@ -12,8 +13,10 @@ using WFP.ICT.Data.Entities;
 using WFP.ICT.Web.Helpers;
 using WFP.ICT.Web.Models;
 using PagedList;
+using TransfocusTabletApp.Helpers;
 using WFP.ICT.Enum;
 using WFP.ICT.Enums;
+using WFP.ICT.Web.Async;
 
 namespace WFP.ICT.Web.Controllers
 {
@@ -62,7 +65,7 @@ namespace WFP.ICT.Web.Controllers
             return View(consigmentVms);
         }
 
-        // GET: NewOrder
+        // GET: New
         public ActionResult New()
         {
             ConsigmentVm model = new ConsigmentVm()
@@ -123,7 +126,7 @@ namespace WFP.ICT.Web.Controllers
             }
         }
 
-        // POST: NewOrder
+        // POST: New
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult New(ConsigmentVm conVm)
@@ -182,6 +185,83 @@ namespace WFP.ICT.Web.Controllers
             ViewBag.Orders = new SelectList(OrdersList, "Value", "Text");
 
             return View(conVm);
+        }
+
+        public ActionResult PickTickets()
+        {
+            var consigmentVms = new List<ConsigmentVm>();
+            var consignments = db.PianoConsignments
+                .Include(x => x.Driver)
+                .Include(x => x.Vehicle)
+                .Include(x => x.WarehouseStart)
+                .ToList();//.Where(x => x.CreatedBy == LoggedInUser.Id)
+            foreach (var consignment in consignments)
+            {
+                var order = db.PianoOrders.FirstOrDefault(x => x.Id == consignment.PianoOrderId);
+
+                var consigmentVm = new ConsigmentVm()
+                {
+                    Id = consignment.Id,
+                    CreatedAt = consignment.CreatedAt.ToString(),
+                    OrderId = consignment.PianoOrderId?.ToString(),
+                    OrderNumber = order.OrderNumber,
+                    ConsignmentNumber = consignment.ConsignmentNumber,
+                    DriverName = consignment.Driver?.Name,
+                    VehicleName = consignment.Vehicle?.Name,
+                    StartWarehouseName = consignment.WarehouseStart?.Name
+                };
+                consigmentVms.Add(consigmentVm);
+            }
+            return View(consigmentVms);
+        }
+
+        public ActionResult Generate()
+        {
+            var consignments = db.PianoConsignments
+                .Include(x => x.Driver)
+                .Include(x => x.Vehicle)
+                .Include(x => x.WarehouseStart)
+                .ToList();//.Where(x => x.CreatedBy == LoggedInUser.Id)
+
+            List<OrderVm> orderVMs = new List<OrderVm>();
+            foreach (var consignment in consignments)
+            {
+                var order = db.PianoOrders
+                    .Include(x => x.PickupAddress)
+                    .Include(x => x.DeliveryAddress)
+                    .FirstOrDefault(x => x.Id == consignment.PianoOrderId);
+
+                string prefix = consignment.WarehouseStart.Code;
+                var barcode = GeneratorHelper.GenerateBarcode(prefix, int.Parse(order.OrderNumber));
+                consignment.PickupTicket = barcode;
+                consignment.PickupTicketGenerationTime = DateTime.Now;
+                db.SaveChanges();
+
+                var pickupAddress = new AddressVm(order.PickupAddress).AddressToString;
+                var deliveryAddress = new AddressVm(order.DeliveryAddress).AddressToString;
+
+                var orderVM = new OrderVm()
+                {
+                    Id = order.Id,
+                    OrderDate = order.CreatedAt.ToString(),
+                    OrderNumber = order.OrderNumber,
+                    IsStairs = order.IsStairs,
+                    PreferredPickupDateTime = order.PreferredPickupDateTime?.ToString(),
+                    Notes = order.Notes,
+                    PickupAddressString = pickupAddress,
+                    DeliveryAddressString = deliveryAddress,
+                    PickupDate = order.PickupDate?.ToString(),
+                    DeliveryDate = order.DeliveryDate?.ToString(),
+                    Customer = order.Customer != null ? order.Customer.AccountCode + " " + order.Customer.Name : "",
+                    PickupTicket = consignment.PickupTicket
+                };
+
+                orderVMs.Add(orderVM);
+            }
+            // Generate 
+            var filePath = QRCodeGenerator.Generate(ImagesPath, UploadPath, orderVMs);
+            return File(filePath, "application/octet-stream", "PickupTickets.pdf");
+            
         }
     }
 }

@@ -102,16 +102,21 @@
             }
         });
     };
-
+    //var waypts = [];
+    //waypts.push({
+    //    location: checkboxArray[i].value,
+    //    stopover: true
+    //});
     $('#gmap_routes_start').click(function (e) {
         debugger;
         $('#gmap_routes_instructions').empty();
         e.preventDefault();
-        App.scrollTo($(this), 400);
+        //App.scrollTo($(this), 400);
         map.travelRoute({
             origin: [latlng1.lat(), latlng1.lng()],
             destination: [latlng2.lat(), latlng2.lng()],
             travelMode: 'driving',
+            //waypoints:waypts,
             step: function (e) {
                 $('#gmap_routes_instructions').append('<li>' + e.instructions + '</li>');
                 $('#gmap_routes_instructions li:eq(' + e.step_number + ')').delay(800 * e.step_number).fadeIn(500, function () {

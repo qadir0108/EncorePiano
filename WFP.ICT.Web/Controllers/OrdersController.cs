@@ -41,6 +41,7 @@ namespace WFP.ICT.Web.Controllers
                 .Include(x => x.Items)
                 .Include(x => x.PickupAddress)
                 .Include(x => x.DeliveryAddress)
+                .Include(x => x.Services)
                 .ToList();//.Where(x => x.CreatedBy == LoggedInUser.Id)
             foreach (var order in orders)
             {
@@ -69,6 +70,15 @@ namespace WFP.ICT.Web.Controllers
                     DeliveryDate = order.DeliveryDate?.ToString(),
                     Customer = order.Customer != null ? order.Customer.AccountCode + " " + order.Customer.Name : ""
                 };
+                orderVM.Services = order.Services.OrderBy(x => x.ServiceCode).Select(
+                    x => new PianoServiceVm()
+                    {
+                        Id = x.Id.ToString(),
+                        ServiceCode = x.ServiceCode.ToString(),
+                        ServiceType = ((ServiceTypeEnum) x.ServiceType).ToString(),
+                        ServiceDetails = x.ServiceDetails,
+                        ServiceCharges = x.ServiceCharges.ToString()
+                    }).ToList();
                 orderVMs.Add(orderVM);
 
                 _forceRefreshOrders = true;
@@ -271,6 +281,25 @@ namespace WFP.ICT.Web.Controllers
                     db.PianoOrders.Add(order);
                     db.SaveChanges();
 
+                    List<int> ServiceCodes = Request.Params["ServiceCodes"].Split(",".ToArray()).Select(x => int.Parse(x)).ToList();
+                    foreach (var code in ServiceCodes)
+                    {
+                        var service = db.PianoServices.FirstOrDefault(x => !x.PianoOrderId.HasValue && x.ServiceCode == code);
+                        db.PianoServices.Add(new PianoService()
+                        {
+                            Id = Guid.NewGuid(),
+                            CreatedAt = DateTime.Now,
+                            CreatedBy = LoggedInUser?.UserName,
+                            PianoOrderId = orderId,
+                            ServiceCode = service.ServiceCode,
+                            ServiceType = service.ServiceType,
+                            ServiceDetails = service.ServiceDetails,
+                            ServiceCharges = service.ServiceCharges,
+                            //ServiceStatus = service.ServiceStatus
+                        });
+                        db.SaveChanges();
+                    }
+                    
                     //var threadParams = new EmailThreadParams() { idFirst = campaign.Id, user = LoggedInUser };
                     //BackgroundJob.Enqueue(() => CampaignProcessor.ProcessNewOrder(threadParams));
 
