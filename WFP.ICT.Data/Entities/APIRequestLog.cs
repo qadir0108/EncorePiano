@@ -6,7 +6,8 @@
     public partial class APIRequestLog : BaseEntity, iBaseEntity
     {
         public Guid Id { get; set; }
-        public string APIKey { get; set; }
-        
+        public int RequestType { get; set; } // RequestTypeEnum
+        public string Request { get; set; }
+
     }
 }

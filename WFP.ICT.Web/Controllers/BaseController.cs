@@ -15,6 +15,20 @@ namespace WFP.ICT.Web.Controllers
 {
     public class BaseController : BaseControllerLists 
     {
+        int pageSize = 15;
+        private ApplicationUserManager _userManager;
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            set
+            {
+                _userManager = value;
+            }
+        }
+
         public void SetupLoggedInUser(string UserName)
         {
             var user = db.Users.Include(u => u.Roles).FirstOrDefault(x => x.UserName == UserName);

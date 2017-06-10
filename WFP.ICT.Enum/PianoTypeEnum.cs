@@ -7,7 +7,15 @@ namespace WFP.ICT.Enums
 {
     public enum PianoTypeEnum
     {
-        Piano,
-        Container
+        Spinet,
+        Console,
+        Studio,
+        Upright,
+        Grand,
+        Specialized,
+        Electric,
+        Electronic,
+        Digital,
+        Hybrid,
     }
 }

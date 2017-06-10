@@ -1,9 +1,10 @@
 ﻿@using System.Configuration
 @using System.Linq;
 @using System.Security.Claims;
+@using WFP.ICT.Web.Helpers
 
 @{
-    bool isAdmin = false, isUser = false;
+    bool isAdmin = true, isUser = false;
 }
 @if (Session != null && Session["user"] != null)
 {
@@ -31,7 +32,7 @@
         <ul class="page-sidebar-menu" data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
             @if(isAdmin)
             {
-                <li class="nav-item start active">
+                <li class="nav-item start ">
                     <a href="javascript:;" class="nav-link nav-toggle">
                         <i class="icon-home"></i>
                         <span class="title">Dashboard</span>
@@ -48,21 +49,21 @@
                         </li>
                         <li class="nav-item start ">
                             <a href="/Home/Index3" class="nav-link ">
-                                <i class="icon-bulb"></i>
+                                <i class="fa fa-university"></i>
                                 <span class="title">Warehouse</span>
                                 @*<span class="badge badge-success">1</span>*@
                             </a>
                         </li>
                         <li class="nav-item start ">
                             <a href="/Home/Index2" class="nav-link ">
-                                <i class="icon-graph"></i>
+                                <i class="fa fa-truck"></i>
                                 <span class="title">Delivery</span>
                                 @*<span class="badge badge-danger">5</span>*@
                             </a>
                         </li>
                         <li class="nav-item start ">
                             <a href="/Home/Index3" class="nav-link ">
-                                <i class="icon-graph"></i>
+                                <i class="fa fa-dollar"></i>
                                 <span class="title">Accounts</span>
                                 @*<span class="badge badge-danger">5</span>*@
                             </a>
@@ -71,22 +72,38 @@
                 </li>
             }
           
-            <li class="nav-item start active">
+            <li class="nav-item start @Html.IsSelected(actions: "New,Index,Completed", controllers: "Orders,Quotes,OrdersStatus")">
                     <a href="javascript:;" class="nav-link nav-toggle">
                         <i class="icon-screen-desktop"></i>
                         <span class="title">Orders</span>
                         <span class="arrow"></span>
                     </a>
                 <ul class="sub-menu">
-                    <li class="nav-item start ">
+                    <li class="nav-item start @Html.IsSelected(actions: "New", controllers: "Orders")">
                         <a href="/Orders/New" class="nav-link ">
                             <i class="icon-screen-desktop"></i>
                             <span class="title">
-                                Place Order
+                                New Order
                             </span>
                         </a>
                     </li>
-                    <li class="nav-item start ">
+                    <li class="nav-item start @Html.IsSelected(actions: "New", controllers: "Orders")">
+                        <a href="/Orders/New" class="nav-link ">
+                            <i class="icon-screen-desktop"></i>
+                            <span class="title">
+                                New Container Order
+                            </span>
+                        </a>
+                    </li>
+                    <li class="nav-item start @Html.IsSelected(actions: "New", controllers: "Quotes")">
+                        <a href="/Quotes/New" class="nav-link ">
+                            <i class="icon-screen-desktop"></i>
+                            <span class="title">
+                                New Quote
+                            </span>
+                        </a>
+                    </li>
+                    <li class="nav-item start @Html.IsSelected(actions: "Index", controllers: "Orders") ">
                         <a href="/Orders/Index" class="nav-link ">
                             <i class="icon-screen-desktop"></i>
                             <span class="title">
@@ -94,16 +111,16 @@
                                 </span>
                         </a>
                     </li>
-                    <li class="nav-item  ">
-                        <a href="/Orders/Status" class="nav-link ">
+                    <li class="nav-item start @Html.IsSelected(actions: "Index", controllers: "OrdersStatus") ">
+                        <a href="/OrdersStatus/Index" class="nav-link ">
                             <i class="icon-screen-desktop"></i>
                             <span class="title">
                                     Order Status
                                 </span>
                         </a>
                     </li>
-                    <li class="nav-item  ">
-                        <a href="/Orders/Completed" class="nav-link ">
+                    <li class="nav-item start @Html.IsSelected(actions: "Completed", controllers: "OrdersStatus") ">
+                        <a href="/OrdersStatus/Completed" class="nav-link ">
                             <i class="icon-screen-desktop"></i>
                             <span class="title">
                                     Orders Completed
@@ -116,108 +133,190 @@
             @if (isAdmin)
             {
 
-                <li class="nav-item start active ">
+                <li class="nav-item start @Html.IsSelected(actions: "New,Index,PickTickets,POD", controllers: "Consignments") ">
                     <a href="javascript:;" class="nav-link nav-toggle">
-                        <i class="icon-diamond"></i>
+                        <i class="fa fa-truck"></i>
                         <span class="title">Delivery</span>
                         <span class="arrow"></span>
                     </a>
                     <ul class="sub-menu">
-                        <li class="nav-item start ">
+                        <li class="nav-item start @Html.IsSelected(actions: "New", controllers: "Consignments")">
                             <a href="/Consignments/New" class="nav-link ">
-                                <i class="icon-screen-desktop"></i>
+                                <i class="fa fa-truck"></i>
                                 <span class="title">
                                     New Consignment
                                 </span>
                             </a>
                         </li>
-                        <li class="nav-item start">
+                        <li class="nav-item start @Html.IsSelected(actions: "Index", controllers: "Consignments")">
                             <a href="/Consignments/Index" class="nav-link ">
-                                <i class="icon-bar-chart"></i>
+                                <i class="fa fa-truck"></i>
                                 <span class="title">Consignments</span>
                                 <span class="selected"></span>
                             </a>
                         </li>
-                        <li class="nav-item start">
+                        <li class="nav-item start @Html.IsSelected(actions: "PickTickets", controllers: "Consignments")">
                             <a href="/Consignments/PickTickets" class="nav-link ">
-                                <i class="icon-bar-chart"></i>
+                                <i class="fa fa-bars"></i>
                                 <span class="title">Pick Tickets</span>
                                 <span class="selected"></span>
                             </a>
                         </li>
-                        <li class="nav-item start ">
+                        <li class="nav-item start @Html.IsSelected(actions: "POD", controllers: "Consignments")">
                             <a href="/Consignments/POD" class="nav-link ">
-                                <i class="icon-bulb"></i>
+                                <i class="fa fa-truck"></i>
                                 <span class="title">Proof of Delivery</span>
-                                <span class="badge badge-success">1</span>
+                                @*<span class="badge badge-success">1</span>*@
                             </a>
                         </li>
                     </ul>
                 </li>
 
-                <li class="nav-item start active">
+                <li class="nav-item start ">
                     <a href="javascript:;" class="nav-link nav-toggle">
-                        <i class="icon-diamond"></i>
+                        <i class="icon-drawer"></i>
                         <span class="title">Inventory</span>
                         <span class="arrow"></span>
                     </a>
                     <ul class="sub-menu">
                         <li class="nav-item start">
                             <a href="index.html" class="nav-link ">
-                                <i class="icon-bar-chart"></i>
+                                <i class="fa fa-bars"></i>
                                 <span class="title">Inventory</span>
                                 <span class="selected"></span>
                             </a>
                         </li>
                         <li class="nav-item start ">
                             <a href="dashboard_2.html" class="nav-link ">
-                                <i class="icon-bulb"></i>
+                                <i class="fa fa-university"></i>
                                 <span class="title">Warehouse</span>
-                                <span class="badge badge-success">1</span>
+                                @*<span class="badge badge-success">1</span>*@
                             </a>
                         </li>
                     </ul>
                 </li>
 
-                <li class="nav-item start active ">
+                <li class="nav-item start ">
                     <a href="javascript:;" class="nav-link nav-toggle">
-                        <i class="icon-diamond"></i>
+                        <i class="fa fa-dollar"></i>
                         <span class="title">Accounting</span>
                         <span class="arrow"></span>
                     </a>
                     <ul class="sub-menu">
                         <li class="nav-item start ">
                             <a href="index.html" class="nav-link ">
-                                <i class="icon-bar-chart"></i>
+                                <i class="fa fa-dollar"></i>
                                 <span class="title">Accounts</span>
                                 <span class="selected"></span>
                             </a>
                         </li>
                         <li class="nav-item start ">
                             <a href="dashboard_2.html" class="nav-link ">
-                                <i class="icon-bulb"></i>
+                                <i class="fa fa-dollar"></i>
                                 <span class="title">Invoices</span>
-                                <span class="badge badge-success">1</span>
+                                @*<span class="badge badge-success">1</span>*@
                             </a>
                         </li>
                         <li class="nav-item start ">
                             <a href="dashboard_2.html" class="nav-link ">
-                                <i class="icon-bulb"></i>
+                                <i class="fa fa-dollar"></i>
                                 <span class="title">Payments</span>
-                                <span class="badge badge-success">1</span>
+                                @*<span class="badge badge-success">1</span>*@
                             </a>
                         </li>
                     </ul>
                 </li>
 
-                <li class="nav-item start active open ">
+                <li class="nav-item start ">
+                    <a href="javascript:;" class="nav-link nav-toggle">
+                        <i class="fa fa-university"></i>
+                        <span class="title">Company</span>
+                        <span class="arrow"></span>
+                    </a>
+                    <ul class="sub-menu">
+                        <li class="nav-item  ">
+                            <a href="/Addresses/Index" class="nav-link ">
+                                <i class="fa fa-globe"></i>
+                                <span class="title">
+                                    Addresses
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item  ">
+                            <a href="/AddressTypes/Index" class="nav-link ">
+                                <i class="fa fa-globe"></i>
+                                <span class="title">
+                                    Address Types
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item  ">
+                            <a href="/Customers/Index" class="nav-link ">
+                                <i class="fa fa-user-secret"></i>
+                                <span class="title">
+                                    Customers
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item  ">
+                            <a href="/PianoTypes/Index" class="nav-link ">
+                                <i class="fa fa-bars"></i>
+                                <span class="title">
+                                    Piano Types
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item  ">
+                            <a href="/PianoServices/Index" class="nav-link ">
+                                <i class="fa fa-bars"></i>
+                                <span class="title">
+                                    Piano Services
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item  ">
+                            <a href="/Warehouses/Index" class="nav-link ">
+                                <i class="fa fa-university"></i>
+                                <span class="title">
+                                    Warehouses
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item  ">
+                            <a href="/VehicleTypes/Index" class="nav-link ">
+                                <i class="fa fa-truck"></i>
+                                <span class="title">
+                                    Vehicle Types
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item  ">
+                            <a href="/Vehicles/Index" class="nav-link ">
+                                <i class="fa fa-truck"></i>
+                                <span class="title">
+                                    Vehicles
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item  ">
+                            <a href="/Drivers/Index" class="nav-link ">
+                                <i class="fa fa-user"></i>
+                                <span class="title">
+                                    Drivers
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="nav-item start @Html.IsSelected(actions: "Settings,Permissions,Roles,Users", controllers: "Company")">
                     <a href="javascript:;" class="nav-link nav-toggle">
                         <i class="icon-settings"></i>
                         <span class="title">Settings</span>
                         <span class="arrow"></span>
                     </a>
                     <ul class="sub-menu">
-                        <li class="nav-item  ">
+                        <li class="nav-item start @Html.IsSelected(actions: "Settings", controllers: "Company") ">
                             <a href="/Company/Settings" class="nav-link ">
                                 <i class="icon-wrench"></i>
                                 <span class="title">
@@ -225,25 +324,25 @@
                                 </span>
                             </a>
                         </li>
-                        <li class="nav-item  ">
+                        <li class="nav-item start @Html.IsSelected(actions: "Permissions", controllers: "Company") ">
                             <a href="/Company/Permissions" class="nav-link ">
-                                <i class="icon-wrench"></i>
+                                <i class="fa fa-list"></i>
                                 <span class="title">
                                     Permissions
                                 </span>
                             </a>
                         </li>
-                        <li class="nav-item  ">
+                        <li class="nav-item start @Html.IsSelected(actions: "Roles", controllers: "Company") ">
                             <a href="/Company/Roles" class="nav-link ">
-                                <i class="icon-wrench"></i>
+                                <i class="fa fa-th-list"></i>
                                 <span class="title">
                                     Roles
                                 </span>
                             </a>
                         </li>
-                        <li class="nav-item  ">
+                        <li class="nav-item start @Html.IsSelected(actions: "Users", controllers: "Company") ">
                             <a href="/Company/Users" class="nav-link ">
-                                <i class="icon-wrench"></i>
+                                <i class="fa fa-user"></i>
                                 <span class="title">
                                     Users
                                 </span>
@@ -252,6 +351,7 @@
 
                     </ul>
                 </li>
+
             }
        
         </ul>

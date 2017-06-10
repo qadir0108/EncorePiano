@@ -2,21 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Data.Entity;
-using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using Amazon.Runtime.Internal;
-using Microsoft.AspNet.Identity;
+using Hangfire;
 using Microsoft.AspNet.Identity.Owin;
+using Nelibur.ObjectMapper;
 using Newtonsoft.Json;
 using WFP.ICT.Data.Entities;
-using WFP.ICT.Web.Helpers;
 using WFP.ICT.Web.Models;
-using PagedList;
 using TransfocusTabletApp.Helpers;
-using WFP.ICT.Enum;
-using WFP.ICT.Enums;
 using WFP.ICT.Web.Async;
+using WFP.ICT.Web.FCM;
 
 namespace WFP.ICT.Web.Controllers
 {
@@ -39,6 +35,10 @@ namespace WFP.ICT.Web.Controllers
 
         public ActionResult Index()
         {
+
+            FCMUitlity.SendConsignment(db.Drivers.FirstOrDefault(x => x.Code == "D101").FCMToken,
+                "BE747D6D-8B7F-4D7D-AFEC-76D3B8900C87");
+
             var consigmentVms = new List<ConsigmentVm>();
             var consignments = db.PianoConsignments
                 .Include(x => x.Driver)
@@ -87,30 +87,22 @@ namespace WFP.ICT.Web.Controllers
             {
                 var order = db.PianoOrders
                     .Include(x => x.Customer)
-                    .Include(x => x.Items)
+                    .Include(x => x.Pianos)
                     .Include(x => x.PickupAddress)
                     .Include(x => x.DeliveryAddress)
                     .FirstOrDefault(x => x.Id == Id);
                 
                 var piano = db.Pianos.Include(x => x.PianoType).FirstOrDefault(x => x.OrderId == order.Id);
-                var pickupAddress = new AddressVm(order.PickupAddress).AddressToStringWithOutPhone;
-                var deliveryAddress = new AddressVm(order.DeliveryAddress).AddressToStringWithOutPhone;
+                var pickupAddress = TinyMapper.Map<AddressVm>(order.PickupAddress).AddressToStringWithOutPhone;
+                var deliveryAddress = TinyMapper.Map<AddressVm>(order.DeliveryAddress).AddressToStringWithOutPhone;
 
                 var orderVM = new OrderVm()
                 {
-                    Id = order.Id,
+                    Id = order.Id.ToString(),
                     OrderDate = order.CreatedAt.ToString(),
                     OrderNumber = order.OrderNumber,
-                    IsStairs = order.IsStairs,
                     PreferredPickupDateTime = order.PreferredPickupDateTime?.ToString(),
                     Notes = order.Notes,
-                    PianoType = piano.PianoType.Type,
-                    PianoName = piano.Name,
-                    PianoMake = piano.Make,
-                    PianoColor = piano.Color,
-                    PianoModel = piano.Model,
-                    IsBench = piano.IsBench,
-                    IsBoxed = piano.IsBoxed,
                     PickupAddressString = pickupAddress,
                     DeliveryAddressString = deliveryAddress,
                     PickupDate = order.PickupDate?.ToString(),
@@ -129,9 +121,9 @@ namespace WFP.ICT.Web.Controllers
         // POST: New
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult New(ConsigmentVm conVm)
+        public ActionResult Save(ConsigmentVm conVm)
         {
-            SetupLoggedInUser("test.user");
+            //SetupLoggedInUser("test.user");
             if (ModelState.IsValid)
             {
                 try
@@ -160,14 +152,18 @@ namespace WFP.ICT.Web.Controllers
                             Id = Guid.NewGuid(),
                             CreatedAt = DateTime.Now,
                             PianoConsignmentId = consignment.Id,
-                            Order = order.ToString(),
+                            Order = odr,
                             Lat = path.Lat,
                             Lng = path.Lng
                         });
                         odr++;
                     }
                     db.SaveChanges();
-                    //BackgroundJob.Enqueue(() => CampaignProcessor.ProcessNewOrder(threadParams));
+
+                    var driver = db.Drivers.FirstOrDefault(x => x.Id == consignment.DriverId);
+                    //GCMNotification.SendConsignment(driver?.FCMToken, consignment.Id.ToString());
+
+                    //BackgroundJob.Enqueue(() => GCMNotification.SendConsignment());
 
                     TempData["Success"] = "Conisgnment #: " + consignment.ConsignmentNumber +
                                           " has been saved sucessfully.";
@@ -237,15 +233,14 @@ namespace WFP.ICT.Web.Controllers
                 consignment.PickupTicketGenerationTime = DateTime.Now;
                 db.SaveChanges();
 
-                var pickupAddress = new AddressVm(order.PickupAddress).AddressToString;
-                var deliveryAddress = new AddressVm(order.DeliveryAddress).AddressToString;
+                var pickupAddress = TinyMapper.Map<AddressVm>(order.PickupAddress).AddressToString;
+                var deliveryAddress = TinyMapper.Map<AddressVm>(order.DeliveryAddress).AddressToString;
 
                 var orderVM = new OrderVm()
                 {
-                    Id = order.Id,
+                    Id = order.Id.ToString(),
                     OrderDate = order.CreatedAt.ToString(),
                     OrderNumber = order.OrderNumber,
-                    IsStairs = order.IsStairs,
                     PreferredPickupDateTime = order.PreferredPickupDateTime?.ToString(),
                     Notes = order.Notes,
                     PickupAddressString = pickupAddress,

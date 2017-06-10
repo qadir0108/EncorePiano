@@ -1,0 +1,15 @@
+﻿.form .form-body, .portlet-form .form-body {
+    padding: 0px !important;
+}
+.form .form-actions, .portlet-form .form-actions {
+    padding: 0px !important;
+    margin-bottom: 10px !important;
+}
+.page-header.navbar .menu-toggler.sidebar-toggler {
+    margin: 10px 0 0 !important
+}
+
+.page-header.navbar .page-logo {
+    margin-top: 20px !important;
+    color: white
+}

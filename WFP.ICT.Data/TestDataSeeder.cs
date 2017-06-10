@@ -179,20 +179,21 @@ namespace WFP.ICT.Data
             context.SaveChanges();
 
             // Warehouse
-            Guid warehouseId= Guid.NewGuid();
-            context.Warehouses.Add(new Warehouse()
-            {
-                Id = warehouseId,
-                CreatedAt = DateTime.Now,
-                Code = "W101",
-                Name = "Warehouse 101",
-            });
-
-            context.Addresses.Add(new Address()
+            var warehouse = new Warehouse()
             {
                 Id = Guid.NewGuid(),
                 CreatedAt = DateTime.Now,
-                WarehouseId = warehouseId,
+                Code = "W101",
+                Name = "Warehouse 101",
+            };
+            context.Warehouses.Add(warehouse);
+
+            var addressId = Guid.NewGuid();
+            context.Addresses.Add(new Address()
+            {
+                Id = addressId,
+                CreatedAt = DateTime.Now,
+                WarehouseId = warehouse.Id,
                 Name = "ENCORE PIANO MOVING Warehouse",
                 Address1 = "15915 CANARY AVE.",
                 PhoneNumber = "(714) 739-4717",
@@ -202,6 +203,7 @@ namespace WFP.ICT.Data
                 Lat = "33.892162",
                 Lng = "-118.024756"
             });
+            warehouse.AddressId = addressId;
             context.SaveChanges();
 
             #endregion

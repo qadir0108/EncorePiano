@@ -15,7 +15,6 @@ namespace WFP.ICT.Data.Migrations
                         Name = c.String(),
                         Address1 = c.String(),
                         Address2 = c.String(),
-                        Address3 = c.String(),
                         Suburb = c.String(),
                         State = c.String(),
                         PostCode = c.String(),
@@ -88,10 +87,14 @@ namespace WFP.ICT.Data.Migrations
                     {
                         Id = c.Guid(nullable: false),
                         OrderNumber = c.String(),
+                        OrderType = c.Int(nullable: false),
                         OrderMedium = c.Int(nullable: false),
+                        CallerFirstName = c.String(),
+                        CallerLastName = c.String(),
+                        CallerPhoneNumber = c.String(),
+                        CallerEmail = c.String(),
                         PaymentOption = c.Int(nullable: false),
                         SalesOrderNumber = c.String(),
-                        IsStairs = c.Boolean(nullable: false),
                         Notes = c.String(),
                         PreferredPickupDateTime = c.DateTime(),
                         PickupDate = c.DateTime(),
@@ -134,6 +137,86 @@ namespace WFP.ICT.Data.Migrations
                 .PrimaryKey(t => t.Id);
             
             CreateTable(
+                "dbo.PianoConsignment",
+                c => new
+                    {
+                        Id = c.Guid(nullable: false),
+                        ConsignmentNumber = c.String(),
+                        WarehouseStartId = c.Guid(),
+                        VehicleId = c.Guid(),
+                        DriverId = c.Guid(),
+                        PianoOrderId = c.Guid(),
+                        PianoConsignmentFormId = c.Guid(),
+                        PickupTicket = c.String(),
+                        PickupTicketGenerationTime = c.DateTime(),
+                        EstimatedTime = c.Long(nullable: false),
+                        isStarted = c.Boolean(nullable: false),
+                        StartTime = c.DateTime(),
+                        MinutesAway = c.Int(nullable: false),
+                        CreatedAt = c.DateTime(nullable: false),
+                        CreatedBy = c.String(),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Driver", t => t.DriverId)
+                .ForeignKey("dbo.PianoConsignmentForm", t => t.PianoConsignmentFormId)
+                .ForeignKey("dbo.Vehicle", t => t.VehicleId)
+                .ForeignKey("dbo.Warehouse", t => t.WarehouseStartId)
+                .Index(t => t.WarehouseStartId)
+                .Index(t => t.VehicleId)
+                .Index(t => t.DriverId)
+                .Index(t => t.PianoConsignmentFormId);
+            
+            CreateTable(
+                "dbo.Driver",
+                c => new
+                    {
+                        Id = c.Guid(nullable: false),
+                        Code = c.String(),
+                        Name = c.String(),
+                        Description = c.String(),
+                        Password = c.String(),
+                        DefaultVehicleID = c.Guid(),
+                        CreatedAt = c.DateTime(nullable: false),
+                        CreatedBy = c.String(),
+                    })
+                .PrimaryKey(t => t.Id);
+            
+            CreateTable(
+                "dbo.PianoConsignmentForm",
+                c => new
+                    {
+                        Id = c.Guid(nullable: false),
+                        ConsignmentForm = c.String(),
+                        SignedOn = c.DateTime(),
+                        AcknowledgeTo = c.String(),
+                        PianoConsignmentId = c.Guid(),
+                        CreatedAt = c.DateTime(nullable: false),
+                        CreatedBy = c.String(),
+                    })
+                .PrimaryKey(t => t.Id);
+            
+            CreateTable(
+                "dbo.PianoPOD",
+                c => new
+                    {
+                        Id = c.Guid(nullable: false),
+                        ReceivedBy = c.String(),
+                        Signature = c.String(),
+                        ReceivingTime = c.DateTime(),
+                        ReceivingStatus = c.Int(nullable: false),
+                        Notes = c.String(),
+                        PianoConsignmentId = c.Guid(),
+                        PianoId = c.Guid(),
+                        CreatedAt = c.DateTime(nullable: false),
+                        CreatedBy = c.String(),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Piano", t => t.PianoId)
+                .ForeignKey("dbo.PianoConsignment", t => t.PianoConsignmentId)
+                .Index(t => t.PianoConsignmentId)
+                .Index(t => t.PianoId);
+            
+            CreateTable(
                 "dbo.Piano",
                 c => new
                     {
@@ -145,6 +228,7 @@ namespace WFP.ICT.Data.Migrations
                         Color = c.String(),
                         IsBench = c.Boolean(nullable: false),
                         IsBoxed = c.Boolean(nullable: false),
+                        IsStairs = c.Boolean(nullable: false),
                         Notes = c.String(),
                         ReceivedDate = c.DateTime(),
                         ShippedDate = c.DateTime(),
@@ -216,21 +300,6 @@ namespace WFP.ICT.Data.Migrations
                 .Index(t => t.PianoPodId);
             
             CreateTable(
-                "dbo.PianoPOD",
-                c => new
-                    {
-                        Id = c.Guid(nullable: false),
-                        ReceivedBy = c.String(),
-                        Signature = c.String(),
-                        ReceivingTime = c.DateTime(),
-                        ReceivingStatus = c.Int(nullable: false),
-                        Notes = c.String(),
-                        CreatedAt = c.DateTime(nullable: false),
-                        CreatedBy = c.String(),
-                    })
-                .PrimaryKey(t => t.Id);
-            
-            CreateTable(
                 "dbo.Warehouse",
                 c => new
                     {
@@ -246,75 +315,13 @@ namespace WFP.ICT.Data.Migrations
                 .Index(t => t.AddressId);
             
             CreateTable(
-                "dbo.PianoConsignment",
-                c => new
-                    {
-                        Id = c.Guid(nullable: false),
-                        ConsignmentNumber = c.String(),
-                        WarehouseStartId = c.Guid(),
-                        VehicleId = c.Guid(),
-                        DriverId = c.Guid(),
-                        PianoOrderId = c.Guid(),
-                        PianoPODId = c.Guid(),
-                        PianoConsignmentFormId = c.Guid(),
-                        PickupTicket = c.String(),
-                        PickupTicketGenerationTime = c.DateTime(),
-                        EstimatedTime = c.Long(nullable: false),
-                        isStarted = c.Boolean(nullable: false),
-                        StartTime = c.DateTime(),
-                        MinutesAway = c.Int(nullable: false),
-                        CreatedAt = c.DateTime(nullable: false),
-                        CreatedBy = c.String(),
-                    })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Driver", t => t.DriverId)
-                .ForeignKey("dbo.PianoConsignmentForm", t => t.PianoConsignmentFormId)
-                .ForeignKey("dbo.PianoPOD", t => t.PianoPODId)
-                .ForeignKey("dbo.Vehicle", t => t.VehicleId)
-                .ForeignKey("dbo.Warehouse", t => t.WarehouseStartId)
-                .Index(t => t.WarehouseStartId)
-                .Index(t => t.VehicleId)
-                .Index(t => t.DriverId)
-                .Index(t => t.PianoPODId)
-                .Index(t => t.PianoConsignmentFormId);
-            
-            CreateTable(
-                "dbo.Driver",
-                c => new
-                    {
-                        Id = c.Guid(nullable: false),
-                        Code = c.String(),
-                        Name = c.String(),
-                        Description = c.String(),
-                        Password = c.String(),
-                        DefaultVehicleID = c.Guid(),
-                        CreatedAt = c.DateTime(nullable: false),
-                        CreatedBy = c.String(),
-                    })
-                .PrimaryKey(t => t.Id);
-            
-            CreateTable(
-                "dbo.PianoConsignmentForm",
-                c => new
-                    {
-                        Id = c.Guid(nullable: false),
-                        ConsignmentForm = c.String(),
-                        SignedOn = c.DateTime(),
-                        AcknowledgeTo = c.String(),
-                        PianoConsignmentId = c.Guid(),
-                        CreatedAt = c.DateTime(nullable: false),
-                        CreatedBy = c.String(),
-                    })
-                .PrimaryKey(t => t.Id);
-            
-            CreateTable(
                 "dbo.PianoConsignmentRoute",
                 c => new
                     {
                         Id = c.Guid(nullable: false),
                         Lat = c.String(),
                         Lng = c.String(),
-                        Order = c.String(),
+                        Order = c.Int(nullable: false),
                         PianoConsignmentId = c.Guid(),
                         CreatedAt = c.DateTime(nullable: false),
                         CreatedBy = c.String(),
@@ -404,7 +411,8 @@ namespace WFP.ICT.Data.Migrations
                 c => new
                     {
                         Id = c.Guid(nullable: false),
-                        APIKey = c.String(),
+                        RequestType = c.Int(nullable: false),
+                        Request = c.String(),
                         CreatedAt = c.DateTime(nullable: false),
                         CreatedBy = c.String(),
                     })
@@ -615,9 +623,8 @@ namespace WFP.ICT.Data.Migrations
             DropForeignKey("dbo.PianoConsignment", "VehicleId", "dbo.Vehicle");
             DropForeignKey("dbo.Vehicle", "VehicleTypeId", "dbo.VehicleType");
             DropForeignKey("dbo.PianoConsignmentRoute", "PianoConsignmentId", "dbo.PianoConsignment");
-            DropForeignKey("dbo.PianoConsignment", "PianoPODId", "dbo.PianoPOD");
-            DropForeignKey("dbo.PianoConsignment", "PianoConsignmentFormId", "dbo.PianoConsignmentForm");
-            DropForeignKey("dbo.PianoConsignment", "DriverId", "dbo.Driver");
+            DropForeignKey("dbo.PianoPOD", "PianoConsignmentId", "dbo.PianoConsignment");
+            DropForeignKey("dbo.PianoPOD", "PianoId", "dbo.Piano");
             DropForeignKey("dbo.Piano", "WarehouseId", "dbo.Warehouse");
             DropForeignKey("dbo.Warehouse", "AddressId", "dbo.Address");
             DropForeignKey("dbo.PianoPicture", "PianoPodId", "dbo.PianoPOD");
@@ -625,6 +632,8 @@ namespace WFP.ICT.Data.Migrations
             DropForeignKey("dbo.Piano", "PianoTypeId", "dbo.PianoType");
             DropForeignKey("dbo.Piano", "PianoStatusId", "dbo.PianoStatus");
             DropForeignKey("dbo.Piano", "OrderId", "dbo.PianoOrder");
+            DropForeignKey("dbo.PianoConsignment", "PianoConsignmentFormId", "dbo.PianoConsignmentForm");
+            DropForeignKey("dbo.PianoConsignment", "DriverId", "dbo.Driver");
             DropForeignKey("dbo.PianoOrder", "DeliveryAddressId", "dbo.Address");
             DropForeignKey("dbo.PianoOrder", "CustomerId", "dbo.Customer");
             DropForeignKey("dbo.PianoOrder", "PianoOrderBillingId", "dbo.PianoOrderBilling");
@@ -648,11 +657,6 @@ namespace WFP.ICT.Data.Migrations
             DropIndex("dbo.PianoService", new[] { "PianoOrderId" });
             DropIndex("dbo.Vehicle", new[] { "VehicleTypeId" });
             DropIndex("dbo.PianoConsignmentRoute", new[] { "PianoConsignmentId" });
-            DropIndex("dbo.PianoConsignment", new[] { "PianoConsignmentFormId" });
-            DropIndex("dbo.PianoConsignment", new[] { "PianoPODId" });
-            DropIndex("dbo.PianoConsignment", new[] { "DriverId" });
-            DropIndex("dbo.PianoConsignment", new[] { "VehicleId" });
-            DropIndex("dbo.PianoConsignment", new[] { "WarehouseStartId" });
             DropIndex("dbo.Warehouse", new[] { "AddressId" });
             DropIndex("dbo.PianoPicture", new[] { "PianoPodId" });
             DropIndex("dbo.PianoPicture", new[] { "PianoId" });
@@ -661,6 +665,12 @@ namespace WFP.ICT.Data.Migrations
             DropIndex("dbo.Piano", new[] { "WarehouseId" });
             DropIndex("dbo.Piano", new[] { "PianoStatusId" });
             DropIndex("dbo.Piano", new[] { "PianoTypeId" });
+            DropIndex("dbo.PianoPOD", new[] { "PianoId" });
+            DropIndex("dbo.PianoPOD", new[] { "PianoConsignmentId" });
+            DropIndex("dbo.PianoConsignment", new[] { "PianoConsignmentFormId" });
+            DropIndex("dbo.PianoConsignment", new[] { "DriverId" });
+            DropIndex("dbo.PianoConsignment", new[] { "VehicleId" });
+            DropIndex("dbo.PianoConsignment", new[] { "WarehouseStartId" });
             DropIndex("dbo.PianoOrder", new[] { "CustomerInvoice_Id" });
             DropIndex("dbo.PianoOrder", new[] { "PianoConsignmentId" });
             DropIndex("dbo.PianoOrder", new[] { "PianoOrderBillingId" });
@@ -688,15 +698,15 @@ namespace WFP.ICT.Data.Migrations
             DropTable("dbo.VehicleType");
             DropTable("dbo.Vehicle");
             DropTable("dbo.PianoConsignmentRoute");
-            DropTable("dbo.PianoConsignmentForm");
-            DropTable("dbo.Driver");
-            DropTable("dbo.PianoConsignment");
             DropTable("dbo.Warehouse");
-            DropTable("dbo.PianoPOD");
             DropTable("dbo.PianoPicture");
             DropTable("dbo.PianoType");
             DropTable("dbo.PianoStatus");
             DropTable("dbo.Piano");
+            DropTable("dbo.PianoPOD");
+            DropTable("dbo.PianoConsignmentForm");
+            DropTable("dbo.Driver");
+            DropTable("dbo.PianoConsignment");
             DropTable("dbo.PianoOrderBilling");
             DropTable("dbo.PianoOrder");
             DropTable("dbo.CustomerInvoice");

@@ -19,14 +19,9 @@ namespace WFP.ICT.Data.Entities
 
         public Guid? PianoOrderId { get; set; }
         //public virtual PianoOrder PianoOrder { get; set; }
-
-        public Guid? PianoPODId { get; set; }
-        public virtual PianoPOD PianoPOD { get; set; }
-
+        
         public Guid? PianoConsignmentFormId { get; set; }
         public PianoConsignmentForm PianoConsignmentForm { get; set; }
-
-        public virtual ICollection<PianoConsignmentRoute> Route { get; set; }
 
         public string PickupTicket { get; set; }
         public DateTime? PickupTicketGenerationTime { get; set; }
@@ -36,9 +31,13 @@ namespace WFP.ICT.Data.Entities
         public DateTime? StartTime { get; set; }
         public int MinutesAway { get; set; } //  truck is on its way 15/30/45/60 minutes away
 
+        public virtual ICollection<PianoConsignmentRoute> Route { get; set; }
+        public virtual ICollection<PianoPOD> PianoPOD { get; set; }
+
         public PianoConsignment()
         {
             Route = new HashSet<PianoConsignmentRoute>();
+            PianoPOD = new HashSet<PianoPOD>();
         }
     }
 }

@@ -42,7 +42,9 @@
   <ItemGroup>
     <Compile Include="JobStatusEnum.cs" />
     <Compile Include="BillingTypeEnum.cs" />
+    <Compile Include="OrderTypeEnum.cs" />
     <Compile Include="PianoTypeEnum.cs" />
+    <Compile Include="RequestTypeEnum.cs" />
     <Compile Include="ServiceStatusEnum.cs" />
     <Compile Include="AddressTypeEnum.cs" />
     <Compile Include="ServiceTypeEnum.cs" />

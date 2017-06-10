@@ -10,12 +10,17 @@ namespace WFP.ICT.Data.Entities
         public Guid Id { get; set; }
         public string OrderNumber { get; set; }
 
+        public int OrderType { get; set; } // OrderTypeEnum
         public int OrderMedium { get; set; } // OrderMediumEnum
+        public string CallerFirstName { get; set; }
+        public string CallerLastName { get; set; }
+        public string CallerPhoneNumber { get; set; }
+        public string CallerEmail { get; set; }
+        
         public int PaymentOption { get; set; } // PaymentOptionEnum
 
         public string SalesOrderNumber { get; set; } // For Corporate client
-
-        public bool IsStairs { get; set; }
+        
         public string Notes { get; set; }
 
         //public DateTime? OrderDate { get; set; } // CreatedAt
@@ -40,13 +45,14 @@ namespace WFP.ICT.Data.Entities
         public Guid? PianoConsignmentId { get; set; } // When it is send to driver's vehicle
         public virtual PianoConsignment PianoConsignment { get; set; }
 
-        public virtual ICollection<Piano> Items { get; set; }
-        public virtual ICollection<PianoOrderStatus> Statuses { get; set; }
+        public virtual ICollection<Piano> Pianos { get; set; }
         public virtual ICollection<PianoService> Services { get; set; }
+        public virtual ICollection<PianoOrderStatus> Statuses { get; set; }
 
         public PianoOrder()
         {
-            Items = new HashSet<Piano>();
+            Pianos = new HashSet<Piano>();
+            Services = new HashSet<PianoService>();
             Statuses = new HashSet<PianoOrderStatus>();
         }
     }

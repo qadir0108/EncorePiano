@@ -4,6 +4,7 @@ using Owin;
 using System;
 using System.Globalization;
 using System.Linq;
+using Hangfire;
 using Microsoft.AspNet.Identity.EntityFramework;
 using WFP.ICT.Common;
 using WFP.ICT.Data.Entities;
@@ -20,6 +21,19 @@ namespace WFP.ICT.Web
             CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.GetCultureInfo("en-US");
 
             ConfigureAuth(app);
+
+            using (var db = new WFPICTContext())
+            {
+                var ad = db.Addresses.FirstOrDefault();
+            }
+
+            GlobalConfiguration.Configuration.UseSqlServerStorage("WFPICTContext");
+            //app.UseHangfireDashboard();
+            app.UseHangfireDashboard("/hangfire", new DashboardOptions
+            {
+                Authorization = new[] { new HangfireAuthorizationFilter() }
+            });
+            app.UseHangfireServer();
         }
     }
 }

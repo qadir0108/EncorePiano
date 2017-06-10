@@ -1,4 +1,5 @@
-﻿@model List<WFP.ICT.Web.Models.OrderVm>
+﻿@using WFP.ICT.Web.Models
+@model List<WFP.ICT.Web.Models.OrderVm>
 @{
     ViewBag.Title = "Orders";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -8,7 +9,7 @@
         <!-- BEGIN CONTENT BODY -->
         <div class="page-content">
             <!-- BEGIN PAGE HEAD-->
-            <div class="page-head">
+            @*<div class="page-head">
                 <!-- BEGIN PAGE TITLE -->
                 <div class="page-title">
                     <h1>
@@ -17,10 +18,10 @@
                     </h1>
                 </div>
                 <!-- END PAGE TITLE -->
-            </div>
+            </div>*@
             <!-- END PAGE HEAD-->
             <!-- BEGIN PAGE BREADCRUMB -->
-            <ul class="page-breadcrumb breadcrumb">
+            @*<ul class="page-breadcrumb breadcrumb">
                 <li>
                     <a href="/">Home</a>
                     <i class="fa fa-circle"></i>
@@ -32,7 +33,7 @@
                 <li>
                     <span class="active">Your Orders</span>
                 </li>
-            </ul>
+            </ul>*@
             <!-- END PAGE BREADCRUMB -->
             @if (TempData["Success"] != null)
             {
@@ -60,10 +61,10 @@
             <div class="row">
                 <div class="col-md-12">
                     <!-- BEGIN EXAMPLE TABLE PORTLET-->
-                    <div class="portlet box red">
+                    <div class="portlet box blue-hoki">
                         <div class="portlet-title">
                             <div class="caption">
-                                <i class="fa fa-globe"></i> My Move Orders
+                                <i class="fa fa-globe"></i>Move Orders
                             </div>
                             <div class="tools"> </div>
                         </div>
@@ -71,17 +72,12 @@
                             <table class="table table-striped table-bordered table-hover dt-responsive" width="100%" id="sample_4">
                                 <thead>
                                     <tr>
-                                        <th class="all">Order Number</th>
+                                        <th class="all">Order #</th>
+                                        <th class="all">Type</th>
                                         <th class="all">Order Date</th>
                                         <th class="all">Preferred Time</th>
-                                        <th class="all">Piano Type</th>
-                                        <th class="all">Piano Name</th>
-                                        <th class="all">Make</th>
-                                        <th class="all">Bench</th>
-                                        <th class="all">Box</th>
-                                        <th class="all">Stairs</th>
-                                        <th class="none">Color</th>
-                                        <th class="none">Model</th>
+                                        <th class="all">Pianos</th>
+                                        <th class="all">Actions</th>
                                         <th class="none">Pickup Address</th>
                                         <th class="none">Delivery Address</th>
                                         <th class="none">Pickup Date</th>
@@ -97,18 +93,52 @@
                                 <tbody>
                                     @foreach (var order in Model)
                                     {
-                                        <tr>
+                                        var btnDelete = "btnDelete" + order.Id;
+                                        <tr id="@order.Id">
                                             <td>@order.OrderNumber</td>
+                                            <td>@order.OrderType</td>
                                             <td>@order.OrderDate</td>
                                             <td>@order.PreferredPickupDateTime</td>
-                                            <td>@order.PianoType</td>
-                                            <td>@order.PianoName</td>
-                                            <td>@order.PianoMake</td>
-                                            <td>@(order.IsBench ? "W/B" : "N/B")</td>
-                                            <td>@(order.IsBoxed ? "Yes" : "No")</td>
-                                            <td>@(order.IsStairs ? "Yes" : "No")</td>
-                                            <td>@order.PianoColor</td>
-                                            <td>@order.PianoModel</td>
+                                            <td>
+                                                <table class="m-grid">
+                                                    <thead>
+                                                    <tr>
+                                                        <th class="all m-grid-col-md-2">Type</th>
+                                                        <th class="all m-grid-col-md-3">Name</th>
+                                                        <th class="all m-grid-col-md-1">Stairs</th>
+                                                        <th class="all m-grid-col-md-1">Bench</th>
+                                                        <th class="all m-grid-col-md-1">Box</th>
+                                                        <th class="all m-grid-col-md-1">Make</th>
+                                                        <th class="all m-grid-col-md-1"></th>
+
+                                                        @*<th class="none m-grid-col-md-1">Model</th>
+                                                        <th class="none m-grid-col-md-1">Color</th>*@
+                                                    </tr>
+                                                    </thead>
+                                                    @foreach (var pianoVm in @order.Pianos)
+                                                    {
+                                                        <tr>
+                                                            <td class="m-grid-col-md-2">@pianoVm.PianoType</td>
+                                                            <td class="m-grid-col-md-3">@pianoVm.PianoName</td>
+                                                            <td class="m-grid-col-md-1">@(pianoVm.IsStairs ? "Yes" : "No")</td>
+                                                            <td class="m-grid-col-md-1">@(pianoVm.IsBench ? "W/B" : "N/B")</td>
+                                                            <td class="m-grid-col-md-1">@(pianoVm.IsBoxed ? "Yes" : "No")</td>
+                                                            <td class="m-grid-col-md-1">@pianoVm.PianoMake</td>
+                                                            <td class="all m-grid-col-md-1"></td>
+                                                            @*<td class="m-grid-col-md-1">@pianoVm.PianoModel</td>
+                                                            <td class="m-grid-col-md-1">@pianoVm.PianoColor</td>*@
+                                                        </tr>
+                                                    }
+                                                </table>
+                                            </td>
+                                            <td>
+                                                <a href="/Orders/Edit/@order.Id" data-tooltip="tooltip" title="Edit Order">
+                                                    <span class="glyphicon glyphicon-pencil"></span>
+                                                </a>
+                                                <a class="btnDelete" id="@btnDelete" href="#" data-number="@order.OrderNumber" data-tooltip="tooltip" title="Delete Order">
+                                                    <span class="glyphicon glyphicon-trash"></span>
+                                                </a>
+                                            </td>
                                             <td>@Html.Raw(order.PickupAddressString)</td>
                                             <td>@Html.Raw(order.DeliveryAddressString)</td>
                                             <td>@order.PickupDate</td>
@@ -142,3 +172,48 @@
         <!-- END CONTENT BODY -->
     </div>
     <!-- END CONTENT -->
+
+<script type="text/javascript">
+
+    var wfp = wfp || {};
+
+   $('.btnDelete').click(function () {
+
+       var btnDelete = $(this);
+       var id = btnDelete.attr('id').replace('btnDelete', '');
+       var divRow = $('#' + id);
+       var dataToPost = "{id : '" + id + "'}";
+       var number = btnDelete.data('number');
+
+       wfp.showSwal("Are you sure to delete Order #: " + number + "?",
+           function() {
+
+               debugger;
+               $.ajax({
+                   type: "POST",
+                   url: '/Orders/Delete',
+                   data: dataToPost,
+                   contentType: "application/json; charset=utf-8",
+                   success: function(response) {
+                       debugger;
+                       if (response === "") wfp.reload();
+                       if (response.IsSucess) {
+                           wfp.showSuccess('Order #: '+ number +' has been deleted successfully.');
+                           divRow.fadeOut(1000).animate({ "opacity": "0" }, function() { divRow.remove(); });
+
+                       } else {
+                           wfp.showError(response.ErrorMessage);
+                       }
+                   },
+                   failure: function(response) {
+                       wfp.showError('There is erorr in service call.');
+                   },
+                   complete: function() {
+                   }
+               });
+           });
+   });
+
+
+</script>
+

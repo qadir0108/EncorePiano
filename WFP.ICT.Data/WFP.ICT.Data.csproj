@@ -71,12 +71,12 @@
     <Compile Include="Entities\PianoConsignment.cs" />
     <Compile Include="Entities\PianoConsignmentRoute.cs" />
     <Compile Include="Entities\PianoOrderBilling.cs" />
+    <Compile Include="Entities\PianoQuote.cs" />
     <Compile Include="Entities\PianoService.cs" />
     <Compile Include="Entities\PianoStatus.cs" />
     <Compile Include="Entities\PianoOrderStatus.cs" />
     <Compile Include="Entities\PianoConsignmentForm.cs" />
     <Compile Include="Entities\PianoPOD.cs" />
-    <Compile Include="Entities\PianoQuote.cs" />
     <Compile Include="Entities\Warehouse.cs" />
     <Compile Include="Entities\PianoType.cs" />
     <Compile Include="Entities\PianoPicture.cs" />
@@ -90,9 +90,13 @@
     <Compile Include="Entities\BaseEntity.cs" />
     <Compile Include="Entities\iBaseEntity.cs" />
     <Compile Include="EntityManager\CompanyManager.cs" />
-    <Compile Include="Migrations\201705220627428_Initial.cs" />
-    <Compile Include="Migrations\201705220627428_Initial.Designer.cs">
-      <DependentUpon>201705220627428_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\201706060505280_Initial.cs" />
+    <Compile Include="Migrations\201706060505280_Initial.Designer.cs">
+      <DependentUpon>201706060505280_Initial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706091056346_Driver.cs" />
+    <Compile Include="Migrations\201706091056346_Driver.Designer.cs">
+      <DependentUpon>201706091056346_Driver.cs</DependentUpon>
     </Compile>
     <Compile Include="Repository\GenericRepository.cs" />
     <Compile Include="Repository\UnitOfWork.cs" />
@@ -128,8 +132,11 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201705220627428_Initial.resx">
-      <DependentUpon>201705220627428_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201706060505280_Initial.resx">
+      <DependentUpon>201706060505280_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706091056346_Driver.resx">
+      <DependentUpon>201706091056346_Driver.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -16,6 +16,8 @@ namespace WFP.ICT.Data.Entities
         public string Password { get; set; }
         public Guid? DefaultVehicleID { get; set; }
 
+        public string FCMToken { get; set; }
+
         public virtual ICollection<PianoConsignment> Consignments { get; set; }
 
         public Driver()

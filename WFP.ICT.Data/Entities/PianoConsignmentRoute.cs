@@ -11,7 +11,7 @@ namespace WFP.ICT.Data.Entities
 
         public string Lat { get; set; }
         public string Lng { get; set; }
-        public string Order { get; set; }
+        public int Order { get; set; }
 
         public Guid? PianoConsignmentId { get; set; }
         public virtual PianoConsignment PianoConsignment { get; set; }

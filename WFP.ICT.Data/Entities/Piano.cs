@@ -16,6 +16,7 @@ namespace WFP.ICT.Data.Entities
         public string Color { get; set; }
         public bool IsBench { get; set; } // W/B OR N/B
         public bool IsBoxed { get; set; }
+        public bool IsStairs { get; set; }
 
         public string Notes { get; set; }
         public DateTime? ReceivedDate { get; set; }
