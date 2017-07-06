@@ -1,0 +1,200 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MyToolkit.AspNetMvc</name>
+    </assembly>
+    <members>
+        <member name="T:MyToolkit.Composition.AspNetMvcControllerFactory">
+            <summary>A controller factory using the <see cref="T:MyToolkit.Composition.CompositionContext"/>.</summary>
+        </member>
+        <member name="M:MyToolkit.Composition.AspNetMvcControllerFactory.#ctor(MyToolkit.Composition.CompositionContext)">
+            <summary>Initializes a new instance of the <see cref="T:MyToolkit.Composition.AspNetMvcControllerFactory"/> class.</summary>
+            <param name="compositionContext">The composition context.</param>
+        </member>
+        <member name="M:MyToolkit.Composition.AspNetMvcControllerFactory.GetControllerInstance(System.Web.Routing.RequestContext,System.Type)">
+            <summary>Retrieves the controller instance for the specified request context and controller type.</summary>
+            <param name="requestContext">The context of the HTTP request, which includes the HTTP context and route data.</param>
+            <param name="controllerType">The type of the controller.</param>
+            <returns>The controller instance.</returns>
+        </member>
+        <member name="T:MyToolkit.Composition.AspNetMvcDependencyResolver">
+            <summary>A dependency resolver using the <see cref="T:MyToolkit.Composition.CompositionContext"/>.</summary>
+        </member>
+        <member name="M:MyToolkit.Composition.AspNetMvcDependencyResolver.#ctor(MyToolkit.Composition.CompositionContext)">
+            <summary>Initializes a new instance of the <see cref="T:MyToolkit.Composition.AspNetMvcDependencyResolver"/> class.</summary>
+            <param name="compositionContext">The composition context.</param>
+        </member>
+        <member name="M:MyToolkit.Composition.AspNetMvcDependencyResolver.GetService(System.Type)">
+            <summary>Resolves singly registered services that support arbitrary object creation.</summary>
+            <param name="serviceType">The type of the requested service or object.</param>
+            <returns>The requested service or object.</returns>
+        </member>
+        <member name="M:MyToolkit.Composition.AspNetMvcDependencyResolver.GetServices(System.Type)">
+            <summary>Resolves multiply registered services.</summary>
+            <param name="serviceType">The type of the requested services.</param>
+            <returns>The requested services.</returns>
+        </member>
+        <member name="T:MyToolkit.Filters.OutputProcessorActionFilterAttribute">
+            <summary>Processes the output of an action before it is transmitted to the client.</summary>
+        </member>
+        <member name="M:MyToolkit.Filters.OutputProcessorActionFilterAttribute.Process(System.String)">
+            <summary>Processes the output data.</summary>
+            <param name="data">The data.</param>
+            <returns>The processed data.</returns>
+        </member>
+        <member name="M:MyToolkit.Filters.OutputProcessorActionFilterAttribute.OnResultExecuted(System.Web.Mvc.ResultExecutedContext)">
+            <summary>Called by the ASP.NET MVC framework after the action result executes.</summary>
+            <param name="filterContext">The filter context.</param>
+        </member>
+        <member name="T:MyToolkit.Filters.OutputProcessorStream">
+            <summary>Aggreges the wrapped stream's data and post-processes when all data has been written.</summary>
+        </member>
+        <member name="M:MyToolkit.Filters.OutputProcessorStream.#ctor(System.Web.HttpResponseBase,System.Func{System.String,System.String})">
+            <summary>Initializes a new instance of the <see cref="T:MyToolkit.Filters.OutputProcessorStream"/> class.</summary>
+            <param name="response">The response.</param>
+            <param name="processor">The processor.</param>
+        </member>
+        <member name="M:MyToolkit.Filters.OutputProcessorStream.Write(System.Byte[],System.Int32,System.Int32)">
+            <summary>When overridden in a derived class, writes a sequence of bytes to the current stream and advances the current position within this stream by the number of bytes written.</summary>
+            <param name="buffer">An array of bytes. This method copies <paramref name="count" /> bytes from <paramref name="buffer" /> to the current stream.</param>
+            <param name="offset">The zero-based byte offset in <paramref name="buffer" /> at which to begin copying bytes to the current stream.</param>
+            <param name="count">The number of bytes to be written to the current stream.</param>
+        </member>
+        <member name="M:MyToolkit.Filters.OutputProcessorStream.Close">
+            <exception cref="T:System.IO.IOException">An I/O error has occurred.</exception>
+            <exception cref="T:System.Exception">A delegate callback throws an exception.</exception>
+        </member>
+        <member name="M:MyToolkit.Filters.OutputProcessorStream.Flush">
+            <summary>When overridden in a derived class, clears all buffers for this stream and causes any buffered data to be written to the underlying device.</summary>
+        </member>
+        <member name="M:MyToolkit.Filters.OutputProcessorStream.Read(System.Byte[],System.Int32,System.Int32)">
+            <summary>When overridden in a derived class, reads a sequence of bytes from the current stream and advances the position within the stream by the number of bytes read.</summary>
+            <param name="buffer">An array of bytes. When this method returns, the buffer contains the specified byte array with the values between <paramref name="offset" /> and (<paramref name="offset" /> + <paramref name="count" /> - 1) replaced by the bytes read from the current source.</param>
+            <param name="offset">The zero-based byte offset in <paramref name="buffer" /> at which to begin storing the data read from the current stream.</param>
+            <param name="count">The maximum number of bytes to be read from the current stream.</param>
+            <returns>The total number of bytes read into the buffer. This can be less than the number of bytes requested if that many bytes are not currently available, or zero (0) if the end of the stream has been reached.</returns>
+            <exception cref="T:System.IO.IOException">An I/O error occurs.</exception>
+        </member>
+        <member name="M:MyToolkit.Filters.OutputProcessorStream.Seek(System.Int64,System.IO.SeekOrigin)">
+            <summary>When overridden in a derived class, sets the position within the current stream.</summary>
+            <param name="offset">A byte offset relative to the <paramref name="origin" /> parameter.</param>
+            <param name="origin">A value of type <see cref="T:System.IO.SeekOrigin" /> indicating the reference point used to obtain the new position.</param>
+            <returns>The new position within the current stream.</returns>
+            <exception cref="T:System.IO.IOException">An I/O error occurs.</exception>
+        </member>
+        <member name="M:MyToolkit.Filters.OutputProcessorStream.SetLength(System.Int64)">
+            <summary>When overridden in a derived class, sets the length of the current stream.</summary>
+            <param name="value">The desired length of the current stream in bytes.</param>
+            <exception cref="T:System.IO.IOException">An I/O error occurs.</exception>
+        </member>
+        <member name="P:MyToolkit.Filters.OutputProcessorStream.CanRead">
+            <summary>When overridden in a derived class, gets a value indicating whether the current stream supports reading.</summary>
+        </member>
+        <member name="P:MyToolkit.Filters.OutputProcessorStream.CanSeek">
+            <summary>When overridden in a derived class, gets a value indicating whether the current stream supports seeking.</summary>
+        </member>
+        <member name="P:MyToolkit.Filters.OutputProcessorStream.CanWrite">
+            <summary>When overridden in a derived class, gets a value indicating whether the current stream supports writing.</summary>
+        </member>
+        <member name="P:MyToolkit.Filters.OutputProcessorStream.Length">
+            <summary>When overridden in a derived class, gets the length in bytes of the stream.</summary>
+        </member>
+        <member name="P:MyToolkit.Filters.OutputProcessorStream.Position">
+            <summary>When overridden in a derived class, gets or sets the position within the current stream.</summary>
+        </member>
+        <member name="T:MyToolkit.Html.Bootstrap">
+            <summary>Provides helper methods to generate HTML tags for Bootstrap.</summary>
+        </member>
+        <member name="M:MyToolkit.Html.Bootstrap.Pagination(System.Web.Mvc.WebViewPage,System.Int32,System.Int32,System.String,System.Object,System.String)">
+            <summary>Creates the pagination bootstrap component.</summary>
+            <param name="page">The <see cref="T:System.Web.Mvc.WebViewPage"/>. Use <c>this</c> in a Razor view.</param>
+            <param name="currentPage">The current page number.</param>
+            <param name="pageCount">The page count.</param>
+            <param name="actionName">The name of the controller action.</param>
+            <param name="routeValues">The route values. </param>
+            <param name="pageKeyName">The page key name. </param>
+            <returns>The HTML string. </returns>
+        </member>
+        <member name="T:MyToolkit.Html.CollectionEditorExtensions">
+            <summary>Provides extension methods to generate a collection editor. </summary>
+        </member>
+        <member name="M:MyToolkit.Html.CollectionEditorExtensions.CollectionEditorFor``2(System.Web.Mvc.HtmlHelper{``0},System.Func{``0,System.Collections.Generic.IEnumerable{``1}},System.String,System.String,System.String,System.Object,System.Web.Mvc.ViewDataDictionary)">
+            <summary>Renders the collection editor for an enumerable.</summary>
+            <typeparam name="TModel">The type of the model.</typeparam>
+            <typeparam name="TItem">The type of the item.</typeparam>
+            <param name="html">The HTML helper.</param>
+            <param name="collection">The collection.</param>
+            <param name="partialViewName">The partial name of the editor view.</param>
+            <param name="controllerActionPath">The controller action path to generate a new item editor.</param>
+            <param name="addButtonTitle">The title of the add button.</param>
+            <param name="addButtonHtmlAttributes">The HTML attributes of the add button.</param>
+            <param name="viewDataDictionary">The ViewDataDictionary for the partial view.</param>
+            <returns>The HTML string. </returns>
+        </member>
+        <member name="M:MyToolkit.Html.CollectionEditorExtensions.BeginCollectionItem``1(System.Web.Mvc.HtmlHelper{``0},System.String)">
+            <summary>Begins the rendering of collection item editor.</summary>
+            <typeparam name="TModel">The type of the model.</typeparam>
+            <param name="html">The HTML helper.</param>
+            <param name="collectionPropertyName">The name of the collection property in the master view model.</param>
+            <returns>The disposable. </returns>
+        </member>
+        <member name="T:MyToolkit.Html.CollectionEditorUtilities">
+            <summary>Provides helper methods to generate a collection editor. </summary>
+        </member>
+        <member name="M:MyToolkit.Html.CollectionEditorUtilities.GetItemPropertyPath(System.String,System.Int32,System.String)">
+            <summary>Generates the item property path for the given index to use for custom validation.</summary>
+            <param name="collectionPropertyName">The name of the collection property in the master view model.</param>
+            <param name="index">The item index.</param>
+            <param name="propertyPath">The property path.</param>
+            <returns>The item path.</returns>
+            <exception cref="T:System.InvalidOperationException">Previous collection indices not available.</exception>
+        </member>
+        <member name="T:MyToolkit.Html.ImageUploadExtensions">
+            <summary>Extension methods to render image upload controls. </summary>
+        </member>
+        <member name="M:MyToolkit.Html.ImageUploadExtensions.RequiredImageUploadFor``2(System.Web.Mvc.HtmlHelper{``0},System.Linq.Expressions.Expression{System.Func{``0,``1}},System.String)">
+            <summary>Renders the image upload control to upload a required image.</summary>
+            <typeparam name="TModel">The type of the model.</typeparam>
+            <typeparam name="TValue">The type of the value.</typeparam>
+            <param name="html">The HTML helper.</param>
+            <param name="imageProperty">The image property.</param>
+            <param name="chooseImageText">The text of the choose image button.</param>
+            <returns>The HTML string. </returns>
+        </member>
+        <member name="M:MyToolkit.Html.ImageUploadExtensions.RequiredImageUploadFor``2(System.Web.Mvc.HtmlHelper{``0},System.Linq.Expressions.Expression{System.Func{``0,``1}},System.String,System.Int32,System.String,System.String)">
+            <summary>Renders the image upload control to upload a required image.</summary>
+            <typeparam name="TModel">The type of the model.</typeparam>
+            <typeparam name="TValue">The type of the value.</typeparam>
+            <param name="html">The HTML helper.</param>
+            <param name="imageProperty">The image property.</param>
+            <param name="thumbnailPath">The image thumbnail path.</param>
+            <param name="maxThumbnailWidth">The maximum thumbnail width (0 = no maximum).</param>
+            <param name="chooseImageText">The text of the choose image button.</param>
+            <param name="changeImageText">The text of the change image button.</param>
+            <returns>The HTML string.</returns>
+        </member>
+        <member name="M:MyToolkit.Html.ImageUploadExtensions.ImageUploadFor``2(System.Web.Mvc.HtmlHelper{``0},System.Linq.Expressions.Expression{System.Func{``0,``1}},System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.String)">
+            <summary>Renders the image upload control to upload an optional image.</summary>
+            <typeparam name="TModel">The type of the model.</typeparam>
+            <typeparam name="TValue">The type of the value.</typeparam>
+            <param name="html">The HTML helper.</param>
+            <param name="imageProperty">The image property.</param>
+            <param name="hasImageProperty">The has image property.</param>
+            <param name="chooseImageText">The text of the choose image button.</param>
+            <returns>The HTML string. </returns>
+        </member>
+        <member name="M:MyToolkit.Html.ImageUploadExtensions.ImageUploadFor``2(System.Web.Mvc.HtmlHelper{``0},System.Linq.Expressions.Expression{System.Func{``0,``1}},System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.String,System.Int32,System.String,System.String)">
+            <summary>Renders the image upload control to upload an optional image.</summary>
+            <typeparam name="TModel">The type of the model.</typeparam>
+            <typeparam name="TValue">The type of the value.</typeparam>
+            <param name="html">The HTML helper.</param>
+            <param name="imageProperty">The image property.</param>
+            <param name="hasImageProperty">The has image property.</param>
+            <param name="thumbnailPath">The image thumbnail path.</param>
+            <param name="maxThumbnailWidth">The maximum thumbnail width (0 = no maximum).</param>
+            <param name="chooseImageText">The text of the choose image button.</param>
+            <param name="changeImageText">The text of the change image button.</param>
+            <returns>The HTML string. </returns>
+        </member>
+    </members>
+</doc>
