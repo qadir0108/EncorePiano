@@ -7,7 +7,8 @@ namespace WFP.ICT.Enums
 {
     public enum OrderTypeEnum
     {
-        Normal,
-        Container
+        Private,
+        Dealer,
+        Manufacturer
     }
 }

@@ -1,0 +1,1627 @@
+﻿@using System.Collections
+@model WFP.ICT.Web.Models.OrderVm
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    
+    var IsStairs11 = (Model.P1.IsStairs == true) ? "checked" : "";
+    var IsStairs12 = (Model.P1.IsStairs == false) ? "checked" : "";
+    var IsBench11 = (Model.P1.IsBench == true) ? "checked" : "";
+    var IsBench12 = (Model.P1.IsBench == false) ? "checked" : "";
+    var IsBoxed11 = (Model.P1.IsBoxed == true) ? "checked" : "";
+    var IsBoxed12 = (Model.P1.IsBoxed == false) ? "checked" : "";
+
+    var IsStairs21 = (Model.P2.IsStairs == true) ? "checked" : "";
+    var IsStairs22 = (Model.P2.IsStairs == false) ? "checked" : "";
+    var IsBench21 = (Model.P2.IsBench == true) ? "checked" : "";
+    var IsBench22 = (Model.P2.IsBench == false) ? "checked" : "";
+    var IsBoxed21 = (Model.P2.IsBoxed == true) ? "checked" : "";
+    var IsBoxed22 = (Model.P2.IsBoxed == false) ? "checked" : "";
+
+    var IsStairs31 = (Model.P3.IsStairs == true) ? "checked" : "";
+    var IsStairs32 = (Model.P3.IsStairs == false) ? "checked" : "";
+    var IsBench31 = (Model.P3.IsBench == true) ? "checked" : "";
+    var IsBench32 = (Model.P3.IsBench == false) ? "checked" : "";
+    var IsBoxed31 = (Model.P3.IsBoxed == true) ? "checked" : "";
+    var IsBoxed32 = (Model.P3.IsBoxed == false) ? "checked" : "";
+
+    var IsStairs41 = (Model.P4.IsStairs == true) ? "checked" : "";
+    var IsStairs42 = (Model.P4.IsStairs == false) ? "checked" : "";
+    var IsBench41 = (Model.P4.IsBench == true) ? "checked" : "";
+    var IsBench42 = (Model.P4.IsBench == false) ? "checked" : "";
+    var IsBoxed41 = (Model.P4.IsBoxed == true) ? "checked" : "";
+    var IsBoxed42 = (Model.P4.IsBoxed == false) ? "checked" : "";
+
+    var IsStairs51 = (Model.P5.IsStairs == true) ? "checked" : "";
+    var IsStairs52 = (Model.P5.IsStairs == false) ? "checked" : "";
+    var IsBench51 = (Model.P5.IsBench == true) ? "checked" : "";
+    var IsBench52 = (Model.P5.IsBench == false) ? "checked" : "";
+    var IsBoxed51 = (Model.P5.IsBoxed == true) ? "checked" : "";
+    var IsBoxed52 = (Model.P5.IsBoxed == false) ? "checked" : "";
+}
+<!-- BEGIN CONTENT -->
+<div class="page-content-wrapper">
+    <!-- BEGIN CONTENT BODY -->
+    <div class="page-content">
+        <!-- BEGIN PAGE HEAD-->
+        @*<div class="page-head">
+            <!-- BEGIN PAGE TITLE -->
+            <div class="page-title">
+                <h1>
+                    @(string.IsNullOrEmpty(Model.Id) ? "New" : "Edit") @EType
+                    <small></small>
+                </h1>
+            </div>
+            <!-- END PAGE TITLE -->
+        </div>*@
+        <!-- END PAGE HEAD-->
+    @if (TempData["Success"] != null)
+            {
+        <div class="custom-alerts alert alert-success fade in">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
+            <i class="fa-lg fa fa-check"></i>@TempData["Success"]
+        </div>
+    }
+    @if (TempData["Error"] != null)
+            {
+        <div class="custom-alerts alert alert-danger fade in">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
+            <i class="fa-lg fa fa-warning"></i>@TempData["Error"]
+        </div>
+    }
+        <!-- BEGIN PAGE BASE CONTENT -->
+        <div class="row">
+            <div class="col-md-12 ">
+            <!-- BEGIN SAMPLE FORM PORTLET-->
+@using (Html.BeginForm("Save", "Orders", FormMethod.Post, new { @*@data_toggle = "validator",*@ @id = "frm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(x => x.Id)
+                <div class="portlet light bordered"> <!-- box purple-->
+                    <div class="portlet-title">
+                        <div class="caption font-red-sunglo">
+                            <span class="caption-subject bold uppercase"> @(string.IsNullOrEmpty(Model.Id) ? "New" : "Edit") Move Order</span>
+                        </div>
+                        <div class="actions">
+                            <a class="btn btn-circle btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title=""> </a>
+                        </div>
+                    </div>
+                    <div class="portlet-body form">
+                            <div class="form-body">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group form-md-line-input has-success">
+                                        <div class="input-icon">
+                                            @Html.DropDownList("OrderType", null, htmlAttributes: new { @class = "form-control" })
+                                            <label for="form_control_1">Move Order Type<span class="required">*</span></label>
+                                            <span class="help-block">Select Move Order Type</span>
+                                            <i class="fa fa-envelope"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group form-md-line-input has-success">
+                                        <div class="input-icon">
+                                            @Html.DropDownList("OrderMedium", null, htmlAttributes: new {@class = "form-control"})
+                                            <label for="form_control_1">Move Order Via<span class="required">*</span></label>
+                                            <span class="help-block">Select Move Order via</span>
+                                            <i class="fa fa-envelope"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group form-md-line-input has-success">
+                                        <div class="input-icon">
+                                            @Html.EditorFor(model => model.CallerPhoneNumber, new {htmlAttributes = new {@class = "form-control"}})
+                                            <label for="form_control_1">Via Phone Number<span class="required">*</span></label>
+                                            <span class="help-block">Enter Phone Number</span>
+                                            <i class="fa fa-phone"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group form-md-line-input has-success">
+                                        <div class="input-icon">
+                                            @Html.EditorFor(model => model.CallerEmail, new {htmlAttributes = new {@class = "form-control"}})
+                                            <label for="form_control_1">Via Email Address<span class="required">*</span></label>
+                                            <span class="help-block">Enter Email Address</span>
+                                            <i class="fa fa-envelope-o"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group form-md-line-input has-success">
+                                        <div class="input-icon">
+                                            @Html.EditorFor(model => model.CallerFirstName, new { htmlAttributes = new { @class = "form-control" } })
+                                            <label for="form_control_1">First Name</label>
+                                            <span class="help-block">Enter First Name</span>
+                                            <i class="fa fa-user"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group form-md-line-input has-success">
+                                        <div class="input-icon">
+                                            @Html.EditorFor(model => model.CallerLastName, new { htmlAttributes = new { @class = "form-control" } })
+                                            <label for="form_control_1">Last Name</label>
+                                            <span class="help-block">Enter Last Name</span>
+                                            <i class="fa fa-user"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group form-md-line-input has-success">
+                                        <div class="input-icon">
+                                            @Html.EditorFor(model => model.PreferredPickupDateTime, new {htmlAttributes = new {@class = "form-control"}})
+                                            <label for="form_control_1">Preferred Pickup Date Time</label>
+                                            <span class="help-block">Select Preferred Pickup Date here</span>
+                                            <i class="fa fa-clock-o"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group form-md-line-input has-success">
+                                        <div class="input-icon">
+                                            @*<input type="text" class="form-control" placeholder="Left icon">*@
+                                            @Html.EditorFor(model => model.Notes, new {htmlAttributes = new {@class = "form-control"}})
+                                            <label for="form_control_1">Order Notes</label>
+                                            <span class="help-block">Enter Notes here</span>
+                                            <i class="fa fa-info"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top: 5px">
+                                <div class="col-md-3">
+                                    <div class="form-group form-md-line-input has-success">
+                                        <div class="input-icon">
+                                            @Html.DropDownList("PaymentOption", null, htmlAttributes: new { @class = "form-control" })
+                                            <label for="form_control_1">Payment Option</label>
+                                            <span class="help-block">Select Payment Option</span>
+                                            <i class="fa fa-dollar"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group form-md-line-input has-success">
+                                        <div class="input-icon">
+                                            @Html.DropDownList("Customers", null, htmlAttributes: new {@class = "form-control"})
+                                            <label for="form_control_1">Customer</label>
+                                            <span class="help-block">Select Customer here <a href="#">New Customer</a></span>
+                                            <i class="fa fa-briefcase"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Pickup Delivery -->
+                            <div class="row" style="margin-top: 5px">
+                                <div class="col-md-6">
+
+                                    <div class="portlet light bordered">
+                                        <div class="portlet-title">
+                                            <div class="caption font-blue-steel">
+                                                <i class="icon-settings font-blue-steel"></i>
+                                                <span class="caption-subject bold uppercase"> Pickup Adddress</span>
+                                            </div>
+                                            <div class="actions">
+                                                <a class="btn btn-circle btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title=""> </a>
+                                            </div>
+                                        </div>
+                                        <div class="portlet-body form">
+                                            <div class="form-body">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group form-md-line-input has-success">
+                                                            <div class="input-icon">
+                                                                @Html.EditorFor(model => model.PickupAddress.Name, new { htmlAttributes = new { @class = "form-control" } })
+                                                                <label for="form_control_1">Name<span class="required">*</span></label>
+                                                                <span class="help-block">Enter Name here</span>
+                                                                <i class="fa fa-user"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group form-md-line-input has-success">
+                                                            <div class="input-icon">
+                                                                @Html.EditorFor(model => model.PickupAddress.Address1, new { htmlAttributes = new { @class = "form-control" } })
+                                                                <label for="form_control_1">Address<span class="required">*</span></label>
+                                                                <span class="help-block">Enter Address here</span>
+                                                                <i class="fa fa-home"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group form-md-line-input has-success">
+                                                            <div class="input-icon">
+                                                                @Html.EditorFor(model => model.PickupAddress.Suburb, new { htmlAttributes = new { @class = "form-control" } })
+                                                                <label for="form_control_1">Suburb<span class="required">*</span></label>
+                                                                <span class="help-block">Enter Suburb here</span>
+                                                                <i class="fa fa-home"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group form-md-line-input has-success">
+                                                            <div class="input-icon">
+                                                                @Html.DropDownList("PickupAddress.State", null, htmlAttributes: new { @class = "form-control" })
+                                                                <label for="form_control_1">State<span class="required">*</span></label>
+                                                                <span class="help-block">Enter State here</span>
+                                                                <i class="fa fa-home"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group form-md-line-input has-success">
+                                                            <div class="input-icon">
+                                                                @Html.EditorFor(model => model.PickupAddress.PostCode, new { htmlAttributes = new { @class = "form-control" } })
+                                                                <label for="form_control_1">PostCode<span class="required">*</span></label>
+                                                                <span class="help-block">Enter PostCode here</span>
+                                                                <i class="fa fa-home"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group form-md-line-input has-success">
+                                                            <div class="input-icon">
+                                                                @Html.EditorFor(model => model.PickupAddress.PhoneNumber, new { htmlAttributes = new { @class = "form-control" } })
+                                                                <label for="form_control_1">Phone Number<span class="required">*</span></label>
+                                                                <span class="help-block">Enter Phone Number here</span>
+                                                                <i class="fa fa-phone"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col-md-6">
+
+                                    <div class="portlet light bordered">
+                                        <div class="portlet-title">
+                                            <div class="caption font-blue-steel">
+                                                <i class="icon-settings font-blue-steel"></i>
+                                                <span class="caption-subject bold uppercase"> Delivery Adddress</span>
+                                            </div>
+                                            <div class="actions">
+                                                <a class="btn btn-circle btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title=""> </a>
+                                            </div>
+                                        </div>
+
+                                        <div class="portlet-body form">
+
+                                            <div class="form-body">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group form-md-line-input has-success">
+                                                            <div class="input-icon">
+                                                                @Html.EditorFor(model => model.DeliveryAddress.Name, new { htmlAttributes = new { @class = "form-control" } })
+                                                                <label for="form_control_1">Name<span class="required">*</span></label>
+                                                                <span class="help-block">Enter Name here</span>
+                                                                <i class="fa fa-user"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group form-md-line-input has-success">
+                                                            <div class="input-icon">
+                                                                @Html.EditorFor(model => model.DeliveryAddress.Address1, new { htmlAttributes = new { @class = "form-control" } })
+                                                                <label for="form_control_1">Address<span class="required">*</span></label>
+                                                                <span class="help-block">Enter Address here</span>
+                                                                <i class="fa fa-home"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group form-md-line-input has-success">
+                                                            <div class="input-icon">
+                                                                @Html.EditorFor(model => model.DeliveryAddress.Suburb, new { htmlAttributes = new { @class = "form-control" } })
+                                                                <label for="form_control_1">Suburb<span class="required">*</span></label>
+                                                                <span class="help-block">Enter Suburb here</span>
+                                                                <i class="fa fa-home"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group form-md-line-input has-success">
+                                                            <div class="input-icon">
+                                                                @Html.DropDownList("DeliveryAddress.State", null, htmlAttributes: new { @class = "form-control" })
+                                                                <label for="form_control_1">State<span class="required">*</span></label>
+                                                                <span class="help-block">Enter State here</span>
+                                                                <i class="fa fa-home"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group form-md-line-input has-success">
+                                                            <div class="input-icon">
+                                                                @Html.EditorFor(model => model.DeliveryAddress.PostCode, new { htmlAttributes = new { @class = "form-control" } })
+                                                                <label for="form_control_1">PostCode<span class="required">*</span></label>
+                                                                <span class="help-block">Enter PostCode here</span>
+                                                                <i class="fa fa-home"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group form-md-line-input has-success">
+                                                            <div class="input-icon">
+                                                                @Html.EditorFor(model => model.DeliveryAddress.PhoneNumber, new { htmlAttributes = new { @class = "form-control" } })
+                                                                <label for="form_control_1">Phone Number<span class="required">*</span></label>
+                                                                <span class="help-block">Enter Phone Number here</span>
+                                                                <i class="fa fa-phone"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <!-- End Pickup Delivery -->
+                            <!-- P1 -->
+                            <div class="row" style="margin-top: 5px">
+                                <div class="col-md-12">
+                                    <div class="portlet light bordered" id="p1">
+                                        <!-- box purple-->
+                                        <div class="portlet-title">
+                                            <div class="caption font-red-sunglo">
+                                                <span class="caption-subject bold uppercase"> Piano # 1 Details</span>
+                                            </div>
+                                            <div class="actions">
+                                                <a class="btn btn-circle btn-icon-only green btnAdd" data-id="1" data-tooltip="tooltip" title="Add more piano" href="javascript:;">
+                                                    <i class="icon-plus"></i>
+                                                </a>
+                                                @*<a class="btn btn-circle btn-icon-only red btnDelete" data-id="1" data-tooltip="tooltip" title="Delete this piano" href="javascript:;">
+                                                    <i class="icon-trash"></i>
+                                                </a>*@
+                                            </div>
+                                        </div>
+                                        <div class="portlet-body form">
+                                            <div class="form-body">
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-md-line-input has-success">
+                                                            <div class="input-icon">
+                                                                @Html.DropDownList("P1.PianoType", null, htmlAttributes: new { @class = "form-control" })
+                                                                <label for="form_control_1">Piano Type<span class="required">*</span></label>
+                                                                <span class="help-block">Enter Piano Name here</span>
+                                                                <i class="fa fa-bars"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-md-line-input has-success">
+                                                            <div class="input-icon">
+                                                                @Html.EditorFor(model => model.P1.PianoName, new { htmlAttributes = new { @class = "form-control" } })
+                                                                <label for="form_control_1">Piano Name<span class="required">*</span></label>
+                                                                <span class="help-block">Enter Piano Name here</span>
+                                                                <i class="fa fa-bars"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-md-line-input has-success">
+                                                            <div class="input-icon">
+                                                                @Html.EditorFor(model => model.P1.PianoColor, new { htmlAttributes = new { @class = "form-control" } })
+                                                                <label for="form_control_1">Piano Color</label>
+                                                                <span class="help-block">Enter Piano Color here</span>
+                                                                <i class="fa fa-bars"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-md-line-input has-success">
+                                                            <div class="input-icon">
+                                                                @Html.EditorFor(model => model.P1.PianoMake, new { htmlAttributes = new { @class = "form-control" } })
+                                                                <label for="form_control_1">Piano Make<span class="required">*</span></label>
+                                                                <span class="help-block">Enter Piano Make here</span>
+                                                                <i class="fa fa-bars"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-md-line-input has-success">
+                                                            <div class="input-icon">
+                                                                @Html.EditorFor(model => model.P1.PianoModel, new { htmlAttributes = new { @class = "form-control" } })
+                                                                <label for="form_control_1">Piano Model</label>
+                                                                <span class="help-block">Enter Piano Model here</span>
+                                                                <i class="fa fa-bars"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-md-line-input has-success">
+                                                            <div class="input-icon">
+                                                                @Html.EditorFor(model => model.P1.SerialNumber, new { htmlAttributes = new { @class = "form-control" } })
+                                                                <label for="form_control_1">Piano Serial Number</label>
+                                                                <span class="help-block">Enter Piano Serial Number here</span>
+                                                                <i class="fa fa-bars"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                                <div class="row" style="margin-bottom: 10px">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-md-radios">
+                                                            <label class="col-md-3 control-label" for="IsStairs">Stairs?</label>
+                                                            <div class="col-md-9">
+                                                                <div class="md-radio-inline">
+                                                                    <div class="md-radio">
+                                                                        <input type="radio" id="IsStairs11" name="P1.IsStairs" value="true" @IsStairs11 class="md-radiobtn">
+                                                                        <label for="IsStairs11">
+                                                                            <span></span>
+                                                                            <span class="check"></span>
+                                                                            <span class="box"></span> Yes
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="md-radio">
+                                                                        <input type="radio" id="IsStairs12" name="P1.IsStairs" value="false" @IsStairs12 class="md-radiobtn">
+                                                                        <label for="IsStairs12">
+                                                                            <span></span>
+                                                                            <span class="check"></span>
+                                                                            <span class="box"></span> No
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="col-md-4">
+
+                                                        <div class="form-group form-md-radios">
+                                                            <label class="col-md-3 control-label" for="IsBench">Bench?</label>
+                                                            <div class="col-md-9">
+                                                                <div class="md-radio-inline">
+                                                                    <div class="md-radio">
+                                                                        <input type="radio" id="IsBench11" name="P1.IsBench" value="true" @IsBench11 class="md-radiobtn">
+                                                                        <label for="IsBench11">
+                                                                            <span></span>
+                                                                            <span class="check"></span>
+                                                                            <span class="box"></span> Yes W/B
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="md-radio">
+                                                                        <input type="radio" id="IsBench12" name="P1.IsBench" value="false" @IsBench12 class="md-radiobtn">
+                                                                        <label for="IsBench12">
+                                                                            <span></span>
+                                                                            <span class="check"></span>
+                                                                            <span class="box"></span> No N/B
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="col-md-4">
+
+                                                        <div class="form-group form-md-radios">
+                                                            <label class="col-md-3 control-label" for="IsBoxed">Boxed?</label>
+                                                            <div class="col-md-9">
+                                                                <div class="md-radio-inline">
+                                                                    <div class="md-radio">
+                                                                        <input type="radio" id="IsBoxed11" name="P1.IsBoxed" value="true" @IsBoxed11 class="md-radiobtn">
+                                                                        <label for="IsBoxed11">
+                                                                            <span></span>
+                                                                            <span class="check"></span>
+                                                                            <span class="box"></span> Yes
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="md-radio">
+                                                                        <input type="radio" id="IsBoxed12" name="P1.IsBoxed" value="false" @IsBoxed12 class="md-radiobtn">
+                                                                        <label for="IsBoxed12">
+                                                                            <span></span>
+                                                                            <span class="check"></span>
+                                                                            <span class="box"></span> No
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End P1 -->
+                            <!-- P2 -->
+                            <div class="row" style="margin-top: 5px">
+                                <div class="col-md-12">
+                                    <div class="portlet light bordered" id="p2">
+                                        <!-- box purple-->
+                                        <div class="portlet-title">
+                                            <div class="caption font-red-sunglo">
+                                                <span class="caption-subject bold uppercase"> Piano # 2 Details</span>
+                                            </div>
+                                            <div class="actions">
+                                                <a class="btn btn-circle btn-icon-only green btnAdd" data-id="2" data-tooltip="tooltip" title="Add more piano" href="javascript:;">
+                                                    <i class="icon-plus"></i>
+                                                </a>
+                                                <a class="btn btn-circle btn-icon-only red btnDelete" data-id="2" data-tooltip="tooltip" title="Delete this piano" href="javascript:;">
+                                                    <i class="icon-trash"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="portlet-body form">
+                                            <div class="form-body">
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-md-line-input has-success">
+                                                            <div class="input-icon">
+                                                                @Html.DropDownList("P2.PianoType", null, htmlAttributes: new { @class = "form-control" })
+                                                                <label for="form_control_1">Piano Type<span class="required">*</span></label>
+                                                                <span class="help-block">Enter Piano Name here</span>
+                                                                <i class="fa fa-bars"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-md-line-input has-success">
+                                                            <div class="input-icon">
+                                                                @Html.EditorFor(model => model.P2.PianoName, new { htmlAttributes = new { @class = "form-control" } })
+                                                                <label for="form_control_1">Piano Name<span class="required">*</span></label>
+                                                                <span class="help-block">Enter Piano Name here</span>
+                                                                <i class="fa fa-bars"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-md-line-input has-success">
+                                                            <div class="input-icon">
+                                                                @Html.EditorFor(model => model.P2.PianoColor, new { htmlAttributes = new { @class = "form-control" } })
+                                                                <label for="form_control_1">Piano Color</label>
+                                                                <span class="help-block">Enter Piano Color here</span>
+                                                                <i class="fa fa-bars"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-md-line-input has-success">
+                                                            <div class="input-icon">
+                                                                @Html.EditorFor(model => model.P2.PianoMake, new { htmlAttributes = new { @class = "form-control" } })
+                                                                <label for="form_control_1">Piano Make<span class="required">*</span></label>
+                                                                <span class="help-block">Enter Piano Make here</span>
+                                                                <i class="fa fa-bars"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-md-line-input has-success">
+                                                            <div class="input-icon">
+                                                                @Html.EditorFor(model => model.P2.PianoModel, new { htmlAttributes = new { @class = "form-control" } })
+                                                                <label for="form_control_1">Piano Model</label>
+                                                                <span class="help-block">Enter Piano Model here</span>
+                                                                <i class="fa fa-bars"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-md-line-input has-success">
+                                                            <div class="input-icon">
+                                                                @Html.EditorFor(model => model.P2.SerialNumber, new { htmlAttributes = new { @class = "form-control" } })
+                                                                <label for="form_control_1">Piano Serial Number</label>
+                                                                <span class="help-block">Enter Piano Serial Number here</span>
+                                                                <i class="fa fa-bars"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                                <div class="row" style="margin-bottom: 10px">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-md-radios">
+                                                            <label class="col-md-3 control-label" for="IsStairs">Stairs?</label>
+                                                            <div class="col-md-9">
+                                                                <div class="md-radio-inline">
+                                                                    <div class="md-radio">
+                                                                        <input type="radio" id="IsStairs21" name="P2.IsStairs" value="true" @IsStairs21 class="md-radiobtn">
+                                                                        <label for="IsStairs21">
+                                                                            <span></span>
+                                                                            <span class="check"></span>
+                                                                            <span class="box"></span> Yes
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="md-radio">
+                                                                        <input type="radio" id="IsStairs22" name="P2.IsStairs" value="false" @IsStairs22 class="md-radiobtn">
+                                                                        <label for="IsStairs22">
+                                                                            <span></span>
+                                                                            <span class="check"></span>
+                                                                            <span class="box"></span> No
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="col-md-4">
+
+                                                        <div class="form-group form-md-radios">
+                                                            <label class="col-md-3 control-label" for="IsBench">Bench?</label>
+                                                            <div class="col-md-9">
+                                                                <div class="md-radio-inline">
+                                                                    <div class="md-radio">
+                                                                        <input type="radio" id="IsBench21" name="P2.IsBench" value="true" @IsBench21 class="md-radiobtn">
+                                                                        <label for="IsBench21">
+                                                                            <span></span>
+                                                                            <span class="check"></span>
+                                                                            <span class="box"></span> Yes W/B
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="md-radio">
+                                                                        <input type="radio" id="IsBench22" name="P2.IsBench" value="false" @IsBench22 class="md-radiobtn">
+                                                                        <label for="IsBench22">
+                                                                            <span></span>
+                                                                            <span class="check"></span>
+                                                                            <span class="box"></span> No N/B
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="col-md-4">
+
+                                                        <div class="form-group form-md-radios">
+                                                            <label class="col-md-3 control-label" for="IsBoxed">Boxed?</label>
+                                                            <div class="col-md-9">
+                                                                <div class="md-radio-inline">
+                                                                    <div class="md-radio">
+                                                                        <input type="radio" id="IsBoxed21" name="P2.IsBoxed" value="true" @IsBoxed21 class="md-radiobtn">
+                                                                        <label for="IsBoxed21">
+                                                                            <span></span>
+                                                                            <span class="check"></span>
+                                                                            <span class="box"></span> Yes
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="md-radio">
+                                                                        <input type="radio" id="IsBoxed22" name="P2.IsBoxed" value="false" @IsBoxed22 class="md-radiobtn">
+                                                                        <label for="IsBoxed22">
+                                                                            <span></span>
+                                                                            <span class="check"></span>
+                                                                            <span class="box"></span> No
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End P2 -->
+                            <!-- P3 -->
+                            <div class="row" style="margin-top: 5px">
+                                <div class="col-md-12">
+                                    <div class="portlet light bordered" id="p3">
+                                        <!-- box purple-->
+                                        <div class="portlet-title">
+                                            <div class="caption font-red-sunglo">
+                                                <span class="caption-subject bold uppercase"> Piano # 3 Details</span>
+                                            </div>
+                                            <div class="actions">
+                                                <a class="btn btn-circle btn-icon-only green btnAdd" data-id="3" data-tooltip="tooltip" title="Add more piano" href="javascript:;">
+                                                    <i class="icon-plus"></i>
+                                                </a>
+                                                <a class="btn btn-circle btn-icon-only red btnDelete" data-id="3" data-tooltip="tooltip" title="Delete this piano" href="javascript:;">
+                                                    <i class="icon-trash"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="portlet-body form">
+                                            <div class="form-body">
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-md-line-input has-success">
+                                                            <div class="input-icon">
+                                                                @Html.DropDownList("P3.PianoType", null, htmlAttributes: new { @class = "form-control" })
+                                                                <label for="form_control_1">Piano Type<span class="required">*</span></label>
+                                                                <span class="help-block">Enter Piano Name here</span>
+                                                                <i class="fa fa-bars"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-md-line-input has-success">
+                                                            <div class="input-icon">
+                                                                @Html.EditorFor(model => model.P3.PianoName, new { htmlAttributes = new { @class = "form-control" } })
+                                                                <label for="form_control_1">Piano Name<span class="required">*</span></label>
+                                                                <span class="help-block">Enter Piano Name here</span>
+                                                                <i class="fa fa-bars"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-md-line-input has-success">
+                                                            <div class="input-icon">
+                                                                @Html.EditorFor(model => model.P3.PianoColor, new { htmlAttributes = new { @class = "form-control" } })
+                                                                <label for="form_control_1">Piano Color</label>
+                                                                <span class="help-block">Enter Piano Color here</span>
+                                                                <i class="fa fa-bars"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-md-line-input has-success">
+                                                            <div class="input-icon">
+                                                                @Html.EditorFor(model => model.P3.PianoMake, new { htmlAttributes = new { @class = "form-control" } })
+                                                                <label for="form_control_1">Piano Make<span class="required">*</span></label>
+                                                                <span class="help-block">Enter Piano Make here</span>
+                                                                <i class="fa fa-bars"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-md-line-input has-success">
+                                                            <div class="input-icon">
+                                                                @Html.EditorFor(model => model.P3.PianoModel, new { htmlAttributes = new { @class = "form-control" } })
+                                                                <label for="form_control_1">Piano Model</label>
+                                                                <span class="help-block">Enter Piano Model here</span>
+                                                                <i class="fa fa-bars"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-md-line-input has-success">
+                                                            <div class="input-icon">
+                                                                @Html.EditorFor(model => model.P3.SerialNumber, new { htmlAttributes = new { @class = "form-control" } })
+                                                                <label for="form_control_1">Piano Serial Number</label>
+                                                                <span class="help-block">Enter Piano Serial Number here</span>
+                                                                <i class="fa fa-bars"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                                <div class="row" style="margin-bottom: 10px">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-md-radios">
+                                                            <label class="col-md-3 control-label" for="IsStairs">Stairs?</label>
+                                                            <div class="col-md-9">
+                                                                <div class="md-radio-inline">
+                                                                    <div class="md-radio">
+                                                                        <input type="radio" id="IsStairs31" name="P3.IsStairs" value="true" @IsStairs31 class="md-radiobtn">
+                                                                        <label for="IsStairs31">
+                                                                            <span></span>
+                                                                            <span class="check"></span>
+                                                                            <span class="box"></span> Yes
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="md-radio">
+                                                                        <input type="radio" id="IsStairs32" name="P3.IsStairs" value="false" @IsStairs32 class="md-radiobtn">
+                                                                        <label for="IsStairs32">
+                                                                            <span></span>
+                                                                            <span class="check"></span>
+                                                                            <span class="box"></span> No
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="col-md-4">
+
+                                                        <div class="form-group form-md-radios">
+                                                            <label class="col-md-3 control-label" for="IsBench">Bench?</label>
+                                                            <div class="col-md-9">
+                                                                <div class="md-radio-inline">
+                                                                    <div class="md-radio">
+                                                                        <input type="radio" id="IsBench31" name="P3.IsBench" value="true" @IsBench31 class="md-radiobtn">
+                                                                        <label for="IsBench31">
+                                                                            <span></span>
+                                                                            <span class="check"></span>
+                                                                            <span class="box"></span> Yes W/B
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="md-radio">
+                                                                        <input type="radio" id="IsBench32" name="P3.IsBench" value="false" @IsBench32 class="md-radiobtn">
+                                                                        <label for="IsBench32">
+                                                                            <span></span>
+                                                                            <span class="check"></span>
+                                                                            <span class="box"></span> No N/B
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="col-md-4">
+
+                                                        <div class="form-group form-md-radios">
+                                                            <label class="col-md-3 control-label" for="IsBoxed">Boxed?</label>
+                                                            <div class="col-md-9">
+                                                                <div class="md-radio-inline">
+                                                                    <div class="md-radio">
+                                                                        <input type="radio" id="IsBoxed31" name="P3.IsBoxed" value="true" @IsBoxed31 class="md-radiobtn">
+                                                                        <label for="IsBoxed31">
+                                                                            <span></span>
+                                                                            <span class="check"></span>
+                                                                            <span class="box"></span> Yes
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="md-radio">
+                                                                        <input type="radio" id="IsBoxed32" name="P3.IsBoxed" value="false" @IsBoxed32 class="md-radiobtn">
+                                                                        <label for="IsBoxed32">
+                                                                            <span></span>
+                                                                            <span class="check"></span>
+                                                                            <span class="box"></span> No
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End P3 -->
+                            <!-- P4 -->
+                            <div class="row" style="margin-top: 5px">
+                                    <div class="col-md-12">
+                                        <div class="portlet light bordered" id="p4">
+                                            <!-- box purple-->
+                                            <div class="portlet-title">
+                                                <div class="caption font-red-sunglo">
+                                                    <span class="caption-subject bold uppercase"> Piano # 4 Details</span>
+                                                </div>
+                                                <div class="actions">
+                                                    <a class="btn btn-circle btn-icon-only green btnAdd" data-id="4" data-tooltip="tooltip" title="Add more piano" href="javascript:;">
+                                                        <i class="icon-plus"></i>
+                                                    </a>
+                                                    <a class="btn btn-circle btn-icon-only red btnDelete" data-id="4" data-tooltip="tooltip" title="Delete this piano" href="javascript:;">
+                                                        <i class="icon-trash"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="portlet-body form">
+                                                <div class="form-body">
+                                                    <div class="row">
+                                                        <div class="col-md-4">
+                                                            <div class="form-group form-md-line-input has-success">
+                                                                <div class="input-icon">
+                                                                    @Html.DropDownList("P4.PianoType", null, htmlAttributes: new { @class = "form-control" })
+                                                                    <label for="form_control_1">Piano Type<span class="required">*</span></label>
+                                                                    <span class="help-block">Enter Piano Name here</span>
+                                                                    <i class="fa fa-bars"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="form-group form-md-line-input has-success">
+                                                                <div class="input-icon">
+                                                                    @Html.EditorFor(model => model.P4.PianoName, new { htmlAttributes = new { @class = "form-control" } })
+                                                                    <label for="form_control_1">Piano Name<span class="required">*</span></label>
+                                                                    <span class="help-block">Enter Piano Name here</span>
+                                                                    <i class="fa fa-bars"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="form-group form-md-line-input has-success">
+                                                                <div class="input-icon">
+                                                                    @Html.EditorFor(model => model.P4.PianoColor, new { htmlAttributes = new { @class = "form-control" } })
+                                                                    <label for="form_control_1">Piano Color</label>
+                                                                    <span class="help-block">Enter Piano Color here</span>
+                                                                    <i class="fa fa-bars"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-4">
+                                                            <div class="form-group form-md-line-input has-success">
+                                                                <div class="input-icon">
+                                                                    @Html.EditorFor(model => model.P4.PianoMake, new { htmlAttributes = new { @class = "form-control" } })
+                                                                    <label for="form_control_1">Piano Make<span class="required">*</span></label>
+                                                                    <span class="help-block">Enter Piano Make here</span>
+                                                                    <i class="fa fa-bars"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="form-group form-md-line-input has-success">
+                                                                <div class="input-icon">
+                                                                    @Html.EditorFor(model => model.P4.PianoModel, new { htmlAttributes = new { @class = "form-control" } })
+                                                                    <label for="form_control_1">Piano Model</label>
+                                                                    <span class="help-block">Enter Piano Model here</span>
+                                                                    <i class="fa fa-bars"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="form-group form-md-line-input has-success">
+                                                                <div class="input-icon">
+                                                                    @Html.EditorFor(model => model.P4.SerialNumber, new { htmlAttributes = new { @class = "form-control" } })
+                                                                    <label for="form_control_1">Piano Serial Number</label>
+                                                                    <span class="help-block">Enter Piano Serial Number here</span>
+                                                                    <i class="fa fa-bars"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="row" style="margin-bottom: 10px">
+                                                        <div class="col-md-4">
+                                                            <div class="form-group form-md-radios">
+                                                                <label class="col-md-3 control-label" for="IsStairs">Stairs?</label>
+                                                                <div class="col-md-9">
+                                                                    <div class="md-radio-inline">
+                                                                        <div class="md-radio">
+                                                                            <input type="radio" id="IsStairs41" name="P4.IsStairs" value="true" @IsStairs41 class="md-radiobtn">
+                                                                            <label for="IsStairs41">
+                                                                                <span></span>
+                                                                                <span class="check"></span>
+                                                                                <span class="box"></span> Yes
+                                                                            </label>
+                                                                        </div>
+                                                                        <div class="md-radio">
+                                                                            <input type="radio" id="IsStairs42" name="P4.IsStairs" value="false" @IsStairs42 class="md-radiobtn">
+                                                                            <label for="IsStairs42">
+                                                                                <span></span>
+                                                                                <span class="check"></span>
+                                                                                <span class="box"></span> No
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="col-md-4">
+
+                                                            <div class="form-group form-md-radios">
+                                                                <label class="col-md-3 control-label" for="IsBench">Bench?</label>
+                                                                <div class="col-md-9">
+                                                                    <div class="md-radio-inline">
+                                                                        <div class="md-radio">
+                                                                            <input type="radio" id="IsBench41" name="P4.IsBench" value="true" @IsBench41 class="md-radiobtn">
+                                                                            <label for="IsBench41">
+                                                                                <span></span>
+                                                                                <span class="check"></span>
+                                                                                <span class="box"></span> Yes W/B
+                                                                            </label>
+                                                                        </div>
+                                                                        <div class="md-radio">
+                                                                            <input type="radio" id="IsBench42" name="P4.IsBench" value="false" @IsBench42 class="md-radiobtn">
+                                                                            <label for="IsBench42">
+                                                                                <span></span>
+                                                                                <span class="check"></span>
+                                                                                <span class="box"></span> No N/B
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="col-md-4">
+
+                                                            <div class="form-group form-md-radios">
+                                                                <label class="col-md-3 control-label" for="IsBoxed">Boxed?</label>
+                                                                <div class="col-md-9">
+                                                                    <div class="md-radio-inline">
+                                                                        <div class="md-radio">
+                                                                            <input type="radio" id="IsBoxed41" name="P4.IsBoxed" value="true" @IsBoxed41 class="md-radiobtn">
+                                                                            <label for="IsBoxed41">
+                                                                                <span></span>
+                                                                                <span class="check"></span>
+                                                                                <span class="box"></span> Yes
+                                                                            </label>
+                                                                        </div>
+                                                                        <div class="md-radio">
+                                                                            <input type="radio" id="IsBoxed42" name="P4.IsBoxed" value="false" @IsBoxed42 class="md-radiobtn">
+                                                                            <label for="IsBoxed42">
+                                                                                <span></span>
+                                                                                <span class="check"></span>
+                                                                                <span class="box"></span> No
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <!-- End P4 -->
+                            <!-- P5 -->
+                            <div class="row" style="margin-top: 5px">
+                                    <div class="col-md-12">
+                                        <div class="portlet light bordered" id="p5">
+                                            <!-- box purple-->
+                                            <div class="portlet-title">
+                                                <div class="caption font-red-sunglo">
+                                                    <span class="caption-subject bold uppercase"> Piano # 5 Details</span>
+                                                </div>
+                                                <div class="actions">
+                                                    @*<a class="btn btn-circle btn-icon-only green btnAdd" data-id="5" data-tooltip="tooltip" title="Add more piano" href="javascript:;">
+                                                        <i class="icon-plus"></i>
+                                                    </a>*@
+                                                    <a class="btn btn-circle btn-icon-only red btnDelete" data-id="5" data-tooltip="tooltip" title="Delete this piano" href="javascript:;">
+                                                        <i class="icon-trash"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="portlet-body form">
+                                                <div class="form-body">
+                                                    <div class="row">
+                                                        <div class="col-md-4">
+                                                            <div class="form-group form-md-line-input has-success">
+                                                                <div class="input-icon">
+                                                                    @Html.DropDownList("P5.PianoType", null, htmlAttributes: new { @class = "form-control" })
+                                                                    <label for="form_control_1">Piano Type<span class="required">*</span></label>
+                                                                    <span class="help-block">Enter Piano Name here</span>
+                                                                    <i class="fa fa-bars"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="form-group form-md-line-input has-success">
+                                                                <div class="input-icon">
+                                                                    @Html.EditorFor(model => model.P5.PianoName, new { htmlAttributes = new { @class = "form-control" } })
+                                                                    <label for="form_control_1">Piano Name<span class="required">*</span></label>
+                                                                    <span class="help-block">Enter Piano Name here</span>
+                                                                    <i class="fa fa-bars"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="form-group form-md-line-input has-success">
+                                                                <div class="input-icon">
+                                                                    @Html.EditorFor(model => model.P5.PianoColor, new { htmlAttributes = new { @class = "form-control" } })
+                                                                    <label for="form_control_1">Piano Color</label>
+                                                                    <span class="help-block">Enter Piano Color here</span>
+                                                                    <i class="fa fa-bars"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-4">
+                                                            <div class="form-group form-md-line-input has-success">
+                                                                <div class="input-icon">
+                                                                    @Html.EditorFor(model => model.P5.PianoMake, new { htmlAttributes = new { @class = "form-control" } })
+                                                                    <label for="form_control_1">Piano Make<span class="required">*</span></label>
+                                                                    <span class="help-block">Enter Piano Make here</span>
+                                                                    <i class="fa fa-bars"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="form-group form-md-line-input has-success">
+                                                                <div class="input-icon">
+                                                                    @Html.EditorFor(model => model.P5.PianoModel, new { htmlAttributes = new { @class = "form-control" } })
+                                                                    <label for="form_control_1">Piano Model</label>
+                                                                    <span class="help-block">Enter Piano Model here</span>
+                                                                    <i class="fa fa-bars"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="form-group form-md-line-input has-success">
+                                                                <div class="input-icon">
+                                                                    @Html.EditorFor(model => model.P5.SerialNumber, new { htmlAttributes = new { @class = "form-control" } })
+                                                                    <label for="form_control_1">Piano Serial Number</label>
+                                                                    <span class="help-block">Enter Piano Serial Number here</span>
+                                                                    <i class="fa fa-bars"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="row" style="margin-bottom: 10px">
+                                                        <div class="col-md-4">
+                                                            <div class="form-group form-md-radios">
+                                                                <label class="col-md-3 control-label" for="IsStairs">Stairs?</label>
+                                                                <div class="col-md-9">
+                                                                    <div class="md-radio-inline">
+                                                                        <div class="md-radio">
+                                                                            <input type="radio" id="IsStairs51" name="P5.IsStairs" value="true" @IsStairs51 class="md-radiobtn">
+                                                                            <label for="IsStairs51">
+                                                                                <span></span>
+                                                                                <span class="check"></span>
+                                                                                <span class="box"></span> Yes
+                                                                            </label>
+                                                                        </div>
+                                                                        <div class="md-radio">
+                                                                            <input type="radio" id="IsStairs52" name="P5.IsStairs" value="false" @IsStairs52 class="md-radiobtn">
+                                                                            <label for="IsStairs52">
+                                                                                <span></span>
+                                                                                <span class="check"></span>
+                                                                                <span class="box"></span> No
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="col-md-4">
+
+                                                            <div class="form-group form-md-radios">
+                                                                <label class="col-md-3 control-label" for="IsBench">Bench?</label>
+                                                                <div class="col-md-9">
+                                                                    <div class="md-radio-inline">
+                                                                        <div class="md-radio">
+                                                                            <input type="radio" id="IsBench51" name="P5.IsBench" value="true" @IsBench51 class="md-radiobtn">
+                                                                            <label for="IsBench51">
+                                                                                <span></span>
+                                                                                <span class="check"></span>
+                                                                                <span class="box"></span> Yes W/B
+                                                                            </label>
+                                                                        </div>
+                                                                        <div class="md-radio">
+                                                                            <input type="radio" id="IsBench52" name="P5.IsBench" value="false" @IsBench52 class="md-radiobtn">
+                                                                            <label for="IsBench52">
+                                                                                <span></span>
+                                                                                <span class="check"></span>
+                                                                                <span class="box"></span> No N/B
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="col-md-4">
+
+                                                            <div class="form-group form-md-radios">
+                                                                <label class="col-md-3 control-label" for="IsBoxed">Boxed?</label>
+                                                                <div class="col-md-9">
+                                                                    <div class="md-radio-inline">
+                                                                        <div class="md-radio">
+                                                                            <input type="radio" id="IsBoxed51" name="P5.IsBoxed" value="true" @IsBoxed51 class="md-radiobtn">
+                                                                            <label for="IsBoxed51">
+                                                                                <span></span>
+                                                                                <span class="check"></span>
+                                                                                <span class="box"></span> Yes
+                                                                            </label>
+                                                                        </div>
+                                                                        <div class="md-radio">
+                                                                            <input type="radio" id="IsBoxed52" name="P5.IsBoxed" value="false" @IsBoxed52 class="md-radiobtn">
+                                                                            <label for="IsBoxed52">
+                                                                                <span></span>
+                                                                                <span class="check"></span>
+                                                                                <span class="box"></span> No
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <!-- End P5 -->
+                            
+                            <!-- Services -->
+                            <div class="row" style="margin-top: 5px">
+                                <div class="col-md-12">
+
+                                    <div class="portlet light bordered">
+                                        <div class="portlet-title">
+                                            <div class="caption font-blue-steel">
+                                                <i class="icon-settings font-blue-steel"></i>
+                                                <span class="caption-subject bold uppercase"> Other Services</span>
+                                            </div>
+                                            <div class="actions">
+                                                <a class="btn btn-circle btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title=""> </a>
+                                            </div>
+                                        </div>
+                                        <div class="portlet-body form">
+                                            <div class="form-body">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group form-md-checkboxes">
+                                                            <label for="form_control_1"></label>
+                                                            <div class="md-checkbox-list">
+                                                                <table class="m-grid" style="margin-bottom: 5px">
+                                                                    <thead>
+                                                                    <tr>
+                                                                        <th class="m-grid-col-md-2"></th>
+                                                                        <th class="m-grid-col-md-4">&nbsp;&nbsp;&nbsp;&nbsp;Service</th>
+                                                                        <th class="m-grid-col-md-2">&nbsp;&nbsp; Charges</th>
+                                                                        <th class="m-grid-col-md-4"></th>
+                                                                    </tr>
+                                                                    </thead>
+                                                                </table>
+                                                                @foreach (var service in Model.Services)
+                                                                {
+                                                                    var isChecked = service.IsSelected ? "checked" : "";
+
+                                                                    <div class="md-checkbox">
+                                                                        <input type="checkbox" id="@service.Id" name="ServiceCodes" value="@service.ServiceCode" @isChecked class="md-check">
+                                                                        @*@Html.CheckBoxFor(item => service.IsSelected, htmlAttributes: new { @name = "ServiceIds[]", @class = "md-check" }))*@
+                                                                        <label for="@service.Id">
+                                                                            <span></span>
+                                                                            <span class="check"></span>
+                                                                            <span class="box"></span>
+                                                                            <table class="m-grid">
+                                                                                <tr>
+                                                                                    <td class="m-grid-col-md-2">@service.ServiceCode</td>
+                                                                                    <td class="m-grid-col-md-4">@service.ServiceType</td>
+                                                                                    <td class="m-grid-col-md-2">
+                                                                                        @Html.EditorFor(m => service.ServiceCharges, new {htmlAttributes = new {@class = "form-control", @value = service.ServiceCode + "_" + service.ServiceCharges}})
+                                                                                    </td>
+                                                                                    <td class="m-grid-col-md-4"></td>
+                                                                                </tr>
+                                                                            </table>
+                                                                        </label>
+                                                                    </div>
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <!-- End Services  -->
+                                        </div>
+                                        <div class="form-actions noborder">
+                                            <button type="submit" class="btn blue-steel ">Save Order</button>
+                                            <a href="/Orders" class="btn c-btn-border-1x c-btn-blue-steel">Cancel</a>
+                                        </div>
+                    </div>
+                </div>
+}
+                <!-- END SAMPLE FORM PORTLET-->
+            </div>
+            
+        </div>
+       
+        <!-- END PAGE BASE CONTENT -->
+    </div>
+    <!-- END CONTENT BODY -->
+</div>
+<!-- END CONTENT -->
+
+<script type="text/javascript">
+
+    var wfp = wfp || {};
+
+    $(function () {
+        debugger;
+        if ($("#P2_PianoName").val() === '') {
+            $("#p2").fadeOut(1000);
+        }
+        if ($("#P3_PianoName").val() === '') {
+            $("#p3").fadeOut(1000);
+        }
+        if ($("#P4_PianoName").val() === '') {
+            $("#p4").fadeOut(1000);
+        }
+        if ($("#P5_PianoName").val() === '') {
+            $("#p5").fadeOut(1000);
+        }
+
+        $('#PreferredPickupDateTime').datetimepicker({
+            format: 'M/DD/YYYY hh:mm A'
+        });
+
+        var FormValidationMd = function () {
+
+            var handleValidation1 = function () {
+                // for more info visit the official plugin documentation: 
+                // http://docs.jquery.com/Plugins/Validation
+                var form1 = $('#frm');
+                var error1 = $('.alert-danger', form1);
+                var success1 = $('.alert-success', form1);
+
+                form1.validate({
+                    errorElement: 'span', //default input error message container
+                    errorClass: 'help-block help-block-error', // default input error message class
+                    focusInvalid: false, // do not focus the last invalid input
+                    ignore: "", // validate all fields including form hidden input
+                    messages: {
+                        //payment: {
+                        //    maxlength: jQuery.validator.format("Max {0} items allowed for selection"),
+                        //    minlength: jQuery.validator.format("At least {0} items must be selected")
+                        //},
+                        //'checkboxes1[]': {
+                        //    required: 'Please check some options',
+                        //    minlength: jQuery.validator.format("At least {0} items must be selected"),
+                        //},
+                        //'checkboxes2[]': {
+                        //    required: 'Please check some options',
+                        //    minlength: jQuery.validator.format("At least {0} items must be selected"),
+                        //}
+                    },
+                    rules: {
+                        OrderType: {
+                            required: true
+                        },
+                        OrderMedium: {
+                            required: true
+                        },
+                        CallerPhoneNumber: {
+                            required: true,
+                            phoneUS: true
+                        },
+                        CallerEmail: {
+                            required: true,
+                            email: true
+                        },
+                        //PreferredPickupDateTime: {
+                        //    required: true
+                        //},
+                        "P1.PianoType": {
+                            required: true
+                        },
+                        "P1.PianoName": {
+                            minlength: 2,
+                            required: true
+                        },
+                        "P1.PianoMake": {
+                            minlength: 2,
+                            required: true
+                        },
+                        "P1.PianoModel": {
+                            minlength: 2,
+                            required: true
+                        },
+                        "P1.PianoColor": {
+                            minlength: 2,
+                            required: true
+                        },
+                        "P1.SerialNumber": {
+                            minlength: 2,
+                            required: true
+                        },
+                        "P1.IsBench": {
+                            required: true
+                        },
+                        "P1.IsBoxed": {
+                            required: true
+                        },
+                        "P1.IsStairs": {
+                            required: true
+                        },
+                        "PickupAddress.Name": {
+                            minlength: 2,
+                            required: true
+                        },
+                        "PickupAddress.Address1": {
+                            minlength: 2,
+                            required: true
+                        },
+                        "PickupAddress.Suburb": {
+                            required: true
+                        },
+                        "PickupAddress.State": {
+                            required: true
+                        },
+                        "PickupAddress.PostCode": {
+                            required: true
+                        },
+                        "PickupAddress.PhoneNumber": {
+                            required: true,
+                            phoneUS: true
+                        },
+                        "DeliveryAddress.Name": {
+                            minlength: 2,
+                            required: true
+                        },
+                        "DeliveryAddress.Address1": {
+                            minlength: 2,
+                            required: true
+                        },
+                        "DeliveryAddress.Suburb": {
+                            required: true
+                        },
+                        "DeliveryAddress.State": {
+                            required: true
+                        },
+                        "DeliveryAddress.PostCode": {
+                            required: true
+                        },
+                        "DeliveryAddress.PhoneNumber": {
+                            required: true,
+                            phoneUS: true
+                        }
+
+                        //email: {
+                        //    required: true,
+                        //    email: true
+                        //},
+                        //email2: {
+                        //    required: true,
+                        //    email: true
+                        //},
+                        //url: {
+                        //    required: true,
+                        //    url: true
+                        //},
+                        //url2: {
+                        //    required: true,
+                        //    url: true
+                        //},
+                        //number: {
+                        //    required: true,
+                        //    number: true
+                        //},
+                        //number2: {
+                        //    required: true,
+                        //    number: true
+                        //},
+                        //digits: {
+                        //    required: true,
+                        //    digits: true
+                        //},
+                        //creditcard: {
+                        //    required: true,
+                        //    creditcard: true
+                        //},
+
+                        //payment: {
+                        //    required: true,
+                        //    minlength: 2,
+                        //    maxlength: 4
+                        //},
+                        //memo: {
+                        //    required: true,
+                        //    minlength: 10,
+                        //    maxlength: 40
+                        //},
+                        //'checkboxes1[]': {
+                        //    required: true,
+                        //    minlength: 1,
+                        //    maxlength: 1
+                        //},
+                        //'checkboxes2[]': {
+                        //    required: true,
+                        //    minlength: 1,
+                        //    maxlength: 1
+                        //},
+                    },
+
+                    invalidHandler: function (event, validator) { //display error alert on form submit              
+                        success1.hide();
+                        error1.show();
+                        App.scrollTo(error1, -200);
+                    },
+
+                    errorPlacement: function (error, element) {
+                        if (element.is(':checkbox')) {
+                            error.insertAfter(element.closest(".md-checkbox-list, .md-checkbox-inline, .checkbox-list, .checkbox-inline"));
+                        } else if (element.is(':radio')) {
+                            error.insertAfter(element.closest(".md-radio-list, .md-radio-inline, .radio-list,.radio-inline"));
+                        } else {
+                            error.insertAfter(element); // for other inputs, just perform default behavior
+                        }
+                    },
+
+                    highlight: function (element) { // hightlight error inputs
+                        $(element)
+                            .closest('.form-group').addClass('has-error'); // set error class to the control group
+                    },
+
+                    unhighlight: function (element) { // revert the change done by hightlight
+                        $(element)
+                            .closest('.form-group').removeClass('has-error'); // set error class to the control group
+                    },
+
+                    success: function (label) {
+                        label
+                            .closest('.form-group').removeClass('has-error'); // set success class to the control group
+                    },
+
+                    submitHandler: function (form) {
+                        //debugger;
+                        form.submit();
+                        //success1.show();
+                        //error1.hide();
+                    }
+                });
+            }
+
+            return {
+                init: function () {
+                    handleValidation1();
+                }
+            };
+        }();
+
+        FormValidationMd.init();
+
+        $('.btnAdd').click(function (e) {
+            debugger;
+
+            var nextDivId = parseInt($(this).data('id')) + 1;
+            var nextDiv = "#p" + nextDivId;
+            $(nextDiv).fadeIn(2000);
+            $("#frm").validate();
+            $("#P" + nextDivId + "_PianoType").rules("add", {
+                required: true
+            });
+            $("#P" + nextDivId + "_PianoName").rules("add", {
+                required: true
+            });
+            $("#P" + nextDivId + "_PianoColor").rules("add", {
+                required: true
+            });
+            $("#P" + nextDivId + "_PianoMake").rules("add", {
+                required: true
+            });
+            $("#P" + nextDivId + "_PianoModel").rules("add", {
+                required: true
+            });
+            $("#P" + nextDivId + "_SerialNumber").rules("add", {
+                required: true
+            });
+            
+            e.preventDefault();
+            //var n = $(document).height();
+            var n = $(window).scrollTop() + 350;
+            $('html, body').animate({ scrollTop: n }, 50);
+
+        });
+
+        $('.btnDelete').click(function (e) {
+            debugger;
+            var thisDivId = parseInt($(this).data('id'));
+            var thisDiv = "#p" + thisDivId;
+            $(thisDiv).fadeOut(2000);
+            $("#frm").validate();
+            $("#P" + thisDivId + "_PianoType").rules("remove");
+            $("#P" + thisDivId + "_PianoName").rules("remove");
+            $("#P" + thisDivId + "_PianoColor").rules("remove");
+            $("#P" + thisDivId + "_PianoMake").rules("remove");
+            $("#P" + thisDivId + "_PianoModel").rules("remove");
+            $("#P" + thisDivId + "_SerialNumber").rules("remove");
+            e.preventDefault();
+            //var n = $(document).height();
+            var n = $(window).scrollTop() - 350;
+            $('html, body').animate({ scrollTop: n }, 50);
+        });
+        
+    });
+</script>
+

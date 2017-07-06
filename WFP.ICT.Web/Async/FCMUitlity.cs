@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Linq;
 using System.Web;
 using FirebaseNet.Messaging;
+using WFP.ICT.Data.Entities;
 
 namespace WFP.ICT.Web.FCM
 {
@@ -15,13 +16,13 @@ namespace WFP.ICT.Web.FCM
 
     public class FCMUitlity
     {
-        public static void SendConsignment(string to, string id)
+        public static void SendConsignment(string driverToken, string consignmentId, string consignmentNumber)
         {
             FCMClient client = new FCMClient(ConfigurationSettings.AppSettings["FCMServerKey"]);
-
+            
             var message = new Message()
             {
-                To = to,
+                To = driverToken,
                 Notification = new AndroidNotification()
                 {
                     Body = "A new pickup order is arrived!",
@@ -31,7 +32,7 @@ namespace WFP.ICT.Web.FCM
                 Data = new Dictionary<string, string>
                 {
                     { "MessageType", MessageTypeEnum.Consignment.ToString()},
-                    { "Id", id }
+                    { "Id", consignmentId }
                 }
             };
 

@@ -18,6 +18,7 @@ namespace WFP.ICT.Web.Controllers
     {
         public ActionResult Index()
         {
+            //SMSHelper.Send("+923216334272", "Hello, Kamran");
             var orderVMs = new List<OrderVm>();
             var orders = db.PianoOrders
                 .Include(x => x.Customer)
@@ -28,55 +29,8 @@ namespace WFP.ICT.Web.Controllers
                 .ToList();
             foreach (var order in orders)
             {
-                var pickupAddress = TinyMapper.Map<AddressVm>(order.PickupAddress).AddressToString;
-                var deliveryAddress = TinyMapper.Map<AddressVm>(order.DeliveryAddress).AddressToString;
-
-                var orderVM = new OrderVm()
-                {
-                    Id = order.Id.ToString(),
-                    OrderDate = order.CreatedAt.ToString(),
-                    OrderNumber = order.OrderNumber,
-                    OrderType = ((OrderTypeEnum)order.OrderType).ToString(),
-                    OrderMedium = ((OrderMediumEnum)order.OrderMedium).ToString(),
-                    CallerFirstName = order.CallerFirstName,
-                    CallerLastName = order.CallerLastName,
-                    CallerPhoneNumber = order.CallerPhoneNumber,
-                    CallerEmail = order.CallerEmail,
-                    PreferredPickupDateTime = order.PreferredPickupDateTime?.ToString(StringConstants.TimeStampFormatSlashes),
-                    Notes = order.Notes,
-                    PickupAddressString  = pickupAddress,
-                    DeliveryAddressString = deliveryAddress,
-                    PickupDate = order.PickupDate?.ToString(),
-                    DeliveryDate = order.DeliveryDate?.ToString(),
-                    Customer = order.Customer != null ? order.Customer.AccountCode + " " + order.Customer.Name : ""
-                };
                 
-                orderVM.Pianos = order.Pianos.OrderByDescending(x => x.CreatedAt).Select(
-                    x => new PianoVm()
-                    {
-                        Id = x.Id,
-                        OrderId = order.Id,
-                        PianoType = PianoTypesList.FirstOrDefault(y => y.Value == x.PianoTypeId.ToString()).Text,
-                        PianoName = x.Name,
-                        PianoColor = x.Color,
-                        PianoModel = x.Model,
-                        PianoMake = x.Make,
-                        SerialNumber = x.SerialNumber,
-                        IsBench = x.IsBench,
-                        IsBoxed = x.IsBoxed,
-                        IsStairs = x.IsStairs
-                    }).ToList();
-                orderVM.Services = order.Services.OrderBy(x => x.ServiceCode).Select(
-                    x => new PianoServiceVm()
-                    {
-                        Id = x.Id.ToString(),
-                        ServiceCode = x.ServiceCode.ToString(),
-                        ServiceType = ((ServiceTypeEnum) x.ServiceType).ToString(),
-                        ServiceDetails = x.ServiceDetails,
-                        ServiceCharges = x.ServiceCharges.ToString()
-                    }).ToList();
-                orderVMs.Add(orderVM);
-
+                orderVMs.Add(OrderVm.FromOrder(order, PianoTypesList));
                 _forceRefreshOrders = true;
             }
             return View(orderVMs);
@@ -293,7 +247,11 @@ namespace WFP.ICT.Web.Controllers
                             db.SaveChanges();
                         }
 
-                        BackgroundJob.Enqueue(() => EmailHelper.SendOrderEmailToClient(orderVm));
+                        var orderVmSaved = OrderVm.FromOrder(order, PianoTypesList);
+                        BackgroundJob.Enqueue(() => EmailHelper.SendOrderEmailToClient(orderVmSaved));
+                        
+                        BackgroundJob.Enqueue(() => SMSHelper.Send(orderVmSaved));
+
                         TempData["Success"] = "Order #: " + order.OrderNumber + " has been saved sucessfully.";
                         return RedirectToAction("Index");
                     }

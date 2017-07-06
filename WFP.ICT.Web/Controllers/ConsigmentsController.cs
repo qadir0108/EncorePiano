@@ -35,10 +35,7 @@ namespace WFP.ICT.Web.Controllers
 
         public ActionResult Index()
         {
-
-            FCMUitlity.SendConsignment(db.Drivers.FirstOrDefault(x => x.Code == "D101").FCMToken,
-                "BE747D6D-8B7F-4D7D-AFEC-76D3B8900C87");
-
+            
             var consigmentVms = new List<ConsigmentVm>();
             var consignments = db.PianoConsignments
                 .Include(x => x.Driver)
@@ -128,42 +125,83 @@ namespace WFP.ICT.Web.Controllers
             {
                 try
                 {
-                    var order = db.PianoOrders.FirstOrDefault(x => x.Id == conVm.Orders);
-                    var consignment = new PianoConsignment()
-                    {
-                        Id = Guid.NewGuid(),
-                        CreatedAt = DateTime.Now,
-                        CreatedBy = LoggedInUser?.UserName,
-                        PianoOrderId = conVm.Orders,
-                        DriverId = conVm.Drivers,
-                        WarehouseStartId = conVm.Warehouses,
-                        VehicleId = conVm.Vehicles,
-                        ConsignmentNumber = "CON-" + order.OrderNumber
-                    };
-                    db.PianoConsignments.Add(consignment);
-                    db.SaveChanges();
+                    var order = db.PianoOrders
+                        .FirstOrDefault(x => x.Id == conVm.Orders);
 
-                    int odr = 1;
-                    var paths = JsonConvert.DeserializeObject<ConsignmentRouteVm[]>(conVm.Paths);
-                    foreach (var path in paths)
+                    PianoConsignment consignment;
+                    if (!order.PianoConsignmentId.HasValue)
                     {
-                        db.PianoConsignmentRoutes.Add(new PianoConsignmentRoute()
+                        consignment = new PianoConsignment()
                         {
                             Id = Guid.NewGuid(),
                             CreatedAt = DateTime.Now,
-                            PianoConsignmentId = consignment.Id,
-                            Order = odr,
-                            Lat = path.Lat,
-                            Lng = path.Lng
-                        });
-                        odr++;
+                            CreatedBy = LoggedInUser?.UserName,
+                            PianoOrderId = conVm.Orders,
+                            DriverId = conVm.Drivers,
+                            WarehouseStartId = conVm.Warehouses,
+                            VehicleId = conVm.Vehicles,
+                            ConsignmentNumber = "CON-" + order.OrderNumber
+                        };
+                        db.PianoConsignments.Add(consignment);
+                        db.SaveChanges();
+
+                        int odr = 1;
+                        var paths = JsonConvert.DeserializeObject<ConsignmentRouteVm[]>(conVm.Paths);
+                        foreach (var path in paths)
+                        {
+                            db.PianoConsignmentRoutes.Add(new PianoConsignmentRoute()
+                            {
+                                Id = Guid.NewGuid(),
+                                CreatedAt = DateTime.Now,
+                                PianoConsignmentId = consignment.Id,
+                                Order = odr,
+                                Lat = path.Lat,
+                                Lng = path.Lng
+                            });
+                            odr++;
+                        }
+                        db.SaveChanges();
                     }
-                    db.SaveChanges();
+                    else
+                    {
+                        consignment = db.PianoConsignments
+                            .Include(x => x.Route)
+                            .FirstOrDefault(x => x.Id == order.PianoConsignmentId);
+
+                        consignment.PianoOrderId = conVm.Orders;
+                        consignment.DriverId = conVm.Drivers;
+                        consignment.WarehouseStartId = conVm.Warehouses;
+                        consignment.VehicleId = conVm.Vehicles;
+                        consignment.ConsignmentNumber = "CON-" + order.OrderNumber;
+                        db.SaveChanges();
+
+                        foreach (var route in consignment.Route)
+                        {
+                            db.PianoConsignmentRoutes.Remove(route);
+                        }
+                        db.SaveChanges();
+
+                        int odr = 1;
+                        var paths = JsonConvert.DeserializeObject<ConsignmentRouteVm[]>(conVm.Paths);
+                        foreach (var path in paths)
+                        {
+                            db.PianoConsignmentRoutes.Add(new PianoConsignmentRoute()
+                            {
+                                Id = Guid.NewGuid(),
+                                CreatedAt = DateTime.Now,
+                                PianoConsignmentId = consignment.Id,
+                                Order = odr,
+                                Lat = path.Lat,
+                                Lng = path.Lng
+                            });
+                            odr++;
+                        }
+                        db.SaveChanges();
+
+                    }
 
                     var driver = db.Drivers.FirstOrDefault(x => x.Id == consignment.DriverId);
-                    //GCMNotification.SendConsignment(driver?.FCMToken, consignment.Id.ToString());
-
-                    //BackgroundJob.Enqueue(() => GCMNotification.SendConsignment());
+                    BackgroundJob.Enqueue(() => FCMUitlity.SendConsignment(driver.FCMToken, consignment.Id.ToString(), consignment.ConsignmentNumber));
 
                     TempData["Success"] = "Conisgnment #: " + consignment.ConsignmentNumber +
                                           " has been saved sucessfully.";
@@ -258,5 +296,25 @@ namespace WFP.ICT.Web.Controllers
             return File(filePath, "application/octet-stream", "PickupTickets.pdf");
             
         }
+
+        [HttpPost]
+        public ActionResult Send(Guid? id)
+        {
+            try
+            {
+                var consignment = db.PianoConsignments
+                            .FirstOrDefault(x => x.Id == id);
+
+                var driver = db.Drivers.FirstOrDefault(x => x.Id == consignment.DriverId);
+                BackgroundJob.Enqueue(() => FCMUitlity.SendConsignment(driver.FCMToken, consignment.Id.ToString(), consignment.ConsignmentNumber));
+
+                return Json(new JsonResponse() { IsSucess = true }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new JsonResponse() { IsSucess = false, ErrorMessage = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
     }
 }

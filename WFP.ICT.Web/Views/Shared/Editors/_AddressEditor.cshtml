@@ -1,0 +1,23 @@
+﻿@using MyToolkit.Html
+@model  WFP.ICT.Web.ViewModels.AddressEditorViewModel
+
+<li style="cursor: move">
+    <div class="panel panel-default panel-body">
+        @using (Html.BeginCollectionItem("Addresses"))
+        {
+            @Html.HiddenFor(m => m.Id)
+            <p>
+                @Html.LabelFor(m => m.Street)
+                @Html.TextBoxFor(m => m.Street, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Street, null, new { @class = "text-danger" })
+            </p>
+            <p>
+                @Html.LabelFor(m => m.City)
+                @Html.TextBoxFor(m => m.City, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.City, null, new { @class = "text-danger" })
+            </p>
+            <input type="button" value="Delete" class="btn btn-default"
+                   onclick="$(this).parent().remove();" />
+        }
+    </div>
+</li>

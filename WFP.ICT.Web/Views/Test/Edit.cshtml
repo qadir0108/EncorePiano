@@ -1,0 +1,15 @@
+﻿@using MyToolkit.Html
+@model  WFP.ICT.Web.ViewModels.PersonEditViewModel
+
+@using (Html.BeginForm())
+{
+<div class="form-group">
+    @Html.LabelFor(m => m.Addresses, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.CollectionEditorFor(m => m.Addresses, "Editors/_AddressEditor", "/Test/GetAddressEditor",
+         "Add address", new { @class = "btn btn-default" })
+        <input type="submit" value="Save" class="btn btn-default" />
+    </div>
+    
+</div>
+}

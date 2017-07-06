@@ -1,6 +1,7 @@
 ﻿using System;
+using WFP.ICT.Web.Models;
 
-namespace WFP.ICT.Web.Models
+namespace WFP.ICT.Web.ViewModels
 {
     public class WarehouseVm
     {

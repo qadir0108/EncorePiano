@@ -6,10 +6,12 @@ using System.Web;
 using System.Web.Mvc;
 using Hangfire;
 using Nelibur.ObjectMapper;
+using WebGrease.Css.Extensions;
 using WFP.ICT.Data.Entities;
 using WFP.ICT.Enum;
 using WFP.ICT.Web.Async;
 using WFP.ICT.Web.Models;
+using WFP.ICT.Web.ViewModels;
 
 namespace WFP.ICT.Web.Controllers
 {
@@ -17,67 +19,18 @@ namespace WFP.ICT.Web.Controllers
     {
         public ActionResult Index()
         {
-            var orderVMs = new List<OrderVm>();
-            //var orders = db.PianoOrders
-            //    .Include(x => x.Customer)
-            //    .Include(x => x.Pianos)
-            //    .Include(x => x.PickupAddress)
-            //    .Include(x => x.DeliveryAddress)
-            //    .Include(x => x.Services)
-            //    .ToList();
-            //foreach (var order in orders)
-            //{
-            //    var pickupAddress = new AddressVm(order.PickupAddress).AddressToString;
-            //    var deliveryAddress = new AddressVm(order.DeliveryAddress).AddressToString;
+            var vms = new List<WarehouseVm>();
+            var entities = db.Warehouses
+                .Include(x => x.Address)
+                .Include(x => x.Inventory)
+                .ToList();
 
-            //    var orderVM = new OrderVm()
-            //    {
-            //        Id = order.Id.ToString(),
-            //        OrderDate = order.CreatedAt.ToString(),
-            //        OrderNumber = order.OrderNumber,
-            //        OrderMedium = ((OrderMediumEnum)order.OrderMedium).ToString(),
-            //        CallerFirstName = order.CallerFirstName,
-            //        CallerLastName = order.CallerLastName,
-            //        CallerPhoneNumber = order.CallerPhoneNumber,
-            //        CallerEmail = order.CallerEmail,
-            //        PreferredPickupDateTime = order.PreferredPickupDateTime?.ToString(StringConstants.TimeStampFormatSlashes),
-            //        Notes = order.Notes,
-            //        PickupAddressString = pickupAddress,
-            //        DeliveryAddressString = deliveryAddress,
-            //        PickupDate = order.PickupDate?.ToString(),
-            //        DeliveryDate = order.DeliveryDate?.ToString(),
-            //        Customer = order.Customer != null ? order.Customer.AccountCode + " " + order.Customer.Name : ""
-            //    };
+            foreach (var entity in entities)
+            {
+                vms.Add(TinyMapper.Map<WarehouseVm>(entity));
+            }
 
-            //    orderVM.Pianos = order.Pianos.OrderByDescending(x => x.CreatedAt).Select(
-            //        x => new PianoVm()
-            //        {
-            //            Id = x.Id,
-            //            OrderId = order.Id,
-            //            PianoType = PianoTypesList.FirstOrDefault(y => y.Value == x.PianoTypeId.ToString()).Text,
-            //            PianoName = x.Name,
-            //            PianoColor = x.Color,
-            //            PianoModel = x.Model,
-            //            PianoMake = x.Make,
-            //            SerialNumber = x.SerialNumber,
-            //            IsBench = x.IsBench,
-            //            IsBoxed = x.IsBoxed,
-            //            IsStairs = x.IsStairs
-            //        }).ToList();
-            //    orderVM.Services = order.Services.OrderBy(x => x.ServiceCode).Select(
-            //        x => new PianoServiceVm()
-            //        {
-            //            Id = x.Id.ToString(),
-            //            ServiceCode = x.ServiceCode.ToString(),
-            //            ServiceType = ((ServiceTypeEnum)x.ServiceType).ToString(),
-            //            ServiceDetails = x.ServiceDetails,
-            //            ServiceCharges = x.ServiceCharges.ToString()
-            //        }).ToList();
-            //    orderVMs.Add(orderVM);
-
-            //    _forceRefreshOrders = true;
-            //}
-            return View(orderVMs);
+            return View(vms);
         }
 
         public ActionResult New()

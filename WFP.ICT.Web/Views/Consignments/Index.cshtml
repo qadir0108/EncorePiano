@@ -77,6 +77,7 @@
                                         <th class="all">Warehouse</th>
                                         <th class="all">Vehicle</th>
                                         <th class="all">Driver</th>
+                                        <th class="all">Actions</th>
     @*
         min-phone-l min-tablet <th class="desktop"></th>
     <th class="none"></th>*@
@@ -85,6 +86,8 @@
                                 <tbody>
                                     @foreach (var order in Model)
                                     {
+                                        var btnSend = "btnSend" + order.Id;
+
                                         <tr>
                                             <td>@order.ConsignmentNumber</td>
                                             <td>@order.OrderNumber</td>
@@ -92,6 +95,11 @@
                                             <td>@order.StartWarehouseName</td>
                                             <td>@order.VehicleName</td>
                                             <td>@order.DriverName</td>
+                                            <td>
+                                                <a class="btnSend" id="@btnSend" href="#" data-number="@order.ConsignmentNumber" data-tooltip="tooltip" title="Dispatch to Device">
+                                                    <span class="glyphicon glyphicon-send"></span>
+                                                </a>
+                                            </td>
                                         </tr>
                                     }
                                 </tbody>
@@ -105,4 +113,48 @@
         </div>
         <!-- END CONTENT BODY -->
     </div>
-    <!-- END CONTENT -->
+<!-- END CONTENT -->
+
+<script type="text/javascript">
+
+    var wfp = wfp || {};
+
+   $('.btnSend').click(function () {
+
+       var btnSend = $(this);
+       var id = btnSend.attr('id').replace('btnSend', '');
+       var divRow = $('#' + id);
+       var dataToPost = "{id : '" + id + "'}";
+       var number = btnSend.data('number');
+
+       wfp.showSwal("Are you sure to send Pickup #: " + number + "?",
+           function() {
+
+               debugger;
+               $.ajax({
+                   type: "POST",
+                   url: '/Consignments/Send',
+                   data: dataToPost,
+                   contentType: "application/json; charset=utf-8",
+                   success: function(response) {
+                       debugger;
+                       if (response === "") wfp.reload();
+                       if (response.IsSucess) {
+                           wfp.showSuccess('Consignment #: '+ number +' has been sent successfully.');
+                           //divRow.fadeOut(1000).animate({ "opacity": "0" }, function() { divRow.remove(); });
+
+                       } else {
+                           wfp.showError(response.ErrorMessage);
+                       }
+                   },
+                   failure: function(response) {
+                       wfp.showError('There is erorr in service call.');
+                   },
+                   complete: function() {
+                   }
+               });
+           });
+   });
+
+
+</script>

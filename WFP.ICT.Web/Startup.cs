@@ -8,6 +8,7 @@ using Hangfire;
 using Microsoft.AspNet.Identity.EntityFramework;
 using WFP.ICT.Common;
 using WFP.ICT.Data.Entities;
+using WFP.ICT.Web.Async;
 using WFP.ICT.Web.Helpers;
 
 [assembly: OwinStartup(typeof(WFP.ICT.Web.Startup))]
@@ -26,7 +27,7 @@ namespace WFP.ICT.Web
             {
                 var ad = db.Addresses.FirstOrDefault();
             }
-
+            
             GlobalConfiguration.Configuration.UseSqlServerStorage("WFPICTContext");
             //app.UseHangfireDashboard();
             app.UseHangfireDashboard("/hangfire", new DashboardOptions

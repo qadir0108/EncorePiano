@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
+using Nelibur.ObjectMapper;
+using WFP.ICT.Data.Entities;
 using WFP.ICT.Enum;
+using WFP.ICT.Enums;
 
 namespace WFP.ICT.Web.Models
 {
@@ -47,6 +51,59 @@ namespace WFP.ICT.Web.Models
         public List<PianoServiceVm> Services { get; set; }
 
         public string PickupTicket { get; set; }
+
+        public static OrderVm FromOrder(PianoOrder order, IEnumerable<SelectListItem> PianoTypesList)
+        {
+            var pickupAddress = TinyMapper.Map<AddressVm>(order.PickupAddress).AddressToString;
+            var deliveryAddress = TinyMapper.Map<AddressVm>(order.DeliveryAddress).AddressToString;
+
+            var orderVM = new OrderVm()
+            {
+                Id = order.Id.ToString(),
+                OrderDate = order.CreatedAt.ToString(),
+                OrderNumber = order.OrderNumber,
+                OrderType = ((OrderTypeEnum)order.OrderType).ToString(),
+                OrderMedium = ((OrderMediumEnum)order.OrderMedium).ToString(),
+                CallerFirstName = order.CallerFirstName,
+                CallerLastName = order.CallerLastName,
+                CallerPhoneNumber = order.CallerPhoneNumber,
+                CallerEmail = order.CallerEmail,
+                PreferredPickupDateTime = order.PreferredPickupDateTime?.ToString(StringConstants.TimeStampFormatSlashes),
+                Notes = order.Notes,
+                PickupAddressString = pickupAddress,
+                DeliveryAddressString = deliveryAddress,
+                PickupDate = order.PickupDate?.ToString(),
+                DeliveryDate = order.DeliveryDate?.ToString(),
+                Customer = order.Customer != null ? order.Customer.AccountCode + " " + order.Customer.Name : ""
+            };
+
+            orderVM.Pianos = order.Pianos.OrderByDescending(x => x.CreatedAt).Select(
+                x => new PianoVm()
+                {
+                    Id = x.Id,
+                    OrderId = order.Id,
+                    PianoType = PianoTypesList.FirstOrDefault(y => y.Value == x.PianoTypeId.ToString()).Text,
+                    PianoName = x.Name,
+                    PianoColor = x.Color,
+                    PianoModel = x.Model,
+                    PianoMake = x.Make,
+                    SerialNumber = x.SerialNumber,
+                    IsBench = x.IsBench,
+                    IsBoxed = x.IsBoxed,
+                    IsStairs = x.IsStairs
+                }).ToList();
+            orderVM.Services = order.Services.OrderBy(x => x.ServiceCode).Select(
+                x => new PianoServiceVm()
+                {
+                    Id = x.Id.ToString(),
+                    ServiceCode = x.ServiceCode.ToString(),
+                    ServiceType = ((ServiceTypeEnum)x.ServiceType).ToString(),
+                    ServiceDetails = x.ServiceDetails,
+                    ServiceCharges = x.ServiceCharges.ToString()
+                }).ToList();
+
+            return orderVM;
+        }
 
     }
 }
