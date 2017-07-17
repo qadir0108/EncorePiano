@@ -41,7 +41,7 @@ namespace WFP.ICT.Data
                 var already = context.PianoServices.FirstOrDefault(m => m.ServiceType.ToString() == officeCode);
                 if (already == null)
                 {
-                    context.PianoServices.Add(new PianoService()
+                    context.PianoServices.Add(new PianoCharges()
                     {
                         Id = Guid.NewGuid(),
                         ServiceCode = code,
@@ -57,7 +57,7 @@ namespace WFP.ICT.Data
 
             // Test Customers
             var customerId = Guid.NewGuid();
-            context.Customers.Add(new Customer()
+            context.Clients.Add(new Client()
             {
                 Id = customerId,
                 CreatedAt = DateTime.Now,
@@ -69,23 +69,23 @@ namespace WFP.ICT.Data
             });
             context.SaveChanges();
 
-            // Address Types
-            foreach (var ptype in EnumHelper.GetEnumTextValues(typeof(AddressTypeEnum)))
-            {
-                string addressTypeCode = ptype.Value;
-                var already = context.AddressTypes.FirstOrDefault(m => m.Code == addressTypeCode);
-                if (already == null)
-                {
-                    context.AddressTypes.Add(new AddressType()
-                    {
-                        Id = Guid.NewGuid(),
-                        CreatedAt = DateTime.Now,
-                        Code = ptype.Value,
-                        Name = ptype.Text,
-                    });
-                }
-            }
-            context.SaveChanges();
+            // Address Types  -- Not Currently in use
+            //foreach (var ptype in EnumHelper.GetEnumTextValues(typeof(AddressTypeEnum)))
+            //{
+            //    string addressTypeCode = ptype.Value;
+            //    var already = context.AddressTypes.FirstOrDefault(m => m.Code == addressTypeCode);
+            //    if (already == null)
+            //    {
+            //        context.AddressTypes.Add(new AddressType()
+            //        {
+            //            Id = Guid.NewGuid(),
+            //            CreatedAt = DateTime.Now,
+            //            Code = ptype.Value,
+            //            Name = ptype.Text,
+            //        });
+            //    }
+            //}
+            //context.SaveChanges();
 
             // Test Address
             context.Addresses.Add(new Address()
@@ -100,7 +100,7 @@ namespace WFP.ICT.Data
                 State = "CA",
                 Suburb = "Suberb name",
                 Lat = "34.504772",
-                Lng="-117.221566"
+                Lng="-117.221566",
             });
             context.SaveChanges();
 

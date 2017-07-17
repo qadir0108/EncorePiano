@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WFP.ICT.Data.Entities
 {
-    public class PianoService : BaseEntity, iBaseEntity
+    public class PianoCharges : BaseEntity, iBaseEntity
     {
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public Guid Id { get; set; }
@@ -18,7 +18,7 @@ namespace WFP.ICT.Data.Entities
         public Guid? PianoOrderId { get; set; }
         public virtual PianoOrder PianoOrder { get; set; }
 
-        public PianoService()
+        public PianoCharges()
         {
             
         }

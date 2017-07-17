@@ -3,7 +3,7 @@ namespace WFP.ICT.Data.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class Initial : DbMigration
+    public partial class UnitsUpdate : DbMigration
     {
         public override void Up()
         {
@@ -19,34 +19,89 @@ namespace WFP.ICT.Data.Migrations
                         State = c.String(),
                         PostCode = c.String(),
                         PhoneNumber = c.String(),
+                        NumberTurns = c.Int(nullable: false),
+                        NumberStairs = c.Int(nullable: false),
+                        AlternateContact = c.String(),
+                        AlternatePhone = c.String(),
                         Lat = c.String(),
                         Lng = c.String(),
-                        AddressTypeId = c.Guid(),
+                        AddressType = c.Int(nullable: false),
                         CustomerId = c.Guid(),
                         WarehouseId = c.Guid(),
-                        CreatedAt = c.DateTime(nullable: false),
-                        CreatedBy = c.String(),
-                    })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.AddressType", t => t.AddressTypeId)
-                .ForeignKey("dbo.Customer", t => t.CustomerId)
-                .Index(t => t.AddressTypeId)
-                .Index(t => t.CustomerId);
-            
-            CreateTable(
-                "dbo.AddressType",
-                c => new
-                    {
-                        Id = c.Guid(nullable: false),
-                        Code = c.String(),
-                        Name = c.String(),
                         CreatedAt = c.DateTime(nullable: false),
                         CreatedBy = c.String(),
                     })
                 .PrimaryKey(t => t.Id);
             
             CreateTable(
-                "dbo.Customer",
+                "dbo.APIRequestLog",
+                c => new
+                    {
+                        Id = c.Guid(nullable: false),
+                        RequestType = c.Int(nullable: false),
+                        Request = c.String(),
+                        CreatedAt = c.DateTime(nullable: false),
+                        CreatedBy = c.String(),
+                    })
+                .PrimaryKey(t => t.Id);
+            
+            CreateTable(
+                "dbo.AspNetClaims",
+                c => new
+                    {
+                        Id = c.Guid(nullable: false),
+                        ClaimType = c.String(),
+                        ClaimValue = c.String(),
+                        CreatedAt = c.DateTime(nullable: false),
+                        CreatedBy = c.String(),
+                    })
+                .PrimaryKey(t => t.Id);
+            
+            CreateTable(
+                "dbo.AspNetRoleClaims",
+                c => new
+                    {
+                        Id = c.Guid(nullable: false),
+                        ClaimID = c.Guid(nullable: false),
+                        RoleID = c.String(maxLength: 128),
+                        CreatedAt = c.DateTime(nullable: false),
+                        CreatedBy = c.String(),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.AspNetClaims", t => t.ClaimID, cascadeDelete: true)
+                .ForeignKey("dbo.AspNetRoles", t => t.RoleID)
+                .Index(t => t.ClaimID)
+                .Index(t => t.RoleID);
+            
+            CreateTable(
+                "dbo.AspNetRoles",
+                c => new
+                    {
+                        Id = c.String(nullable: false, maxLength: 128),
+                        Name = c.String(nullable: false, maxLength: 256),
+                        Description = c.String(),
+                        IsEditable = c.Boolean(),
+                        IsDeletable = c.Boolean(),
+                        Discriminator = c.String(nullable: false, maxLength: 128),
+                    })
+                .PrimaryKey(t => t.Id)
+                .Index(t => t.Name, unique: true, name: "RoleNameIndex");
+            
+            CreateTable(
+                "dbo.AspNetUserRoles",
+                c => new
+                    {
+                        UserId = c.String(nullable: false, maxLength: 128),
+                        RoleId = c.String(nullable: false, maxLength: 128),
+                    })
+                .PrimaryKey(t => new { t.UserId, t.RoleId })
+                .ForeignKey("dbo.AspNetRoles", t => t.RoleId, cascadeDelete: true)
+                .ForeignKey("dbo.AspNetUsers", t => t.UserId, cascadeDelete: true)
+                .Index(t => t.UserId)
+                .Index(t => t.RoleId);
+            
+            CreateTable(
+                "dbo.Client",
                 c => new
                     {
                         Id = c.Guid(nullable: false),
@@ -58,14 +113,14 @@ namespace WFP.ICT.Data.Migrations
                         Comment = c.String(),
                         CustomerInvoiceId = c.Guid(),
                         CustomerPaymentId = c.Guid(),
+                        CustomerType = c.Int(nullable: false),
                         CreatedAt = c.DateTime(nullable: false),
                         CreatedBy = c.String(),
+                        Addresses_Id = c.Guid(),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.CustomerInvoice", t => t.CustomerInvoiceId)
-                .ForeignKey("dbo.CustomerPayment", t => t.CustomerPaymentId)
-                .Index(t => t.CustomerInvoiceId)
-                .Index(t => t.CustomerPaymentId);
+                .ForeignKey("dbo.Address", t => t.Addresses_Id)
+                .Index(t => t.Addresses_Id);
             
             CreateTable(
                 "dbo.CustomerInvoice",
@@ -78,8 +133,11 @@ namespace WFP.ICT.Data.Migrations
                         CustomerId = c.Guid(),
                         CreatedAt = c.DateTime(nullable: false),
                         CreatedBy = c.String(),
+                        Client_Id = c.Guid(),
                     })
-                .PrimaryKey(t => t.Id);
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Client", t => t.Client_Id)
+                .Index(t => t.Client_Id);
             
             CreateTable(
                 "dbo.PianoOrder",
@@ -104,23 +162,39 @@ namespace WFP.ICT.Data.Migrations
                         CustomerId = c.Guid(),
                         PianoOrderBillingId = c.Guid(),
                         PianoConsignmentId = c.Guid(),
+                        CodAmount = c.Double(nullable: false),
+                        OfficeStaff = c.String(),
+                        OfficePayment = c.String(),
+                        BillToDifferent = c.Boolean(nullable: false),
+                        InvoiceClientId = c.Guid(),
+                        InvoiceBillingPartyId = c.Guid(),
+                        ShuttleCompanyId = c.Guid(),
                         CreatedAt = c.DateTime(nullable: false),
                         CreatedBy = c.String(),
                         CustomerInvoice_Id = c.Guid(),
+                        Client_Id = c.Guid(),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.PianoOrderBilling", t => t.PianoOrderBillingId)
-                .ForeignKey("dbo.Customer", t => t.CustomerId)
+                .ForeignKey("dbo.Client", t => t.CustomerId)
                 .ForeignKey("dbo.Address", t => t.DeliveryAddressId)
+                .ForeignKey("dbo.Client", t => t.InvoiceBillingPartyId)
+                .ForeignKey("dbo.Client", t => t.InvoiceClientId)
                 .ForeignKey("dbo.PianoConsignment", t => t.PianoConsignmentId)
                 .ForeignKey("dbo.Address", t => t.PickupAddressId)
+                .ForeignKey("dbo.Client", t => t.ShuttleCompanyId)
                 .ForeignKey("dbo.CustomerInvoice", t => t.CustomerInvoice_Id)
+                .ForeignKey("dbo.Client", t => t.Client_Id)
                 .Index(t => t.PickupAddressId)
                 .Index(t => t.DeliveryAddressId)
                 .Index(t => t.CustomerId)
                 .Index(t => t.PianoOrderBillingId)
                 .Index(t => t.PianoConsignmentId)
-                .Index(t => t.CustomerInvoice_Id);
+                .Index(t => t.InvoiceClientId)
+                .Index(t => t.InvoiceBillingPartyId)
+                .Index(t => t.ShuttleCompanyId)
+                .Index(t => t.CustomerInvoice_Id)
+                .Index(t => t.Client_Id);
             
             CreateTable(
                 "dbo.PianoOrderBilling",
@@ -135,6 +209,24 @@ namespace WFP.ICT.Data.Migrations
                         CreatedBy = c.String(),
                     })
                 .PrimaryKey(t => t.Id);
+            
+            CreateTable(
+                "dbo.PianoCharges",
+                c => new
+                    {
+                        Id = c.Guid(nullable: false),
+                        ServiceCode = c.Int(nullable: false),
+                        ServiceType = c.Int(nullable: false),
+                        ServiceStatus = c.Int(nullable: false),
+                        ServiceDetails = c.String(),
+                        ServiceCharges = c.Long(nullable: false),
+                        PianoOrderId = c.Guid(),
+                        CreatedAt = c.DateTime(nullable: false),
+                        CreatedBy = c.String(),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.PianoOrder", t => t.PianoOrderId)
+                .Index(t => t.PianoOrderId);
             
             CreateTable(
                 "dbo.PianoConsignment",
@@ -176,6 +268,7 @@ namespace WFP.ICT.Data.Migrations
                         Description = c.String(),
                         Password = c.String(),
                         DefaultVehicleID = c.Guid(),
+                        FCMToken = c.String(),
                         CreatedAt = c.DateTime(nullable: false),
                         CreatedBy = c.String(),
                     })
@@ -228,11 +321,15 @@ namespace WFP.ICT.Data.Migrations
                         Color = c.String(),
                         IsBench = c.Boolean(nullable: false),
                         IsBoxed = c.Boolean(nullable: false),
-                        IsStairs = c.Boolean(nullable: false),
+                        IsPlayer = c.Boolean(nullable: false),
                         Notes = c.String(),
                         ReceivedDate = c.DateTime(),
                         ShippedDate = c.DateTime(),
                         PianoTypeId = c.Guid(),
+                        WareHouseName = c.String(),
+                        PianoSize = c.Int(nullable: false),
+                        WareHouseStatus = c.Int(nullable: false),
+                        IsLocated = c.Boolean(nullable: false),
                         PianoStatusId = c.Guid(),
                         IsLocatedInThirdParty = c.Boolean(nullable: false),
                         WarehouseId = c.Guid(),
@@ -280,6 +377,20 @@ namespace WFP.ICT.Data.Migrations
                         CreatedBy = c.String(),
                     })
                 .PrimaryKey(t => t.Id);
+            
+            CreateTable(
+                "dbo.PianoSize",
+                c => new
+                    {
+                        Id = c.Guid(nullable: false),
+                        Width = c.String(),
+                        PianoTypeId = c.Guid(),
+                        CreatedAt = c.DateTime(nullable: false),
+                        CreatedBy = c.String(),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.PianoType", t => t.PianoTypeId)
+                .Index(t => t.PianoTypeId);
             
             CreateTable(
                 "dbo.PianoPicture",
@@ -360,24 +471,6 @@ namespace WFP.ICT.Data.Migrations
                 .PrimaryKey(t => t.Id);
             
             CreateTable(
-                "dbo.PianoService",
-                c => new
-                    {
-                        Id = c.Guid(nullable: false),
-                        ServiceCode = c.Int(nullable: false),
-                        ServiceType = c.Int(nullable: false),
-                        ServiceStatus = c.Int(nullable: false),
-                        ServiceDetails = c.String(),
-                        ServiceCharges = c.Long(nullable: false),
-                        PianoOrderId = c.Guid(),
-                        CreatedAt = c.DateTime(nullable: false),
-                        CreatedBy = c.String(),
-                    })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.PianoOrder", t => t.PianoOrderId)
-                .Index(t => t.PianoOrderId);
-            
-            CreateTable(
                 "dbo.PianoOrderStatus",
                 c => new
                     {
@@ -403,75 +496,11 @@ namespace WFP.ICT.Data.Migrations
                         CustomerId = c.Guid(),
                         CreatedAt = c.DateTime(nullable: false),
                         CreatedBy = c.String(),
-                    })
-                .PrimaryKey(t => t.Id);
-            
-            CreateTable(
-                "dbo.APIRequestLog",
-                c => new
-                    {
-                        Id = c.Guid(nullable: false),
-                        RequestType = c.Int(nullable: false),
-                        Request = c.String(),
-                        CreatedAt = c.DateTime(nullable: false),
-                        CreatedBy = c.String(),
-                    })
-                .PrimaryKey(t => t.Id);
-            
-            CreateTable(
-                "dbo.AspNetClaims",
-                c => new
-                    {
-                        Id = c.Guid(nullable: false),
-                        ClaimType = c.String(),
-                        ClaimValue = c.String(),
-                        CreatedAt = c.DateTime(nullable: false),
-                        CreatedBy = c.String(),
-                    })
-                .PrimaryKey(t => t.Id);
-            
-            CreateTable(
-                "dbo.AspNetRoleClaims",
-                c => new
-                    {
-                        Id = c.Guid(nullable: false),
-                        ClaimID = c.Guid(nullable: false),
-                        RoleID = c.String(maxLength: 128),
-                        CreatedAt = c.DateTime(nullable: false),
-                        CreatedBy = c.String(),
+                        Client_Id = c.Guid(),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.AspNetClaims", t => t.ClaimID, cascadeDelete: true)
-                .ForeignKey("dbo.AspNetRoles", t => t.RoleID)
-                .Index(t => t.ClaimID)
-                .Index(t => t.RoleID);
-            
-            CreateTable(
-                "dbo.AspNetRoles",
-                c => new
-                    {
-                        Id = c.String(nullable: false, maxLength: 128),
-                        Name = c.String(nullable: false, maxLength: 256),
-                        Description = c.String(),
-                        IsEditable = c.Boolean(),
-                        IsDeletable = c.Boolean(),
-                        Discriminator = c.String(nullable: false, maxLength: 128),
-                    })
-                .PrimaryKey(t => t.Id)
-                .Index(t => t.Name, unique: true, name: "RoleNameIndex");
-            
-            CreateTable(
-                "dbo.AspNetUserRoles",
-                c => new
-                    {
-                        UserId = c.String(nullable: false, maxLength: 128),
-                        RoleId = c.String(nullable: false, maxLength: 128),
-                    })
-                .PrimaryKey(t => new { t.UserId, t.RoleId })
-                .ForeignKey("dbo.AspNetRoles", t => t.RoleId, cascadeDelete: true)
-                .ForeignKey("dbo.AspNetUsers", t => t.UserId, cascadeDelete: true)
-                .Index(t => t.UserId)
-                .Index(t => t.RoleId);
+                .ForeignKey("dbo.Client", t => t.Client_Id)
+                .Index(t => t.Client_Id);
             
             CreateTable(
                 "dbo.Company",
@@ -499,6 +528,7 @@ namespace WFP.ICT.Data.Migrations
                 c => new
                     {
                         Id = c.Guid(nullable: false),
+                        DriverId = c.Guid(nullable: false),
                         Token = c.String(),
                         ExpiryTime = c.DateTime(),
                         CreatedAt = c.DateTime(nullable: false),
@@ -528,7 +558,7 @@ namespace WFP.ICT.Data.Migrations
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.PianoOrderBilling", t => t.PianoOrderBillingId)
-                .ForeignKey("dbo.Customer", t => t.CustomerId)
+                .ForeignKey("dbo.Client", t => t.CustomerId)
                 .ForeignKey("dbo.Address", t => t.DeliveryAddressId)
                 .ForeignKey("dbo.PianoType", t => t.PianoType_Id)
                 .ForeignKey("dbo.Address", t => t.PickupAddressId)
@@ -566,7 +596,7 @@ namespace WFP.ICT.Data.Migrations
                         UserName = c.String(nullable: false, maxLength: 256),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Customer", t => t.CustomerId)
+                .ForeignKey("dbo.Client", t => t.CustomerId)
                 .Index(t => t.CustomerId)
                 .Index(t => t.UserName, unique: true, name: "UserNameIndex");
             
@@ -601,22 +631,21 @@ namespace WFP.ICT.Data.Migrations
         {
             DropForeignKey("dbo.AspNetUserRoles", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserLogins", "UserId", "dbo.AspNetUsers");
-            DropForeignKey("dbo.AspNetUsers", "CustomerId", "dbo.Customer");
+            DropForeignKey("dbo.AspNetUsers", "CustomerId", "dbo.Client");
             DropForeignKey("dbo.AspNetUserClaims", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserRoles", "RoleId", "dbo.AspNetRoles");
             DropForeignKey("dbo.PianoQuote", "PickupAddressId", "dbo.Address");
             DropForeignKey("dbo.PianoQuote", "PianoType_Id", "dbo.PianoType");
             DropForeignKey("dbo.Piano", "PianoQuote_Id", "dbo.PianoQuote");
             DropForeignKey("dbo.PianoQuote", "DeliveryAddressId", "dbo.Address");
-            DropForeignKey("dbo.PianoQuote", "CustomerId", "dbo.Customer");
+            DropForeignKey("dbo.PianoQuote", "CustomerId", "dbo.Client");
             DropForeignKey("dbo.PianoQuote", "PianoOrderBillingId", "dbo.PianoOrderBilling");
-            DropForeignKey("dbo.AspNetRoleClaims", "RoleID", "dbo.AspNetRoles");
-            DropForeignKey("dbo.AspNetRoleClaims", "ClaimID", "dbo.AspNetClaims");
-            DropForeignKey("dbo.Customer", "CustomerPaymentId", "dbo.CustomerPayment");
-            DropForeignKey("dbo.Customer", "CustomerInvoiceId", "dbo.CustomerInvoice");
+            DropForeignKey("dbo.CustomerPayment", "Client_Id", "dbo.Client");
+            DropForeignKey("dbo.PianoOrder", "Client_Id", "dbo.Client");
+            DropForeignKey("dbo.CustomerInvoice", "Client_Id", "dbo.Client");
             DropForeignKey("dbo.PianoOrder", "CustomerInvoice_Id", "dbo.CustomerInvoice");
             DropForeignKey("dbo.PianoOrderStatus", "PianoOrderId", "dbo.PianoOrder");
-            DropForeignKey("dbo.PianoService", "PianoOrderId", "dbo.PianoOrder");
+            DropForeignKey("dbo.PianoOrder", "ShuttleCompanyId", "dbo.Client");
             DropForeignKey("dbo.PianoOrder", "PickupAddressId", "dbo.Address");
             DropForeignKey("dbo.PianoOrder", "PianoConsignmentId", "dbo.PianoConsignment");
             DropForeignKey("dbo.PianoConsignment", "WarehouseStartId", "dbo.Warehouse");
@@ -630,15 +659,20 @@ namespace WFP.ICT.Data.Migrations
             DropForeignKey("dbo.PianoPicture", "PianoPodId", "dbo.PianoPOD");
             DropForeignKey("dbo.PianoPicture", "PianoId", "dbo.Piano");
             DropForeignKey("dbo.Piano", "PianoTypeId", "dbo.PianoType");
+            DropForeignKey("dbo.PianoSize", "PianoTypeId", "dbo.PianoType");
             DropForeignKey("dbo.Piano", "PianoStatusId", "dbo.PianoStatus");
             DropForeignKey("dbo.Piano", "OrderId", "dbo.PianoOrder");
             DropForeignKey("dbo.PianoConsignment", "PianoConsignmentFormId", "dbo.PianoConsignmentForm");
             DropForeignKey("dbo.PianoConsignment", "DriverId", "dbo.Driver");
+            DropForeignKey("dbo.PianoCharges", "PianoOrderId", "dbo.PianoOrder");
+            DropForeignKey("dbo.PianoOrder", "InvoiceClientId", "dbo.Client");
+            DropForeignKey("dbo.PianoOrder", "InvoiceBillingPartyId", "dbo.Client");
             DropForeignKey("dbo.PianoOrder", "DeliveryAddressId", "dbo.Address");
-            DropForeignKey("dbo.PianoOrder", "CustomerId", "dbo.Customer");
+            DropForeignKey("dbo.PianoOrder", "CustomerId", "dbo.Client");
             DropForeignKey("dbo.PianoOrder", "PianoOrderBillingId", "dbo.PianoOrderBilling");
-            DropForeignKey("dbo.Address", "CustomerId", "dbo.Customer");
-            DropForeignKey("dbo.Address", "AddressTypeId", "dbo.AddressType");
+            DropForeignKey("dbo.Client", "Addresses_Id", "dbo.Address");
+            DropForeignKey("dbo.AspNetRoleClaims", "RoleID", "dbo.AspNetRoles");
+            DropForeignKey("dbo.AspNetRoleClaims", "ClaimID", "dbo.AspNetClaims");
             DropIndex("dbo.AspNetUserLogins", new[] { "UserId" });
             DropIndex("dbo.AspNetUserClaims", new[] { "UserId" });
             DropIndex("dbo.AspNetUsers", "UserNameIndex");
@@ -648,18 +682,14 @@ namespace WFP.ICT.Data.Migrations
             DropIndex("dbo.PianoQuote", new[] { "CustomerId" });
             DropIndex("dbo.PianoQuote", new[] { "DeliveryAddressId" });
             DropIndex("dbo.PianoQuote", new[] { "PickupAddressId" });
-            DropIndex("dbo.AspNetUserRoles", new[] { "RoleId" });
-            DropIndex("dbo.AspNetUserRoles", new[] { "UserId" });
-            DropIndex("dbo.AspNetRoles", "RoleNameIndex");
-            DropIndex("dbo.AspNetRoleClaims", new[] { "RoleID" });
-            DropIndex("dbo.AspNetRoleClaims", new[] { "ClaimID" });
+            DropIndex("dbo.CustomerPayment", new[] { "Client_Id" });
             DropIndex("dbo.PianoOrderStatus", new[] { "PianoOrderId" });
-            DropIndex("dbo.PianoService", new[] { "PianoOrderId" });
             DropIndex("dbo.Vehicle", new[] { "VehicleTypeId" });
             DropIndex("dbo.PianoConsignmentRoute", new[] { "PianoConsignmentId" });
             DropIndex("dbo.Warehouse", new[] { "AddressId" });
             DropIndex("dbo.PianoPicture", new[] { "PianoPodId" });
             DropIndex("dbo.PianoPicture", new[] { "PianoId" });
+            DropIndex("dbo.PianoSize", new[] { "PianoTypeId" });
             DropIndex("dbo.Piano", new[] { "PianoQuote_Id" });
             DropIndex("dbo.Piano", new[] { "OrderId" });
             DropIndex("dbo.Piano", new[] { "WarehouseId" });
@@ -671,35 +701,38 @@ namespace WFP.ICT.Data.Migrations
             DropIndex("dbo.PianoConsignment", new[] { "DriverId" });
             DropIndex("dbo.PianoConsignment", new[] { "VehicleId" });
             DropIndex("dbo.PianoConsignment", new[] { "WarehouseStartId" });
+            DropIndex("dbo.PianoCharges", new[] { "PianoOrderId" });
+            DropIndex("dbo.PianoOrder", new[] { "Client_Id" });
             DropIndex("dbo.PianoOrder", new[] { "CustomerInvoice_Id" });
+            DropIndex("dbo.PianoOrder", new[] { "ShuttleCompanyId" });
+            DropIndex("dbo.PianoOrder", new[] { "InvoiceBillingPartyId" });
+            DropIndex("dbo.PianoOrder", new[] { "InvoiceClientId" });
             DropIndex("dbo.PianoOrder", new[] { "PianoConsignmentId" });
             DropIndex("dbo.PianoOrder", new[] { "PianoOrderBillingId" });
             DropIndex("dbo.PianoOrder", new[] { "CustomerId" });
             DropIndex("dbo.PianoOrder", new[] { "DeliveryAddressId" });
             DropIndex("dbo.PianoOrder", new[] { "PickupAddressId" });
-            DropIndex("dbo.Customer", new[] { "CustomerPaymentId" });
-            DropIndex("dbo.Customer", new[] { "CustomerInvoiceId" });
-            DropIndex("dbo.Address", new[] { "CustomerId" });
-            DropIndex("dbo.Address", new[] { "AddressTypeId" });
+            DropIndex("dbo.CustomerInvoice", new[] { "Client_Id" });
+            DropIndex("dbo.Client", new[] { "Addresses_Id" });
+            DropIndex("dbo.AspNetUserRoles", new[] { "RoleId" });
+            DropIndex("dbo.AspNetUserRoles", new[] { "UserId" });
+            DropIndex("dbo.AspNetRoles", "RoleNameIndex");
+            DropIndex("dbo.AspNetRoleClaims", new[] { "RoleID" });
+            DropIndex("dbo.AspNetRoleClaims", new[] { "ClaimID" });
             DropTable("dbo.AspNetUserLogins");
             DropTable("dbo.AspNetUserClaims");
             DropTable("dbo.AspNetUsers");
             DropTable("dbo.PianoQuote");
             DropTable("dbo.DriverLogin");
             DropTable("dbo.Company");
-            DropTable("dbo.AspNetUserRoles");
-            DropTable("dbo.AspNetRoles");
-            DropTable("dbo.AspNetRoleClaims");
-            DropTable("dbo.AspNetClaims");
-            DropTable("dbo.APIRequestLog");
             DropTable("dbo.CustomerPayment");
             DropTable("dbo.PianoOrderStatus");
-            DropTable("dbo.PianoService");
             DropTable("dbo.VehicleType");
             DropTable("dbo.Vehicle");
             DropTable("dbo.PianoConsignmentRoute");
             DropTable("dbo.Warehouse");
             DropTable("dbo.PianoPicture");
+            DropTable("dbo.PianoSize");
             DropTable("dbo.PianoType");
             DropTable("dbo.PianoStatus");
             DropTable("dbo.Piano");
@@ -707,11 +740,16 @@ namespace WFP.ICT.Data.Migrations
             DropTable("dbo.PianoConsignmentForm");
             DropTable("dbo.Driver");
             DropTable("dbo.PianoConsignment");
+            DropTable("dbo.PianoCharges");
             DropTable("dbo.PianoOrderBilling");
             DropTable("dbo.PianoOrder");
             DropTable("dbo.CustomerInvoice");
-            DropTable("dbo.Customer");
-            DropTable("dbo.AddressType");
+            DropTable("dbo.Client");
+            DropTable("dbo.AspNetUserRoles");
+            DropTable("dbo.AspNetRoles");
+            DropTable("dbo.AspNetRoleClaims");
+            DropTable("dbo.AspNetClaims");
+            DropTable("dbo.APIRequestLog");
             DropTable("dbo.Address");
         }
     }

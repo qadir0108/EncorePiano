@@ -25,7 +25,7 @@ namespace WFP.ICT.Data.Entities
         public virtual Address DeliveryAddress { get; set; }
 
         public Guid? CustomerId { get; set; } // If it is dealer/manfcaturer
-        public virtual Customer Customer { get; set; }
+        public virtual Client Customer { get; set; }
 
         public Guid? PianoOrderBillingId { get; set; } // when it will be billed to customer
         public virtual PianoOrderBilling Billing { get; set; }

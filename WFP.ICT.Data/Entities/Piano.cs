@@ -16,7 +16,7 @@ namespace WFP.ICT.Data.Entities
         public string Color { get; set; }
         public bool IsBench { get; set; } // W/B OR N/B
         public bool IsBoxed { get; set; }
-        public bool IsStairs { get; set; }
+        public bool IsPlayer { get; set; }
 
         public string Notes { get; set; }
         public DateTime? ReceivedDate { get; set; }
@@ -24,6 +24,12 @@ namespace WFP.ICT.Data.Entities
 
         public Guid? PianoTypeId { get; set; }
         public PianoType PianoType { get; set; }
+        public string WareHouseName { get; set; }
+
+        public int PianoSize { get; set; }
+        public int WareHouseStatus { get; set; }
+        public bool IsLocated { get; set; }
+
 
         public Guid? PianoStatusId { get; set; }
         public virtual PianoStatus PianoStatus { get; set; }

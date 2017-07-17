@@ -49,7 +49,7 @@ namespace WFP.ICT.Data.Entities
         public int UserType { get; set; } // UserTypeEnum
 
         public Guid? CustomerId { get; set; } // If user is of Dealer/Manufacturer
-        public virtual Customer Customer { get; set; }
+        public virtual Client Customer { get; set; }
 
         public DateTime CreatedAt { get; set; }
         public string CreatedByID { get; set; }

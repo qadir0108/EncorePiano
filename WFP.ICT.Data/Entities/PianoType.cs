@@ -11,9 +11,11 @@ namespace WFP.ICT.Data.Entities
 
         public string Code { get; set; }
         public string Type { get; set; }
-        
+        public virtual ICollection<PianoSize> PianoSize { get; set; }
         public PianoType()
         {
+            PianoSize = new HashSet<PianoSize>();
+
         }
     }
 }

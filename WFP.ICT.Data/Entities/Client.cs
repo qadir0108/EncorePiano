@@ -4,8 +4,9 @@ namespace WFP.ICT.Data.Entities
 {
     using System;
     using System.Collections.Generic;
-    
-    public partial class Customer : BaseEntity, iBaseEntity
+    using Enum;
+
+    public partial class Client : BaseEntity, iBaseEntity
     {
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public System.Guid Id { get; set; }
@@ -18,17 +19,20 @@ namespace WFP.ICT.Data.Entities
         public string Comment { get; set; }
 
         public Guid? CustomerInvoiceId { get; set; }
-        public virtual CustomerInvoice Invoice { get; set; }
+        public virtual ICollection<CustomerInvoice> Invoice { get; set; }
 
         public Guid? CustomerPaymentId { get; set; }
-        public virtual CustomerPayment Payment { get; set; }
+        public virtual ICollection<CustomerPayment> Payment { get; set; }
 
-        public virtual ICollection<Address> Addresses { get; set; }
+        public int CustomerType { get; set; }
+
+        public virtual Address Addresses { get; set; }
         public virtual ICollection<PianoOrder> Orders { get; set; }
 
-        public Customer()
+        public Client()
         {
-            Addresses = new HashSet<Address>();
+            Payment = new HashSet<CustomerPayment>();
+            Invoice = new HashSet<CustomerInvoice>();
             Orders = new HashSet<PianoOrder>();
         }
     }

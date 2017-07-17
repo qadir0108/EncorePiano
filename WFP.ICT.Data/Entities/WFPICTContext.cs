@@ -40,13 +40,12 @@ namespace WFP.ICT.Data.Entities
         public DbSet<AspNetRoleClaims> RoleClaims { get; set; }
 
         // Order
-        public DbSet<AddressType> AddressTypes { get; set; }
         public DbSet<Address> Addresses { get; set; }
-        public DbSet<Customer> Customers { get; set; }
+        public DbSet<Client> Clients { get; set; }
         public DbSet<PianoType> PianoTypes { get; set; }
         public DbSet<Piano> Pianos { get; set; }
         public DbSet<PianoOrder> PianoOrders { get; set; }
-        public DbSet<PianoService> PianoServices { get; set; }
+        public DbSet<PianoCharges> PianoCharges { get; set; }
         public DbSet<PianoOrderBilling> PianoOrderBillings { get; set; }
         public DbSet<PianoOrderStatus> PianoOrderStatuses { get; set; }
         public DbSet<PianoQuote> PianoQuotes { get; set; }

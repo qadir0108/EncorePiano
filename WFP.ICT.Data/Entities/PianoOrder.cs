@@ -37,7 +37,7 @@ namespace WFP.ICT.Data.Entities
         public virtual Address DeliveryAddress { get; set; }
 
         public Guid? CustomerId { get; set; }
-        public virtual Customer Customer { get; set; }
+        public virtual Client Customer { get; set; }
 
         public Guid? PianoOrderBillingId { get; set; } // when it will be billed to customer
         public virtual PianoOrderBilling Billing { get; set; }
@@ -46,13 +46,23 @@ namespace WFP.ICT.Data.Entities
         public virtual PianoConsignment PianoConsignment { get; set; }
 
         public virtual ICollection<Piano> Pianos { get; set; }
-        public virtual ICollection<PianoService> Services { get; set; }
+        public virtual ICollection<PianoCharges> PianoCharges { get; set; }
         public virtual ICollection<PianoOrderStatus> Statuses { get; set; }
+        public double CodAmount { get; set; }
+        public string OfficeStaff { get; set; }
+        public string OfficePayment { get; set; }
 
+        public bool BillToDifferent { get; set; }
+        public Guid? InvoiceClientId { get; set; }
+        public virtual Client InvoiceClient { get; set; }
+        public Guid? InvoiceBillingPartyId { get; set; }
+        public virtual Client InvoiceBillingParty { get; set; }
+        public Guid? ShuttleCompanyId { get; set; }
+        public virtual Client ShuttleCompany { get; set; }
         public PianoOrder()
         {
             Pianos = new HashSet<Piano>();
-            Services = new HashSet<PianoService>();
+            PianoCharges = new HashSet<PianoCharges>();
             Statuses = new HashSet<PianoOrderStatus>();
         }
     }
