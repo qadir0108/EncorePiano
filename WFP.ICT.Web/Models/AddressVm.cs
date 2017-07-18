@@ -1,16 +1,44 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace WFP.ICT.Web.Models
 {
     public class AddressVm
     {
+
+        [Required(ErrorMessage = "Name is required")]
         public string Name { get; set; }
+
+        [Required(ErrorMessage = "Address is required")]
         public string Address1 { get; set; }
+     
         public string Address2 { get; set; }
+    
         public string Suburb { get; set; }
+
+        [Required(ErrorMessage = "State is required")]
         public string State { get; set; }
+
+        [Required(ErrorMessage = "Zip code is required")]
         public string PostCode { get; set; }
+
+        [Required(ErrorMessage = "City is required")]
+        public string City { get; set; }
+        public int Stairs{ get; set; }
+        public int Turns { get; set; }
+
+        [Required(ErrorMessage = "Pickup date required")]
+        public DateTime PickUpDate { get; set; }
+
+        [Required(ErrorMessage = "Warehouse location is required")]
+        public string Warehouse{ get; set; }
+
+        [Required(ErrorMessage = "Contact is required")]
         public string PhoneNumber { get; set; }
+        public string AlternatePhone { get; set; }
+        public string AlternateContact { get; set; }
+
+        public string Notes { get; set; }
         public string Lat { get; set; }
         public string Lng { get; set; }
 

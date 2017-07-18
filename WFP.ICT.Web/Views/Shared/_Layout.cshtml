@@ -150,10 +150,11 @@
         $(document).ajaxError(function (e, xhr) {
             debugger;
             if (xhr.status === 403) {
-                var response = $.parseJSON(xhr.responseText);
-                window.location = response.LogOnUrl;
-            } else
-                wfp.reload();
+                // var response = $.parseJSON(xhr.responseText);
+               // window.location = response.LogOnUrl;
+            }
+            // else
+               // wfp.reload();
         });
 
         $(document).ready(function () {
@@ -161,6 +162,42 @@
             $('[data-tooltip="tooltip"]').tooltip();
             
         });
+
+        function showToaster(prop) {
+
+            prop = (typeof prop !== "object") ? {} : prop;
+            prop.msg = prop.msg || '';  // default msg will be empty string
+            prop.title = prop.title || '';  // default title will be empty string
+            prop.priority = prop.priority || 'success';  // default priority will be success
+            prop.position = prop.position || 'bottom';  // default position will be bottom
+
+            // call base method
+            showToasterOption(prop.msg, prop.title, prop.priority, prop.position);
+        }
+
+        function showToasterOption(msg, title, priority, position) {
+            // Default setting 
+            toastr.options = { "closeButton": true, "newestOnTop": true };
+
+            // Default position is toast-bottom-right
+            if (position.toLowerCase() == "top") {
+                toastr.options = { "positionClass": "toast-bottom-right" };
+            } else {
+                toastr.options = { "positionClass": "toast-bottom-right" };
+            }
+
+            // Default type is success
+            if (priority.toLowerCase() == "info") {
+                toastr.info(msg, title);
+            } else if (priority.toLowerCase() == "warning") {
+                toastr.warning(msg, title);
+            } else if (priority.toLowerCase() == "error") {
+                toastr.error(msg, title);
+            } else {
+                toastr.success(msg, title);
+            }
+        }
+
 
     </script>
 </body>

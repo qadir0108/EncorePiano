@@ -38,10 +38,10 @@ namespace WFP.ICT.Data
             foreach (var ptype in EnumHelper.GetEnumTextValues(typeof(ServiceTypeEnum)))
             {
                 string officeCode = ptype.Value;
-                var already = context.PianoServices.FirstOrDefault(m => m.ServiceType.ToString() == officeCode);
+                var already = context.PianoCharges.FirstOrDefault(m => m.ServiceType.ToString() == officeCode);
                 if (already == null)
                 {
-                    context.PianoServices.Add(new PianoCharges()
+                    context.PianoCharges.Add(new PianoCharges()
                     {
                         Id = Guid.NewGuid(),
                         ServiceCode = code,

@@ -38,11 +38,11 @@ namespace WFP.ICT.Web.Controllers
             OrderVm model = new OrderVm()
             {
                 Services = ServicesList,
-                P1 = new PianoVm() { Id = Guid.NewGuid() },
-                P2 = new PianoVm(),
-                P3 = new PianoVm(),
-                P4 = new PianoVm(),
-                P5 = new PianoVm()
+                 //  P1 = new PianoVm() { Id = Guid.NewGuid() },
+                //P2 = new PianoVm(),
+                //P3 = new PianoVm(),
+                //P4 = new PianoVm(),
+                //P5 = new PianoVm()
             };
             ViewBag.Customers = new SelectList(CustomersList, "Value", "Text");
             ViewBag.OrderMedium = new SelectList(OrderMediumList, "Value", "Text");

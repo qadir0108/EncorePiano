@@ -6,6 +6,7 @@ using Nelibur.ObjectMapper;
 using WFP.ICT.Data.Entities;
 using WFP.ICT.Enum;
 using WFP.ICT.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace WFP.ICT.Web.Models
 {
@@ -16,7 +17,10 @@ namespace WFP.ICT.Web.Models
         public string OrderNumber { get; set; }
         public string OrderType { get; set; }
         public string OrderMedium { get; set; }
+
+        [Required(ErrorMessage = "First name is required")]
         public string CallerFirstName { get; set; }
+        [Required(ErrorMessage = "Last name is required")]
         public string CallerLastName { get; set; }
 
         public string CallerName
@@ -24,12 +28,21 @@ namespace WFP.ICT.Web.Models
             get { return CallerFirstName + " " + CallerLastName; }
         }
 
+        [Required(ErrorMessage = "Contact is required")]
         public string CallerPhoneNumber { get; set; }
-        public string CallerEmail { get; set; }
 
+        public string CallerAlternatePhone { get; set; }
+        [Required(ErrorMessage = "Email is required")]
+
+        [DataType(DataType.EmailAddress,ErrorMessage ="Please Enter Valid Email")]
+        public string CallerEmail { get; set; }
+        [Required(ErrorMessage = "Payment option is required")]
         public string PaymentOption { get; set; }
+        public string OfficeStaffDetails { get; set; }
+        public double CollectableAmount { get; set; }
+        public string OnlinePaymentDetails { get; set; }
+
         public string Notes { get; set; }
-        
         public string Customer { get; set; }
         public string Customers { get; set; }
         public string PickupAddressString { get; set; }
@@ -37,21 +50,18 @@ namespace WFP.ICT.Web.Models
         public string PreferredPickupDateTime { get; set; }
         public string PickupDate { get; set; }
         public string DeliveryDate { get; set; }
+        public string Shuttle { get; set; }
 
         public AddressVm PickupAddress { get; set; }
         public AddressVm DeliveryAddress { get; set; }
-
         public List<PianoVm> Pianos { get; set; }
-        public PianoVm P1 { get; set; }
-        public PianoVm P2 { get; set; }
-        public PianoVm P3 { get; set; }
-        public PianoVm P4 { get; set; }
-        public PianoVm P5 { get; set; }
-
+        //public PianoVm P1 { get; set; }
+        //public PianoVm P2 { get; set; }
+        //public PianoVm P3 { get; set; }
+        //public PianoVm P4 { get; set; }
+        //public PianoVm P5 { get; set; }
         public List<PianoServiceVm> Services { get; set; }
-
         public string PickupTicket { get; set; }
-
         public static OrderVm FromOrder(PianoOrder order, IEnumerable<SelectListItem> PianoTypesList)
         {
             var pickupAddress = TinyMapper.Map<AddressVm>(order.PickupAddress).AddressToString;
@@ -90,9 +100,9 @@ namespace WFP.ICT.Web.Models
                     SerialNumber = x.SerialNumber,
                     IsBench = x.IsBench,
                     IsBoxed = x.IsBoxed,
-                    IsStairs = x.IsStairs
+                    IsStairs = x.IsPlayer
                 }).ToList();
-            orderVM.Services = order.Services.OrderBy(x => x.ServiceCode).Select(
+            orderVM.Services = order.PianoCharges.OrderBy(x => x.ServiceCode).Select(
                 x => new PianoServiceVm()
                 {
                     Id = x.Id.ToString(),

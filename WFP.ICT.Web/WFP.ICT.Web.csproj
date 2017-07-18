@@ -345,8 +345,9 @@
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ConsigmentsController.cs" />
-    <Compile Include="Controllers\OrdersStatusController.cs" />
     <Compile Include="Controllers\OrdersController.cs" />
+    <Compile Include="Controllers\OrdersStatusController.cs" />
+    <Compile Include="Controllers\Orders1Controller.cs" />
     <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Controllers\WarehouseController.cs" />
     <Compile Include="FCM\Exceptions\FCMException.cs" />
@@ -6358,7 +6359,7 @@
     <Content Include="Views\Shared\Notification.cshtml" />
     <Content Include="Views\Shared\Success.cshtml" />
     <Content Include="Views\Shared\_UploadFile.cshtml" />
-    <Content Include="Views\Orders\New.cshtml" />
+    <Content Include="Views\Orders\Private.cshtml" />
     <Content Include="Views\Shared\_QuickNavigation.cshtml" />
     <Content Include="Views\Shared\_TopMenu.cshtml" />
     <Content Include="Views\Shared\_Footer.cshtml" />
@@ -6388,6 +6389,9 @@
     <Content Include="Views\Warehouse\New.cshtml" />
     <Content Include="Views\Shared\Editors\_AddressEditor.cshtml" />
     <Content Include="Views\Test\Edit.cshtml" />
+    <Content Include="Views\Shared\Editors\_Piano.cshtml" />
+    <Content Include="Views\Shared\Editors\_Services.cshtml" />
+    <Content Include="Views\Orders\Dealer.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

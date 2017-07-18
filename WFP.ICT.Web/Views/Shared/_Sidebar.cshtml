@@ -80,10 +80,18 @@
                     </a>
                 <ul class="sub-menu">
                     <li class="nav-item start @Html.IsSelected(actions: "New", controllers: "Orders")">
-                        <a href="/Orders/New" class="nav-link ">
+                        <a href="/Orders/Private" class="nav-link ">
                             <i class="icon-screen-desktop"></i>
                             <span class="title">
-                                New Order
+                                New Private Order
+                            </span>
+                        </a>
+                    </li>
+                    <li class="nav-item start @Html.IsSelected(actions: "New", controllers: "Orders")">
+                        <a href="/Orders/Dealer" class="nav-link ">
+                            <i class="icon-screen-desktop"></i>
+                            <span class="title">
+                                New Dealer Order
                             </span>
                         </a>
                     </li>

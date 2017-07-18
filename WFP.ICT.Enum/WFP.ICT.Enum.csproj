@@ -40,6 +40,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PianoCategoryTypeEnum.cs" />
+    <Compile Include="ShuttleEnum.cs" />
+    <Compile Include="WareHouseStatusEnum.cs" />
+    <Compile Include="CustomerTypeEnum.cs" />
     <Compile Include="JobStatusEnum.cs" />
     <Compile Include="BillingTypeEnum.cs" />
     <Compile Include="OrderTypeEnum.cs" />

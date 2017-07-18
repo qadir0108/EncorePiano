@@ -83,7 +83,7 @@ namespace WFP.ICT.Web.Controllers
                     .Include(x => x.Pianos)
                     .Include(x => x.PickupAddress)
                     .Include(x => x.DeliveryAddress)
-                    .Include(x => x.Services)
+                    .Include(x => x.PianoCharges)
                     .FirstOrDefault(x => x.Id == consignment.PianoOrderId);
                 if (order == null)
                     throw new Exception("Order not found. Wrong consignment.");
@@ -124,7 +124,7 @@ namespace WFP.ICT.Web.Controllers
                             SerialNumber = x.SerialNumber,
                             IsBench = x.IsBench ? 1 : 0,
                             IsBoxed = x.IsBoxed ? 1 : 0,
-                            IsStairs = x.IsStairs ? 1 : 0
+                            IsStairs = x.IsPlayer ? 1 : 0
                         }).ToArray(),
                     Route = consignment.Route.OrderBy(x => x.Order)
                         .Select(x => new RouteResponse()

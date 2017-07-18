@@ -183,7 +183,7 @@ namespace WFP.ICT.Web.Controllers
             {
                 if (_customers == null)
                 {
-                    _customers = db.Customers
+                    _customers = db.Clients
                         .OrderBy(x => x.CreatedAt).Select(
                              x => new SelectListItem()
                              {
@@ -221,6 +221,30 @@ namespace WFP.ICT.Web.Controllers
                     });
                 }
                 return _pianoType;
+            }
+        }
+
+        private static List<SelectListItem> _pianoCategoryType;
+        public IEnumerable<SelectListItem> PianoCategoryTypesList
+        {
+            get
+            {
+                if (_pianoCategoryType == null)
+                {
+                    _pianoCategoryType = EnumHelper.GetEnumTextValues(typeof(PianoCategoryTypeEnum)).Select(
+                             x => new SelectListItem()
+                             {
+                                 Text = x.Text,
+                                 Value = x.Value
+                             }).ToList();
+
+                    _pianoCategoryType.Insert(0, new SelectListItem()
+                    {
+                        Text = "Select Type",
+                        Value = string.Empty
+                    });
+                }
+                return _pianoCategoryType;
             }
         }
 
@@ -277,7 +301,7 @@ namespace WFP.ICT.Web.Controllers
             {
                 if (_servicesList == null)
                 {
-                    _servicesList = db.PianoServices.Where(x => x.PianoOrderId == null)
+                    _servicesList = db.PianoCharges.Where(x => x.PianoOrderId == null)
                         .OrderBy(x => x.ServiceCode).Select(
                              x => new PianoServiceVm()
                              {
@@ -291,6 +315,30 @@ namespace WFP.ICT.Web.Controllers
                 return _servicesList;
             }
         }
+        private static List<SelectListItem> _servicesSelectList;
+        public IEnumerable<SelectListItem> ServicesSelectList
+        {
+            get
+            {
+                if (_servicesSelectList == null)
+                {
+                    _servicesSelectList = db.PianoCharges.Where(x => x.PianoOrderId == null)
+                        .OrderBy(x => x.ServiceCode).Select(
+                             x => new SelectListItem()
+                             {
+                                 Text = x.ServiceDetails,
+                                 Value = x.ServiceCode.ToString()
+                             }).ToList();
+                    _servicesSelectList.Insert(0, new SelectListItem()
+                    {
+                        Text = "Select Service Charges",
+                        Value = string.Empty
+                    });
+                }
+                return _servicesSelectList;
+            }
+        }
+
 
         private static List<SelectListItem> _paymentOptions;
         public IEnumerable<SelectListItem> PaymentOptionsList
@@ -410,6 +458,29 @@ namespace WFP.ICT.Web.Controllers
                     });
                 }
                 return _vehicles;
+            }
+        }
+        private static List<SelectListItem> _Warehouses;
+        public IEnumerable<SelectListItem> Warehouses
+        {
+            get
+            {
+                if (_Warehouses == null)
+                {
+                    _Warehouses = db.Warehouses
+                        .OrderBy(x => x.CreatedAt).Select(
+                             x => new SelectListItem()
+                             {
+                                 Text = x.Code + " " + x.Name,
+                                 Value = x.Id.ToString()
+                             }).ToList();
+                    _Warehouses.Insert(0, new SelectListItem()
+                    {
+                        Text = "Select Warehouse Option",
+                        Value = string.Empty
+                    });
+                }
+                return _Warehouses;
             }
         }
     }
