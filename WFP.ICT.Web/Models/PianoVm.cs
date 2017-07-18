@@ -10,8 +10,9 @@ namespace WFP.ICT.Web.Models
         public Guid Id { get; set; }
         public Guid OrderId { get; set; }
 
-        public string PianoTypeId { get; set; }
         [Required(ErrorMessage = "Piano type is required")]
+        public string PianoTypeId { get; set; }
+
         public string PianoType { get; set; }
         public string PianoName { get; set; }
 

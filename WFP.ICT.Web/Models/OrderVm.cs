@@ -29,11 +29,12 @@ namespace WFP.ICT.Web.Models
         }
 
         [Required(ErrorMessage = "Contact is required")]
+        [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Entered phone format is not valid.")]
         public string CallerPhoneNumber { get; set; }
 
+        [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Entered phone format is not valid.")]
         public string CallerAlternatePhone { get; set; }
         [Required(ErrorMessage = "Email is required")]
-
         [DataType(DataType.EmailAddress,ErrorMessage ="Please Enter Valid Email")]
         public string CallerEmail { get; set; }
         [Required(ErrorMessage = "Payment option is required")]
@@ -102,7 +103,15 @@ namespace WFP.ICT.Web.Models
                     IsBoxed = x.IsBoxed,
                     IsStairs = x.IsPlayer
                 }).ToList();
-
+            orderVM.Services = order.OrderCharges.OrderBy(x => x.Id).Select(
+               x => new PianoServiceVm()
+               {
+                   Id = x.Id.ToString(),
+                  // ServiceCode = x.PianoCharges.ChargesCode.ToString(),
+                 //  ServiceType = ((ChargesTypeEnum)x.PianoCharges.ChargesType).ToString(),
+                  // ServiceDetails = x.PianoCharges.ChargesDetails,
+                   ServiceCharges = x.Amount.ToString()
+               }).ToList();
 
             return orderVM;
         }

@@ -31,7 +31,11 @@ namespace WFP.ICT.Web.Models
         public string Warehouse{ get; set; }
 
         [Required(ErrorMessage = "Contact is required")]
+        [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Entered phone format is not valid.")]
+
         public string PhoneNumber { get; set; }
+
+        [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Entered phone format is not valid.")]
         public string AlternatePhone { get; set; }
         public string AlternateContact { get; set; }
 
@@ -44,7 +48,7 @@ namespace WFP.ICT.Web.Models
             get
             {
                 if (Name == "" || Address1 == "") return "";
-                var pickupAddress = string.Format("{0}, <br /> {1} {2}, <br /> {3}, {4} {5} <br />{6}",
+                var pickupAddress = string.Format("{0}, <br /> {1} {2}, <br /> {3}, {4} {5} <br />",
                     Name, Address1, City, State,
                     PostCode, PhoneNumber).Trim("<br />".ToCharArray());
                 return "<br />" + pickupAddress;
@@ -56,7 +60,7 @@ namespace WFP.ICT.Web.Models
             get
             {
                 if (Name == "" || Address1 == "") return "";
-                var pickupAddress = string.Format("{0}, {1} {2}, {3}, {4} {5}",
+                var pickupAddress = string.Format("{0}, {1} {2}, {3}, {4}",
                     Name, Address1, City, State, PostCode);
                 return pickupAddress;
             }
@@ -67,7 +71,7 @@ namespace WFP.ICT.Web.Models
             get
             {
                 if (Name == "" || Address1 == "") return "";
-                var pickupAddress = string.Format("{0}, <br /> {1} {2}, <br /> {3}, {4} {5}",
+                var pickupAddress = string.Format("{0}, <br /> {1} {2}, <br /> {3}, {4}",
                     Name, Address1, 
                     City, State,
                     PostCode).Trim("<br />".ToCharArray());

@@ -91,9 +91,9 @@
     <Compile Include="Entities\BaseEntity.cs" />
     <Compile Include="Entities\iBaseEntity.cs" />
     <Compile Include="EntityManager\CompanyManager.cs" />
-    <Compile Include="Migrations\201707150754530_UnitsUpdate.cs" />
-    <Compile Include="Migrations\201707150754530_UnitsUpdate.Designer.cs">
-      <DependentUpon>201707150754530_UnitsUpdate.cs</DependentUpon>
+    <Compile Include="Migrations\201707182150480_DbFixes.cs" />
+    <Compile Include="Migrations\201707182150480_DbFixes.Designer.cs">
+      <DependentUpon>201707182150480_DbFixes.cs</DependentUpon>
     </Compile>
     <Compile Include="Repository\GenericRepository.cs" />
     <Compile Include="Repository\UnitOfWork.cs" />
@@ -129,8 +129,8 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201707150754530_UnitsUpdate.resx">
-      <DependentUpon>201707150754530_UnitsUpdate.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201707182150480_DbFixes.resx">
+      <DependentUpon>201707182150480_DbFixes.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

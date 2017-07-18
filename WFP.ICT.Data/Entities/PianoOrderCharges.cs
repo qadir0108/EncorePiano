@@ -13,7 +13,7 @@ namespace WFP.ICT.Data.Entities
         public int ServiceStatus { get; set; } // ServiceStatusEnum
 
         public Guid? PianoChargesId { get; set; }
-        public virtual PianoOrder PianoCharges { get; set; }
+        public virtual PianoCharges PianoCharges { get; set; }
 
         public Guid? PianoOrderId { get; set; }
         public virtual PianoOrder PianoOrder { get; set; }

@@ -744,6 +744,7 @@
         handleFormComplete = function (data) {
             if (data.key) {
                 $("#frm").get(0).reset();
+                window.location.href = '@Url.Action("Index","Orders")';
             }
             else {
                 showToaster({

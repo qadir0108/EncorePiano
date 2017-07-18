@@ -46,6 +46,8 @@ namespace WFP.ICT.Data.Entities
         public DbSet<Piano> Pianos { get; set; }
         public DbSet<PianoOrder> PianoOrders { get; set; }
         public DbSet<PianoCharges> PianoCharges { get; set; }
+
+        public DbSet<PianoOrderCharges> PianoOrderCharges { get; set; }
         public DbSet<PianoOrderBilling> PianoOrderBillings { get; set; }
         public DbSet<PianoOrderStatus> PianoOrderStatuses { get; set; }
         public DbSet<PianoQuote> PianoQuotes { get; set; }

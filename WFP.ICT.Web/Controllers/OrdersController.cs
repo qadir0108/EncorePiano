@@ -161,7 +161,6 @@ namespace WFP.ICT.Web.Controllers
                         order.PaymentOption = int.Parse(orderVm.PaymentOption);
                         order.PickupDate = orderVm.PickupAddress.PickUpDate;
                         order.DeliveryDate = orderVm.DeliveryAddress.PickUpDate;
-
                         order.CustomerId =
                                 string.IsNullOrEmpty(orderVm.Shuttle) ? (Guid?)null : Guid.Parse(orderVm.Shuttle);
 
@@ -178,25 +177,24 @@ namespace WFP.ICT.Web.Controllers
 
                         foreach (var item in orderVm.Services)
                         {
-                               db.PianoCharges.Add(new PianoCharges()
-                            {
-                                //Id = Guid.NewGuid(),
-                                //CreatedAt = DateTime.Now,
-                                //CreatedBy = LoggedInUser?.UserName,
-                                //PianoOrderId = orderId,
-                                //ServiceCode = // service.ServiceCode,
-                                //ServiceType = // service.ServiceType,
-                                //ServiceDetails = service.ServiceDetails,
-                                //ServiceCharges = serviceCharge,
-                                //ServiceStatus = service.ServiceStatus
+
+                    db.PianoOrderCharges.Add(new PianoOrderCharges()
+                    {
+                              Id = new Guid(),
+                               PianoChargesId = Guid.Parse(item.ServiceCode),
+                               PianoOrderId = orderId,
+                               Amount = int.Parse(item.ServiceCharges),
+                               CreatedAt = DateTime.Now,
+                                CreatedBy = LoggedInUser?.UserName
+
                             });
                             db.SaveChanges();
                         }
 
-                        var orderVmSaved = OrderVm.FromOrder(order, PianoTypesList);
-                        BackgroundJob.Enqueue(() => EmailHelper.SendOrderEmailToClient(orderVmSaved));
+                       // var orderVmSaved = OrderVm.FromOrder(order, PianoTypesList);
+                       // BackgroundJob.Enqueue(() => EmailHelper.SendOrderEmailToClient(orderVmSaved));
 
-                        BackgroundJob.Enqueue(() => SMSHelper.Send(orderVmSaved));
+                       // BackgroundJob.Enqueue(() => SMSHelper.Send(orderVmSaved));
 
                 return Json(new { key = true}, JsonRequestBehavior.AllowGet);
             }
@@ -219,7 +217,7 @@ namespace WFP.ICT.Web.Controllers
                 obj.CreatedBy = LoggedInUser?.UserName;
                 obj.Name = vm.PianoName;
             //TypeID from table
-                obj.PianoTypeId = Guid.Parse(vm.PianoTypeId);
+               obj.PianoTypeId = string.IsNullOrEmpty(vm.PianoTypeId) ? (Guid?)null : Guid.Parse(vm.PianoTypeId);
                 obj.Color = vm.PianoColor;
                 obj.Model = vm.PianoModel;
             //make entity guid

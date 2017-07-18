@@ -7,13 +7,13 @@ namespace WFP.ICT.Data.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class UnitsUpdate : IMigrationMetadata
+    public sealed partial class DbFixes : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(UnitsUpdate));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(DbFixes));
         
         string IMigrationMetadata.Id
         {
-            get { return "201707150754530_UnitsUpdate"; }
+            get { return "201707182150480_DbFixes"; }
         }
         
         string IMigrationMetadata.Source

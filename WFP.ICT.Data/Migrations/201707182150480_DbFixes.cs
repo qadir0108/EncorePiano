@@ -3,7 +3,7 @@ namespace WFP.ICT.Data.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class UnitsUpdate : DbMigration
+    public partial class DbFixes : DbMigration
     {
         public override void Up()
         {
@@ -15,10 +15,11 @@ namespace WFP.ICT.Data.Migrations
                         Name = c.String(),
                         Address1 = c.String(),
                         Address2 = c.String(),
-                        Suburb = c.String(),
+                        City = c.String(),
                         State = c.String(),
                         PostCode = c.String(),
                         PhoneNumber = c.String(),
+                        Notes = c.String(),
                         NumberTurns = c.Int(nullable: false),
                         NumberStairs = c.Int(nullable: false),
                         AlternateContact = c.String(),
@@ -211,22 +212,36 @@ namespace WFP.ICT.Data.Migrations
                 .PrimaryKey(t => t.Id);
             
             CreateTable(
-                "dbo.PianoCharges",
+                "dbo.PianoOrderCharges",
                 c => new
                     {
                         Id = c.Guid(nullable: false),
-                        ServiceCode = c.Int(nullable: false),
-                        ServiceType = c.Int(nullable: false),
+                        Amount = c.Long(nullable: false),
                         ServiceStatus = c.Int(nullable: false),
-                        ServiceDetails = c.String(),
-                        ServiceCharges = c.Long(nullable: false),
+                        PianoChargesId = c.Guid(),
                         PianoOrderId = c.Guid(),
                         CreatedAt = c.DateTime(nullable: false),
                         CreatedBy = c.String(),
                     })
                 .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.PianoCharges", t => t.PianoChargesId)
                 .ForeignKey("dbo.PianoOrder", t => t.PianoOrderId)
+                .Index(t => t.PianoChargesId)
                 .Index(t => t.PianoOrderId);
+            
+            CreateTable(
+                "dbo.PianoCharges",
+                c => new
+                    {
+                        Id = c.Guid(nullable: false),
+                        ChargesCode = c.Int(nullable: false),
+                        ChargesType = c.Int(nullable: false),
+                        ChargesDetails = c.String(),
+                        Amount = c.Long(nullable: false),
+                        CreatedAt = c.DateTime(nullable: false),
+                        CreatedBy = c.String(),
+                    })
+                .PrimaryKey(t => t.Id);
             
             CreateTable(
                 "dbo.PianoConsignment",
@@ -664,7 +679,8 @@ namespace WFP.ICT.Data.Migrations
             DropForeignKey("dbo.Piano", "OrderId", "dbo.PianoOrder");
             DropForeignKey("dbo.PianoConsignment", "PianoConsignmentFormId", "dbo.PianoConsignmentForm");
             DropForeignKey("dbo.PianoConsignment", "DriverId", "dbo.Driver");
-            DropForeignKey("dbo.PianoCharges", "PianoOrderId", "dbo.PianoOrder");
+            DropForeignKey("dbo.PianoOrderCharges", "PianoOrderId", "dbo.PianoOrder");
+            DropForeignKey("dbo.PianoOrderCharges", "PianoChargesId", "dbo.PianoCharges");
             DropForeignKey("dbo.PianoOrder", "InvoiceClientId", "dbo.Client");
             DropForeignKey("dbo.PianoOrder", "InvoiceBillingPartyId", "dbo.Client");
             DropForeignKey("dbo.PianoOrder", "DeliveryAddressId", "dbo.Address");
@@ -701,7 +717,8 @@ namespace WFP.ICT.Data.Migrations
             DropIndex("dbo.PianoConsignment", new[] { "DriverId" });
             DropIndex("dbo.PianoConsignment", new[] { "VehicleId" });
             DropIndex("dbo.PianoConsignment", new[] { "WarehouseStartId" });
-            DropIndex("dbo.PianoCharges", new[] { "PianoOrderId" });
+            DropIndex("dbo.PianoOrderCharges", new[] { "PianoOrderId" });
+            DropIndex("dbo.PianoOrderCharges", new[] { "PianoChargesId" });
             DropIndex("dbo.PianoOrder", new[] { "Client_Id" });
             DropIndex("dbo.PianoOrder", new[] { "CustomerInvoice_Id" });
             DropIndex("dbo.PianoOrder", new[] { "ShuttleCompanyId" });
@@ -741,6 +758,7 @@ namespace WFP.ICT.Data.Migrations
             DropTable("dbo.Driver");
             DropTable("dbo.PianoConsignment");
             DropTable("dbo.PianoCharges");
+            DropTable("dbo.PianoOrderCharges");
             DropTable("dbo.PianoOrderBilling");
             DropTable("dbo.PianoOrder");
             DropTable("dbo.CustomerInvoice");
