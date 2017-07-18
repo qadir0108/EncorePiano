@@ -20,7 +20,7 @@ namespace WFP.ICT.Data.Entities
 
         public PianoOrderCharges()
         {
-            
+
         }
     }
 }

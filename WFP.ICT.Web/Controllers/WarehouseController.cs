@@ -37,7 +37,7 @@ namespace WFP.ICT.Web.Controllers
         {
             OrderVm model = new OrderVm()
             {
-                Services = ServicesList,
+               // Services = ServicesSelectList,
                  //  P1 = new PianoVm() { Id = Guid.NewGuid() },
                 //P2 = new PianoVm(),
                 //P3 = new PianoVm(),

@@ -5,10 +5,17 @@ using System.Threading.Tasks;
 
 namespace WFP.ICT.Enums
 {
-    public enum PianoCategoryTypeEnum
+    public enum PianoTypeEnum
     {
-        Known,
-        Unknown,
-        Warehouse
+        Spinet,
+        Console,
+        Studio,
+        Upright,
+        Grand,
+        Specialized,
+        Electric,
+        Electronic,
+        Digital,
+        Hybrid,
     }
 }

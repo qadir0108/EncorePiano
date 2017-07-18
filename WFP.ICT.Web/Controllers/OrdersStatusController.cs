@@ -42,7 +42,7 @@ namespace WFP.ICT.Web.Controllers
                 .Include(x => x.Pianos)
                 .Include(x => x.PickupAddress)
                 .Include(x => x.DeliveryAddress)
-                .Include(x => x.PianoCharges)
+                .Include(x => x.OrderCharges)
                 .ToList();//.Where(x => x.CreatedBy == LoggedInUser.Id)
             foreach (var order in orders)
             {
@@ -83,16 +83,7 @@ namespace WFP.ICT.Web.Controllers
                         IsBoxed = x.IsBoxed,
                         IsStairs = x.IsPlayer
                     }).ToList();
-                orderVM.Services = order.PianoCharges.OrderBy(x => x.ServiceCode).Select(
-                    x => new PianoServiceVm()
-                    {
-                        Id = x.Id.ToString(),
-                        ServiceCode = x.ServiceCode.ToString(),
-                        ServiceType = ((ChargesTypeEnum) x.ServiceType).ToString(),
-                        ServiceDetails = x.ServiceDetails,
-                        ServiceCharges = x.ServiceCharges.ToString()
-                    }).ToList();
-                orderVMs.Add(orderVM);
+
 
                 _forceRefreshOrders = true;
             }

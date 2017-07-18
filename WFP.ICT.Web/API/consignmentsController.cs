@@ -83,7 +83,7 @@ namespace WFP.ICT.Web.Controllers
                     .Include(x => x.Pianos)
                     .Include(x => x.PickupAddress)
                     .Include(x => x.DeliveryAddress)
-                    .Include(x => x.PianoCharges)
+                    .Include(x => x.OrderCharges)
                     .FirstOrDefault(x => x.Id == consignment.PianoOrderId);
                 if (order == null)
                     throw new Exception("Order not found. Wrong consignment.");

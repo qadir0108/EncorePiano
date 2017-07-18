@@ -40,18 +40,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PianoCategoryTypeEnum.cs" />
+    <Compile Include="ChargesTypeEnum.cs" />
+    <Compile Include="PianoTypeEnum.cs" />
     <Compile Include="ShuttleEnum.cs" />
     <Compile Include="WareHouseStatusEnum.cs" />
     <Compile Include="CustomerTypeEnum.cs" />
     <Compile Include="JobStatusEnum.cs" />
     <Compile Include="BillingTypeEnum.cs" />
     <Compile Include="OrderTypeEnum.cs" />
-    <Compile Include="PianoTypeEnum.cs" />
+    <Compile Include="PianoCategoryTypeEnum.cs" />
     <Compile Include="RequestTypeEnum.cs" />
     <Compile Include="ServiceStatusEnum.cs" />
     <Compile Include="AddressTypeEnum.cs" />
-    <Compile Include="ChargesTypeEnum.cs" />
     <Compile Include="PaymentTypeEnum.cs" />
     <Compile Include="InvoiceStatusEnum.cs" />
     <Compile Include="PianoStatusEnum.cs" />

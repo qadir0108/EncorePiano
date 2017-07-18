@@ -294,27 +294,6 @@ namespace WFP.ICT.Web.Controllers
             }
         }
 
-        private static List<PianoServiceVm> _servicesList;
-        public List<PianoServiceVm> ServicesList
-        {
-            get
-            {
-                if (_servicesList == null)
-                {
-                    _servicesList = db.PianoCharges
-                        .OrderBy(x => x.ChargesCode).Select(
-                             x => new PianoServiceVm()
-                             {
-                                 Id= x.Id.ToString(),
-                                 ServiceCode = x.ChargesCode.ToString(),
-                                 ServiceType = ((ServiceTypeEnum)x.ChargesType).ToString(),
-                                 ServiceDetails = x.ChargesDetails,
-                                 ServiceCharges = x.Amount.ToString()
-                             }).ToList();
-                }
-                return _servicesList;
-            }
-        }
         private static List<SelectListItem> _servicesSelectList;
         public IEnumerable<SelectListItem> ServicesSelectList
         {

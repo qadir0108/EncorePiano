@@ -25,7 +25,7 @@ namespace WFP.ICT.Web.Controllers
                 .Include(x => x.Pianos)
                 .Include(x => x.PickupAddress)
                 .Include(x => x.DeliveryAddress)
-                .Include(x => x.PianoCharges)
+                .Include(x => x.OrderCharges)
                 .ToList();
             foreach (var order in orders)
             {

@@ -102,15 +102,7 @@ namespace WFP.ICT.Web.Models
                     IsBoxed = x.IsBoxed,
                     IsStairs = x.IsPlayer
                 }).ToList();
-            orderVM.Services = order.PianoCharges.OrderBy(x => x.ServiceCode).Select(
-                x => new PianoServiceVm()
-                {
-                    Id = x.Id.ToString(),
-                    ServiceCode = x.ServiceCode.ToString(),
-                    ServiceType = ((ChargesTypeEnum)x.ServiceType).ToString(),
-                    ServiceDetails = x.ServiceDetails,
-                    ServiceCharges = x.ServiceCharges.ToString()
-                }).ToList();
+
 
             return orderVM;
         }
