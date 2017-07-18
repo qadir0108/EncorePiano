@@ -51,7 +51,7 @@
     <Compile Include="RequestTypeEnum.cs" />
     <Compile Include="ServiceStatusEnum.cs" />
     <Compile Include="AddressTypeEnum.cs" />
-    <Compile Include="ServiceTypeEnum.cs" />
+    <Compile Include="ChargesTypeEnum.cs" />
     <Compile Include="PaymentTypeEnum.cs" />
     <Compile Include="InvoiceStatusEnum.cs" />
     <Compile Include="PianoStatusEnum.cs" />

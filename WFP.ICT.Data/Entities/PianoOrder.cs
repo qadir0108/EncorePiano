@@ -46,7 +46,7 @@ namespace WFP.ICT.Data.Entities
         public virtual PianoConsignment PianoConsignment { get; set; }
 
         public virtual ICollection<Piano> Pianos { get; set; }
-        public virtual ICollection<PianoCharges> PianoCharges { get; set; }
+        public virtual ICollection<PianoOrderCharges> OrderCharges { get; set; }
         public virtual ICollection<PianoOrderStatus> Statuses { get; set; }
         public double CodAmount { get; set; }
         public string OfficeStaff { get; set; }
@@ -62,7 +62,7 @@ namespace WFP.ICT.Data.Entities
         public PianoOrder()
         {
             Pianos = new HashSet<Piano>();
-            PianoCharges = new HashSet<PianoCharges>();
+            OrderCharges = new HashSet<PianoOrderCharges>();
             Statuses = new HashSet<PianoOrderStatus>();
         }
     }

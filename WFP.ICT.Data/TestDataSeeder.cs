@@ -33,22 +33,22 @@ namespace WFP.ICT.Data
             }
             context.SaveChanges();
 
-            // Piano Services
+            // Piano Charges
             int code = 100;
-            foreach (var ptype in EnumHelper.GetEnumTextValues(typeof(ServiceTypeEnum)))
+            foreach (var ptype in EnumHelper.GetEnumTextValues(typeof(ChargesTypeEnum)))
             {
                 string officeCode = ptype.Value;
-                var already = context.PianoCharges.FirstOrDefault(m => m.ServiceType.ToString() == officeCode);
+                var already = context.PianoCharges.FirstOrDefault(m => m.ChargesType.ToString() == officeCode);
                 if (already == null)
                 {
                     context.PianoCharges.Add(new PianoCharges()
                     {
                         Id = Guid.NewGuid(),
-                        ServiceCode = code,
                         CreatedAt = DateTime.Now,
-                        ServiceType = int.Parse(ptype.Value),
-                        ServiceDetails = ptype.Text,
-                        ServiceCharges = 100
+                        ChargesCode = code,
+                        ChargesType = int.Parse(ptype.Value),
+                        ChargesDetails = ptype.Text,
+                        Amount = 100
                     });
                     code += 100;
                 }
