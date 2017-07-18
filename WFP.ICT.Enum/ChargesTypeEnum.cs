@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace WFP.ICT.Enum
 {
-    public enum ServiceTypeEnum
+    public enum ChargesTypeEnum
     {
         Crate_For_International_Shipping,
         Piano_Tuning,

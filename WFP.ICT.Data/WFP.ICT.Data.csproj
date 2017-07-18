@@ -67,6 +67,7 @@
     <Compile Include="Entities\Client.cs" />
     <Compile Include="Entities\DriverLogin.cs" />
     <Compile Include="Entities\Driver.cs" />
+    <Compile Include="Entities\PianoOrderCharges.cs" />
     <Compile Include="Entities\PianoConsignment.cs" />
     <Compile Include="Entities\PianoConsignmentRoute.cs" />
     <Compile Include="Entities\PianoOrderBilling.cs" />

@@ -97,7 +97,7 @@ namespace WFP.ICT.Web.Models
                 {
                     Id = x.Id.ToString(),
                     ServiceCode = x.ServiceCode.ToString(),
-                    ServiceType = ((ServiceTypeEnum)x.ServiceType).ToString(),
+                    ServiceType = ((ChargesTypeEnum)x.ServiceType).ToString(),
                     ServiceDetails = x.ServiceDetails,
                     ServiceCharges = x.ServiceCharges.ToString()
                 }).ToList();
