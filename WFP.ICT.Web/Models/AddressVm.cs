@@ -11,10 +11,7 @@ namespace WFP.ICT.Web.Models
 
         [Required(ErrorMessage = "Address is required")]
         public string Address1 { get; set; }
-     
-        public string Address2 { get; set; }
-    
-        public string Suburb { get; set; }
+   
 
         [Required(ErrorMessage = "State is required")]
         public string State { get; set; }
@@ -48,8 +45,7 @@ namespace WFP.ICT.Web.Models
             {
                 if (Name == "" || Address1 == "") return "";
                 var pickupAddress = string.Format("{0}, <br /> {1} {2}, <br /> {3}, {4} {5} <br />{6}",
-                    Name, Address1, Address2,
-                    Suburb, State,
+                    Name, Address1, City, State,
                     PostCode, PhoneNumber).Trim("<br />".ToCharArray());
                 return "<br />" + pickupAddress;
             }
@@ -61,7 +57,7 @@ namespace WFP.ICT.Web.Models
             {
                 if (Name == "" || Address1 == "") return "";
                 var pickupAddress = string.Format("{0}, {1} {2}, {3}, {4} {5}",
-                    Name, Address1, Address2, Suburb, State, PostCode);
+                    Name, Address1, City, State, PostCode);
                 return pickupAddress;
             }
         }
@@ -72,8 +68,8 @@ namespace WFP.ICT.Web.Models
             {
                 if (Name == "" || Address1 == "") return "";
                 var pickupAddress = string.Format("{0}, <br /> {1} {2}, <br /> {3}, {4} {5}",
-                    Name, Address1, Address2,
-                    Suburb, State,
+                    Name, Address1, 
+                    City, State,
                     PostCode).Trim("<br />".ToCharArray());
                 return "<br />" + pickupAddress;
             }

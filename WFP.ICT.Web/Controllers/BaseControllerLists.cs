@@ -301,15 +301,15 @@ namespace WFP.ICT.Web.Controllers
             {
                 if (_servicesList == null)
                 {
-                    _servicesList = db.PianoCharges.Where(x => x.PianoOrderId == null)
-                        .OrderBy(x => x.ServiceCode).Select(
+                    _servicesList = db.PianoCharges
+                        .OrderBy(x => x.ChargesCode).Select(
                              x => new PianoServiceVm()
                              {
                                  Id= x.Id.ToString(),
-                                 ServiceCode = x.ServiceCode.ToString(),
-                                 ServiceType = ((ChargesTypeEnum)x.ServiceType).ToString(),
-                                 ServiceDetails = x.ServiceDetails,
-                                 ServiceCharges = x.ServiceCharges.ToString()
+                                 ServiceCode = x.ChargesCode.ToString(),
+                                 ServiceType = ((ServiceTypeEnum)x.ChargesType).ToString(),
+                                 ServiceDetails = x.ChargesDetails,
+                                 ServiceCharges = x.Amount.ToString()
                              }).ToList();
                 }
                 return _servicesList;
@@ -322,12 +322,12 @@ namespace WFP.ICT.Web.Controllers
             {
                 if (_servicesSelectList == null)
                 {
-                    _servicesSelectList = db.PianoCharges.Where(x => x.PianoOrderId == null)
-                        .OrderBy(x => x.ServiceCode).Select(
+                    _servicesSelectList = db.PianoCharges
+                        .OrderBy(x => x.ChargesCode).Select(
                              x => new SelectListItem()
                              {
-                                 Text = x.ServiceDetails,
-                                 Value = x.ServiceCode.ToString()
+                                 Text = x.ChargesDetails,
+                                 Value = x.Id.ToString()
                              }).ToList();
                     _servicesSelectList.Insert(0, new SelectListItem()
                     {

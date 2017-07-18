@@ -16,8 +16,8 @@ namespace WFP.ICT.Web.ViewModels
             {
                 if (Address.Name == "" || Address.Address1 == "") return "";
                 var pickupAddress = string.Format("{0}, <br /> {1} {2}, <br /> {3}, {4} {5} <br />{6}",
-                    Address.Name, Address.Address1, Address.Address2,
-                    Address.Suburb, Address.State,
+                    Address.Name, Address.Address1,
+                    Address.City, Address.State,
                     Address.PostCode, Address.PhoneNumber).Trim("<br />".ToCharArray());
                 return "<br />" + pickupAddress;
             }
@@ -29,8 +29,8 @@ namespace WFP.ICT.Web.ViewModels
             {
                 if (Address.Name == "" || Address.Address1 == "") return "";
                 var pickupAddress = string.Format("{0}, <br /> {1} {2}, <br /> {3}, {4} {5}",
-                    Address.Name, Address.Address1, Address.Address2,
-                    Address.Suburb, Address.State,
+                    Address.Name, Address.Address1,
+                    Address.City, Address.State,
                     Address.PostCode).Trim("<br />".ToCharArray());
                 return "<br />" + pickupAddress;
             }

@@ -20,7 +20,7 @@ namespace WFP.ICT.Web.Controllers
                 {
                     Id = a.Id,
                     Street = a.Address1,
-                    City = a.Suburb
+                    City = a.City
                 }),
             };
 
@@ -54,7 +54,7 @@ namespace WFP.ICT.Web.Controllers
                 {
                     Id = a.Id,
                     Street = a.Address1,
-                    City = a.Suburb
+                    City = a.City
                 }),
             };
             return View(viewModel);

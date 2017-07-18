@@ -117,10 +117,13 @@ namespace WFP.ICT.Web.Controllers
                             CreatedBy = LoggedInUser?.UserName,
                             Name = orderVm.PickupAddress.Name,
                             Address1 = orderVm.PickupAddress.Address1,
-                            Suburb = orderVm.PickupAddress.Suburb,
+                            City = orderVm.PickupAddress.City,
                             State = orderVm.PickupAddress.State,
+                            NumberTurns = orderVm.PickupAddress.Turns,
+                            NumberStairs = orderVm.PickupAddress.Stairs,
                             PostCode = orderVm.PickupAddress.PostCode,
-                            PhoneNumber = orderVm.PickupAddress.PhoneNumber
+                            PhoneNumber = orderVm.PickupAddress.PhoneNumber,
+                            Notes = orderVm.PickupAddress.Notes
                         };
                         db.Addresses.Add(pickupAddress);
                         db.SaveChanges();
@@ -132,11 +135,14 @@ namespace WFP.ICT.Web.Controllers
                             CreatedBy = LoggedInUser?.UserName,
                             Name = orderVm.DeliveryAddress.Name,
                             Address1 = orderVm.DeliveryAddress.Address1,
-                            Suburb = orderVm.DeliveryAddress.Suburb,
+                            City = orderVm.DeliveryAddress.City,
                             State = orderVm.DeliveryAddress.State,
+                            NumberTurns = orderVm.DeliveryAddress.Turns,
+                            NumberStairs = orderVm.DeliveryAddress.Stairs,
                             PostCode = orderVm.DeliveryAddress.PostCode,
                             PhoneNumber = orderVm.DeliveryAddress.PhoneNumber,
-                            
+                            Notes = orderVm.DeliveryAddress.Notes
+
                         };
                         db.Addresses.Add(deliveryAddress);
                         db.SaveChanges();
@@ -147,16 +153,18 @@ namespace WFP.ICT.Web.Controllers
                             order.CreatedAt = DateTime.Now;
                             order.CreatedBy = LoggedInUser?.UserName;
                         order.OrderNumber = newOrderNumber.ToString();
-                        order.OrderType = 1;
+                        order.OrderType = (int)(OrderTypeEnum.Private);
                         order.CallerFirstName = orderVm.CallerFirstName;
                         order.CallerLastName = orderVm.CallerLastName;
                         order.CallerPhoneNumber = orderVm.CallerPhoneNumber;
                         order.CallerEmail = orderVm.CallerEmail;
                         order.PaymentOption = int.Parse(orderVm.PaymentOption);
-                        order.PreferredPickupDateTime = string.IsNullOrEmpty(orderVm.PreferredPickupDateTime) ? (DateTime?)null : DateTime.Parse(orderVm.PreferredPickupDateTime);
+                        order.PickupDate = orderVm.PickupAddress.PickUpDate;
+                        order.DeliveryDate = orderVm.DeliveryAddress.PickUpDate;
+
                         order.CustomerId =
                                 string.IsNullOrEmpty(orderVm.Shuttle) ? (Guid?)null : Guid.Parse(orderVm.Shuttle);
-                        order.Notes = orderVm.Notes;
+
                         order.PickupAddressId = pickupAddressId;
                         order.DeliveryAddressId = deliveryAddressId;
                         };
@@ -168,7 +176,7 @@ namespace WFP.ICT.Web.Controllers
                         }
                         db.SaveChanges();
 
-                        foreach (var item in order.PianoCharges)
+                        foreach (var item in orderVm.Services)
                         {
                                db.PianoCharges.Add(new PianoCharges()
                             {
@@ -211,7 +219,7 @@ namespace WFP.ICT.Web.Controllers
                 obj.CreatedBy = LoggedInUser?.UserName;
                 obj.Name = vm.PianoName;
             //TypeID from table
-               // obj.PianoTypeId = Guid.Parse(vm.PianoType);
+                obj.PianoTypeId = Guid.Parse(vm.PianoTypeId);
                 obj.Color = vm.PianoColor;
                 obj.Model = vm.PianoModel;
             //make entity guid
@@ -254,13 +262,14 @@ namespace WFP.ICT.Web.Controllers
                             address = warehouse.Address1,
                             phone = warehouse.PhoneNumber,
                             state = warehouse.State,
-                            city = warehouse.Suburb,
+                            city = warehouse.City,
                             stairs = warehouse.NumberStairs,
                             turns = warehouse.NumberTurns,
                             name = warehouse.Name,
                             altName = warehouse.AlternateContact,
                             altPhone = warehouse.AlternatePhone,
                             postCode = warehouse.PostCode,
+                      
 
                         };
                         return Json(new { key = true, warehouse = populate }, JsonRequestBehavior.AllowGet);
@@ -304,15 +313,16 @@ namespace WFP.ICT.Web.Controllers
             }
         
         }
-        public ActionResult PopulateServiceCharges(int? pianoServiceCode)
+        public ActionResult PopulateServiceCharges(string pianoServiceCode)
         {
             try
             {
-                PianoCharges charges = db.PianoCharges.Where(x => x.ServiceCode == pianoServiceCode).
+                Guid guidId = Guid.Parse(pianoServiceCode);
+                PianoCharges charges = db.PianoCharges.Where(x => x.Id == guidId).
                                    FirstOrDefault();
                     if(charges != null)
                 {
-                    return Json(new { key = true, charges = charges.ServiceCharges }, JsonRequestBehavior.AllowGet);
+                    return Json(new { key = true, charges = charges.Amount }, JsonRequestBehavior.AllowGet);
                 }
 
                 return Json(new { key = false}, JsonRequestBehavior.AllowGet);

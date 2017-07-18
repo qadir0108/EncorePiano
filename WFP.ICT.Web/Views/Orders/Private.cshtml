@@ -139,9 +139,9 @@
                                                                         <div class="form-group form-md-line-input has-success">
                                                                             <div class="input-icon">
                                                                                 @Html.EditorFor(model => model.PickupAddress.PickUpDate, new { htmlAttributes = new { @class = "form-control date-picker" } })
-                                                                                <label>Date<span class="required">*</span></label>
+                                                                                <label>Pickup Date<span class="required">*</span></label>
                                                                                 @Html.ValidationMessageFor(model => model.PickupAddress.PickUpDate, null, new { @class = "help-block help-block-error" })
-                                                                                <span class="help-block">Enter Date here</span>
+                                                                                <span class="help-block">Enter Pickup Date here</span>
                                                                                 <i class="fa fa-user"></i>
                                                                             </div>
                                                                         </div>
@@ -282,7 +282,7 @@
                                                                     <div class="col-md-12">
                                                                         <div class="form-group form-md-line-input has-success">
                                                                             <div class="input-icon">
-                                                                                @Html.EditorFor(model => model.PickupAddress.Notes, new { htmlAttributes = new { @class = "form-control" } })
+                                                                                @Html.EditorFor(model => model.PickupAddress.Notes, new { htmlAttributes = new { @class = "form-control pianoNotes" } })
                                                                                 <label>Instructions</label>
                                                                                 <span class="help-block">Enter Instructions Here</span>
                                                                                 <i class="fa fa-home"></i>
@@ -317,9 +317,9 @@
                                                                         <div class="form-group form-md-line-input has-success">
                                                                             <div class="input-icon">
                                                                                 @Html.EditorFor(model => model.DeliveryAddress.PickUpDate, new { htmlAttributes = new { @class = "form-control date-picker" } })
-                                                                                <label>Date<span class="required">*</span></label>
+                                                                                <label>Delivery Date<span class="required">*</span></label>
                                                                                 @Html.ValidationMessageFor(model => model.DeliveryAddress.PickUpDate, null, new { @class = "help-block help-block-error" })
-                                                                                <span class="help-block">Enter Date here</span>
+                                                                                <span class="help-block">Enter Delivery Date here</span>
                                                                                 <i class="fa fa-user"></i>
                                                                             </div>
                                                                         </div>
@@ -460,7 +460,7 @@
                                                                     <div class="col-md-12">
                                                                         <div class="form-group form-md-line-input has-success">
                                                                             <div class="input-icon">
-                                                                                @Html.EditorFor(model => model.DeliveryAddress.Notes, new { htmlAttributes = new { @class = "form-control" } })
+                                                                                @Html.EditorFor(model => model.DeliveryAddress.Notes, new { htmlAttributes = new { @class = "form-control pianoNotes" } })
                                                                                 <label>Instructions</label>
                                                                                 <span class="help-block">Enter Instructions Here</span>
                                                                                 <i class="fa fa-home"></i>
@@ -684,7 +684,7 @@
                     parent.find('.pianoAltName').val(data.warehouse.altName);
                     parent.find('.pianoAltPhone').val(data.warehouse.altPhone);
                     parent.find('.pianoPostCode').val(data.warehouse.postCode);
-
+                    parent.find('.pianoNotes').val(data.warehouse.notes);
                 }
                
             });

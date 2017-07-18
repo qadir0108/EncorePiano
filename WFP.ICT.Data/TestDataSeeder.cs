@@ -98,7 +98,7 @@ namespace WFP.ICT.Data
                 PhoneNumber = "1234",
                 PostCode = "123",
                 State = "CA",
-                Suburb = "Suberb name",
+                City = "City name",
                 Lat = "34.504772",
                 Lng="-117.221566",
             });
@@ -199,7 +199,7 @@ namespace WFP.ICT.Data
                 PhoneNumber = "(714) 739-4717",
                 PostCode = "90638",
                 State = "CA",
-                Suburb = "LA MIRADA",
+                City = "LA MIRADA",
                 Lat = "33.892162",
                 Lng = "-118.024756"
             });
