@@ -76,7 +76,8 @@
                             <div class="col-md-4">
                                 <div class="form-group form-md-line-input has-success">
                                     <div class="input-icon">
-                                        @Html.EditorFor(model => model.PianoMake, new { htmlAttributes = new { @class = "form-control pianoMake" } })
+                                        
+                                        @Html.DropDownListFor(model => model.PianoMake, ViewBag.PianoMake as SelectList, htmlAttributes: new { @class = "form-control pianoMake" })
                                         <label>Piano Make<span class="required">*</span></label>
                                         @Html.ValidationMessageFor(model => model.PianoMake, null, new { @class = "help-block help-block-error" })
                                         <span class="help-block">Enter Piano Make here</span>

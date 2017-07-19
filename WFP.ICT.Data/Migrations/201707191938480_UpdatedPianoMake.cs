@@ -3,7 +3,7 @@ namespace WFP.ICT.Data.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class DbFixes : DbMigration
+    public partial class UpdatedPianoMake : DbMigration
     {
         public override void Up()
         {
@@ -147,7 +147,6 @@ namespace WFP.ICT.Data.Migrations
                         Id = c.Guid(nullable: false),
                         OrderNumber = c.String(),
                         OrderType = c.Int(nullable: false),
-                        OrderMedium = c.Int(nullable: false),
                         CallerFirstName = c.String(),
                         CallerLastName = c.String(),
                         CallerPhoneNumber = c.String(),
@@ -165,7 +164,8 @@ namespace WFP.ICT.Data.Migrations
                         PianoConsignmentId = c.Guid(),
                         CodAmount = c.Double(nullable: false),
                         OfficeStaff = c.String(),
-                        OfficePayment = c.String(),
+                        OnlinePayment = c.String(),
+                        CarriedBy = c.String(),
                         BillToDifferent = c.Boolean(nullable: false),
                         InvoiceClientId = c.Guid(),
                         InvoiceBillingPartyId = c.Guid(),
@@ -330,10 +330,7 @@ namespace WFP.ICT.Data.Migrations
                     {
                         Id = c.Guid(nullable: false),
                         SerialNumber = c.String(),
-                        Name = c.String(),
-                        Make = c.String(),
                         Model = c.String(),
-                        Color = c.String(),
                         IsBench = c.Boolean(nullable: false),
                         IsBoxed = c.Boolean(nullable: false),
                         IsPlayer = c.Boolean(nullable: false),
@@ -341,8 +338,8 @@ namespace WFP.ICT.Data.Migrations
                         ReceivedDate = c.DateTime(),
                         ShippedDate = c.DateTime(),
                         PianoTypeId = c.Guid(),
-                        WareHouseName = c.String(),
-                        PianoSize = c.Int(nullable: false),
+                        PianoMakeId = c.Guid(),
+                        PianoSizeId = c.Guid(),
                         WareHouseStatus = c.Int(nullable: false),
                         IsLocated = c.Boolean(nullable: false),
                         PianoStatusId = c.Guid(),
@@ -355,15 +352,57 @@ namespace WFP.ICT.Data.Migrations
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.PianoOrder", t => t.OrderId)
+                .ForeignKey("dbo.PianoMake", t => t.PianoMakeId)
+                .ForeignKey("dbo.PianoSize", t => t.PianoSizeId)
                 .ForeignKey("dbo.PianoStatus", t => t.PianoStatusId)
                 .ForeignKey("dbo.PianoType", t => t.PianoTypeId)
                 .ForeignKey("dbo.Warehouse", t => t.WarehouseId)
                 .ForeignKey("dbo.PianoQuote", t => t.PianoQuote_Id)
                 .Index(t => t.PianoTypeId)
+                .Index(t => t.PianoMakeId)
+                .Index(t => t.PianoSizeId)
                 .Index(t => t.PianoStatusId)
                 .Index(t => t.WarehouseId)
                 .Index(t => t.OrderId)
                 .Index(t => t.PianoQuote_Id);
+            
+            CreateTable(
+                "dbo.PianoMake",
+                c => new
+                    {
+                        Id = c.Guid(nullable: false),
+                        Code = c.String(),
+                        Name = c.String(),
+                        CreatedAt = c.DateTime(nullable: false),
+                        CreatedBy = c.String(),
+                    })
+                .PrimaryKey(t => t.Id);
+            
+            CreateTable(
+                "dbo.PianoSize",
+                c => new
+                    {
+                        Id = c.Guid(nullable: false),
+                        Width = c.Double(nullable: false),
+                        PianoTypeId = c.Guid(),
+                        CreatedAt = c.DateTime(nullable: false),
+                        CreatedBy = c.String(),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.PianoType", t => t.PianoTypeId)
+                .Index(t => t.PianoTypeId);
+            
+            CreateTable(
+                "dbo.PianoType",
+                c => new
+                    {
+                        Id = c.Guid(nullable: false),
+                        Code = c.String(),
+                        Type = c.String(),
+                        CreatedAt = c.DateTime(nullable: false),
+                        CreatedBy = c.String(),
+                    })
+                .PrimaryKey(t => t.Id);
             
             CreateTable(
                 "dbo.PianoStatus",
@@ -380,32 +419,6 @@ namespace WFP.ICT.Data.Migrations
                         CreatedBy = c.String(),
                     })
                 .PrimaryKey(t => t.Id);
-            
-            CreateTable(
-                "dbo.PianoType",
-                c => new
-                    {
-                        Id = c.Guid(nullable: false),
-                        Code = c.String(),
-                        Type = c.String(),
-                        CreatedAt = c.DateTime(nullable: false),
-                        CreatedBy = c.String(),
-                    })
-                .PrimaryKey(t => t.Id);
-            
-            CreateTable(
-                "dbo.PianoSize",
-                c => new
-                    {
-                        Id = c.Guid(nullable: false),
-                        Width = c.String(),
-                        PianoTypeId = c.Guid(),
-                        CreatedAt = c.DateTime(nullable: false),
-                        CreatedBy = c.String(),
-                    })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.PianoType", t => t.PianoTypeId)
-                .Index(t => t.PianoTypeId);
             
             CreateTable(
                 "dbo.PianoPicture",
@@ -674,8 +687,10 @@ namespace WFP.ICT.Data.Migrations
             DropForeignKey("dbo.PianoPicture", "PianoPodId", "dbo.PianoPOD");
             DropForeignKey("dbo.PianoPicture", "PianoId", "dbo.Piano");
             DropForeignKey("dbo.Piano", "PianoTypeId", "dbo.PianoType");
-            DropForeignKey("dbo.PianoSize", "PianoTypeId", "dbo.PianoType");
             DropForeignKey("dbo.Piano", "PianoStatusId", "dbo.PianoStatus");
+            DropForeignKey("dbo.Piano", "PianoSizeId", "dbo.PianoSize");
+            DropForeignKey("dbo.PianoSize", "PianoTypeId", "dbo.PianoType");
+            DropForeignKey("dbo.Piano", "PianoMakeId", "dbo.PianoMake");
             DropForeignKey("dbo.Piano", "OrderId", "dbo.PianoOrder");
             DropForeignKey("dbo.PianoConsignment", "PianoConsignmentFormId", "dbo.PianoConsignmentForm");
             DropForeignKey("dbo.PianoConsignment", "DriverId", "dbo.Driver");
@@ -710,6 +725,8 @@ namespace WFP.ICT.Data.Migrations
             DropIndex("dbo.Piano", new[] { "OrderId" });
             DropIndex("dbo.Piano", new[] { "WarehouseId" });
             DropIndex("dbo.Piano", new[] { "PianoStatusId" });
+            DropIndex("dbo.Piano", new[] { "PianoSizeId" });
+            DropIndex("dbo.Piano", new[] { "PianoMakeId" });
             DropIndex("dbo.Piano", new[] { "PianoTypeId" });
             DropIndex("dbo.PianoPOD", new[] { "PianoId" });
             DropIndex("dbo.PianoPOD", new[] { "PianoConsignmentId" });
@@ -749,9 +766,10 @@ namespace WFP.ICT.Data.Migrations
             DropTable("dbo.PianoConsignmentRoute");
             DropTable("dbo.Warehouse");
             DropTable("dbo.PianoPicture");
-            DropTable("dbo.PianoSize");
-            DropTable("dbo.PianoType");
             DropTable("dbo.PianoStatus");
+            DropTable("dbo.PianoType");
+            DropTable("dbo.PianoSize");
+            DropTable("dbo.PianoMake");
             DropTable("dbo.Piano");
             DropTable("dbo.PianoPOD");
             DropTable("dbo.PianoConsignmentForm");

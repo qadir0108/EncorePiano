@@ -7,13 +7,13 @@ namespace WFP.ICT.Data.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class DbFixes : IMigrationMetadata
+    public sealed partial class UpdatedPianoMake : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(DbFixes));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(UpdatedPianoMake));
         
         string IMigrationMetadata.Id
         {
-            get { return "201707182150480_DbFixes"; }
+            get { return "201707191938480_UpdatedPianoMake"; }
         }
         
         string IMigrationMetadata.Source

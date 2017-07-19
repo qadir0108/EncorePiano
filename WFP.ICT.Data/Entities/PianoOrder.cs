@@ -9,9 +9,7 @@ namespace WFP.ICT.Data.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public Guid Id { get; set; }
         public string OrderNumber { get; set; }
-
         public int OrderType { get; set; } // OrderTypeEnum
-        public int OrderMedium { get; set; } // OrderMediumEnum
         public string CallerFirstName { get; set; }
         public string CallerLastName { get; set; }
         public string CallerPhoneNumber { get; set; }
@@ -22,8 +20,6 @@ namespace WFP.ICT.Data.Entities
         public string SalesOrderNumber { get; set; } // For Corporate client
         
         public string Notes { get; set; }
-
-        //public DateTime? OrderDate { get; set; } // CreatedAt
 
         public DateTime? PreferredPickupDateTime { get; set; }
 
@@ -50,7 +46,9 @@ namespace WFP.ICT.Data.Entities
         public virtual ICollection<PianoOrderStatus> Statuses { get; set; }
         public double CodAmount { get; set; }
         public string OfficeStaff { get; set; }
-        public string OfficePayment { get; set; }
+        public string OnlinePayment { get; set; }
+
+        public string CarriedBy { get; set; }
 
         public bool BillToDifferent { get; set; }
         public Guid? InvoiceClientId { get; set; }

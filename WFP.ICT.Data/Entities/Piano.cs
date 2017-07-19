@@ -10,10 +10,7 @@ namespace WFP.ICT.Data.Entities
         public Guid Id { get; set; }
 
         public string SerialNumber { get; set; }
-        public string Name { get; set; }
-        public string Make { get; set; }
         public string Model { get; set; }
-        public string Color { get; set; }
         public bool IsBench { get; set; } // W/B OR N/B
         public bool IsBoxed { get; set; }
         public bool IsPlayer { get; set; }
@@ -24,9 +21,11 @@ namespace WFP.ICT.Data.Entities
 
         public Guid? PianoTypeId { get; set; }
         public PianoType PianoType { get; set; }
-        public string WareHouseName { get; set; }
 
-        public int PianoSize { get; set; }
+        public Guid? PianoMakeId { get; set; }
+        public PianoMake PianoMake { get; set; }
+        public Guid? PianoSizeId { get; set; }
+        public PianoSize PianoSize { get; set; }
         public int WareHouseStatus { get; set; }
         public bool IsLocated { get; set; }
 

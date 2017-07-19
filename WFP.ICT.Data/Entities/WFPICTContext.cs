@@ -66,6 +66,9 @@ namespace WFP.ICT.Data.Entities
         public DbSet<PianoStatus> PianoStatuses { get; set; }
         public DbSet<PianoPOD> PianoPODs { get; set; }
         public DbSet<PianoPicture> PianoPictures { get; set; }
+        public DbSet<PianoMake> PianoMake { get; set; }
+
+        public DbSet<PianoSize> PianoSize { get; set; }
 
         // Accounting
         public DbSet<CustomerInvoice> CustomerInvoices { get; set; }

@@ -16,7 +16,6 @@ namespace WFP.ICT.Web.Models
         public string OrderDate { get; set; }
         public string OrderNumber { get; set; }
         public string OrderType { get; set; }
-        public string OrderMedium { get; set; }
 
         [Required(ErrorMessage = "First name is required")]
         public string CallerFirstName { get; set; }
@@ -56,12 +55,24 @@ namespace WFP.ICT.Web.Models
         public AddressVm PickupAddress { get; set; }
         public AddressVm DeliveryAddress { get; set; }
         public List<PianoVm> Pianos { get; set; }
-        public List<PianoServiceVm> Services { get; set; }
+        public List<PianoServiceVm> Charges { get; set; }
         public string PickupTicket { get; set; }
+
+        //Fields for dealer and manufacturer
+        public string ThirdParty { get; set; }
+        public bool IsBilledThirdParty { get; set; }
+
+        public string SalesOrderNumber { get; set; }
+        public  string CarriedBy { get; set; }
+
+        [Required(ErrorMessage = "Dealer is required")]
+        public string Dealer { get; set; }
+
+        public int OrderPlacementType { get; set; }
 
         public OrderVm()
         {
-            Services = new List<PianoServiceVm>();
+            Charges = new List<PianoServiceVm>();
             Pianos = new List<PianoVm>();
         }
         public static OrderVm FromOrder(PianoOrder order, IEnumerable<SelectListItem> PianoTypesList)
@@ -75,7 +86,6 @@ namespace WFP.ICT.Web.Models
                 OrderDate = order.CreatedAt.ToString(),
                 OrderNumber = order.OrderNumber,
                 OrderType = ((OrderTypeEnum)order.OrderType).ToString(),
-                OrderMedium = ((OrderMediumEnum)order.OrderMedium).ToString(),
                 CallerFirstName = order.CallerFirstName,
                 CallerLastName = order.CallerLastName,
                 CallerPhoneNumber = order.CallerPhoneNumber,
@@ -95,16 +105,14 @@ namespace WFP.ICT.Web.Models
                     Id = x.Id,
                     OrderId = order.Id,
                     PianoType = PianoTypesList.FirstOrDefault(y => y.Value == x.PianoTypeId.ToString()).Text,
-                    PianoName = x.Name,
-                    PianoColor = x.Color,
                     PianoModel = x.Model,
-                    PianoMake = x.Make,
+                    PianoMake = x.PianoMake.Name,
                     SerialNumber = x.SerialNumber,
                     IsBench = x.IsBench,
                     IsBoxed = x.IsBoxed,
                     IsStairs = x.IsPlayer
                 }).ToList();
-            orderVM.Services = order.OrderCharges.OrderBy(x => x.Id).Select(
+            orderVM.Charges = order.OrderCharges.OrderBy(x => x.Id).Select(
                x => new PianoServiceVm()
                {
                    Id = x.Id.ToString(),

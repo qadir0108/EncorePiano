@@ -15,22 +15,34 @@ namespace WFP.ICT.Data
         {
             #region Order
 
+            Guid typeID = Guid.NewGuid();
             // Piano Types
             foreach (var ptype in EnumHelper.GetEnumTextValues(typeof(PianoTypeEnum)))
             {
-                string officeCode = ptype.Value;
-                var already = context.PianoTypes.FirstOrDefault(m => m.Code == officeCode);
+
+                var already = context.PianoTypes.FirstOrDefault(m => m.Code == ptype.Value);
                 if (already == null)
                 {
+                   
                     context.PianoTypes.Add(new PianoType()
-                    {
-                        Id = Guid.NewGuid(),
+                    { 
+                        Id = ptype.Text == "Spinet" ? typeID : Guid.NewGuid(),
                         CreatedAt = DateTime.Now,
                         Code = ptype.Value,
                         Type = ptype.Text,
                     });
                 }
             }
+            context.SaveChanges();
+
+            //PianoSizes
+            context.PianoSize.Add(new PianoSize()
+            {
+                Id = Guid.NewGuid(),
+                PianoTypeId = typeID,
+                Width = 235.56,
+                CreatedAt = DateTime.Now,
+            });
             context.SaveChanges();
 
             // Piano Charges
@@ -204,6 +216,23 @@ namespace WFP.ICT.Data
                 Lng = "-118.024756"
             });
             warehouse.AddressId = addressId;
+            context.SaveChanges();
+
+            //Piano Make
+            foreach (var ptype in EnumHelper.GetEnumTextValues(typeof(PianoMakeEnum)))
+            {
+                var already = context.PianoMake.FirstOrDefault(m => m.Name == ptype.Text);
+                if (already == null)
+                {
+                    context.PianoMake.Add(new PianoMake()
+                    {
+                        Id = Guid.NewGuid(),
+                        Code = ptype.Value,
+                        Name = ptype.Text,
+                        CreatedAt = DateTime.Now,
+                    });
+                }
+            }
             context.SaveChanges();
 
             #endregion

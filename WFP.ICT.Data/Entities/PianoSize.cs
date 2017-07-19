@@ -8,7 +8,7 @@ namespace WFP.ICT.Data.Entities
     {
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public Guid Id { get; set; }
-        public string Width { get; set; }
+        public double Width { get; set; }
 
         public Guid? PianoTypeId { get; set; }
         public virtual PianoType PianoType { get; set; }
