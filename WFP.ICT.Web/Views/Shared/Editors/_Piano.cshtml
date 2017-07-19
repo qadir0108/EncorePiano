@@ -1,0 +1,204 @@
+﻿@model WFP.ICT.Web.Models.PianoVm
+@using MyToolkit.Html
+
+<!-- Start Piano -->
+@using (Html.BeginCollectionItem("Pianos"))
+{
+    <div class="row" style="margin-top: 5px">
+        <div class="col-md-12">
+            <div class="portlet light bordered" id="p2">
+                <!-- box purple-->
+                <div class="portlet-title">
+                    <div class="caption font-red-sunglo">
+                        <span class="caption-subject bold uppercase"> Piano Details</span>
+                    </div>
+                    <div class="actions">
+                        <a class="btn btn-circle btn-icon-only red" data-tooltip="tooltip" title="Delete this piano" value="Delete"
+                           onclick="$(this).parent().parent().parent().parent().parent().remove();">
+                            <i class="icon-trash"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="portlet-body form">
+                    <div class="form-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group form-md-line-input has-success">
+                                    <div class="input-icon">
+                                        @Html.DropDownListFor(model => model.PianoCategoryType, ViewBag.PianoCategoryType as SelectList, htmlAttributes: new { @class = "form-control pianoCategory", onchange = "pianoConfigs.initShowData(this)" })
+
+                                        <label>Piano Category<span class="required">*</span></label>
+
+                                        @Html.ValidationMessageFor(model => model.PianoCategoryType, null, new { @class = "help-block help-block-error" })
+                                        <span class="help-block">Enter Piano Name here</span>
+                                        <i class="fa fa-bars"></i>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group form-md-line-input has-success">
+                                    <div class="input-icon">
+                                        @Html.EditorFor(model => model.SerialNumber, new { htmlAttributes = new { @class = "form-control" , onkeydown = "pianoConfigs.initPopulatePiano(this)" } })
+                                        <label>Serial Number</label>
+                                        <span class="help-block">Enter Piano Serial Number here</span>
+                                        <i class="fa fa-bars"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row pianoTypeSize" style="display:none">
+                            <div class="col-md-4">
+                                <div class="form-group form-md-line-input has-success">
+                                    <div class="input-icon">
+                                        @Html.DropDownListFor(model => model.PianoTypeId, ViewBag.PianoType as SelectList, htmlAttributes: new { @class = "form-control pianoType" })
+                                        <label>Piano Type<span class="required">*</span></label>
+                                        @Html.ValidationMessageFor(model => model.PianoType, null, new { @class = "help-block help-block-error" })
+                                        <span class="help-block">Enter Piano Type here</span>
+                                        <i class="fa fa-bars"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group form-md-line-input has-success">
+                                    <div class="input-icon">
+                                        @Html.DropDownListFor(model => model.PianoSize, ViewBag.PianoType as SelectList, htmlAttributes: new { @class = "form-control pianoSize" })
+                                        <label>Piano Size<span class="required">*</span></label>
+                                        @Html.ValidationMessageFor(model => model.PianoSize, null, new { @class = "help-block help-block-error" })
+                                        <span class="help-block">Enter Piano Size here</span>
+                                        <i class="fa fa-bars"></i>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row pianoMakeModel" style="display:none">
+                            <div class="col-md-4">
+                                <div class="form-group form-md-line-input has-success">
+                                    <div class="input-icon">
+                                        @Html.EditorFor(model => model.PianoMake, new { htmlAttributes = new { @class = "form-control pianoMake" } })
+                                        <label>Piano Make<span class="required">*</span></label>
+                                        @Html.ValidationMessageFor(model => model.PianoMake, null, new { @class = "help-block help-block-error" })
+                                        <span class="help-block">Enter Piano Make here</span>
+                                        <i class="fa fa-bars"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group form-md-line-input has-success">
+                                    <div class="input-icon">
+                                        @Html.EditorFor(model => model.PianoModel, new { htmlAttributes = new { @class = "form-control pianoModel" } })
+                                        <label>Piano Model</label>
+                                        <span class="help-block">Enter Piano Model here</span>
+                                        <i class="fa fa-bars"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group form-md-line-input has-success">
+                                    <div class="input-icon">
+                                        @Html.EditorFor(model => model.Notes, new { htmlAttributes = new { @class = "form-control pianoNotes" } })
+                                        <label>Miscellaneous Information</label>
+                                        <span class="help-block">Enter miscellaneous info here</span>
+                                        <i class="fa fa-bars"></i>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row pianoBenchPlayer" style="margin-bottom: 10px;display:none;">
+                            <div class="col-md-4">
+                                <div class="form-group form-md-radios">
+                                    <label class="col-md-3 control-label">Bench?<span class="required">*</span></label>
+                                    <div class="col-md-9">
+                                        <div class="md-radio-inline">
+                                            <div class="md-radio">
+                                                @{string id = ViewData.TemplateInfo.GetFullHtmlFieldId("radioBenchTrue");}
+                                                @Html.RadioButtonFor(x => x.IsBench, true, new { @id = id, @class = "md-radiobtn" })
+                                                <label for="@id">
+                                                    <span></span>
+                                                    <span class="check"></span>
+                                                    <span class="box"></span> Yes W/B
+                                                </label>
+                                            </div>
+                                            <div class="md-radio">
+                                                @{ id = ViewData.TemplateInfo.GetFullHtmlFieldId("radioBenchFalse");}
+                                                @Html.RadioButtonFor(x => x.IsBench, false, new { @id = id, @class = "md-radiobtn" })
+                                                <label for="@id">
+                                                        <span></span>
+                                                        <span class="check"></span>
+                                                        <span class="box"></span> No N/B
+                                                    </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-4">
+
+                                <div class="form-group form-md-radios">
+                                    <label class="col-md-3 control-label">Player?<span class="required">*</span></label>
+                                    <div class="col-md-9">
+                                        <div class="md-radio-inline">
+                                            <div class="md-radio">
+                                                @{id = ViewData.TemplateInfo.GetFullHtmlFieldId("radioPlayerTrue");}
+                                                @Html.RadioButtonFor(x => x.IsPlayer, true, new { @id = id, @class = "md-radiobtn" })
+                                                <label for="@id">
+                                                    <span></span>
+                                                    <span class="check"></span>
+                                                    <span class="box"></span> Yes 
+                                                </label>
+                                            </div>
+                                            <div class="md-radio">
+                                                @{id = ViewData.TemplateInfo.GetFullHtmlFieldId("radioPlayerFalse");}
+                                                @Html.RadioButtonFor(x => x.IsPlayer, false, new { @id = id, @class = "md-radiobtn" })
+                                                <label for="@id">
+                                                    <span></span>
+                                                    <span class="check"></span>
+                                                    <span class="box"></span> No
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-4">
+
+                                <div class="form-group form-md-radios">
+                                    <label class="col-md-3 control-label" >Boxed?<span class="required">*</span></label>
+                                    <div class="col-md-9">
+                                        <div class="md-radio-inline">
+                                            <div class="md-radio">
+                                                @{id = ViewData.TemplateInfo.GetFullHtmlFieldId("radioBoxedTrue");}
+                                               @Html.RadioButtonFor(x => x.IsBoxed, true, new { @id = id , @class = "md-radiobtn" })
+                                                <label for="@id">
+                                                    <span></span>
+                                                    <span class="check"></span>
+                                                    <span class="box"></span> Yes
+                                                </label>
+                                            </div>
+                                            <div class="md-radio">
+                                                @{id = ViewData.TemplateInfo.GetFullHtmlFieldId("radioBoxedFalse");}
+                                                @Html.RadioButtonFor(x => x.IsBoxed, false, new { @id = id,@class = "md-radiobtn" })
+                                                <label for="@id">
+                                                    <span></span>
+                                                    <span class="check"></span>
+                                                    <span class="box"></span> No
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<!-- End Piano -->

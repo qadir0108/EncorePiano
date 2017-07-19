@@ -56,13 +56,14 @@ namespace WFP.ICT.Web.Models
         public AddressVm PickupAddress { get; set; }
         public AddressVm DeliveryAddress { get; set; }
         public List<PianoVm> Pianos { get; set; }
-        //public PianoVm P1 { get; set; }
-        //public PianoVm P2 { get; set; }
-        //public PianoVm P3 { get; set; }
-        //public PianoVm P4 { get; set; }
-        //public PianoVm P5 { get; set; }
         public List<PianoServiceVm> Services { get; set; }
         public string PickupTicket { get; set; }
+
+        public OrderVm()
+        {
+            Services = new List<PianoServiceVm>();
+            Pianos = new List<PianoVm>();
+        }
         public static OrderVm FromOrder(PianoOrder order, IEnumerable<SelectListItem> PianoTypesList)
         {
             var pickupAddress = TinyMapper.Map<AddressVm>(order.PickupAddress).AddressToString;

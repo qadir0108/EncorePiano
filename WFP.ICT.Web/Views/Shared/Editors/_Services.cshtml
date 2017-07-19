@@ -1,0 +1,36 @@
+﻿@model WFP.ICT.Web.Models.PianoServiceVm
+@using MyToolkit.Html
+
+  <!-- Start Piano -->
+@using (Html.BeginCollectionItem("Services"))
+{
+
+    <div class="row" style="margin-top:5px;">
+        <div class="col-md-2 pull-right">
+            <a class="btn btn-circle btn-icon-only red btnDelete pull-right" data-tooltip="tooltip" title="Delete this service" value="Delete"
+               onclick="$(this).parent().parent().remove();">
+                <i class="icon-trash"></i>
+            </a>
+        </div>
+
+        <div class="col-md-5" >
+            <div class="form-group form-md-line-input has-success">
+                @Html.DropDownListFor(model => model.ServiceCode, ViewBag.Services as SelectList, null, htmlAttributes: new { @class = "form-control", onchange = "pianoConfigs.initPopulateServiceCharges(this)" })
+                @Html.ValidationMessageFor(model => model.ServiceCode, null, new { @class = "help-block help-block-error" })
+                 <span class="help-block">Select Charges here</span>
+            </div>
+        </div>
+        <div class="col-md-5">
+            <div class="form-group form-md-line-input has-success">
+                <div class="input-icon">
+                    @Html.EditorFor(model => model.ServiceCharges, new { htmlAttributes = new { @class = "form-control serviceCharges" } })
+                    <label for="form_control_1">Charges<span class="required">*</span></label>
+                    @Html.ValidationMessageFor(model => model.ServiceCharges, null, new { @class = "help-block help-block-error" })
+                    <span class="help-block">Enter Charges Amount here</span>
+                    <i class="fa fa-user"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+   <!-- End Piano -->
