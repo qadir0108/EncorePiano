@@ -68,15 +68,13 @@
     <Compile Include="Entities\Client.cs" />
     <Compile Include="Entities\DriverLogin.cs" />
     <Compile Include="Entities\Driver.cs" />
-    <Compile Include="Entities\PianoConsignment.cs" />
-    <Compile Include="Entities\PianoConsignmentRoute.cs" />
+    <Compile Include="Entities\PianoAssignment.cs" />
+    <Compile Include="Entities\PianoAssignmentRoute.cs" />
     <Compile Include="Entities\PianoOrderBilling.cs" />
     <Compile Include="Entities\PianoQuote.cs" />
     <Compile Include="Entities\PianoCharges.cs" />
     <Compile Include="Entities\PianoSize.cs" />
     <Compile Include="Entities\PianoStatus.cs" />
-    <Compile Include="Entities\PianoOrderStatus.cs" />
-    <Compile Include="Entities\PianoConsignmentForm.cs" />
     <Compile Include="Entities\PianoPOD.cs" />
     <Compile Include="Entities\Warehouse.cs" />
     <Compile Include="Entities\PianoType.cs" />
@@ -91,10 +89,6 @@
     <Compile Include="Entities\BaseEntity.cs" />
     <Compile Include="Entities\iBaseEntity.cs" />
     <Compile Include="EntityManager\CompanyManager.cs" />
-    <Compile Include="Migrations\201707182150480_DbFixes.cs" />
-    <Compile Include="Migrations\201707182150480_DbFixes.Designer.cs">
-      <DependentUpon>201707182150480_DbFixes.cs</DependentUpon>
-    </Compile>
     <Compile Include="Repository\GenericRepository.cs" />
     <Compile Include="Repository\UnitOfWork.cs" />
     <Compile Include="Entities\WFPRole.cs" />
@@ -127,11 +121,6 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201707182150480_DbFixes.resx">
-      <DependentUpon>201707182150480_DbFixes.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

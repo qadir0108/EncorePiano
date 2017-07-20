@@ -9,6 +9,8 @@ namespace WFP.ICT.Data.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public Guid Id { get; set; }
 
+        public int CategoryType { get; set; } // PianoCategoryTypeEnum
+
         public string SerialNumber { get; set; }
         public string Name { get; set; }
         public string Make { get; set; }
@@ -29,7 +31,6 @@ namespace WFP.ICT.Data.Entities
         public int PianoSize { get; set; }
         public int WareHouseStatus { get; set; }
         public bool IsLocated { get; set; }
-
 
         public Guid? PianoStatusId { get; set; }
         public virtual PianoStatus PianoStatus { get; set; }

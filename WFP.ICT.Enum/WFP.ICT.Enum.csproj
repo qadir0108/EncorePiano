@@ -56,7 +56,6 @@
     <Compile Include="InvoiceStatusEnum.cs" />
     <Compile Include="PianoStatusEnum.cs" />
     <Compile Include="PODStatusEnum.cs" />
-    <Compile Include="OrderStatusEnum.cs" />
     <Compile Include="PaymentOptionEnum.cs" />
     <Compile Include="OrderMediumEnum.cs" />
     <Compile Include="EnumHelper.cs" />

@@ -18,11 +18,11 @@ namespace WFP.ICT.Data.Entities
 
         public string FCMToken { get; set; }
 
-        public virtual ICollection<PianoConsignment> Consignments { get; set; }
+        public virtual ICollection<PianoAssignment> Assignments { get; set; }
 
         public Driver()
         {
-            Consignments = new HashSet<PianoConsignment>();
+            Assignments = new HashSet<PianoAssignment>();
         }
     }
 }

@@ -3,10 +3,10 @@ namespace WFP.ICT.Data.Entities
     using System;
     using System.Collections.Generic;
     
-    public partial class PianoConsignment : BaseEntity, iBaseEntity
+    public partial class PianoAssignment : BaseEntity, iBaseEntity
     {
         public Guid Id { get; set; }
-        public string ConsignmentNumber { get; set; }
+        public string AssignmentNumber { get; set; }
 
         public Guid? WarehouseStartId { get; set; }
         public virtual Warehouse WarehouseStart { get; set; }
@@ -20,8 +20,8 @@ namespace WFP.ICT.Data.Entities
         public Guid? PianoOrderId { get; set; }
         //public virtual PianoOrder PianoOrder { get; set; }
         
-        public Guid? PianoConsignmentFormId { get; set; }
-        public PianoConsignmentForm PianoConsignmentForm { get; set; }
+        public Guid? PianoPodId { get; set; }
+        public virtual PianoPOD PianoPod { get; set; }
 
         public string PickupTicket { get; set; }
         public DateTime? PickupTicketGenerationTime { get; set; }
@@ -31,13 +31,11 @@ namespace WFP.ICT.Data.Entities
         public DateTime? StartTime { get; set; }
         public int MinutesAway { get; set; } //  truck is on its way 15/30/45/60 minutes away
 
-        public virtual ICollection<PianoConsignmentRoute> Route { get; set; }
-        public virtual ICollection<PianoPOD> PianoPOD { get; set; }
+        public virtual ICollection<PianoAssignmentRoute> Route { get; set; }
 
-        public PianoConsignment()
+        public PianoAssignment()
         {
-            Route = new HashSet<PianoConsignmentRoute>();
-            PianoPOD = new HashSet<PianoPOD>();
+            Route = new HashSet<PianoAssignmentRoute>();
         }
     }
 }

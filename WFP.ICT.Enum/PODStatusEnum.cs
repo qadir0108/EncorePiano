@@ -7,7 +7,13 @@ namespace WFP.ICT.Enum
 {
     public enum PODStatusEnum
     {
-        ReceivedCorrectly,
-        ReceivedWithDamages
+        Booked,
+        Picked,
+        Dispatched,
+        Delivered,
+        Rejected,
+        ExceptionsDefacts,
+        ExceptionsScratches,
+        ExceptionsMissingAccessories,
     }
 }

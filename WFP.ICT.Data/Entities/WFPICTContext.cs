@@ -49,7 +49,6 @@ namespace WFP.ICT.Data.Entities
 
         public DbSet<PianoOrderCharges> PianoOrderCharges { get; set; }
         public DbSet<PianoOrderBilling> PianoOrderBillings { get; set; }
-        public DbSet<PianoOrderStatus> PianoOrderStatuses { get; set; }
         public DbSet<PianoQuote> PianoQuotes { get; set; }
 
         // POD Lookups
@@ -60,9 +59,8 @@ namespace WFP.ICT.Data.Entities
         public DbSet<DriverLogin> DriverLogins { get; set; }
 
         // POD
-        public DbSet<PianoConsignment> PianoConsignments { get; set; }
-        public DbSet<PianoConsignmentRoute> PianoConsignmentRoutes { get; set; }
-        public DbSet<PianoConsignmentForm> PianoConsignmentForms { get; set; }
+        public DbSet<PianoAssignment> PianoAssignments { get; set; }
+        public DbSet<PianoAssignmentRoute> PianoAssignmentRoutes { get; set; }
         public DbSet<PianoStatus> PianoStatuses { get; set; }
         public DbSet<PianoPOD> PianoPODs { get; set; }
         public DbSet<PianoPicture> PianoPictures { get; set; }
