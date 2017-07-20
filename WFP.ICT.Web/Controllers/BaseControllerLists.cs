@@ -392,6 +392,30 @@ namespace WFP.ICT.Web.Controllers
             }
         }
 
+        private static List<SelectListItem> _pianoMakeList;
+        public IEnumerable<SelectListItem> PianoMakeList
+        {
+            get
+            {
+                if (_pianoMakeList == null)
+                {
+                    _pianoMakeList = db.PianoMake
+                        .OrderBy(x => x.CreatedAt).Select(
+                             x => new SelectListItem()
+                             {
+                                 Text =  x.Name,
+                                 Value = x.Id.ToString()
+                             }).ToList();
+                    _pianoMakeList.Insert(0, new SelectListItem()
+                    {
+                        Text = "Select Make",
+                        Value = string.Empty
+                    });
+                }
+                return _pianoMakeList;
+            }
+        }
+
         private static List<SelectListItem> _drivers;
         public IEnumerable<SelectListItem> DriversList
         {

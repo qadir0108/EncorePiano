@@ -20,7 +20,7 @@ namespace WFP.ICT.Data.Entities
         public string AcknowledgeTo { get; set; } // Email addresses
 
         public Guid? PianoAssignmentId { get; set; }
-        public virtual PianoAssignment PianoAssignment { get; set; }
+        //public virtual PianoAssignment PianoAssignment { get; set; }
 
         public Guid? PianoId { get; set; }
         public virtual Piano Piano { get; set; }

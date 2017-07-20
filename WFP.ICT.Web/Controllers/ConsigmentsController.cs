@@ -37,7 +37,7 @@ namespace WFP.ICT.Web.Controllers
         {
             
             var consigmentVms = new List<ConsigmentVm>();
-            var consignments = db.PianoConsignments
+            var consignments = db.PianoAssignments
                 .Include(x => x.Driver)
                 .Include(x => x.Vehicle)
                 .Include(x => x.WarehouseStart)
@@ -52,7 +52,7 @@ namespace WFP.ICT.Web.Controllers
                     CreatedAt = consignment.CreatedAt.ToString(),
                     OrderId = consignment.PianoOrderId?.ToString(),
                     OrderNumber = order.OrderNumber,
-                    ConsignmentNumber = consignment.ConsignmentNumber,
+                    ConsignmentNumber = consignment.AssignmentNumber,
                     DriverName = consignment.Driver?.Name,
                     VehicleName = consignment.Vehicle?.Name,
                     StartWarehouseName = consignment.WarehouseStart?.Name
@@ -99,7 +99,6 @@ namespace WFP.ICT.Web.Controllers
                     OrderDate = order.CreatedAt.ToString(),
                     OrderNumber = order.OrderNumber,
                     PreferredPickupDateTime = order.PreferredPickupDateTime?.ToString(),
-                    Notes = order.Notes,
                     PickupAddressString = pickupAddress,
                     DeliveryAddressString = deliveryAddress,
                     PickupDate = order.PickupDate?.ToString(),
@@ -128,10 +127,10 @@ namespace WFP.ICT.Web.Controllers
                     var order = db.PianoOrders
                         .FirstOrDefault(x => x.Id == conVm.Orders);
 
-                    PianoConsignment consignment;
-                    if (!order.PianoConsignmentId.HasValue)
+                    PianoAssignment consignment;
+                    if (!order.PianoAssignmentId.HasValue)
                     {
-                        consignment = new PianoConsignment()
+                        consignment = new PianoAssignment()
                         {
                             Id = Guid.NewGuid(),
                             CreatedAt = DateTime.Now,
@@ -140,20 +139,20 @@ namespace WFP.ICT.Web.Controllers
                             DriverId = conVm.Drivers,
                             WarehouseStartId = conVm.Warehouses,
                             VehicleId = conVm.Vehicles,
-                            ConsignmentNumber = "CON-" + order.OrderNumber
+                            AssignmentNumber = "CON-" + order.OrderNumber
                         };
-                        db.PianoConsignments.Add(consignment);
+                        db.PianoAssignments.Add(consignment);
                         db.SaveChanges();
 
                         int odr = 1;
                         var paths = JsonConvert.DeserializeObject<ConsignmentRouteVm[]>(conVm.Paths);
                         foreach (var path in paths)
                         {
-                            db.PianoConsignmentRoutes.Add(new PianoConsignmentRoute()
+                            db.PianoAssignmentRoutes.Add(new PianoAssignmentRoute()
                             {
                                 Id = Guid.NewGuid(),
                                 CreatedAt = DateTime.Now,
-                                PianoConsignmentId = consignment.Id,
+                                PianoAssignmentId = consignment.Id,
                                 Order = odr,
                                 Lat = path.Lat,
                                 Lng = path.Lng
@@ -164,20 +163,20 @@ namespace WFP.ICT.Web.Controllers
                     }
                     else
                     {
-                        consignment = db.PianoConsignments
+                        consignment = db.PianoAssignments
                             .Include(x => x.Route)
-                            .FirstOrDefault(x => x.Id == order.PianoConsignmentId);
+                            .FirstOrDefault(x => x.Id == order.PianoAssignmentId);
 
                         consignment.PianoOrderId = conVm.Orders;
                         consignment.DriverId = conVm.Drivers;
                         consignment.WarehouseStartId = conVm.Warehouses;
                         consignment.VehicleId = conVm.Vehicles;
-                        consignment.ConsignmentNumber = "CON-" + order.OrderNumber;
+                        consignment.AssignmentNumber = "CON-" + order.OrderNumber;
                         db.SaveChanges();
 
                         foreach (var route in consignment.Route)
                         {
-                            db.PianoConsignmentRoutes.Remove(route);
+                            db.PianoAssignmentRoutes.Remove(route);
                         }
                         db.SaveChanges();
 
@@ -185,11 +184,11 @@ namespace WFP.ICT.Web.Controllers
                         var paths = JsonConvert.DeserializeObject<ConsignmentRouteVm[]>(conVm.Paths);
                         foreach (var path in paths)
                         {
-                            db.PianoConsignmentRoutes.Add(new PianoConsignmentRoute()
+                            db.PianoAssignmentRoutes.Add(new PianoAssignmentRoute()
                             {
                                 Id = Guid.NewGuid(),
                                 CreatedAt = DateTime.Now,
-                                PianoConsignmentId = consignment.Id,
+                                PianoAssignmentId = consignment.Id,
                                 Order = odr,
                                 Lat = path.Lat,
                                 Lng = path.Lng
@@ -201,9 +200,9 @@ namespace WFP.ICT.Web.Controllers
                     }
 
                     var driver = db.Drivers.FirstOrDefault(x => x.Id == consignment.DriverId);
-                    BackgroundJob.Enqueue(() => FCMUitlity.SendConsignment(driver.FCMToken, consignment.Id.ToString(), consignment.ConsignmentNumber));
+                    BackgroundJob.Enqueue(() => FCMUitlity.SendConsignment(driver.FCMToken, consignment.Id.ToString(), consignment.AssignmentNumber));
 
-                    TempData["Success"] = "Conisgnment #: " + consignment.ConsignmentNumber +
+                    TempData["Success"] = "Conisgnment #: " + consignment.AssignmentNumber +
                                           " has been saved sucessfully.";
                     return RedirectToAction("Index");
 
@@ -224,7 +223,7 @@ namespace WFP.ICT.Web.Controllers
         public ActionResult PickTickets()
         {
             var consigmentVms = new List<ConsigmentVm>();
-            var consignments = db.PianoConsignments
+            var consignments = db.PianoAssignments
                 .Include(x => x.Driver)
                 .Include(x => x.Vehicle)
                 .Include(x => x.WarehouseStart)
@@ -239,7 +238,7 @@ namespace WFP.ICT.Web.Controllers
                     CreatedAt = consignment.CreatedAt.ToString(),
                     OrderId = consignment.PianoOrderId?.ToString(),
                     OrderNumber = order.OrderNumber,
-                    ConsignmentNumber = consignment.ConsignmentNumber,
+                    ConsignmentNumber = consignment.AssignmentNumber,
                     DriverName = consignment.Driver?.Name,
                     VehicleName = consignment.Vehicle?.Name,
                     StartWarehouseName = consignment.WarehouseStart?.Name
@@ -251,7 +250,7 @@ namespace WFP.ICT.Web.Controllers
 
         public ActionResult Generate()
         {
-            var consignments = db.PianoConsignments
+            var consignments = db.PianoAssignments
                 .Include(x => x.Driver)
                 .Include(x => x.Vehicle)
                 .Include(x => x.WarehouseStart)
@@ -280,7 +279,6 @@ namespace WFP.ICT.Web.Controllers
                     OrderDate = order.CreatedAt.ToString(),
                     OrderNumber = order.OrderNumber,
                     PreferredPickupDateTime = order.PreferredPickupDateTime?.ToString(),
-                    Notes = order.Notes,
                     PickupAddressString = pickupAddress,
                     DeliveryAddressString = deliveryAddress,
                     PickupDate = order.PickupDate?.ToString(),
@@ -302,11 +300,11 @@ namespace WFP.ICT.Web.Controllers
         {
             try
             {
-                var consignment = db.PianoConsignments
+                var consignment = db.PianoAssignments
                             .FirstOrDefault(x => x.Id == id);
 
                 var driver = db.Drivers.FirstOrDefault(x => x.Id == consignment.DriverId);
-                BackgroundJob.Enqueue(() => FCMUitlity.SendConsignment(driver.FCMToken, consignment.Id.ToString(), consignment.ConsignmentNumber));
+                BackgroundJob.Enqueue(() => FCMUitlity.SendConsignment(driver.FCMToken, consignment.Id.ToString(), consignment.AssignmentNumber));
 
                 return Json(new JsonResponse() { IsSucess = true }, JsonRequestBehavior.AllowGet);
             }

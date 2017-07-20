@@ -4,15 +4,16 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WFP.ICT.Data.Entities
 {
-    public class PianoSize : BaseEntity, iBaseEntity
+    public class PianoMake : BaseEntity, iBaseEntity
     {
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public Guid Id { get; set; }
-        public double Width { get; set; }
 
-        public Guid? PianoTypeId { get; set; }
-        public virtual PianoType PianoType { get; set; }
-        public PianoSize()
+        public String Code { get; set; }
+
+        public string Name { get; set; }
+
+        public PianoMake()
         {
         }
     }

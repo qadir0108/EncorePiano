@@ -5,7 +5,6 @@ namespace WFP.ICT.Web.Models
 {
     public class PianoServiceVm
     {
-        public WFP.ICT.Data.Entities.PianoCharges _service { get; set; }
 
         public string Id { get; set; }
         [Required(ErrorMessage = "Serice code is required")]
@@ -19,11 +18,9 @@ namespace WFP.ICT.Web.Models
         {
             
         }
+        public string ServiceTypeId { get; set; }
 
-        public PianoServiceVm(WFP.ICT.Data.Entities.PianoCharges service)
-        {
-            _service = service;
-        }
+
     }
    
     }

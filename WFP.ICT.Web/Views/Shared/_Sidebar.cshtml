@@ -87,11 +87,19 @@
                             </span>
                         </a>
                     </li>
-                    <li class="nav-item start @Html.IsSelected(actions: "New", controllers: "Orders")">
+                    <li class="nav-item start @Html.IsSelected(actions: "Dealer", controllers: "Orders")">
                         <a href="/Orders/Dealer" class="nav-link ">
                             <i class="icon-screen-desktop"></i>
                             <span class="title">
                                 New Dealer Order
+                            </span>
+                        </a>
+                    </li>
+                    <li class="nav-item start @Html.IsSelected(actions: "Manufacturer", controllers: "Orders")">
+                        <a href="/Orders/Manufacturer" class="nav-link ">
+                            <i class="icon-screen-desktop"></i>
+                            <span class="title">
+                                New Manufacturer Order
                             </span>
                         </a>
                     </li>

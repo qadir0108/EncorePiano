@@ -62,6 +62,7 @@
   <ItemGroup>
     <Compile Include="Entities\APIRequestLog.cs" />
     <Compile Include="Entities\Address.cs" />
+    <Compile Include="Entities\PianoMake.cs" />
     <Compile Include="Entities\PianoOrderCharges.cs" />
     <Compile Include="Entities\CustomerPayment.cs" />
     <Compile Include="Entities\CustomerInvoice.cs" />
@@ -89,6 +90,10 @@
     <Compile Include="Entities\BaseEntity.cs" />
     <Compile Include="Entities\iBaseEntity.cs" />
     <Compile Include="EntityManager\CompanyManager.cs" />
+    <Compile Include="Migrations\201707201939518_Initial.cs" />
+    <Compile Include="Migrations\201707201939518_Initial.Designer.cs">
+      <DependentUpon>201707201939518_Initial.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repository\GenericRepository.cs" />
     <Compile Include="Repository\UnitOfWork.cs" />
     <Compile Include="Entities\WFPRole.cs" />
@@ -121,6 +126,11 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201707201939518_Initial.resx">
+      <DependentUpon>201707201939518_Initial.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

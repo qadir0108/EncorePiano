@@ -2,7 +2,7 @@
 @using MyToolkit.Html
 
   <!-- Start Piano -->
-@using (Html.BeginCollectionItem("Services"))
+@using (Html.BeginCollectionItem("Charges"))
 {
 
     <div class="row" style="margin-top:5px;">
@@ -15,7 +15,7 @@
 
         <div class="col-md-5" >
             <div class="form-group form-md-line-input has-success">
-                @Html.DropDownListFor(model => model.ServiceCode, ViewBag.Services as SelectList, null, htmlAttributes: new { @class = "form-control", onchange = "pianoConfigs.initPopulateServiceCharges(this)" })
+                @Html.DropDownListFor(model => model.ServiceCode, TempData["Charges"] as SelectList, null, htmlAttributes: new { @class = "form-control", onchange = "pianoConfigs.initPopulateServiceCharges(this)" })
                 @Html.ValidationMessageFor(model => model.ServiceCode, null, new { @class = "help-block help-block-error" })
                  <span class="help-block">Select Charges here</span>
             </div>

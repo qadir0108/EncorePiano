@@ -64,7 +64,7 @@ namespace WFP.ICT.Web.Controllers
         {
             List<ConsignmentResponse> responses = new List<ConsignmentResponse>();
 
-            var consignments = db.PianoConsignments
+            var consignments = db.PianoAssignments
                 .Include(x => x.Driver)
                 .Include(x => x.Vehicle)
                 .Include(x => x.WarehouseStart)
@@ -93,7 +93,7 @@ namespace WFP.ICT.Web.Controllers
                 var consignmentResponse = new ConsignmentResponse()
                 {
                     Id = consignment.Id.ToString(),
-                    ConsignmentNumber = consignment.ConsignmentNumber,
+                    ConsignmentNumber = consignment.AssignmentNumber,
                     StartWarehouseName = warehouse.Code + " " + warehouse.Name,
                     StartWarehouseAddress = TinyMapper.Map<AddressVm>(warehouse.Address).AddressToStringWithoutBreak,
                     VehicleCode = consignment.Vehicle.Code,
@@ -117,10 +117,8 @@ namespace WFP.ICT.Web.Controllers
                             Id = x.Id.ToString(),
                             ConsignmentId = consignment.Id.ToString(),
                             Type = pianoTypes.FirstOrDefault(y => y.Id == x.PianoTypeId).Type,
-                            Name = x.Name,
-                            Color = x.Color,
                             Model = x.Model,
-                            Make = x.Make,
+                            Make = x.PianoMake.Name,
                             SerialNumber = x.SerialNumber,
                             IsBench = x.IsBench ? 1 : 0,
                             IsBoxed = x.IsBoxed ? 1 : 0,
