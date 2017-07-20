@@ -48,6 +48,9 @@ namespace WFP.ICT.Data.Entities
         public string OfficeStaff { get; set; }
         public string OnlinePayment { get; set; }
 
+        public string PickUpNotes { get; set; }
+        public string DeliveryNotes { get; set; }
+
         public string CarriedBy { get; set; }
 
         public bool BillToDifferent { get; set; }
