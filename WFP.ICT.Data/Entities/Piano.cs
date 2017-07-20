@@ -29,6 +29,7 @@ namespace WFP.ICT.Data.Entities
         public int WareHouseStatus { get; set; }
         public bool IsLocated { get; set; }
 
+        public int PianoCategoryType { get; set; }
 
         public Guid? PianoStatusId { get; set; }
         public virtual PianoStatus PianoStatus { get; set; }

@@ -156,7 +156,7 @@
                                                                     <div class="col-md-6">
                                                                         <div class="form-group form-md-line-input has-success">
                                                                             <div class="input-icon">
-                                                                                @Html.DropDownListFor(model => model.PickupAddress.Warehouse, ViewBag.Warehouses as SelectList, null, htmlAttributes: new { @class = "form-control", onchange = "pianoConfigs.initPopulateWarehouse(this)" })
+                                                                                @Html.DropDownListFor(model => model.PickupAddress.Warehouse, TempData["Warehouses"] as SelectList, null, htmlAttributes: new { @class = "form-control", onchange = "pianoConfigs.initPopulateWarehouse(this)" })
                                                                                 <label>Warehouse<span class="required">*</span></label>
                                                                                 @Html.ValidationMessageFor(model => model.PickupAddress.Warehouse, null, new { @class = "help-block help-block-error" })
                                                                                 <span class="help-block">Enter Warehouse here</span>
@@ -251,7 +251,7 @@
                                                                     <div class="col-md-6">
                                                                         <div class="form-group form-md-line-input has-success">
                                                                             <div class="input-icon">
-                                                                                @Html.DropDownListFor(model => model.PickupAddress.State, ViewBag.AddressStates as SelectList, htmlAttributes: new { @class = "form-control pianoState" })
+                                                                                @Html.DropDownListFor(model => model.PickupAddress.State, TempData["AddressStates"] as SelectList, htmlAttributes: new { @class = "form-control pianoState" })
                                                                                 <label>State <span class="required">*</span></label>
                                                                                 @Html.ValidationMessageFor(model => model.PickupAddress.State, null, new { @class = "help-block help-block-error" })
                                                                                 <span class="help-block">Enter City Number here</span>
@@ -334,7 +334,7 @@
                                                                     <div class="col-md-6">
                                                                         <div class="form-group form-md-line-input has-success">
                                                                             <div class="input-icon">
-                                                                                @Html.DropDownListFor(model => model.DeliveryAddress.Warehouse, ViewBag.Warehouses as SelectList, null, htmlAttributes: new { @class = "form-control", onchange = "pianoConfigs.initPopulateWarehouse(this)" })
+                                                                                @Html.DropDownListFor(model => model.DeliveryAddress.Warehouse, TempData["Warehouses"] as SelectList, null, htmlAttributes: new { @class = "form-control", onchange = "pianoConfigs.initPopulateWarehouse(this)" })
                                                                                 <label>Warehouse<span class="required">*</span></label>
                                                                                 @Html.ValidationMessageFor(model => model.DeliveryAddress.Warehouse, null, new { @class = "help-block help-block-error" })
                                                                                 <span class="help-block">Enter Warehouse here</span>
@@ -429,7 +429,7 @@
                                                                     <div class="col-md-6">
                                                                         <div class="form-group form-md-line-input has-success">
                                                                             <div class="input-icon">
-                                                                                @Html.DropDownListFor(model => model.DeliveryAddress.State, ViewBag.AddressStates as SelectList, htmlAttributes: new { @class = "form-control pianoState" })
+                                                                                @Html.DropDownListFor(model => model.DeliveryAddress.State, TempData["AddressStates"] as SelectList, htmlAttributes: new { @class = "form-control pianoState" })
                                                                                 <label>State <span class="required">*</span></label>
                                                                                 @Html.ValidationMessageFor(model => model.DeliveryAddress.State, null, new { @class = "help-block help-block-error" })
                                                                                 <span class="help-block">Enter City Number here</span>
@@ -489,7 +489,7 @@
                                                     <div class="col-md-6">
                                                         <div class="form-group form-md-line-input has-success">
                                                             <div class="input-icon">
-                                                                @Html.DropDownListFor(model => model.Shuttle, ViewBag.Customers as SelectList, htmlAttributes: new { @class = "form-control" })
+                                                                @Html.DropDownListFor(model => model.Shuttle, TempData["Customers"] as SelectList, htmlAttributes: new { @class = "form-control" })
                                                                 <label>Shuttle</label>
                                                                 <span class="help-block">Enter Shuttle Here</span>
                                                                 <i class="fa fa-home"></i>
@@ -553,7 +553,7 @@
                                                         <div class="col-md-6">
                                                             <div class="form-group form-md-line-input has-success">
                                                                 <div class="input-icon">
-                                                                    @Html.DropDownListFor(model => model.PaymentOption, ViewBag.PaymentOption as SelectList, htmlAttributes: new { @class = "form-control", onchange = "pianoConfigs.initShowPaymentData(this)" })
+                                                                    @Html.DropDownListFor(model => model.PaymentOption, TempData["PaymentOption"] as SelectList, htmlAttributes: new { @class = "form-control", onchange = "pianoConfigs.initShowPaymentData(this)" })
                                                                     <label>Payment Option<span class="required">*</span></label>
                                                                     @Html.ValidationMessageFor(model => model.PaymentOption, null, new { @class = "help-block help-block-error" })
                                                                     <span class="help-block">Select Payment Option</span>
@@ -625,7 +625,7 @@
                                                                         <div>
                                                                             <div class="col-md-3">
                                                                                 <div class="form-group form-md-line-input has-success">
-                                                                                    @Html.DropDownListFor(model => model.Dealer, ViewBag.Customers as SelectList, null, htmlAttributes: new { @class = "form-control", onchange = "pianoConfigs.initPopulateDealerCustomer(this)" })
+                                                                                    @Html.DropDownListFor(model => model.Dealer, TempData["Customers"] as SelectList, null, htmlAttributes: new { @class = "form-control", onchange = "pianoConfigs.initPopulateDealerCustomer(this)" })
                                                                                     @Html.ValidationMessageFor(model => model.Dealer, null, new { @class = "help-block help-block-error" })
                                                                                     <span class="help-block">Select Dealer here</span>
                                                                                 </div>
@@ -676,7 +676,7 @@
                                                                         <div>
                                                                             <div class="col-md-3">
                                                                                 <div class="form-group form-md-line-input has-success">
-                                                                                    @Html.DropDownListFor(model => model.ThirdParty, ViewBag.Customers as SelectList, null, new { @class = "form-control", onchange = "pianoConfigs.initPopulateDealerCustomer(this)" })
+                                                                                    @Html.DropDownListFor(model => model.ThirdParty, TempData["Customers"] as SelectList, null, new { @class = "form-control", onchange = "pianoConfigs.initPopulateDealerCustomer(this)" })
                                                                                     @Html.ValidationMessageFor(model => model.Dealer, null, new { @class = "help-block help-block-error" })
                                                                                     <span class="help-block">Select Dealer here</span>
                                                                                 </div>
@@ -844,7 +844,6 @@
                     parent.find('.pianoAltName').val(data.warehouse.altName);
                     parent.find('.pianoAltPhone').val(data.warehouse.altPhone);
                     parent.find('.pianoPostCode').val(data.warehouse.postCode);
-                    parent.find('.pianoNotes').val(data.warehouse.notes);
                 }
 
             });

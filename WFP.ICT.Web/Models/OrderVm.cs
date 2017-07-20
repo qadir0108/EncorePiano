@@ -42,7 +42,6 @@ namespace WFP.ICT.Web.Models
         public double CollectableAmount { get; set; }
         public string OnlinePaymentDetails { get; set; }
 
-        public string Notes { get; set; }
         public string Customer { get; set; }
         public string Customers { get; set; }
         public string PickupAddressString { get; set; }
@@ -75,55 +74,7 @@ namespace WFP.ICT.Web.Models
             Charges = new List<PianoServiceVm>();
             Pianos = new List<PianoVm>();
         }
-        public static OrderVm FromOrder(PianoOrder order, IEnumerable<SelectListItem> PianoTypesList)
-        {
-            var pickupAddress = TinyMapper.Map<AddressVm>(order.PickupAddress).AddressToString;
-            var deliveryAddress = TinyMapper.Map<AddressVm>(order.DeliveryAddress).AddressToString;
-
-            var orderVM = new OrderVm()
-            {
-                Id = order.Id.ToString(),
-                OrderDate = order.CreatedAt.ToString(),
-                OrderNumber = order.OrderNumber,
-                OrderType = ((OrderTypeEnum)order.OrderType).ToString(),
-                CallerFirstName = order.CallerFirstName,
-                CallerLastName = order.CallerLastName,
-                CallerPhoneNumber = order.CallerPhoneNumber,
-                CallerEmail = order.CallerEmail,
-                PreferredPickupDateTime = order.PreferredPickupDateTime?.ToString(StringConstants.TimeStampFormatSlashes),
-                Notes = order.Notes,
-                PickupAddressString = pickupAddress,
-                DeliveryAddressString = deliveryAddress,
-                PickupDate = order.PickupDate?.ToString(),
-                DeliveryDate = order.DeliveryDate?.ToString(),
-                Customer = order.Customer != null ? order.Customer.AccountCode + " " + order.Customer.Name : ""
-            };
-
-            orderVM.Pianos = order.Pianos.OrderByDescending(x => x.CreatedAt).Select(
-                x => new PianoVm()
-                {
-                    Id = x.Id,
-                    OrderId = order.Id,
-                    PianoType = PianoTypesList.FirstOrDefault(y => y.Value == x.PianoTypeId.ToString()).Text,
-                    PianoModel = x.Model,
-                    PianoMake = x.PianoMake.Name,
-                    SerialNumber = x.SerialNumber,
-                    IsBench = x.IsBench,
-                    IsBoxed = x.IsBoxed,
-                    IsStairs = x.IsPlayer
-                }).ToList();
-            orderVM.Charges = order.OrderCharges.OrderBy(x => x.Id).Select(
-               x => new PianoServiceVm()
-               {
-                   Id = x.Id.ToString(),
-                  // ServiceCode = x.PianoCharges.ChargesCode.ToString(),
-                 //  ServiceType = ((ChargesTypeEnum)x.PianoCharges.ChargesType).ToString(),
-                  // ServiceDetails = x.PianoCharges.ChargesDetails,
-                   ServiceCharges = x.Amount.ToString()
-               }).ToList();
-
-            return orderVM;
-        }
+      
 
     }
 }

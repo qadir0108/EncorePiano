@@ -59,7 +59,6 @@ namespace WFP.ICT.Web.Controllers
                     CallerPhoneNumber = order.CallerPhoneNumber,
                     CallerEmail = order.CallerEmail,
                     PreferredPickupDateTime = order.PreferredPickupDateTime?.ToString(),
-                    Notes = order.Notes,
                     PickupAddressString  = pickupAddress,
                     DeliveryAddressString = deliveryAddress,
                     PickupDate = order.PickupDate?.ToString(),

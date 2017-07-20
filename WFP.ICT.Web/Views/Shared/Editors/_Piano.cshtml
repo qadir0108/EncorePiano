@@ -25,7 +25,7 @@
                             <div class="col-md-4">
                                 <div class="form-group form-md-line-input has-success">
                                     <div class="input-icon">
-                                        @Html.DropDownListFor(model => model.PianoCategoryType, ViewBag.PianoCategoryType as SelectList, htmlAttributes: new { @class = "form-control pianoCategory", onchange = "pianoConfigs.initShowData(this)" })
+                                        @Html.DropDownListFor(model => model.PianoCategoryType, TempData["PianoCategoryType"] as SelectList, htmlAttributes: new { @class = "form-control pianoCategory", onchange = "pianoConfigs.initShowData(this)" })
 
                                         <label>Piano Category<span class="required">*</span></label>
 
@@ -51,7 +51,7 @@
                             <div class="col-md-4">
                                 <div class="form-group form-md-line-input has-success">
                                     <div class="input-icon">
-                                        @Html.DropDownListFor(model => model.PianoTypeId, ViewBag.PianoType as SelectList, htmlAttributes: new { @class = "form-control pianoType" })
+                                        @Html.DropDownListFor(model => model.PianoTypeId, TempData["PianoType"] as SelectList, htmlAttributes: new { @class = "form-control pianoType" })
                                         <label>Piano Type<span class="required">*</span></label>
                                         @Html.ValidationMessageFor(model => model.PianoType, null, new { @class = "help-block help-block-error" })
                                         <span class="help-block">Enter Piano Type here</span>
@@ -62,7 +62,7 @@
                             <div class="col-md-4">
                                 <div class="form-group form-md-line-input has-success">
                                     <div class="input-icon">
-                                        @Html.DropDownListFor(model => model.PianoSize, ViewBag.PianoType as SelectList, htmlAttributes: new { @class = "form-control pianoSize" })
+                                        @Html.DropDownListFor(model => model.PianoSize, TempData["PianoType"] as SelectList, htmlAttributes: new { @class = "form-control pianoSize" })
                                         <label>Piano Size<span class="required">*</span></label>
                                         @Html.ValidationMessageFor(model => model.PianoSize, null, new { @class = "help-block help-block-error" })
                                         <span class="help-block">Enter Piano Size here</span>
@@ -77,7 +77,7 @@
                                 <div class="form-group form-md-line-input has-success">
                                     <div class="input-icon">
                                         
-                                        @Html.DropDownListFor(model => model.PianoMake, ViewBag.PianoMake as SelectList, htmlAttributes: new { @class = "form-control pianoMake" })
+                                        @Html.DropDownListFor(model => model.PianoMake, TempData["PianoMake"] as SelectList, htmlAttributes: new { @class = "form-control pianoMake" })
                                         <label>Piano Make<span class="required">*</span></label>
                                         @Html.ValidationMessageFor(model => model.PianoMake, null, new { @class = "help-block help-block-error" })
                                         <span class="help-block">Enter Piano Make here</span>

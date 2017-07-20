@@ -82,12 +82,9 @@
                                         <th class="none">Delivery Address</th>
                                         <th class="none">Pickup Date</th>
                                         <th class="none">Delivery Date</th>
-                                        <th class="none">Notes</th>
                                         <th class="none">Services</th>
                                         <th class="none">Customer</th>                                    
-    @*
-        min-phone-l min-tablet <th class="desktop"></th>
-    <th class="none"></th>*@
+
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -125,8 +122,7 @@
                                                             <td class="m-grid-col-md-1">@(pianoVm.IsBoxed ? "Yes" : "No")</td>
                                                             <td class="m-grid-col-md-1">@pianoVm.PianoMake</td>
                                                             <td class="all m-grid-col-md-1"></td>
-                                                            @*<td class="m-grid-col-md-1">@pianoVm.PianoModel</td>
-                                                            <td class="m-grid-col-md-1">@pianoVm.PianoColor</td>*@
+                                                          
                                                         </tr>
                                                     }
                                                 </table>
@@ -143,10 +139,10 @@
                                             <td>@Html.Raw(order.DeliveryAddressString)</td>
                                             <td>@order.PickupDate</td>
                                             <td>@order.DeliveryDate</td>
-                                            <td>@order.Notes</td>
+                                         
                                             <td>
                                                 <table class="m-grid">
-                                                    @foreach (var service in @order.Services)
+                                                    @foreach (var service in @order.Charges)
                                                     {
                                                         <tr>
                                                             <td class="m-grid-col-md-2">@service.ServiceCode</td>
