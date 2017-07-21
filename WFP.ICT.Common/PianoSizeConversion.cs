@@ -14,7 +14,7 @@ namespace WFP.ICT.Common
             int iFeet = (int)Feet;
             Double inches = (Feet - (double)iFeet) * 12;
 
-            return Feet+"'"+inches+"''";
+            return iFeet+"'"+(int)inches+"''";
         }
     }
 }

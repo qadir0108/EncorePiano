@@ -53,7 +53,7 @@
                                     <div class="input-icon">
                                         @Html.DropDownListFor(model => model.PianoTypeId, TempData["PianoType"] as SelectList, htmlAttributes: new { @class = "form-control pianoType" ,onchange = "pianoConfigs.initShowSizeList(this)" })
                                         <label>Piano Type<span class="required">*</span></label>
-                                        @Html.ValidationMessageFor(model => model.PianoType, null, new { @class = "help-block help-block-error" })
+                                        @Html.ValidationMessageFor(model => model.PianoTypeId, null, new { @class = "help-block help-block-error" })
                                         <span class="help-block">Enter Piano Type here</span>
                                         <i class="fa fa-bars"></i>
                                     </div>
