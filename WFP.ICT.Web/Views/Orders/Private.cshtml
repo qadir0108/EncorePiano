@@ -18,7 +18,7 @@
             <div class="col-md-12 ">
                 <!-- BEGIN SAMPLE FORM PORTLET-->
 
-                @using (Ajax.BeginForm("Save", "Orders", null, new AjaxOptions { HttpMethod = "POST", OnSuccess = "pianoConfigs.initFormComplete(data)", OnBegin = "return pianoConfigs.initFormBegin()" }, new
+                @using (Ajax.BeginForm("Save", "Orders", null, new AjaxOptions { HttpMethod = "POST", OnSuccess = "pianoConfigs.initFormComplete(data)" }, new
                 {
                     @id = "frm"
 
@@ -104,7 +104,8 @@
                                                         <div class="form-group form-md-line-input has-success">
                                                             <div class="input-icon">
                                                                 @Html.EditorFor(model => model.CallerAlternatePhone, new { htmlAttributes = new { @class = "form-control" } })
-                                                                <label>Alternate Phone Number</label>
+                                                                <label>Alternate Phone Number<span class="required">*</span></label>
+                                                                @Html.ValidationMessageFor(model => model.CallerAlternatePhone, null, new { @class = "help-block help-block-error" })
                                                                 <span class="help-block">Enter Alternate Number</span>
                                                                 <i class="fa fa-phone"></i>
                                                             </div>
@@ -553,7 +554,7 @@
                                                         <div class="col-md-6">
                                                             <div class="form-group form-md-line-input has-success">
                                                                 <div class="input-icon">
-                                                                    @Html.DropDownListFor(model => model.PaymentOption, TempData["PaymentOption"] as SelectList, htmlAttributes: new { @class = "form-control", onchange = "pianoConfigs.initShowPaymentData(this)" })
+                                                                    @Html.DropDownListFor(model => model.PaymentOption, TempData["PaymentOption"] as SelectList, htmlAttributes: new { @class = "form-control paymentOption", onchange = "pianoConfigs.initShowPaymentData(this)" })
                                                                     <label>Payment Option<span class="required">*</span></label>
                                                                     @Html.ValidationMessageFor(model => model.PaymentOption, null, new { @class = "help-block help-block-error" })
                                                                     <span class="help-block">Select Payment Option</span>
@@ -562,36 +563,40 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-12 amountDetails" style="display:none">
+                                                    <div class="col-md-12 amountDetails ignore" style="display:none">
                                                         <div class="col-md-6">
                                                             <div class="form-group form-md-line-input has-success">
                                                                 <div class="input-icon">
                                                                     @Html.EditorFor(model => model.CollectableAmount, new { htmlAttributes = new { @class = "form-control" } })
-                                                                    <label>Amount to be collected</label>
-                                                                    <span class="help-block">Enter Collectable Amount</span>
+                                                                    <label>Amount to be collected<span class="required">*</span></label>
+                                                                    @Html.ValidationMessageFor(model => model.CollectableAmount, null, new { @class = "help-block help-block-error" })
+                                                                    <span class="help-block">COD (Amount to be collected)</span>
                                                                     <i class="fa fa-dollar"></i>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-12 staffDetails" style="display:none">
+                                                    <div class="col-md-12 staffDetails ignore" style="display:none">
                                                         <div class="col-md-6">
                                                             <div class="form-group form-md-line-input has-success">
                                                                 <div class="input-icon">
                                                                     @Html.EditorFor(model => model.OfficeStaffDetails, new { htmlAttributes = new { @class = "form-control" } })
-                                                                    <label>Office Staff</label>
+                                                                    <label>Office Staff<span class="required">*</span></label>
+                                                                    @Html.ValidationMessageFor(model => model.OfficeStaffDetails, null, new { @class = "help-block help-block-error" })
                                                                     <span class="help-block">Enter Office Staff Details</span>
+
                                                                     <i class="fa fa-dollar"></i>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-12 paymentDetails" style="display:none">
+                                                    <div class="col-md-12 paymentDetails ignore" style="display:none">
                                                         <div class="col-md-6">
                                                             <div class="form-group form-md-line-input has-success">
                                                                 <div class="input-icon">
                                                                     @Html.EditorFor(model => model.OnlinePaymentDetails, new { htmlAttributes = new { @class = "form-control" } })
-                                                                    <label>Online Payment</label>
+                                                                    <label>Online Payment<span class="required">*</span></label>
+                                                                    @Html.ValidationMessageFor(model => model.OnlinePaymentDetails, null, new { @class = "help-block help-block-error" })
                                                                     <span class="help-block">Enter Online Payment Details</span>
                                                                     <i class="fa fa-dollar"></i>
                                                                 </div>
@@ -627,7 +632,8 @@
                                                                                 <div class="form-group form-md-line-input has-success">
                                                                                     @Html.DropDownListFor(model => model.Dealer, TempData["Customers"] as SelectList, null, htmlAttributes: new { @class = "form-control", onchange = "pianoConfigs.initPopulateDealerCustomer(this)" })
                                                                                     @Html.ValidationMessageFor(model => model.Dealer, null, new { @class = "help-block help-block-error" })
-                                                                                    <span class="help-block">Select Dealer here</span>
+                                                                                    <label>Dealer<span class="required">*</span></label>
+                                                                                     <span class="help-block">Select Dealer here</span>
                                                                                 </div>
                                                                             </div>
                                                                             <div class="col-md-3">
@@ -643,7 +649,7 @@
                                                                                 <div class="form-group form-md-line-input has-success">
                                                                                     <div class="input-icon">
                                                                                         @Html.TextBox("CustomerContact", null, new { @class = "form-control customerContact", @readonly = "readonly" } )
-                                                                                        <label for="form_control_1">Contact </label>
+                                                                                        <label>Contact </label>
                                                                                         <i class="fa fa-user"></i>
                                                                                     </div>
                                                                                 </div>
@@ -652,7 +658,7 @@
                                                                                 <div class="form-group form-md-line-input has-success">
                                                                                     <div class="input-icon">
                                                                                         @Html.TextBox("CustomerAddress", null, new { @class = "form-control customerAddress", @readonly = "readonly" } )
-                                                                                        <label for="form_control_1">Address </label>
+                                                                                        <label>Address </label>
                                                                                         <i class="fa fa-user"></i>
                                                                                     </div>
                                                                                 </div>
@@ -677,7 +683,7 @@
                                                                             <div class="col-md-3">
                                                                                 <div class="form-group form-md-line-input has-success">
                                                                                     @Html.DropDownListFor(model => model.ThirdParty, TempData["Customers"] as SelectList, null, new { @class = "form-control", onchange = "pianoConfigs.initPopulateDealerCustomer(this)" })
-                                                                                    @Html.ValidationMessageFor(model => model.Dealer, null, new { @class = "help-block help-block-error" })
+                                                                                    <label>Select Billing Party<span class="required">*</span></label>
                                                                                     <span class="help-block">Select Dealer here</span>
                                                                                 </div>
                                                                             </div>
@@ -685,7 +691,7 @@
                                                                                 <div class="form-group form-md-line-input has-success">
                                                                                     <div class="input-icon">
                                                                                         @Html.TextBox("CustomerName", null, new {  @class = "form-control customerName", @readonly = "readonly"  })
-                                                                                        <label for="form_control_1">Name </label>
+                                                                                        <label>Name </label>
                                                                                         <i class="fa fa-user"></i>
                                                                                     </div>
                                                                                 </div>
@@ -694,7 +700,7 @@
                                                                                 <div class="form-group form-md-line-input has-success">
                                                                                     <div class="input-icon">
                                                                                         @Html.TextBox("CustomerContact", null, new { @class = "form-control customerContact", @readonly = "readonly" })
-                                                                                        <label for="form_control_1">Contact </label>
+                                                                                        <label>Contact </label>
                                                                                         <i class="fa fa-user"></i>
                                                                                     </div>
                                                                                 </div>
@@ -703,7 +709,7 @@
                                                                                 <div class="form-group form-md-line-input has-success">
                                                                                     <div class="input-icon">
                                                                                         @Html.TextBox("CustomerAddress", null, new { @class = "form-control customerAddress", @readonly = "readonly" } )
-                                                                                        <label for="form_control_1">Address </label>
+                                                                                        <label>Address </label>
                                                                                         <i class="fa fa-user"></i>
                                                                                     </div>
                                                                                 </div>
@@ -713,8 +719,10 @@
                                                                             <div class="form-group form-md-line-input has-success">
                                                                                 <div class="input-icon">
                                                                                     @Html.EditorFor(model => model.SalesOrderNumber, new { htmlAttributes = new { @class = "form-control" } })
-                                                                                    <label>Sales Order Number</label>
-                                                                                    <span class="help-block">Enter Sales Order Number</span>
+                                                                                    <label>Sales Order Number<span class="required">*</span></label>
+                                                                                    @Html.ValidationMessageFor(model => model.SalesOrderNumber, null, new { @class = "help-block help-block-error" })
+                                                                                      <span class="help-block">Enter Sales Order Number</span>
+
                                                                                     <i class="fa fa-dollar"></i>
                                                                                 </div>
                                                                             </div>
@@ -723,8 +731,9 @@
                                                                             <div class="form-group form-md-line-input has-success">
                                                                                 <div class="input-icon">
                                                                                     @Html.EditorFor(model => model.CollectableAmount, new { htmlAttributes = new { @class = "form-control" } })
-                                                                                    <label>Amount to be collected</label>
-                                                                                    <span class="help-block">Enter Collectable Amount</span>
+                                                                                    <label>Amount to be collected<span class="required">*</span></label>
+                                                                                    @Html.ValidationMessageFor(model => model.CollectableAmount, null, new { @class = "help-block help-block-error" })
+                                                                                    <span class="help-block">COD(Amount to be collected)</span>
                                                                                     <i class="fa fa-dollar"></i>
                                                                                 </div>
                                                                             </div>
@@ -735,7 +744,8 @@
                                                                                 <div class="form-group form-md-line-input has-success">
                                                                                     <div class="input-icon">
                                                                                         @Html.EditorFor(model => model.CarriedBy, new { htmlAttributes = new { @class = "form-control" } })
-                                                                                        <label>Carried By</label>
+                                                                                        <label>Carried By<span class="required">*</span></label>
+                                                                                        @Html.ValidationMessageFor(model => model.CarriedBy, null, new { @class = "help-block help-block-error" })
                                                                                         <span class="help-block">Enter Carried By Info</span>
                                                                                         <i class="fa fa-dollar"></i>
                                                                                     </div>
@@ -763,7 +773,7 @@
 
 
                     <div class="form-actions noborder">
-                        <button type="submit" class="btn blue-steel ">Save Order</button>
+                        <button type="submit" onclick="pianoConfigs.initFormBegin()" class="btn blue-steel ">Save Order</button>
                         <a href="/Orders" class="btn c-btn-border-1x c-btn-blue-steel">Cancel</a>
                     </div>
 
@@ -784,23 +794,23 @@
     var pianoConfigs = function () {
 
         handleShowData = function (elem) {
-            var pianoTypeSize = $(elem).parent().parent().parent().parent().parent().find('div.pianoTypeSize');
+            var pianoTypeSize = $(elem).parent().parent().parent().parent().parent().find('div.pianoTypeContainer');
             var pianoBenchPlayer = $(elem).parent().parent().parent().parent().parent().find('div.pianoBenchPlayer');
             var pianoMakeModel = $(elem).parent().parent().parent().parent().parent().find('div.pianoMakeModel');
 
             if (elem.value == "0") {
-                pianoTypeSize.slideDown("fast", function () {
-                    pianoBenchPlayer.slideDown("fast", function () {
-                        pianoMakeModel.slideUp("fast", function () {
+                pianoTypeSize.removeClass('ignore').slideDown("fast", function () {
+                    pianoBenchPlayer.removeClass('ignore').slideDown("fast", function () {
+                        pianoMakeModel.addClass('ignore').slideUp("fast", function () {
 
                         });
                     });
                 });
             }
             else if (elem.value == "1") {
-                pianoMakeModel.slideDown("fast", function () {
-                    pianoBenchPlayer.slideDown("fast", function () {
-                        pianoTypeSize.slideUp("fast", function () {
+                pianoMakeModel.removeClass('ignore').slideDown("fast", function () {
+                    pianoBenchPlayer.removeClass('ignore').slideDown("fast", function () {
+                        pianoTypeSize.addClass('ignore').slideUp("fast", function () {
 
                         });
                     });
@@ -808,18 +818,18 @@
             }
             else if (elem.value == "2") {
 
-                pianoTypeSize.slideDown("fast", function () {
-                    pianoMakeModel.slideDown("fast", function () {
-                        pianoBenchPlayer.slideDown("fast", function () {
+                pianoTypeSize.removeClass('ignore').slideDown("fast", function () {
+                    pianoMakeModel.removeClass('ignore').slideDown("fast", function () {
+                        pianoBenchPlayer.removeClass('ignore').slideDown("fast", function () {
 
                         });
                     });
                 });
             }
             else {
-                pianoBenchPlayer.slideDown("fast", function () {
-                    pianoMakeModel.slideDown("fast", function () {
-                        pianoTypeSize.slideUp("fast", function () {
+                pianoBenchPlayer.addClass('ignore').slideUp("fast", function () {
+                    pianoMakeModel.addClass('ignore').slideUp("fast", function () {
+                        pianoTypeSize.addClass('ignore').slideUp("fast", function () {
 
                         });
                     });
@@ -856,20 +866,25 @@
             if (event.keyCode == 13) {
                 $.post("/Orders/PopulatePiano", { pianoSerialNumber: elem.value }, function (data) {
                     if (data.key) {
-                        parent.find('.pianoType').val(data.piano.type);
-                        parent.find('.pianoCategory').val(2);
+
+                        parent.find('.pianoCategory').val(data.piano.category);
                         parent.find('.pianoCategory').trigger('change');
 
                         parent.find('.pianoMake').val(data.piano.make);
+                        parent.find('.pianoMake').trigger('change');
+
                         parent.find('.pianoModel').val(data.piano.model);
-                        parent.find('.pianoSize').val(data.piano.size);
+
+                        setTimeout(function () {
+                            parent.find('.pianoSize').val(data.piano.size);
+                        }, 1000);
+
                         parent.find('.pianoType').val(data.piano.type);
+                        parent.find('.pianoType').trigger('change');
 
-
-
-                        //parent.find('.').val(data.piano.isBoxed);
-                        //parent.find('.').val(data.piano.isBench);
-                        //parent.find('.').val(data.piano.isPlayer);
+                        parent.find("input:radio[name='isBenchRadio'][value ='" + data.piano.isBench + "']").prop('checked', true);
+                        parent.find("input:radio[name='isPlayerRadio'][value ='" + data.piano.isPlayer + "']").prop('checked', true);
+                        parent.find("input:radio[name='isBoxedRadio'][value ='" + data.piano.isBoxed + "']").prop('checked', true);
 
                     }
                 });
@@ -905,12 +920,22 @@
 
 
         handleFormBegin = function (data) {
+
+            $('.ignore :input').addClass('ignore');
+
             if ($("#frm").valid()) {
                 return true;
             }
-            return false;
-        };
+            else {
 
+                showToaster({
+                    msg: "Please fill the required fields on all tabs",
+                    priority: 'error'
+                });
+                return false;
+            }
+     
+        };
 
         handleFormComplete = function (data) {
             if (data.key) {
@@ -927,18 +952,18 @@
 
         handleShowPaymentData = function (elem) {
             if (elem.value == "0") {
-                $('.amountDetails').slideDown("fast", function () {
-                    $('.staffDetails').slideUp("fast", function () {
-                        $('.paymentDetails').slideUp("fast", function () {
+                $('.amountDetails').removeClass('ignore').slideDown("fast", function () {
+                    $('.staffDetails').addClass('ignore').slideUp("fast", function () {
+                        $('.paymentDetails').addClass('ignore').slideUp("fast", function () {
 
                         });
                     });
                 });
             }
             else if (elem.value == "1") {
-                $('.staffDetails').slideDown("fast", function () {
-                    $('.amountDetails').slideUp("fast", function () {
-                        $('.paymentDetails').slideUp("fast", function () {
+                $('.staffDetails').removeClass('ignore').slideDown("fast", function () {
+                    $('.amountDetails').addClass('ignore').slideUp("fast", function () {
+                        $('.paymentDetails').addClass('ignore').slideUp("fast", function () {
 
                         });
                     });
@@ -946,23 +971,39 @@
             }
             else if (elem.value == "2") {
 
-                $('.paymentDetails').slideDown("fast", function () {
-                    $('.amountDetails').slideUp("fast", function () {
-                        $('.staffDetails').slideUp("fast", function () {
+                $('.paymentDetails').removeClass('ignore').slideDown("fast", function () {
+                    $('.amountDetails').addClass('ignore').slideUp("fast", function () {
+                        $('.staffDetails').addClass('ignore').slideUp("fast", function () {
 
                         });
                     });
                 });
             }
             else {
-                $('.paymentDetails').slideUp("fast", function () {
-                    $('.amountDetails').slideUp("fast", function () {
-                        $('.staffDetails').slideUp("fast", function () {
+                $('.paymentDetails').addClass('ignore').slideUp("fast", function () {
+                    $('.amountDetails').addClass('ignore').slideUp("fast", function () {
+                        $('.staffDetails').addClass('ignore').slideUp("fast", function () {
 
                         });
                     });
                 });
             }
+        };
+
+        handleShowSizeList = function (elem) {
+            $.post("/Orders/PopulateSelectList", { pianoMake: elem.value }, function (data) {
+                if (data.key) {
+                    var option = '<option value="">Select Type</option>';
+                    if (data.list.length > 0) {
+                        $.each(data.list, function (index, value) {
+                            option += ' <option value=' + (data.list[index].id) + '>' + (data.list[index].width) + '</option>';
+                        });
+                        $('#pianoSizeList').html(option);
+                        $('.pianoSizeContainer').removeClass('ignore').slideDown("fast", function () {
+                        });
+                    }
+                }
+            });
         };
 
         return {
@@ -990,9 +1031,11 @@
             },
             initPopulateDealerCustomer: function (elem) {
                 handlePopulateDealerCustomer(elem);
+            },
+            initShowSizeList : function(elem){
+                handleShowSizeList(elem);
             }
-            
-
+    
         }
     }();
 
@@ -1002,7 +1045,24 @@
         format: 'M/DD/YYYY hh:mm A'
     });
 
+   
+    $(document).ready(function () {
+        $.validator.unobtrusive.parse('form');
+        var form = $('#frm').get(0);
+        var settings = $.data(form, 'validator').settings;
+        settings.ignore = '.ignore';
+    });
 
+
+    $('.pianoCategory').trigger('change');
+
+    $('.pianoType').trigger('change');
+
+    $('.paymentOption').trigger('change');
+
+    $('.pianoMake').trigger('change');
+
+    $('.pianoSize').trigger('change');
 
     $('#addPiano').click(function (e) {
         debugger

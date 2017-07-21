@@ -3,7 +3,7 @@ namespace WFP.ICT.Data.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class Initial : DbMigration
+    public partial class Update : DbMigration
     {
         public override void Up()
         {
@@ -151,9 +151,9 @@ namespace WFP.ICT.Data.Migrations
                         CallerLastName = c.String(),
                         CallerPhoneNumber = c.String(),
                         CallerEmail = c.String(),
+                        CallerAlternatePhone = c.String(),
                         PaymentOption = c.Int(nullable: false),
                         SalesOrderNumber = c.String(),
-                        Notes = c.String(),
                         PreferredPickupDateTime = c.DateTime(),
                         PickupDate = c.DateTime(),
                         DeliveryDate = c.DateTime(),

@@ -31,6 +31,8 @@ namespace WFP.ICT.Web.Models
         [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Entered phone format is not valid.")]
         public string CallerPhoneNumber { get; set; }
 
+        
+        [Required(ErrorMessage = "Alternate Contact is required")]
         [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Entered phone format is not valid.")]
         public string CallerAlternatePhone { get; set; }
         [Required(ErrorMessage = "Email is required")]
@@ -38,12 +40,18 @@ namespace WFP.ICT.Web.Models
         public string CallerEmail { get; set; }
         [Required(ErrorMessage = "Payment option is required")]
         public string PaymentOption { get; set; }
+
+        [Required(ErrorMessage = "Office staff details are required")]
         public string OfficeStaffDetails { get; set; }
+
+        [Required(ErrorMessage = "Collectable amount is required")]
+        [Range(1, Double.MaxValue,ErrorMessage ="Collectable amount is required")]
         public double CollectableAmount { get; set; }
+
+        [Required(ErrorMessage = "Online payment details are required")]
         public string OnlinePaymentDetails { get; set; }
 
         public string Customer { get; set; }
-        public string Customers { get; set; }
         public string PickupAddressString { get; set; }
         public string DeliveryAddressString { get; set; }
         public string PreferredPickupDateTime { get; set; }
@@ -54,14 +62,17 @@ namespace WFP.ICT.Web.Models
         public AddressVm PickupAddress { get; set; }
         public AddressVm DeliveryAddress { get; set; }
         public List<PianoVm> Pianos { get; set; }
-        public List<PianoServiceVm> Charges { get; set; }
+        public List<PianoChargesVm> Charges { get; set; }
         public string PickupTicket { get; set; }
 
         //Fields for dealer and manufacturer
         public string ThirdParty { get; set; }
         public bool IsBilledThirdParty { get; set; }
 
+        [Required(ErrorMessage = "Sales order number is required")]
         public string SalesOrderNumber { get; set; }
+
+        [Required(ErrorMessage = "Carried by details are required")]
         public  string CarriedBy { get; set; }
 
         [Required(ErrorMessage = "Dealer is required")]
@@ -71,10 +82,27 @@ namespace WFP.ICT.Web.Models
 
         public OrderVm()
         {
-            Charges = new List<PianoServiceVm>();
+            Charges = new List<PianoChargesVm>();
             Pianos = new List<PianoVm>();
         }
-      
+        public static AddressVm PopulateAddress(Address address)
+        {
+            return new AddressVm
+            {
+                Name = address.Name,
+                Address1 = address.Address1,
+                City = address.City,
+                State = address.State,
+                Stairs = address.NumberStairs,
+                Turns = address.NumberTurns,
+                PostCode = address.PostCode,
+                PhoneNumber = address.PhoneNumber,
+                AlternateContact = address.AlternateContact,
+                AlternatePhone = address.AlternatePhone,
+                Warehouse = address.WarehouseId.ToString(),
+            };
+        }
+
 
     }
 }

@@ -82,7 +82,7 @@
                                         <th class="none">Delivery Address</th>
                                         <th class="none">Pickup Date</th>
                                         <th class="none">Delivery Date</th>
-                                        <th class="none">Services</th>
+                                        <th class="none">Charges</th>
                                         <th class="none">Customer</th>                                    
 
                                     </tr>
@@ -101,8 +101,8 @@
                                                     <thead>
                                                     <tr>
                                                         <th class="all m-grid-col-md-2">Type</th>
-                                                        <th class="all m-grid-col-md-3">Name</th>
-                                                        <th class="all m-grid-col-md-1">Stairs</th>
+                                                        <th class="all m-grid-col-md-3">Size</th>
+                                                        <th class="all m-grid-col-md-1">Player</th>
                                                         <th class="all m-grid-col-md-1">Bench</th>
                                                         <th class="all m-grid-col-md-1">Box</th>
                                                         <th class="all m-grid-col-md-1">Make</th>
@@ -116,8 +116,8 @@
                                                     {
                                                         <tr>
                                                             <td class="m-grid-col-md-2">@pianoVm.PianoType</td>
-                                                            <td class="m-grid-col-md-3">@pianoVm.PianoName</td>
-                                                            <td class="m-grid-col-md-1">@(pianoVm.IsStairs ? "Yes" : "No")</td>
+                                                            <td class="m-grid-col-md-3">@pianoVm.PianoSize</td>
+                                                            <td class="m-grid-col-md-1">@(pianoVm.IsPlayer ? "Yes" : "No")</td>
                                                             <td class="m-grid-col-md-1">@(pianoVm.IsBench ? "W/B" : "N/B")</td>
                                                             <td class="m-grid-col-md-1">@(pianoVm.IsBoxed ? "Yes" : "No")</td>
                                                             <td class="m-grid-col-md-1">@pianoVm.PianoMake</td>
@@ -145,9 +145,9 @@
                                                     @foreach (var service in @order.Charges)
                                                     {
                                                         <tr>
-                                                            <td class="m-grid-col-md-2">@service.ServiceCode</td>
-                                                            <td class="m-grid-col-md-4">@service.ServiceType</td>
-                                                            <td class="m-grid-col-md-2">@service.ServiceCharges</td>
+                                                            <td class="m-grid-col-md-2">@service.ChargesCode</td>
+                                                            <td class="m-grid-col-md-4">@service.ChargesType</td>
+                                                            <td class="m-grid-col-md-2">@service.Amount</td>
                                                             <td class="m-grid-col-md-4"></td>
                                                         </tr>
                                                     }

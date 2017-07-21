@@ -392,7 +392,7 @@
     <Compile Include="Models\ConsigmentVm.cs" />
     <Compile Include="Models\ConsignmentRouteVm.cs" />
     <Compile Include="Models\PianoVm.cs" />
-    <Compile Include="Models\PianoServiceVm.cs" />
+    <Compile Include="Models\PianoChargesVm.cs" />
     <Compile Include="Models\CompanyOfficeVM.cs" />
     <Compile Include="Models\CompanySettingsVM.cs" />
     <Compile Include="Models\CompanyUnitVM.cs" />
@@ -6397,6 +6397,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="assets\apps\img\" />
     <Folder Include="assets\global\plugins\angularjs\plugins\angular-file-upload\uploads\" />
+    <Folder Include="Images\" />
     <Folder Include="Uploads\" />
   </ItemGroup>
   <ItemGroup>

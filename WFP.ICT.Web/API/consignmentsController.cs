@@ -107,7 +107,6 @@ namespace WFP.ICT.Web.Controllers
                     OrderType = ((OrderTypeEnum)order.OrderType).ToString(),
                     CallerName = order.CallerFirstName + " " + order.CallerLastName,
                     CallerPhoneNumber = order.CallerPhoneNumber,
-                    SpecialInstructions = order.Notes,
                     PickupAddress = TinyMapper.Map<AddressVm>(order.PickupAddress).AddressToStringWithoutBreak,
                     DeliveryAddress = TinyMapper.Map<AddressVm>(order.DeliveryAddress).AddressToStringWithoutBreak,
                     NumberOfItems = order.Pianos.Count,

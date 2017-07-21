@@ -25,7 +25,7 @@ namespace WFP.ICT.Web.Models
         public int Turns { get; set; }
 
         [Required(ErrorMessage = "Pickup date required")]
-        public DateTime PickUpDate { get; set; }
+        public DateTime? PickUpDate { get; set; }
 
         [Required(ErrorMessage = "Warehouse location is required")]
         public string Warehouse{ get; set; }

@@ -14,13 +14,12 @@ namespace WFP.ICT.Data.Entities
         public string CallerLastName { get; set; }
         public string CallerPhoneNumber { get; set; }
         public string CallerEmail { get; set; }
-        
+        public string CallerAlternatePhone{ get; set; }
+
         public int PaymentOption { get; set; } // PaymentOptionEnum
 
         public string SalesOrderNumber { get; set; } // For Corporate client
         
-        public string Notes { get; set; }
-
         public DateTime? PreferredPickupDateTime { get; set; }
 
         public DateTime? PickupDate { get; set; }

@@ -1,4 +1,4 @@
-﻿@model WFP.ICT.Web.Models.PianoServiceVm
+﻿@model WFP.ICT.Web.Models.PianoChargesVm
 @using MyToolkit.Html
 
   <!-- Start Piano -->
@@ -15,17 +15,17 @@
 
         <div class="col-md-5" >
             <div class="form-group form-md-line-input has-success">
-                @Html.DropDownListFor(model => model.ServiceCode, TempData["Charges"] as SelectList, null, htmlAttributes: new { @class = "form-control", onchange = "pianoConfigs.initPopulateServiceCharges(this)" })
-                @Html.ValidationMessageFor(model => model.ServiceCode, null, new { @class = "help-block help-block-error" })
+                @Html.DropDownListFor(model => model.ChargesCode, TempData["Charges"] as SelectList, null, htmlAttributes: new { @class = "form-control", onchange = "pianoConfigs.initPopulateServiceCharges(this)" })
+                @Html.ValidationMessageFor(model => model.ChargesCode, null, new { @class = "help-block help-block-error" })
                  <span class="help-block">Select Charges here</span>
             </div>
         </div>
         <div class="col-md-5">
             <div class="form-group form-md-line-input has-success">
                 <div class="input-icon">
-                    @Html.EditorFor(model => model.ServiceCharges, new { htmlAttributes = new { @class = "form-control serviceCharges" } })
+                    @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control serviceCharges" } })
                     <label for="form_control_1">Charges<span class="required">*</span></label>
-                    @Html.ValidationMessageFor(model => model.ServiceCharges, null, new { @class = "help-block help-block-error" })
+                    @Html.ValidationMessageFor(model => model.Amount, null, new { @class = "help-block help-block-error" })
                     <span class="help-block">Enter Charges Amount here</span>
                     <i class="fa fa-user"></i>
                 </div>

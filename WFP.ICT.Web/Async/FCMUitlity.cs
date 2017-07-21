@@ -36,8 +36,8 @@ namespace WFP.ICT.Web.FCM
                 }
             };
 
-            var request = client.SendMessageAsync(message);
-            var result = request.Result;
+          //  var request = client.SendMessageAsync(message);
+           // var result = request.Result;
         }
 
         public static void SendMessage(Guid RecepientID, Guid MessageID)

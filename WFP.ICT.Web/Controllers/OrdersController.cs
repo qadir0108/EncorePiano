@@ -10,6 +10,7 @@ using WFP.ICT.Web.Models;
 using WFP.ICT.Enum;
 using WFP.ICT.Enums;
 using WFP.ICT.Web.Async;
+using WFP.ICT.Common;
 
 namespace WFP.ICT.Web.Controllers
 {
@@ -42,7 +43,7 @@ namespace WFP.ICT.Web.Controllers
             OrderVm model = new OrderVm();
 
             model.Pianos.Add(new PianoVm());
-            model.Charges.Add(new PianoServiceVm());
+            model.Charges.Add(new PianoChargesVm());
 
             PopulateViewData();
 
@@ -56,7 +57,7 @@ namespace WFP.ICT.Web.Controllers
             OrderVm model = new OrderVm();
 
             model.Pianos.Add(new PianoVm());
-            model.Charges.Add(new PianoServiceVm());
+            model.Charges.Add(new PianoChargesVm());
 
             PopulateViewData();
 
@@ -70,7 +71,7 @@ namespace WFP.ICT.Web.Controllers
             OrderVm model = new OrderVm();
 
             model.Pianos.Add(new PianoVm());
-            model.Charges.Add(new PianoServiceVm());
+            model.Charges.Add(new PianoChargesVm());
 
             PopulateViewData();
 
@@ -89,11 +90,14 @@ namespace WFP.ICT.Web.Controllers
                             .Include(x => x.OrderCharges)
                             .FirstOrDefault(x => x.Id == id);
 
-            var pickupAddress = PopulateAddress(order.PickupAddress);
-            var deliveryAddress = PopulateAddress(order.DeliveryAddress);
+            var pickupAddress = OrderVm.PopulateAddress(order.PickupAddress);
+            var deliveryAddress = OrderVm.PopulateAddress(order.DeliveryAddress);
 
             pickupAddress.Notes = order.PickUpNotes;
             deliveryAddress.Notes = order.DeliveryNotes;
+
+            pickupAddress.PickUpDate = order.PickupDate;
+            deliveryAddress.PickUpDate = order.DeliveryDate;
 
             var orderVm = new OrderVm()
             {
@@ -106,12 +110,22 @@ namespace WFP.ICT.Web.Controllers
                 CallerLastName = order.CallerLastName,
                 CallerPhoneNumber = order.CallerPhoneNumber,
                 CallerEmail = order.CallerEmail,
+                CallerAlternatePhone = order.CallerAlternatePhone,
+
+                CollectableAmount = order.CodAmount,
+                CarriedBy = order.CarriedBy,
+                SalesOrderNumber = order.SalesOrderNumber,
+                IsBilledThirdParty = order.BillToDifferent,
+
+                OfficeStaffDetails = order.OfficeStaff,
+                OnlinePaymentDetails = order.OnlinePayment,
+                ThirdParty = order.InvoiceBillingPartyId.ToString(),
+                Dealer = order.InvoiceClientId.ToString(),
+
+
 
                 PickupAddress = pickupAddress,
                 DeliveryAddress = deliveryAddress,
-
-                PickupDate = order.PickupDate?.ToString(),
-                DeliveryDate = order.DeliveryDate?.ToString(),
 
                 Shuttle = order.Customer != null ? order.CustomerId.ToString() : ""
             };
@@ -128,6 +142,7 @@ namespace WFP.ICT.Web.Controllers
                 pianoVm.PianoMake = piano.PianoMakeId.ToString();
                 pianoVm.PianoModel = piano.Model;
                 pianoVm.PianoTypeId = piano.PianoTypeId.ToString();
+                pianoVm.PianoCategoryType = piano.PianoCategoryType.ToString();
 
                 // pianoVm.PianoCategoryType = piano.PianoType.ToString();
 
@@ -136,10 +151,10 @@ namespace WFP.ICT.Web.Controllers
 
             foreach (var service in order.OrderCharges)
             {
-                orderVm.Charges.Add(new PianoServiceVm
+                orderVm.Charges.Add(new PianoChargesVm
                 {
-                    ServiceCharges = service.Amount.ToString(),
-                    ServiceCode = service.PianoChargesId.ToString(),
+                    Amount = service.Amount.ToString(),
+                    ChargesCode = service.PianoChargesId.ToString(),
                 });
             }
 
@@ -184,6 +199,10 @@ namespace WFP.ICT.Web.Controllers
                     NumberStairs = orderVm.PickupAddress.Stairs,
                     PostCode = orderVm.PickupAddress.PostCode,
                     PhoneNumber = orderVm.PickupAddress.PhoneNumber,
+                    AlternateContact = orderVm.PickupAddress.AlternateContact,
+                    AlternatePhone = orderVm.PickupAddress.AlternatePhone,
+                    WarehouseId = Guid.Parse(orderVm.PickupAddress.Warehouse),
+                    
 
                 };
                 db.Addresses.Add(pickupAddress);
@@ -202,8 +221,9 @@ namespace WFP.ICT.Web.Controllers
                     NumberStairs = orderVm.DeliveryAddress.Stairs,
                     PostCode = orderVm.DeliveryAddress.PostCode,
                     PhoneNumber = orderVm.DeliveryAddress.PhoneNumber,
-
-
+                    AlternateContact = orderVm.DeliveryAddress.AlternateContact,
+                    AlternatePhone = orderVm.DeliveryAddress.AlternatePhone,
+                    WarehouseId =  Guid.Parse(orderVm.DeliveryAddress.Warehouse),
                 };
                 db.Addresses.Add(deliveryAddress);
                 db.SaveChanges();
@@ -219,6 +239,7 @@ namespace WFP.ICT.Web.Controllers
                     order.CallerLastName = orderVm.CallerLastName;
                     order.CallerPhoneNumber = orderVm.CallerPhoneNumber;
                     order.CallerEmail = orderVm.CallerEmail;
+                    order.CallerAlternatePhone = orderVm.CallerAlternatePhone;
 
                     order.OrderType = orderVm.OrderPlacementType;
 
@@ -271,9 +292,9 @@ namespace WFP.ICT.Web.Controllers
                     db.PianoOrderCharges.Add(new PianoOrderCharges()
                     {
                         Id = new Guid(),
-                        PianoChargesId = Guid.Parse(item.ServiceCode),
+                        PianoChargesId = Guid.Parse(item.ChargesCode),
                         PianoOrderId = orderId,
-                        Amount = int.Parse(item.ServiceCharges),
+                        Amount = int.Parse(item.Amount),
                         CreatedAt = DateTime.Now,
                         CreatedBy = LoggedInUser?.UserName,
                         ServiceStatus = (int)ServiceStatusEnum.Requested
@@ -308,14 +329,21 @@ namespace WFP.ICT.Web.Controllers
                             .Where(x => x.Id.ToString() == orderVm.Id).FirstOrDefault();
 
                 {
-                    //Order Details 
+
+                    order.OrderType = (int)(OrderTypeEnum.Private);
                     order.CallerFirstName = orderVm.CallerFirstName;
                     order.CallerLastName = orderVm.CallerLastName;
                     order.CallerPhoneNumber = orderVm.CallerPhoneNumber;
                     order.CallerEmail = orderVm.CallerEmail;
-                    order.PaymentOption = int.Parse(orderVm.PaymentOption);
-                    // order.PickupDate = orderVm.PickupAddress.PickUpDate;
-                    // order.DeliveryDate = orderVm.DeliveryAddress.PickUpDate;
+                    order.CallerAlternatePhone = orderVm.CallerAlternatePhone;
+                    order.OrderType = orderVm.OrderPlacementType;
+                    if (orderVm.PaymentOption != null)
+                    {
+                        order.PaymentOption = int.Parse(orderVm.PaymentOption);
+                    }
+
+                    order.PickupDate = orderVm.PickupAddress.PickUpDate;
+                    order.DeliveryDate = orderVm.DeliveryAddress.PickUpDate;
                     order.CustomerId =
                             string.IsNullOrEmpty(orderVm.Shuttle) ? (Guid?)null : Guid.Parse(orderVm.Shuttle);
 
@@ -324,30 +352,34 @@ namespace WFP.ICT.Web.Controllers
                     order.OfficeStaff = orderVm.OfficeStaffDetails;
 
                     if (orderVm.Dealer != null)
-                    {
-                        order.InvoiceClientId = Guid.Parse(orderVm.Dealer);
-                    }
-                    if (orderVm.ThirdParty != null)
-                    {
-                        order.InvoiceBillingPartyId = Guid.Parse(orderVm.ThirdParty);
-                    }
+                    { order.InvoiceClientId = Guid.Parse(orderVm.Dealer); }
 
+                    if (orderVm.ThirdParty != null)
+                    { order.InvoiceBillingPartyId = Guid.Parse(orderVm.ThirdParty); }
 
                     order.BillToDifferent = orderVm.IsBilledThirdParty;
                     order.CarriedBy = orderVm.CarriedBy;
                     order.SalesOrderNumber = orderVm.SalesOrderNumber;
 
+                    order.PickUpNotes = orderVm.PickupAddress.Notes;
+                    order.DeliveryNotes = orderVm.DeliveryAddress.Notes;
+
+
+
+
 
                     //Delivery Address
-                    order.DeliveryAddress.Name = orderVm.DeliveryAddress.Name;
-                    order.DeliveryAddress.Address1 = orderVm.DeliveryAddress.Address1;
-                    order.DeliveryAddress.City = orderVm.DeliveryAddress.City;
-                    order.DeliveryAddress.State = orderVm.DeliveryAddress.State;
-                    order.DeliveryAddress.NumberTurns = orderVm.DeliveryAddress.Turns;
-                    order.DeliveryAddress.NumberStairs = orderVm.DeliveryAddress.Stairs;
-                    order.DeliveryAddress.PostCode = orderVm.DeliveryAddress.PostCode;
-                    order.DeliveryAddress.PhoneNumber = orderVm.DeliveryAddress.PhoneNumber;
-                    order.DeliveryAddress.Notes = orderVm.DeliveryAddress.Notes;
+                    order.DeliveryAddress.Name = orderVm.PickupAddress.Name;
+                    order.DeliveryAddress.Address1 = orderVm.PickupAddress.Address1;
+                    order.DeliveryAddress.City = orderVm.PickupAddress.City;
+                    order.DeliveryAddress.State = orderVm.PickupAddress.State;
+                    order.DeliveryAddress.NumberTurns = orderVm.PickupAddress.Turns;
+                    order.DeliveryAddress.NumberStairs = orderVm.PickupAddress.Stairs;
+                    order.DeliveryAddress.PostCode = orderVm.PickupAddress.PostCode;
+                    order.DeliveryAddress.PhoneNumber = orderVm.PickupAddress.PhoneNumber;
+                    order.DeliveryAddress.AlternateContact = orderVm.PickupAddress.AlternateContact;
+                    order.DeliveryAddress.AlternatePhone = orderVm.PickupAddress.AlternatePhone;
+                    order.DeliveryAddress.WarehouseId = Guid.Parse(orderVm.PickupAddress.Warehouse);
 
                     // Pickup Address
                     order.PickupAddress.Name = orderVm.PickupAddress.Name;
@@ -358,7 +390,9 @@ namespace WFP.ICT.Web.Controllers
                     order.PickupAddress.NumberStairs = orderVm.PickupAddress.Stairs;
                     order.PickupAddress.PostCode = orderVm.PickupAddress.PostCode;
                     order.PickupAddress.PhoneNumber = orderVm.PickupAddress.PhoneNumber;
-                    order.PickupAddress.Notes = orderVm.PickupAddress.Notes;
+                    order.PickupAddress.AlternateContact = orderVm.PickupAddress.AlternateContact;
+                    order.PickupAddress.AlternatePhone = orderVm.PickupAddress.AlternatePhone;
+                    order.PickupAddress.WarehouseId = Guid.Parse(orderVm.PickupAddress.Warehouse);
                 };
 
                 db.SaveChanges();
@@ -383,9 +417,9 @@ namespace WFP.ICT.Web.Controllers
                     db.PianoOrderCharges.Add(new PianoOrderCharges()
                     {
                         Id = new Guid(),
-                        PianoChargesId = Guid.Parse(item.ServiceCode),
+                        PianoChargesId = Guid.Parse(item.ChargesCode),
                         PianoOrderId = order.Id,
-                        Amount = int.Parse(item.ServiceCharges),
+                        Amount = int.Parse(item.Amount),
                         CreatedAt = DateTime.Now,
                         CreatedBy = LoggedInUser?.UserName,
                         ServiceStatus = (int)ServiceStatusEnum.Requested
@@ -435,15 +469,18 @@ namespace WFP.ICT.Web.Controllers
 
             obj.Model = vm.PianoModel;
             obj.PianoCategoryType = int.Parse(vm.PianoCategoryType);
+
             //make entity guid
-            obj.PianoMakeId = Guid.Parse(vm.PianoMake);
+            obj.PianoMakeId = vm.PianoMake == null ? (Guid?)null : Guid.Parse(vm.PianoMake); 
             //size guid
-            // obj.PianoSizeId = Guid.Parse(vm.PianoSize);
+
+           obj.PianoSizeId = vm.PianoSize == null ? (Guid?)null : Guid.Parse(vm.PianoSize);
+            obj.Notes = vm.Notes;
             //Need add piano category
             obj.SerialNumber = vm.SerialNumber;
             obj.IsBench = vm.IsBench;
             obj.IsBoxed = vm.IsBoxed;
-            obj.IsPlayer = vm.IsStairs;
+            obj.IsPlayer = vm.IsPlayer;
 
             db.Pianos.Add(obj);
         }
@@ -458,7 +495,7 @@ namespace WFP.ICT.Web.Controllers
         public ActionResult NewService()
         {
             TempData["Charges"] = new SelectList(ServicesSelectList, "Value", "Text");
-            return PartialView("~/Views/Shared/Editors/_Services.cshtml", new PianoServiceVm());
+            return PartialView("~/Views/Shared/Editors/_Services.cshtml", new PianoChargesVm());
         }
         public ActionResult PopulateWarehouseDetails(string warehouseId)
         {
@@ -512,6 +549,7 @@ namespace WFP.ICT.Web.Controllers
                         isBoxed = piano.IsBoxed,
                         isBench = piano.IsBench,
                         isPlayer = piano.IsPlayer,
+                        category = piano.PianoCategoryType,
                         size = piano.PianoSizeId,
                     };
                     return Json(new { key = true, piano = populate }, JsonRequestBehavior.AllowGet);
@@ -575,12 +613,36 @@ namespace WFP.ICT.Web.Controllers
 
         }
 
+        public ActionResult PopulateSelectList(string pianoMake)
+        {
+            try
+            {
+                Guid id = Guid.Parse(pianoMake);
+                var list = db.PianoSize.Where(x => x.PianoTypeId == id).ToList().
+                            Select(x => new {
+                                id = x.Id,
+                                width = PianoSizeConversion.GetFeetInches(x.Width),
+                            });
+
+
+
+                return Json(new { key = true, list = list }, JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception ex)
+            {
+
+                return Json(new { key = false }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
         public OrderVm FromOrder(PianoOrder order, IEnumerable<SelectListItem> PianoTypesList)
         {
 
-            AddressVm pickupAddress = PopulateAddress(order.PickupAddress);
+            AddressVm pickupAddress = OrderVm.PopulateAddress(order.PickupAddress);
 
-            AddressVm deliveryAdress = PopulateAddress(order.DeliveryAddress);
+            AddressVm deliveryAdress = OrderVm.PopulateAddress(order.DeliveryAddress);
 
 
             var orderVM = new OrderVm()
@@ -609,31 +671,41 @@ namespace WFP.ICT.Web.Controllers
                     PianoModel = x.Model,
                     PianoMake = x.PianoMakeId.ToString(),
                     SerialNumber = x.SerialNumber,
+                    PianoSize = x.PianoSizeId.ToString(),
                     IsBench = x.IsBench,
                     IsBoxed = x.IsBoxed,
-                    IsStairs = x.IsPlayer
+                    IsPlayer = x.IsPlayer,
+                    Notes = x.Notes
                 }).ToList();
 
             orderVM.Pianos.ForEach(x =>
             {
-                x.PianoMake = db.PianoMake.Where(y => y.Id.ToString() == x.PianoMake).FirstOrDefault().Name;
-
+                if(x.PianoMake != string.Empty)
+                {
+                    x.PianoMake = db.PianoMake.Where(y => y.Id.ToString() == x.PianoMake).FirstOrDefault().Name;
+                }
+              
+                if(x.PianoSize != string.Empty)
+                {
+                    x.PianoSize = db.PianoSize.Where(y => y.Id.ToString() == x.PianoSize).FirstOrDefault().Width.ToString();
+                }
+           
             });
 
             orderVM.Charges = order.OrderCharges.OrderBy(x => x.Id).Select(
-               x => new PianoServiceVm()
+               x => new PianoChargesVm()
                {
                    Id = x.Id.ToString(),
-                   ServiceTypeId  = x.PianoChargesId.ToString(),
-                   ServiceCharges = x.Amount.ToString()
+                   ChargesTypeId  = x.PianoChargesId.ToString(),
+                   Amount= x.Amount.ToString()
                }).ToList();
 
             orderVM.Charges.ForEach(x =>
             {
-                var obj = db.PianoCharges.Where(y => y.Id.ToString() == x.ServiceTypeId).FirstOrDefault();
-                x.ServiceCode = obj.ChargesCode.ToString();
-                x.ServiceDetails = obj.ChargesDetails.ToString();
-                x.ServiceType = ((ChargesTypeEnum)obj.ChargesType).ToString();
+                var obj = db.PianoCharges.Where(y => y.Id.ToString() == x.ChargesTypeId).FirstOrDefault();
+                x.ChargesCode = obj.ChargesCode.ToString();
+                x.ChargesDetails = obj.ChargesDetails.ToString();
+                x.ChargesType = ((ChargesTypeEnum)obj.ChargesType).ToString();
 
             });
            
@@ -641,22 +713,7 @@ namespace WFP.ICT.Web.Controllers
             return orderVM;
         }
 
-        public AddressVm PopulateAddress(Address address)
-        {
-            return new AddressVm
-                    {
-                Name = address.Name,
-                Address1 = address.Address1,
-                City = address.City,
-                State = address.State,
-                Stairs = address.NumberStairs,
-                Turns = address.NumberTurns,
-                PostCode = address.PostCode,
-                PhoneNumber = address.PhoneNumber,
-                AlternateContact = address.AlternateContact,
-                AlternatePhone = address.AlternatePhone,
-            };
-        }
+      
     
     }
 }

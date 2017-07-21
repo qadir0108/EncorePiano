@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PianoSizeConversion.cs" />
     <Compile Include="SecurityConstants.cs" />
     <Compile Include="ServerUtility.cs" />
     <Compile Include="StringUtility.cs" />

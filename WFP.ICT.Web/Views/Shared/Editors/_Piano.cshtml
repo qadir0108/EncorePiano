@@ -47,11 +47,11 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row pianoTypeSize" style="display:none">
-                            <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-md-4 pianoTypeContainer" style="display:none">
                                 <div class="form-group form-md-line-input has-success">
                                     <div class="input-icon">
-                                        @Html.DropDownListFor(model => model.PianoTypeId, TempData["PianoType"] as SelectList, htmlAttributes: new { @class = "form-control pianoType" })
+                                        @Html.DropDownListFor(model => model.PianoTypeId, TempData["PianoType"] as SelectList, htmlAttributes: new { @class = "form-control pianoType" ,onchange = "pianoConfigs.initShowSizeList(this)" })
                                         <label>Piano Type<span class="required">*</span></label>
                                         @Html.ValidationMessageFor(model => model.PianoType, null, new { @class = "help-block help-block-error" })
                                         <span class="help-block">Enter Piano Type here</span>
@@ -59,10 +59,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-4 pianoSizeContainer ignore" style="display:none">
                                 <div class="form-group form-md-line-input has-success">
                                     <div class="input-icon">
-                                        @Html.DropDownListFor(model => model.PianoSize, TempData["PianoType"] as SelectList, htmlAttributes: new { @class = "form-control pianoSize" })
+                                        @Html.DropDownListFor(model => model.PianoSize, Enumerable.Empty<SelectListItem>(), htmlAttributes: new { @class = "form-control pianoSize" , @id = "pianoSizeList" })
                                         <label>Piano Size<span class="required">*</span></label>
                                         @Html.ValidationMessageFor(model => model.PianoSize, null, new { @class = "help-block help-block-error" })
                                         <span class="help-block">Enter Piano Size here</span>
@@ -115,7 +115,7 @@
                                         <div class="md-radio-inline">
                                             <div class="md-radio">
                                                 @{string id = ViewData.TemplateInfo.GetFullHtmlFieldId("radioBenchTrue");}
-                                                @Html.RadioButtonFor(x => x.IsBench, true, new { @id = id, @class = "md-radiobtn" })
+                                                @Html.RadioButtonFor(x => x.IsBench, true, new { @id = id, @class = "md-radiobtn", @name = "isBenchRadio" })
                                                 <label for="@id">
                                                     <span></span>
                                                     <span class="check"></span>
@@ -124,7 +124,7 @@
                                             </div>
                                             <div class="md-radio">
                                                 @{ id = ViewData.TemplateInfo.GetFullHtmlFieldId("radioBenchFalse");}
-                                                @Html.RadioButtonFor(x => x.IsBench, false, new { @id = id, @class = "md-radiobtn" })
+                                                @Html.RadioButtonFor(x => x.IsBench, false, new { @id = id, @class = "md-radiobtn", @name = "isBenchRadio" })
                                                 <label for="@id">
                                                         <span></span>
                                                         <span class="check"></span>
@@ -144,7 +144,7 @@
                                         <div class="md-radio-inline">
                                             <div class="md-radio">
                                                 @{id = ViewData.TemplateInfo.GetFullHtmlFieldId("radioPlayerTrue");}
-                                                @Html.RadioButtonFor(x => x.IsPlayer, true, new { @id = id, @class = "md-radiobtn" })
+                                                @Html.RadioButtonFor(x => x.IsPlayer, true, new { @id = id, @class = "md-radiobtn", @name = "isPlayerRadio" })
                                                 <label for="@id">
                                                     <span></span>
                                                     <span class="check"></span>
@@ -153,7 +153,7 @@
                                             </div>
                                             <div class="md-radio">
                                                 @{id = ViewData.TemplateInfo.GetFullHtmlFieldId("radioPlayerFalse");}
-                                                @Html.RadioButtonFor(x => x.IsPlayer, false, new { @id = id, @class = "md-radiobtn" })
+                                                @Html.RadioButtonFor(x => x.IsPlayer, false, new { @id = id, @class = "md-radiobtn" ,@name = "isPlayerRadio" })
                                                 <label for="@id">
                                                     <span></span>
                                                     <span class="check"></span>
@@ -173,7 +173,7 @@
                                         <div class="md-radio-inline">
                                             <div class="md-radio">
                                                 @{id = ViewData.TemplateInfo.GetFullHtmlFieldId("radioBoxedTrue");}
-                                               @Html.RadioButtonFor(x => x.IsBoxed, true, new { @id = id , @class = "md-radiobtn" })
+                                               @Html.RadioButtonFor(x => x.IsBoxed, true, new { @id = id , @class = "md-radiobtn", @name = "isBoxedRadio" })
                                                 <label for="@id">
                                                     <span></span>
                                                     <span class="check"></span>
@@ -182,7 +182,7 @@
                                             </div>
                                             <div class="md-radio">
                                                 @{id = ViewData.TemplateInfo.GetFullHtmlFieldId("radioBoxedFalse");}
-                                                @Html.RadioButtonFor(x => x.IsBoxed, false, new { @id = id,@class = "md-radiobtn" })
+                                                @Html.RadioButtonFor(x => x.IsBoxed, false, new { @id = id,@class = "md-radiobtn" , @name= "isBoxedRadio" })
                                                 <label for="@id">
                                                     <span></span>
                                                     <span class="check"></span>

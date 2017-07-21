@@ -90,9 +90,9 @@
     <Compile Include="Entities\BaseEntity.cs" />
     <Compile Include="Entities\iBaseEntity.cs" />
     <Compile Include="EntityManager\CompanyManager.cs" />
-    <Compile Include="Migrations\201707201939518_Initial.cs" />
-    <Compile Include="Migrations\201707201939518_Initial.Designer.cs">
-      <DependentUpon>201707201939518_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\201707212004094_Update.cs" />
+    <Compile Include="Migrations\201707212004094_Update.Designer.cs">
+      <DependentUpon>201707212004094_Update.cs</DependentUpon>
     </Compile>
     <Compile Include="Repository\GenericRepository.cs" />
     <Compile Include="Repository\UnitOfWork.cs" />
@@ -128,8 +128,8 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201707201939518_Initial.resx">
-      <DependentUpon>201707201939518_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201707212004094_Update.resx">
+      <DependentUpon>201707212004094_Update.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
