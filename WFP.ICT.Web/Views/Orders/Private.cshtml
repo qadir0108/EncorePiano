@@ -998,8 +998,8 @@
                         $.each(data.list, function (index, value) {
                             option += ' <option value=' + (data.list[index].id) + '>' + (data.list[index].width) + '</option>';
                         });
-                        $('#pianoSizeList').html(option);
-                        $('.pianoSizeContainer').removeClass('ignore').slideDown("fast", function () {
+                        $(elem).parent().parent().parent().parent().find('.pianoSize').html(option);
+                        $(elem).parent().parent().parent().parent().find('.pianoSizeContainer').removeClass('ignore').slideDown("fast", function () {
                         });
                     }
                 }
@@ -1062,7 +1062,6 @@
 
     $('.pianoMake').trigger('change');
 
-    $('.pianoSize').trigger('change');
 
     $('#addPiano').click(function (e) {
         debugger

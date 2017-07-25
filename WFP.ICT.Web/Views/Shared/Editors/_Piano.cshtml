@@ -62,7 +62,7 @@
                             <div class="col-md-4 pianoSizeContainer ignore" style="display:none">
                                 <div class="form-group form-md-line-input has-success">
                                     <div class="input-icon">
-                                        @Html.DropDownListFor(model => model.PianoSize, Enumerable.Empty<SelectListItem>(), htmlAttributes: new { @class = "form-control pianoSize" , @id = "pianoSizeList" })
+                                        @Html.DropDownListFor(model => model.PianoSize, Enumerable.Empty<SelectListItem>(), htmlAttributes: new { @class = "form-control pianoSize" })
                                         <label>Piano Size<span class="required">*</span></label>
                                         @Html.ValidationMessageFor(model => model.PianoSize, null, new { @class = "help-block help-block-error" })
                                         <span class="help-block">Enter Piano Size here</span>
@@ -203,3 +203,12 @@
 }
 
 <!-- End Piano -->
+
+<script>
+    $(document).ready(function () {
+        var pianoSize = '@Model.PianoSize';
+        if(pianoSize != ""){
+            setTimeout(function () { $('.pianoSize').val(pianoSize); }, 2000);
+        }
+    });
+</script>

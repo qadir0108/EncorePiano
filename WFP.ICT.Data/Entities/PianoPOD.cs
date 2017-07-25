@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WFP.ICT.Data.Entities
@@ -20,7 +21,8 @@ namespace WFP.ICT.Data.Entities
         public string AcknowledgeTo { get; set; } // Email addresses
 
         public Guid? PianoAssignmentId { get; set; }
-        //public virtual PianoAssignment PianoAssignment { get; set; }
+        
+        public virtual PianoAssignment PianoAssignment { get; set; }
 
         public Guid? PianoId { get; set; }
         public virtual Piano Piano { get; set; }

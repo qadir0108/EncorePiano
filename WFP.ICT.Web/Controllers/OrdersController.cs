@@ -143,7 +143,8 @@ namespace WFP.ICT.Web.Controllers
                 pianoVm.PianoModel = piano.Model;
                 pianoVm.PianoTypeId = piano.PianoTypeId.ToString();
                 pianoVm.PianoCategoryType = piano.PianoCategoryType.ToString();
-
+                pianoVm.Notes = piano.Notes;
+                pianoVm.PianoSize = piano.PianoSizeId.ToString();
                 // pianoVm.PianoCategoryType = piano.PianoType.ToString();
 
                 orderVm.Pianos.Add(pianoVm);
@@ -291,7 +292,7 @@ namespace WFP.ICT.Web.Controllers
 
                     db.PianoOrderCharges.Add(new PianoOrderCharges()
                     {
-                        Id = new Guid(),
+                        Id = Guid.NewGuid(),
                         PianoChargesId = Guid.Parse(item.ChargesCode),
                         PianoOrderId = orderId,
                         Amount = int.Parse(item.Amount),
@@ -416,7 +417,7 @@ namespace WFP.ICT.Web.Controllers
 
                     db.PianoOrderCharges.Add(new PianoOrderCharges()
                     {
-                        Id = new Guid(),
+                        Id = Guid.NewGuid(),
                         PianoChargesId = Guid.Parse(item.ChargesCode),
                         PianoOrderId = order.Id,
                         Amount = int.Parse(item.Amount),
@@ -644,6 +645,9 @@ namespace WFP.ICT.Web.Controllers
 
             AddressVm deliveryAdress = OrderVm.PopulateAddress(order.DeliveryAddress);
 
+            //pickupAddress.Notes = order.PickUpNotes;
+            //deliveryAdress.Notes = order.DeliveryNotes;
+
 
             var orderVM = new OrderVm()
             {
@@ -659,8 +663,17 @@ namespace WFP.ICT.Web.Controllers
                 DeliveryAddressString = deliveryAdress.AddressToString,
                 PickupDate = order.PickupDate?.ToString(),
                 DeliveryDate = order.DeliveryDate?.ToString(),
-                Customer = order.Customer != null ? order.Customer.AccountCode + " " + order.Customer.Name : ""
-            };
+                Customer = order.Customer != null ? order.Customer.AccountCode + " " + order.Customer.Name : "",
+
+                IsBilledThirdParty = order.BillToDifferent,
+                CollectableAmount = order.CodAmount,
+                OnlinePaymentDetails = order.OnlinePayment,
+
+                OfficeStaffDetails = order.OfficeStaff,
+                Dealer = order.InvoiceClientId.ToString(),
+                ThirdParty = order.InvoiceBillingPartyId.ToString(),
+
+        };
 
             orderVM.Pianos = order.Pianos.OrderByDescending(x => x.CreatedAt).Select(
                 x => new PianoVm()

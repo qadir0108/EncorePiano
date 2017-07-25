@@ -90,9 +90,13 @@
     <Compile Include="Entities\BaseEntity.cs" />
     <Compile Include="Entities\iBaseEntity.cs" />
     <Compile Include="EntityManager\CompanyManager.cs" />
-    <Compile Include="Migrations\201707212004094_Update.cs" />
-    <Compile Include="Migrations\201707212004094_Update.Designer.cs">
-      <DependentUpon>201707212004094_Update.cs</DependentUpon>
+    <Compile Include="Migrations\201707241641358_Update.cs" />
+    <Compile Include="Migrations\201707241641358_Update.Designer.cs">
+      <DependentUpon>201707241641358_Update.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201707251451080_update2.cs" />
+    <Compile Include="Migrations\201707251451080_update2.Designer.cs">
+      <DependentUpon>201707251451080_update2.cs</DependentUpon>
     </Compile>
     <Compile Include="Repository\GenericRepository.cs" />
     <Compile Include="Repository\UnitOfWork.cs" />
@@ -128,8 +132,11 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201707212004094_Update.resx">
-      <DependentUpon>201707212004094_Update.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201707241641358_Update.resx">
+      <DependentUpon>201707241641358_Update.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707251451080_update2.resx">
+      <DependentUpon>201707251451080_update2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

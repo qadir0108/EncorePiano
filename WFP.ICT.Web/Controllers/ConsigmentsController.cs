@@ -132,7 +132,7 @@ namespace WFP.ICT.Web.Controllers
                     {
                         consignment = new PianoAssignment()
                         {
-                            Id = Guid.NewGuid(),
+                            Id = conVm.Orders.Value, // Needs to be same as orderId to maintain 1 vs 1 realtion integrity
                             CreatedAt = DateTime.Now,
                             CreatedBy = LoggedInUser?.UserName,
                             PianoOrderId = conVm.Orders,

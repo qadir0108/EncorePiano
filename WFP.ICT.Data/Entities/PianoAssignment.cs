@@ -2,7 +2,8 @@ namespace WFP.ICT.Data.Entities
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class PianoAssignment : BaseEntity, iBaseEntity
     {
         public Guid Id { get; set; }
@@ -18,7 +19,7 @@ namespace WFP.ICT.Data.Entities
         public virtual Driver Driver { get; set; }
 
         public Guid? PianoOrderId { get; set; }
-        //public virtual PianoOrder PianoOrder { get; set; }
+        public virtual PianoOrder PianoOrder { get; set; }
         
         public Guid? PianoPodId { get; set; }
         public virtual PianoPOD PianoPod { get; set; }

@@ -52,6 +52,10 @@
     <Reference Include="AWSSDK.S3">
       <HintPath>C:\Program Files (x86)\AWS SDK for .NET\bin\Net45\AWSSDK.S3.dll</HintPath>
     </Reference>
+    <Reference Include="DataTables.Mvc, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\datatables.mvc5.0.1.0\lib\net45\DataTables.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Hangfire.Core, Version=1.6.12.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Hangfire.Core.1.6.12\lib\net45\Hangfire.Core.dll</HintPath>
       <Private>True</Private>
@@ -176,6 +180,10 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.IdentityModel.Tokens.Jwt, Version=5.1.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\System.IdentityModel.Tokens.Jwt.5.1.2\lib\net451\System.IdentityModel.Tokens.Jwt.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Linq.Dynamic, Version=1.0.6132.35681, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Linq.Dynamic.1.0.7\lib\net40\System.Linq.Dynamic.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Net.Http" />
@@ -345,6 +353,7 @@
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ConsigmentsController.cs" />
+    <Compile Include="Controllers\InventoryController.cs" />
     <Compile Include="Controllers\OrdersController.cs" />
     <Compile Include="Controllers\OrdersStatusController.cs" />
     <Compile Include="Controllers\Orders1Controller.cs" />
@@ -4096,6 +4105,10 @@
     <Content Include="assets\global\plugins\icheck\skins\square\yellow.png" />
     <Content Include="assets\global\plugins\icheck\skins\square\_all.css" />
     <Content Include="assets\global\plugins\ie8.fix.min.js" />
+    <Content Include="assets\global\plugins\images\close.png" />
+    <Content Include="assets\global\plugins\images\loading.gif" />
+    <Content Include="assets\global\plugins\images\next.png" />
+    <Content Include="assets\global\plugins\images\prev.png" />
     <Content Include="assets\global\plugins\ion.rangeslider\css\ion.rangeSlider.css" />
     <Content Include="assets\global\plugins\ion.rangeslider\css\ion.rangeSlider.Metronic.css" />
     <Content Include="assets\global\plugins\ion.rangeslider\css\ion.rangeSlider.skinFlat.css" />
@@ -4383,6 +4396,8 @@
     <Content Include="assets\global\plugins\ladda\ladda-themeless.min.css" />
     <Content Include="assets\global\plugins\ladda\ladda.min.js" />
     <Content Include="assets\global\plugins\ladda\spin.min.js" />
+    <Content Include="assets\global\plugins\lightbox\lightbox.min.css" />
+    <Content Include="assets\global\plugins\lightbox\lightbox.min.js" />
     <Content Include="assets\global\plugins\mapplic\apartment.html" />
     <Content Include="assets\global\plugins\mapplic\australia.html" />
     <Content Include="assets\global\plugins\mapplic\brazil.html" />
@@ -6392,6 +6407,7 @@
     <Content Include="Views\Shared\Editors\_Piano.cshtml" />
     <Content Include="Views\Shared\Editors\_Services.cshtml" />
     <Content Include="Views\Orders\Dealer.cshtml" />
+    <Content Include="Views\Inventory\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

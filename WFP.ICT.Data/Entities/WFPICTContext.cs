@@ -26,9 +26,15 @@ namespace WFP.ICT.Data.Entities
             //    .HasOptional(s => s.Testing)
             //    .WithRequired(si => si.Campaign);
 
-            //modelBuilder.Entity<Campaign>()
-            //    .HasOptional(s => s.Approved)
-            //    .WithRequired(si => si.Campaign);
+            modelBuilder.Entity<PianoOrder>()
+                .HasOptional(s => s.PianoAssignment)
+                .WithRequired(si => si.PianoOrder);
+
+            modelBuilder.Entity<PianoAssignment>()
+                .HasOptional(s => s.PianoPod)
+                .WithRequired(si => si.PianoAssignment);
+
+
 
             base.OnModelCreating(modelBuilder);
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();

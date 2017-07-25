@@ -39,6 +39,9 @@ namespace WFP.ICT.Data.Entities
         public Guid? WarehouseId { get; set; } // if in Warehouse, if not in warehouse np
         public virtual Warehouse Warehouse { get; set; }
 
+        public Guid? ClientId { get; set; } // if in Warehouse, if not in warehouse np
+        public virtual Client Client { get; set; }
+
         public Guid? OrderId { get; set; }
         public virtual PianoOrder Order { get; set; }
 
