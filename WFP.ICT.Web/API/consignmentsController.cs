@@ -65,7 +65,7 @@ namespace WFP.ICT.Web.Controllers
             List<ConsignmentResponse> responses = new List<ConsignmentResponse>();
 
             var consignments = db.PianoAssignments
-                .Include(x => x.Driver)
+                .Include(x => x.Drivers)
                 .Include(x => x.Vehicle)
                 .Include(x => x.WarehouseStart)
                 .Include(x => x.Route);
@@ -98,8 +98,8 @@ namespace WFP.ICT.Web.Controllers
                     StartWarehouseAddress = TinyMapper.Map<AddressVm>(warehouse.Address).AddressToStringWithoutBreak,
                     VehicleCode = consignment.Vehicle.Code,
                     VehicleName = consignment.Vehicle.Code + " " + consignment.Vehicle.Name,
-                    DriverCode = consignment.Driver.Code,
-                    DriverName = consignment.Driver.Code + " " + consignment.Driver.Name,
+                    DriverCode = String.Join(",", consignment.Drivers.Select(x => x.Code).ToList()),
+                    DriverName = String.Join(",",consignment.Drivers.Select(x => x.Code + " " +x.Name).ToList()) ,
 
                     OrderId = order.Id.ToString(),
                     OrderNumber = order.OrderNumber,

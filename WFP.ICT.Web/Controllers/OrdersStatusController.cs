@@ -123,15 +123,20 @@ namespace WFP.ICT.Web.Controllers
                 orderByString = "Ordered";
             }
 
+            if (orderByString == string.Empty) {
+                PianoPOD = PianoPOD.OrderBy( x=> 
+                                    x.PianoAssignment.PianoOrder.OrderNumber);
+            }
 
-            PianoPOD = PianoPOD.OrderBy(x => orderByString == string.Empty ? 
-                                        x.PianoAssignment.PianoOrder.OrderNumber :
-                                        orderByString);
+
 
             #endregion Sorting
 
             // Paging
-            PianoPOD = PianoPOD.Skip(requestModel.Start).Take(requestModel.Length);
+            if (requestModel.Length != -1)
+            {
+                PianoPOD = PianoPOD.Skip(requestModel.Start).Take(requestModel.Length);
+            }
 
             var result = PianoPOD.
                          ToList()

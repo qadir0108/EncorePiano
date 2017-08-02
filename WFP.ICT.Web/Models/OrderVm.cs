@@ -59,6 +59,9 @@ namespace WFP.ICT.Web.Models
         public string DeliveryDate { get; set; }
         public string Shuttle { get; set; }
 
+        public string DeliverForm { get; set; }
+
+
         public AddressVm PickupAddress { get; set; }
         public AddressVm DeliveryAddress { get; set; }
         public List<PianoVm> Pianos { get; set; }

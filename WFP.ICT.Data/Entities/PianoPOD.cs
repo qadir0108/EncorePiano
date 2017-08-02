@@ -16,7 +16,8 @@ namespace WFP.ICT.Data.Entities
         public int PodStatus { get; set; } // PODStatusEnum
         public string Notes { get; set; }
 
-        public string AssignmentForm { get; set; }
+        //signed form in here
+        public string PodForm { get; set; }
         public DateTime? SignedOn { get; set; }
         public string AcknowledgeTo { get; set; } // Email addresses
 

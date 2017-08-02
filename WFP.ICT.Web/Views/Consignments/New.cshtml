@@ -2,7 +2,11 @@
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+<style>
+    .select2-selection.select2-selection--multiple{
+        border-radius:0px;
+    }
+</style>
 <!-- BEGIN CONTENT -->
 <div class="page-content-wrapper">
     <!-- BEGIN CONTENT BODY -->
@@ -68,29 +72,7 @@
                                 </div>
                                 <div class="portlet-body form">
                                     <div class="form-body">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group form-md-line-input has-success">
-                                                    <div class="input-icon">
-                                                        @Html.DropDownList("Warehouses", null, htmlAttributes: new { @class = "form-control" }) 
-                                                        <label for="form_control_1">Warehouse<span class="required">*</span></label>
-                                                        <span class="help-block">Select Warehouse</span>
-                                                        <i class="fa fa-building"></i>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group form-md-line-input has-success">
-                                                    <div class="input-icon">
-                                                        @Html.DropDownList("Drivers", null, htmlAttributes: new { @class = "form-control" })
-                                                        <label for="form_control_1">Driver<span class="required">*</span></label>
-                                                        <span class="help-block">Select Driver</span>
-                                                        <i class="fa fa-user"></i>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            
-                                        </div>
+
                                         <div class="row" style="margin-bottom: 10px">
                                             <div class="col-md-6">
                                                 <div class="form-group form-md-line-input has-success">
@@ -115,10 +97,17 @@
                                            
                                         </div>
                                         <div class="row">
-                                            <div class="col-md-12">
-                                                <h3>Warehouse Address</h3>
-                                                <div id="warehouseAddress"></div>
+                                            <div class="col-md-6">
+                                                <div class="form-group form-md-line-input has-success">
+                                                    <div class="input-icon">
+                                                        @Html.DropDownList("Drivers", null, htmlAttributes: new { @class = "form-control", @multiple = "multiple" })
+                                                        <label for="form_control_1">Driver<span class="required">*</span></label>
+                                                        <span class="help-block">Select Driver</span>
+
+                                                    </div>
+                                                </div>
                                             </div>
+
                                         </div>
                                         <div class="row">
                                             <div class="col-md-6">
@@ -162,45 +151,8 @@
 <script type="text/javascript">
 
     var wfp = wfp || {};
-    var warehouseAddress = null;
 
     $(function () {
-
-        $('#Warehouses').on("change", function (e) {
-            debugger;
-            if ($(this).val() === '') return;
-
-            var orderId = $(this).val();
-
-            var dataToPost = {
-                id: orderId
-            };
-
-            $.ajax({
-                type: "POST",
-                url: "/Warehouse/GetAddress",
-                data: dataToPost,
-                success: function (response) {
-                    //debugger;
-
-                    if (response.IsSucess) {
-                        var result = $.parseJSON(response.Result);
-                        $("#warehouseAddress").html(result.AddressToStringWithOutPhone);
-                        warehouseAddress = result.AddressToStringWithOutPhone;
-                        wfp.restTooltips();
-                        $("#warehouseAddress").hide().fadeIn(1000).animate({ "opacity": "100" });
-                        //initMap(result.PickupAddressString, result.DeliveryAddressString);
-                    } else {
-                        wfp.showError(response.ErrorMessage);
-                    }
-                },
-                failure: function (response) {
-                    wfp.showError('There is erorr in service call.');
-                },
-                complete: function () {
-                }
-            });
-        });
 
         $('#Orders').on("change", function (e) {
             //debugger;
@@ -228,7 +180,7 @@
                         wfp.restTooltips();
                         pickupAddress.hide().fadeIn(1000).animate({ "opacity": "100" });
                         deliveryAddress.hide().fadeIn(1000).animate({ "opacity": "100" });
-                        initMap(warehouseAddress, result.PickupAddressString, result.DeliveryAddressString);
+                        initMap(result.PickupAddressString, result.DeliveryAddressString);
                     } else {
                         wfp.showError(response.ErrorMessage);
                     }
@@ -258,9 +210,6 @@
                     messages: {
                     },
                     rules: {
-                        Warehouses: {
-                            required: true
-                        },
                         Drivers: {
                             required: true
                         },
@@ -322,6 +271,8 @@
 
         FormValidationMd.init();
 
+        $('#Drivers').select2();
+        
         //$('#btnCreate1').click(function (e) {
         //    debugger;
         //    e.preventDefault();

@@ -44,6 +44,8 @@ namespace WFP.ICT.Data.Entities
 
         public virtual ICollection<Piano> Pianos { get; set; }
         public virtual ICollection<PianoOrderCharges> OrderCharges { get; set; }
+
+        public string DeliveryForm { get; set; }
         public double CodAmount { get; set; }
         public string OfficeStaff { get; set; }
         public string OnlinePayment { get; set; }
@@ -58,8 +60,6 @@ namespace WFP.ICT.Data.Entities
         public virtual Client InvoiceClient { get; set; }
         public Guid? InvoiceBillingPartyId { get; set; }
         public virtual Client InvoiceBillingParty { get; set; }
-        public Guid? ShuttleCompanyId { get; set; }
-        public virtual Client ShuttleCompany { get; set; }
         public PianoOrder()
         {
             Pianos = new HashSet<Piano>();

@@ -13,6 +13,9 @@ using WFP.ICT.Web.Models;
 using TransfocusTabletApp.Helpers;
 using WFP.ICT.Web.Async;
 using WFP.ICT.Web.FCM;
+using System.Text;
+using NSERReceipts;
+using WFP.ICT.Common;
 
 namespace WFP.ICT.Web.Controllers
 {
@@ -35,10 +38,10 @@ namespace WFP.ICT.Web.Controllers
 
         public ActionResult Index()
         {
-            
+
             var consigmentVms = new List<ConsigmentVm>();
             var consignments = db.PianoAssignments
-                .Include(x => x.Driver)
+                .Include(x => x.Drivers)
                 .Include(x => x.Vehicle)
                 .Include(x => x.WarehouseStart)
                 .ToList();//.Where(x => x.CreatedBy == LoggedInUser.Id)
@@ -53,7 +56,7 @@ namespace WFP.ICT.Web.Controllers
                     OrderId = consignment.PianoOrderId?.ToString(),
                     OrderNumber = order.OrderNumber,
                     ConsignmentNumber = consignment.AssignmentNumber,
-                    DriverName = consignment.Driver?.Name,
+                    DriverName = String.Join(",", consignment.Drivers.Select(x=>x.Name).ToList()),
                     VehicleName = consignment.Vehicle?.Name,
                     StartWarehouseName = consignment.WarehouseStart?.Name
                 };
@@ -72,8 +75,8 @@ namespace WFP.ICT.Web.Controllers
             ViewBag.Warehouses = new SelectList(WarehousesList, "Value", "Text");
             ViewBag.Vehicles = new SelectList(VehiclesList, "Value", "Text");
             ViewBag.Drivers = new SelectList(DriversList, "Value", "Text");
-            ViewBag.Orders = new SelectList(OrdersList, "Value","Text");
-            
+            ViewBag.Orders = new SelectList(OrdersList, "Value", "Text");
+
             return View(model);
         }
 
@@ -88,7 +91,7 @@ namespace WFP.ICT.Web.Controllers
                     .Include(x => x.PickupAddress)
                     .Include(x => x.DeliveryAddress)
                     .FirstOrDefault(x => x.Id == Id);
-                
+
                 var piano = db.Pianos.Include(x => x.PianoType).FirstOrDefault(x => x.OrderId == order.Id);
                 var pickupAddress = TinyMapper.Map<AddressVm>(order.PickupAddress).AddressToStringWithOutPhone;
                 var deliveryAddress = TinyMapper.Map<AddressVm>(order.DeliveryAddress).AddressToStringWithOutPhone;
@@ -105,7 +108,7 @@ namespace WFP.ICT.Web.Controllers
                     DeliveryDate = order.DeliveryDate?.ToString(),
                     Customer = order.Customer != null ? order.Customer.AccountCode + " " + order.Customer.Name : ""
                 };
-                
+
                 return Json(new JsonResponse() { IsSucess = true, Result = orderVM.ToJson() }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
@@ -136,13 +139,17 @@ namespace WFP.ICT.Web.Controllers
                             CreatedAt = DateTime.Now,
                             CreatedBy = LoggedInUser?.UserName,
                             PianoOrderId = conVm.Orders,
-                            DriverId = conVm.Drivers,
-                            WarehouseStartId = conVm.Warehouses,
+                           // WarehouseStartId = conVm.Warehouses,
                             VehicleId = conVm.Vehicles,
                             AssignmentNumber = "CON-" + order.OrderNumber
                         };
                         db.PianoAssignments.Add(consignment);
                         db.SaveChanges();
+
+                   
+                        conVm.Drivers.ForEach(x => {
+                            consignment.Drivers.Add(db.Drivers.FirstOrDefault(y => y.Id == x.Value));
+                        });
 
                         int odr = 1;
                         var paths = JsonConvert.DeserializeObject<ConsignmentRouteVm[]>(conVm.Paths);
@@ -168,11 +175,20 @@ namespace WFP.ICT.Web.Controllers
                             .FirstOrDefault(x => x.Id == order.PianoAssignmentId);
 
                         consignment.PianoOrderId = conVm.Orders;
-                        consignment.DriverId = conVm.Drivers;
                         consignment.WarehouseStartId = conVm.Warehouses;
                         consignment.VehicleId = conVm.Vehicles;
                         consignment.AssignmentNumber = "CON-" + order.OrderNumber;
                         db.SaveChanges();
+
+                        consignment.Drivers.ToList().ForEach(x => {
+                            consignment.Drivers.Remove(db.Drivers.FirstOrDefault(y => y.Id == x.Id));
+                        });
+                        db.SaveChanges();
+
+                        conVm.Drivers.ForEach(x => {
+                            consignment.Drivers.Add(db.Drivers.FirstOrDefault(y => y.Id == x.Value));
+                        });
+
 
                         foreach (var route in consignment.Route)
                         {
@@ -199,8 +215,14 @@ namespace WFP.ICT.Web.Controllers
 
                     }
 
-                    var driver = db.Drivers.FirstOrDefault(x => x.Id == consignment.DriverId);
-                    BackgroundJob.Enqueue(() => FCMUitlity.SendConsignment(driver.FCMToken, consignment.Id.ToString(), consignment.AssignmentNumber));
+                    var consignmentDrivers = db.PianoAssignments
+                                              .Include(x => x.Drivers).FirstOrDefault(x => x.Id == consignment.Id);
+
+                    consignmentDrivers.Drivers.ToList().ForEach(x =>
+                    {
+                        BackgroundJob.Enqueue(() => FCMUitlity.SendConsignment(x.FCMToken, consignment.Id.ToString(), consignment.AssignmentNumber));
+
+                    });
 
                     TempData["Success"] = "Conisgnment #: " + consignment.AssignmentNumber +
                                           " has been saved sucessfully.";
@@ -224,7 +246,7 @@ namespace WFP.ICT.Web.Controllers
         {
             var consigmentVms = new List<ConsigmentVm>();
             var consignments = db.PianoAssignments
-                .Include(x => x.Driver)
+                .Include(x => x.Drivers)
                 .Include(x => x.Vehicle)
                 .Include(x => x.WarehouseStart)
                 .ToList();//.Where(x => x.CreatedBy == LoggedInUser.Id)
@@ -239,7 +261,7 @@ namespace WFP.ICT.Web.Controllers
                     OrderId = consignment.PianoOrderId?.ToString(),
                     OrderNumber = order.OrderNumber,
                     ConsignmentNumber = consignment.AssignmentNumber,
-                    DriverName = consignment.Driver?.Name,
+                    DriverName = String.Join(",", consignment.Drivers.Select(x => x.Name).ToList()),
                     VehicleName = consignment.Vehicle?.Name,
                     StartWarehouseName = consignment.WarehouseStart?.Name
                 };
@@ -251,7 +273,7 @@ namespace WFP.ICT.Web.Controllers
         public ActionResult Generate()
         {
             var consignments = db.PianoAssignments
-                .Include(x => x.Driver)
+                .Include(x => x.Drivers)
                 .Include(x => x.Vehicle)
                 .Include(x => x.WarehouseStart)
                 .ToList();//.Where(x => x.CreatedBy == LoggedInUser.Id)
@@ -292,7 +314,7 @@ namespace WFP.ICT.Web.Controllers
             // Generate 
             var filePath = QRCodeGenerator.Generate(ImagesPath, UploadPath, orderVMs);
             return File(filePath, "application/octet-stream", "PickupTickets.pdf");
-            
+
         }
 
         [HttpPost]
@@ -301,17 +323,80 @@ namespace WFP.ICT.Web.Controllers
             try
             {
                 var consignment = db.PianoAssignments
-                            .FirstOrDefault(x => x.Id == id);
+                            .Include(x=> x.Drivers).FirstOrDefault(x => x.Id == id);
 
-                var driver = db.Drivers.FirstOrDefault(x => x.Id == consignment.DriverId);
-                BackgroundJob.Enqueue(() => FCMUitlity.SendConsignment(driver.FCMToken, consignment.Id.ToString(), consignment.AssignmentNumber));
+                var driver = consignment.Drivers.ToList();
+                driver.ForEach(x =>
+                {
+                    BackgroundJob.Enqueue(() => FCMUitlity.SendConsignment(x.FCMToken, consignment.Id.ToString(), consignment.AssignmentNumber));
 
+                });
+              
                 return Json(new JsonResponse() { IsSucess = true }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
                 return Json(new JsonResponse() { IsSucess = false, ErrorMessage = ex.Message }, JsonRequestBehavior.AllowGet);
             }
+        }
+
+        public ActionResult Invoice(Guid? id)
+        {
+            try
+            {
+                var order = db.PianoOrders
+                            .Include(x => x.Customer)
+                            .Include(x => x.Pianos.Select(y => y.PianoMake))
+                            .Include(x => x.Pianos.Select(y => y.PianoType))
+                            .Include(x => x.Pianos.Select(y => y.PianoSize))
+                            .Include(x => x.PianoAssignment.Drivers)
+                            .Include(x => x.PickupAddress)
+                            .Include(x => x.DeliveryAddress)
+                            .Include(x => x.OrderCharges.Select(y=>y.PianoCharges))
+                            .FirstOrDefault(x => x.Id == id);
+
+                string _directoryPath = UploadPath + "\\InvoiceCodes";
+
+                string html = InvoiceHtmlHelper.GenerateInvoiceHtml(order, _directoryPath);
+
+                JsonResponse Path = HtmlToPdf(html);
+                string pathValue = Path.Result.ToString();
+
+                if (!System.IO.File.Exists(pathValue))
+                    return null;
+                return File(pathValue, "application/pdf", "Invoice.pdf");
+
+            }
+            catch (Exception ex)
+            {
+                return File(new byte[0] , "application/pdf", "Error.pdf");
+            }
+
+         
+        }
+        public JsonResponse HtmlToPdf(string html)
+        {
+            try
+            {
+                var htmlToPdf = new NReco.PdfGenerator.HtmlToPdfConverter();
+                var pdfBytes = htmlToPdf.GeneratePdf(html);
+
+                string Path = Server.MapPath("~/Uploads/Invoices");
+                if (!System.IO.Directory.Exists(Path)) System.IO.Directory.CreateDirectory(Path);
+                string filePath = System.IO.Path.Combine(Path, "Invoice.pdf");
+
+                using (var fileStream = System.IO.File.Create(filePath))
+                {
+                    fileStream.Write(pdfBytes, 0, pdfBytes.Length);
+                }
+                return new JsonResponse() { IsSucess = true, Result = filePath };
+            }
+
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
         }
 
     }

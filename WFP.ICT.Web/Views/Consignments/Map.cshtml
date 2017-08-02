@@ -60,9 +60,8 @@
         lng: -118.024756
     });
 
-    var initMap = function (warehouseAddress, pickupAddress, deliveryAddress) {
+    var initMap = function ( pickupAddress, deliveryAddress) {
         //debugger;
-        warehouseAddress = warehouseAddress.replace(new RegExp("<br />", 'g'), "");
         pickupAddress = pickupAddress.replace(new RegExp("<br />", 'g'), "");
         deliveryAddress = deliveryAddress.replace(new RegExp("<br />", 'g'), "");
         
@@ -105,7 +104,7 @@
         });
 
         GMaps.geocode({
-            address: warehouseAddress,
+            address: pickupAddress,
             callback: function (results, status) {
                 //debugger;
                 if (status === 'OK') {
@@ -115,7 +114,7 @@
                         lat: latlng.lat(),
                         lng: latlng.lng(),
                         infoWindow: {
-                            content: '<p><h2>Warehouse</h2></p><p>' + warehouseAddress + '</p>'
+                            content: '<p><h2>Pickup</h2></p><p>' + pickupAddress + '</p>'
                         }
                     });
                     latlng1 = latlng;

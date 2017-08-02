@@ -9,7 +9,10 @@
         color: red !important;
     }
 </style>
+
+<link href="~/assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css" rel="stylesheet" />
 <!-- BEGIN CONTENT -->
+
 <div class="page-content-wrapper">
     <!-- BEGIN CONTENT BODY -->
     <div class="page-content">
@@ -18,10 +21,10 @@
             <div class="col-md-12 ">
                 <!-- BEGIN SAMPLE FORM PORTLET-->
 
-                @using (Ajax.BeginForm("Save", "Orders", null, new AjaxOptions { HttpMethod = "POST", OnSuccess = "pianoConfigs.initFormComplete(data)" }, new
+                @using (Ajax.BeginForm("Save", "Orders", null, new AjaxOptions { HttpMethod = "POST", OnBegin = "return false" }, new
                 {
-                    @id = "frm"
-
+                    @id = "frm",
+                    @enctype = "multipart/form-data"
                 }))
                 {
                     @Html.HiddenFor(x => x.Id)
@@ -50,7 +53,7 @@
                                             <a href="#tab_15_3" data-toggle="tab"> Charges </a>
                                         </li>
                                         @if (Model.OrderPlacementType == (int)WFP.ICT.Enums.OrderTypeEnum.Dealer
-                                            || Model.OrderPlacementType == (int)WFP.ICT.Enums.OrderTypeEnum.Manufacturer)
+                    || Model.OrderPlacementType == (int)WFP.ICT.Enums.OrderTypeEnum.Manufacturer)
                                         {
                                             <li>
                                                 <a href="#tab_15_4" data-toggle="tab"> Billing/Invoice </a>
@@ -485,6 +488,59 @@
                                                 </div>
 
                                             </div>
+                                            @if (Model.OrderPlacementType == (int)WFP.ICT.Enums.OrderTypeEnum.Dealer
+                                                || Model.OrderPlacementType == (int)WFP.ICT.Enums.OrderTypeEnum.Manufacturer)
+                                            {
+                                                <div class="row">
+                                                    <div class="col-md-12">
+
+                                                        <div class="portlet light bordered">
+                                                            <div class="portlet-title">
+                                                                <div class="caption font-blue-steel">
+                                                                    <i class="icon-settings font-blue-steel"></i>
+                                                                    <span class="caption-subject bold uppercase">Delivery Reciept</span>
+                                                                </div>
+                                                                <div class="actions">
+                                                                    <a class="btn btn-circle btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title=""> </a>
+                                                                </div>
+                                                            </div>
+                                                            <div class="portlet-body form">
+                                                                <div class="form-body">
+                                                                    <!--Pickup Address-->
+                                                                    <div class="row">
+                                                                        <div class="col-md-6">
+                                                                            <div class="fileinput fileinput-new" data-provides="fileinput">
+                                                                                <div class="input-group input-large">
+                                                                                    <div class="form-control uneditable-input input-fixed input-medium" data-trigger="fileinput">
+                                                                                        <i class="fa fa-file fileinput-exists"></i>&nbsp;
+                                                                                        <span class="fileinput-filename"></span>
+                                                                                    </div>
+                                                                                    <span class="input-group-addon btn default btn-file">
+                                                                                        <span class="fileinput-new"> Select file </span>
+                                                                                        <span class="fileinput-exists"> Change </span>
+                                                                                        <input type="hidden" value="" name="...">
+                                                                                        <input id="linkFile" type="file" value="@Model.DeliverForm" name="">
+                                                                                    </span>
+                                                                                    <a href="javascript:;" class="input-group-addon btn red fileinput-exists" data-dismiss="fileinput"> Remove </a>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        @if (Model.DeliverForm != null)
+                                                                        {
+                                                                            <div class="col-md-3">
+                                                                                <a href="~/Orders/Download/@Model.DeliverForm" class="btn btn-default">Download</a>
+                                                                            </div>
+                                                                        }
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            }
+
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="col-md-6">
@@ -506,7 +562,11 @@
                                         <div class="tab-pane" id="tab_15_2">
                                             <div class="row">
                                                 <div class="col-md-2 pull-right">
-                                                    <input id="addPiano" class="btn-default btn  pull-right" value="Add Piano">
+                                                    <div class="col-md-12">
+                                                        <a id="addPiano" class="btn btn-circle btn-icon-only green pull-right" data-tooltip="Add more piano" title="Add more piano" href="javascript:;">
+                                                            <i class="icon-plus"></i>
+                                                        </a>
+                                                    </div>
                                                 </div>
                                             </div>
 
@@ -534,7 +594,9 @@
 
                                                             <div class="row">
                                                                 <div class="col-md-2 pull-right">
-                                                                    <input id="addServices" class="btn-default btn pull-right" value="Add Service">
+                                                                    <a id="addServices" class="btn btn-circle btn-icon-only green pull-right" data-tooltip="Add more Service" title="Add more service" href="javascript:;">
+                                                                        <i class="icon-plus"></i>
+                                                                    </a>
                                                                 </div>
 
                                                             </div>
@@ -608,7 +670,7 @@
 
                                         </div>
                                         @if (Model.OrderPlacementType == (int)WFP.ICT.Enums.OrderTypeEnum.Dealer
-                                           || Model.OrderPlacementType == (int)WFP.ICT.Enums.OrderTypeEnum.Manufacturer)
+                   || Model.OrderPlacementType == (int)WFP.ICT.Enums.OrderTypeEnum.Manufacturer)
                                         {
                                             <div class="tab-pane" id="tab_15_4">
                                                 <div class="row" style="margin-top: 5px">
@@ -633,13 +695,13 @@
                                                                                     @Html.DropDownListFor(model => model.Dealer, TempData["Customers"] as SelectList, null, htmlAttributes: new { @class = "form-control", onchange = "pianoConfigs.initPopulateDealerCustomer(this)" })
                                                                                     @Html.ValidationMessageFor(model => model.Dealer, null, new { @class = "help-block help-block-error" })
                                                                                     <label>Dealer<span class="required">*</span></label>
-                                                                                     <span class="help-block">Select Dealer here</span>
+                                                                                    <span class="help-block">Select Dealer here</span>
                                                                                 </div>
                                                                             </div>
                                                                             <div class="col-md-3">
                                                                                 <div class="form-group form-md-line-input has-success">
                                                                                     <div class="input-icon">
-                                                                                        @Html.TextBox("CustomerName", null, new { @class = "form-control customerName", @readonly = "readonly" } )
+                                                                                        @Html.TextBox("CustomerName", null, new { @class = "form-control customerName", @readonly = "readonly" })
                                                                                         <label for="form_control_1">Name</label>
                                                                                         <i class="fa fa-user"></i>
                                                                                     </div>
@@ -648,7 +710,7 @@
                                                                             <div class="col-md-3">
                                                                                 <div class="form-group form-md-line-input has-success">
                                                                                     <div class="input-icon">
-                                                                                        @Html.TextBox("CustomerContact", null, new { @class = "form-control customerContact", @readonly = "readonly" } )
+                                                                                        @Html.TextBox("CustomerContact", null, new { @class = "form-control customerContact", @readonly = "readonly" })
                                                                                         <label>Contact </label>
                                                                                         <i class="fa fa-user"></i>
                                                                                     </div>
@@ -657,7 +719,7 @@
                                                                             <div class="col-md-3">
                                                                                 <div class="form-group form-md-line-input has-success">
                                                                                     <div class="input-icon">
-                                                                                        @Html.TextBox("CustomerAddress", null, new { @class = "form-control customerAddress", @readonly = "readonly" } )
+                                                                                        @Html.TextBox("CustomerAddress", null, new { @class = "form-control customerAddress", @readonly = "readonly" })
                                                                                         <label>Address </label>
                                                                                         <i class="fa fa-user"></i>
                                                                                     </div>
@@ -690,7 +752,7 @@
                                                                             <div class="col-md-3">
                                                                                 <div class="form-group form-md-line-input has-success">
                                                                                     <div class="input-icon">
-                                                                                        @Html.TextBox("CustomerName", null, new {  @class = "form-control customerName", @readonly = "readonly"  })
+                                                                                        @Html.TextBox("CustomerName", null, new { @class = "form-control customerName", @readonly = "readonly" })
                                                                                         <label>Name </label>
                                                                                         <i class="fa fa-user"></i>
                                                                                     </div>
@@ -708,7 +770,7 @@
                                                                             <div class="col-md-3">
                                                                                 <div class="form-group form-md-line-input has-success">
                                                                                     <div class="input-icon">
-                                                                                        @Html.TextBox("CustomerAddress", null, new { @class = "form-control customerAddress", @readonly = "readonly" } )
+                                                                                        @Html.TextBox("CustomerAddress", null, new { @class = "form-control customerAddress", @readonly = "readonly" })
                                                                                         <label>Address </label>
                                                                                         <i class="fa fa-user"></i>
                                                                                     </div>
@@ -721,7 +783,7 @@
                                                                                     @Html.EditorFor(model => model.SalesOrderNumber, new { htmlAttributes = new { @class = "form-control" } })
                                                                                     <label>Sales Order Number<span class="required">*</span></label>
                                                                                     @Html.ValidationMessageFor(model => model.SalesOrderNumber, null, new { @class = "help-block help-block-error" })
-                                                                                      <span class="help-block">Enter Sales Order Number</span>
+                                                                                    <span class="help-block">Enter Sales Order Number</span>
 
                                                                                     <i class="fa fa-dollar"></i>
                                                                                 </div>
@@ -788,7 +850,7 @@
     <!-- END CONTENT BODY -->
 </div>
 <!-- END CONTENT -->
-
+<script src="~/assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js"></script>
 <script type="text/javascript">
 
     var pianoConfigs = function () {
@@ -895,7 +957,7 @@
             var parent = $(elem).parent().parent().parent();
 
             $.post("/Orders/PopulateServiceCharges", { pianoServiceCode: elem.value }, function (data) {
-                
+
                 if (data.key) {
                     parent.find('.serviceCharges').val(data.charges);
                 }
@@ -906,13 +968,13 @@
             var parent = $(elem).parent().parent().parent();
 
             $.post("/Orders/PopulateCustomer", { customerId: elem.value }, function (data) {
-                
+
                 if (data.key) {
 
                     parent.find('.customerName').val(data.client.name);
                     parent.find('.customerContact').val(data.client.contact);
                     parent.find('.customerAddress').val(data.client.address);
-                    
+
                 }
             });
         };
@@ -924,7 +986,31 @@
             $('.ignore :input').addClass('ignore');
 
             if ($("#frm").valid()) {
-                return true;
+                var formData = new FormData($("#frm").get(0))
+                var fileUpload = $("#linkFile").get(0).files;
+
+                if (fileUpload.length > 0) {
+                    formData.append(fileUpload[0].name, fileUpload[0]);
+                }
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/Orders/Save',
+                    global: false,
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    beforeSend: function () {
+
+                    },
+                    success: function (data) {
+                        pianoConfigs.initFormComplete(data);
+                    },
+                    complete: function () {
+
+                    },
+                });
+
             }
             else {
 
@@ -934,10 +1020,11 @@
                 });
                 return false;
             }
-     
+
         };
 
         handleFormComplete = function (data) {
+            debugger
             if (data.key) {
                 $("#frm").get(0).reset();
                 window.location.href = '@Url.Action("Index","Orders")';
@@ -1032,10 +1119,10 @@
             initPopulateDealerCustomer: function (elem) {
                 handlePopulateDealerCustomer(elem);
             },
-            initShowSizeList : function(elem){
+            initShowSizeList: function (elem) {
                 handleShowSizeList(elem);
             }
-    
+
         }
     }();
 
@@ -1045,7 +1132,7 @@
         format: 'M/DD/YYYY hh:mm A'
     });
 
-   
+
     $(document).ready(function () {
         $.validator.unobtrusive.parse('form');
         var form = $('#frm').get(0);

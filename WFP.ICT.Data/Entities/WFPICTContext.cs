@@ -73,10 +73,11 @@ namespace WFP.ICT.Data.Entities
         public DbSet<PianoMake> PianoMake { get; set; }
 
         public DbSet<PianoSize> PianoSize { get; set; }
+        public DbSet<PianoFinish> PianoFinish{ get; set; }
 
         // Accounting
-        public DbSet<CustomerInvoice> CustomerInvoices { get; set; }
-        public DbSet<CustomerPayment> CustomerPayments { get; set; }
+        public DbSet<ClientInvoice> CustomerInvoices { get; set; }
+        public DbSet<ClientPayment> CustomerPayments { get; set; }
 
         public static WFPICTContext Create()
         {

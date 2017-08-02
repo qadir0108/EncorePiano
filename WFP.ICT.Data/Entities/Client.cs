@@ -19,21 +19,24 @@ namespace WFP.ICT.Data.Entities
         public string Comment { get; set; }
 
         public Guid? CustomerInvoiceId { get; set; }
-        public virtual ICollection<CustomerInvoice> Invoice { get; set; }
+        public virtual ICollection<ClientInvoice> Invoice { get; set; }
 
         public Guid? CustomerPaymentId { get; set; }
-        public virtual ICollection<CustomerPayment> Payment { get; set; }
+        public virtual ICollection<ClientPayment> Payment { get; set; }
 
         public int CustomerType { get; set; }
 
         public virtual Address Addresses { get; set; }
         public virtual ICollection<PianoOrder> Orders { get; set; }
 
+        public virtual ICollection<ClientStore> ClientStore{ get; set; }
+
         public Client()
         {
-            Payment = new HashSet<CustomerPayment>();
-            Invoice = new HashSet<CustomerInvoice>();
+            Payment = new HashSet<ClientPayment>();
+            Invoice = new HashSet<ClientInvoice>();
             Orders = new HashSet<PianoOrder>();
+            ClientStore = new HashSet<ClientStore>();
         }
     }
 }

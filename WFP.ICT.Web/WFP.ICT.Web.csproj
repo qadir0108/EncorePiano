@@ -56,6 +56,10 @@
       <HintPath>..\packages\datatables.mvc5.0.1.0\lib\net45\DataTables.Mvc.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="DocumentFormat.OpenXml, Version=2.7.2.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
+      <HintPath>..\packages\DocumentFormat.OpenXml.2.7.2\lib\net46\DocumentFormat.OpenXml.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Hangfire.Core, Version=1.6.12.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Hangfire.Core.1.6.12\lib\net45\Hangfire.Core.dll</HintPath>
       <Private>True</Private>
@@ -158,6 +162,10 @@
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="NReco.PdfGenerator, Version=1.1.15.0, Culture=neutral, PublicKeyToken=231663d50a41b451, processorArchitecture=MSIL">
+      <HintPath>..\packages\NReco.PdfGenerator.1.1.15\lib\net20\NReco.PdfGenerator.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
       <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
       <Private>True</Private>
@@ -180,6 +188,14 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.IdentityModel.Tokens.Jwt, Version=5.1.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\System.IdentityModel.Tokens.Jwt.5.1.2\lib\net451\System.IdentityModel.Tokens.Jwt.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.IO.FileSystem.Primitives, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.FileSystem.Primitives.4.0.1\lib\net46\System.IO.FileSystem.Primitives.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.IO.Packaging, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Packaging.4.0.0\lib\net46\System.IO.Packaging.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Linq.Dynamic, Version=1.0.6132.35681, Culture=neutral, processorArchitecture=MSIL">
@@ -345,6 +361,7 @@
     <Compile Include="Async\SMSHelper.cs" />
     <Compile Include="Async\ZingCoder.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AccountingController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\BaseControllerLists.cs" />
     <Compile Include="Controllers\CompanyController.cs" />
@@ -385,6 +402,7 @@
     <Compile Include="Helpers\FileUploader.cs" />
     <Compile Include="Helpers\GeneratorHelper.cs" />
     <Compile Include="Helpers\HangfireAuthorizationFilter.cs" />
+    <Compile Include="Helpers\InvoiceHtmlHelper.cs" />
     <Compile Include="Helpers\IsSelected.cs" />
     <Compile Include="Helpers\KeyGenerator.cs" />
     <Compile Include="Helpers\ListExtensions.cs" />
@@ -395,6 +413,8 @@
     <Compile Include="Helpers\ExceptionHelper.cs" />
     <Compile Include="Helpers\FileHelper.cs" />
     <Compile Include="Helpers\GatePassGenerator.cs" />
+    <Compile Include="Models\BatchLoadVm.cs" />
+    <Compile Include="Models\InvoiceViewModel.cs" />
     <Compile Include="ViewModels\PersonEditViewModel.cs" />
     <Compile Include="ViewModels\AddressEditorViewModel.cs" />
     <Compile Include="ViewModels\WarehouseVm.cs" />
@@ -6408,6 +6428,8 @@
     <Content Include="Views\Shared\Editors\_Services.cshtml" />
     <Content Include="Views\Orders\Dealer.cshtml" />
     <Content Include="Views\Inventory\Index.cshtml" />
+    <Content Include="Views\Inventory\Batch.cshtml" />
+    <Content Include="Views\Accounting\Invoice.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

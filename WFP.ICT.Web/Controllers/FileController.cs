@@ -18,29 +18,26 @@ namespace WFP.ICT.Web.Controllers
         {
             try
             {
-                string amazonFileKey = "";
+                string FileName = "";
                 foreach (string selectedFile in Request.Files)
                 {
                     var fileContent = Request.Files[selectedFile];
                     if (fileContent != null && fileContent.ContentLength > 0)
                     {
+                        FileName = string.Format("{0:yyyyMMdd_HHmmss}_{1}", DateTime.Now, fileContent.FileName);
                         var stream = fileContent.InputStream;
-                        string filePath = Path.Combine(UploadPath, fileContent.FileName);
+                        string filePath = Path.Combine(UploadPath, FileName);
                         using (var fileStream = System.IO.File.Create(filePath))
                         {
                             stream.CopyTo(fileStream);
                         }
 
-                        amazonFileKey = string.Format("{0:yyyyMMdd_HHmmss}_{1}", DateTime.Now, fileContent.FileName);
+                      
 
-                        // Delete local
-                        //string fullPath = Path.Combine(UploadPath, fileContent.FileName);
-                        //if (System.IO.File.Exists(fullPath))
-                        //    System.IO.File.Delete(fullPath);
                     }
                 }
 
-                return Json(new JsonResponse() { IsSucess = true, Result = amazonFileKey });
+                return Json(new JsonResponse() { IsSucess = true, Result = FileName });
             }
             catch (Exception ex)
             {
@@ -53,10 +50,10 @@ namespace WFP.ICT.Web.Controllers
         public virtual ActionResult DownloadFile(string file)
         {
             string filePath = Path.Combine(UploadPath, Server.UrlEncode(file));
-            //if (!System.IO.File.Exists(filePath))
-            // return null;
+            if (!System.IO.File.Exists(filePath))
+                return null;
 
-            return File(filePath, "text/csv", file);
+            return File(filePath, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", file);
         }
 
         [HttpPost]
@@ -64,10 +61,10 @@ namespace WFP.ICT.Web.Controllers
         {
             try
             {
-                //string fullPath = Path.Combine(UploadPath, Server.UrlEncode(file));
-                //if (!System.IO.File.Exists(fullPath))
-                //    throw new Exception("File does not exists.");
-                //System.IO.File.Delete(fullPath);
+                string fullPath = Path.Combine(UploadPath, Server.UrlEncode(file));
+                if (!System.IO.File.Exists(fullPath))
+                    throw new Exception("File does not exists.");
+                System.IO.File.Delete(fullPath);
 
                 return Json(new JsonResponse() {IsSucess = true});
             }

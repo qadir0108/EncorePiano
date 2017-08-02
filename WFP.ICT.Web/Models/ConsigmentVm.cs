@@ -21,7 +21,7 @@ namespace WFP.ICT.Web.Models
         public Guid? DriverId { get; set; }
         public Guid? Warehouses { get; set; }
         public Guid? Vehicles { get; set; }
-        public Guid? Drivers { get; set; }
+        public List<Guid?> Drivers { get; set; }
         public Guid? Orders { get; set; }
         public string Paths { get; set; }
     }

@@ -28,6 +28,10 @@ namespace WFP.ICT.Data.Entities
         public PianoMake PianoMake { get; set; }
         public Guid? PianoSizeId { get; set; }
         public PianoSize PianoSize { get; set; }
+
+        public Guid? PianoFinishId { get; set; }
+        public PianoFinish PianoFinish { get; set; }
+
         public int WareHouseStatus { get; set; }
         public bool IsLocated { get; set; }
 

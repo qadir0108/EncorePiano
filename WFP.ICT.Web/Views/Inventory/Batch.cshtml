@@ -1,0 +1,454 @@
+﻿
+@{
+    ViewBag.Title = "Batch Layout";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .portlet.box .dataTables_wrapper .dt-buttons{
+        margin-top : -140px;
+    }
+    #piano_batch_grid_paginate {
+        float: right !important;
+    }
+
+    #piano_batch_grid_wrapper {
+        margin-top: 0px !important;
+    }
+
+    #piano_batch_grid {
+        margin: 0px !important;
+    }
+    .padding-top-20px{
+        padding-top:20px;
+    }
+    
+    .dt-button-collection a.buttons-columnVisibility:before,
+    .dt-button-collection a.buttons-columnVisibility.active span:before {
+        display: block;
+        position: absolute;
+        top: 1.3em;
+        left: 0;
+        width: 14px;
+        height: 14px;
+        box-sizing: border-box;
+    }
+
+    .dt-button-collection a.buttons-columnVisibility:before {
+        content: ' ';
+        margin-top: -6px;
+        margin-left: 5px;
+        border: 1px solid black;
+        border-radius: 0px;
+    }
+
+    .dt-button-collection a.buttons-columnVisibility.active span:before {
+        content: '\2714';
+        margin-top: -11px;
+        margin-top: -7px;
+        font-size: 12px;
+        margin-left: 6px;
+        text-align: center;
+        text-shadow: 1px 1px #DDD, -1px -1px #DDD, 1px -1px #DDD, -1px 1px #DDD;
+    }
+
+    .dt-button-collection a.buttons-columnVisibility span {
+        margin-left: 12px;
+    }
+</style>
+<link href="~/assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css" rel="stylesheet" />
+<div class="page-content-wrapper">
+    <div class="page-content">
+
+        <div class="row">
+            <div class="col-md-12">
+                <!-- BEGIN EXAMPLE TABLE PORTLET-->
+                <div class="portlet box blue-hoki">
+                    <div class="portlet-title">
+                        <div class="caption">
+                            <i class="fa fa-globe"></i>Piano Batch Load
+                        </div>
+                        <div class="tools"> </div>
+                    </div>
+                    <div class="portlet-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group form-md-line-input has-success">
+                                    <div class="input-icon">
+                                        @Html.DropDownList("Warehouses", TempData["Warehouses"] as SelectList, null, htmlAttributes: new { @class = "form-control", @id = "WarehouseList", onchange = "warehouseInventory.initLoadGrid()" })
+                                        <label>Warehouse<span class="required">*</span></label>
+                                        <i class="fa fa-home"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-5 padding-top-20px">
+                                <div class="fileinput fileinput-new" data-provides="fileinput">
+                                    <div class="input-group input-large">
+                                        <div class="form-control uneditable-input input-fixed input-medium" data-trigger="fileinput">
+                                            <i class="fa fa-file fileinput-exists"></i>&nbsp;
+                                            <span class="fileinput-filename"></span>
+                                        </div>
+                                        <span class="input-group-addon btn default btn-file">
+                                            <span class="fileinput-new"> Select file </span>
+                                            <span class="fileinput-exists"> Change </span>
+                                            <input type="hidden" value="" name="...">
+                                            <input id="linkFile" type="file" name="">
+                                        </span>
+                                        <a href="javascript:;" class="input-group-addon btn red fileinput-exists" data-dismiss="fileinput"> Remove </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                    
+                            <div class="col-md-6">
+                                <div class="input-group">
+                                    <a id="linkUpload" class="btn blue start">
+                                        <i class="fa fa-upload"></i>
+                                        <span>Upload </span>
+                                    </a>
+                                    <a style="display:none" id="linkDownload" href="#" class="btn btn-default">Download</a>
+                                    <a style="display:none" id="linkDelete" href="#" class="btn btn-default" data-file="">Delete</a>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <button  id="linkPrintFiles" class="btn green">
+                                    <i class="fa fa-print"></i>
+                                    <span>Print Labels </span>
+                                </button>
+                            </div>
+                            <div class="col-md-2">
+                                <a href="" class="btn green">
+                                    <i class="fa fa-check"></i>
+                                    <span>Load </span>
+                                </a>
+                            </div>
+                        </div>
+
+                        <table class="table table-striped table-bordered table-hover dt-responsive" id="piano_batch_grid"></table>
+                    </div>
+                </div>
+                <!-- END EXAMPLE TABLE PORTLET-->
+            </div>
+        </div>
+        <!-- END PAGE BASE CONTENT -->
+    </div>
+    <!-- END CONTENT BODY -->
+</div>
+
+<input hidden id="grid_file_name" />
+<input hidden id="grid_data_values" />
+
+<script src="~/assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js"></script>
+<script>
+
+    $(function () {
+        batchUpload.initBatchGrid();
+        fileUploads.initConfigureUploads();
+
+    });
+    var printData;
+    var batchUpload = function () {
+
+        var grid = new Datatable();
+
+        handleInitBatchGrid = function () {
+            grid.init({
+                src: $("#piano_batch_grid"),
+                onSuccess: function (grid, response) {
+                    debugger
+                    printData = response.data;
+                 
+                },
+                dataTable: {
+                    "serverSide": true,
+                    "processing": true,
+                    "ajax": {
+                        "url":
+                        "/Inventory/InitializeBatchLoadGrid",
+                        data: function(data) {
+                            data.FileName = $('#grid_file_name').val();
+                        }
+                    },
+                    "columns": [
+
+                      
+
+                     { "title": "Type", "data": "Type" },
+
+                     { "title": "Size", "data": "Size" },
+
+                     { "title": "Make", "data": "Make" },
+
+                     { "title": "Model", "data": "Model" },
+
+                     { "title": "Serial Number", "data": "SerialNumber" },
+
+                     { "title": "W/B", "data": "IsBench" },
+
+                     { "title": "Player", "data": "IsPlayer" },
+
+                     { "title": "Boxed", "data": "IsBoxed" },
+
+                     { "title": "Owner Name", "data": "Name" },
+
+                        { "title": "Action", "data": "Action" },
+
+                    ],
+                    "lengthMenu": [
+                                    [5, 10, 15, 20, -1],
+                                    [5, 10, 15, 20, "All"]
+                    ],
+                    "pageLength": 20,
+
+                    buttons: [
+                    {
+                        extend: 'print', exportOptions: {
+                            columns: ':visible'
+                        }, className: 'btn default'
+                    },
+                    {
+                        extend: 'pdf', exportOptions: {
+                            columns: ':visible'
+                        }, className: 'btn default'
+                    },
+                    {
+                        extend: 'csv', exportOptions: {
+                            columns: ':visible'
+                        }, className: 'btn default'
+                    },
+                    { extend: 'colvis', className: 'btn default', text: 'Columns' }
+                    ],
+                    colReorder: true,
+
+                    "dom": "<'row'<'col-md-12'B>><'row'<'col-md-6 col-sm-12'l><'col-md-6 col-sm-12'f>r><'table-scrollable't><'row'<'col-md-5 col-sm-12'i><'col-md-7 col-sm-12'p>>", // horizobtal scrollable datatable
+
+                    "language": {
+                        "aria": {
+                            "sortAscending": ": activate to sort column ascending",
+                            "sortDescending": ": activate to sort column descending"
+                        },
+                        "emptyTable": "No data available in table",
+                        "info": "Showing _START_ to _END_ of _TOTAL_ records",
+                        "infoEmpty": "No records found",
+                        "infoFiltered": "(filtered1 from _MAX_ total records)",
+                        "lengthMenu": "Show _MENU_",
+                        "search": "Search:",
+                        "zeroRecords": "No matching records found",
+                        "paginate": {
+                            "previous": "Prev",
+                            "next": "Next",
+                            "last": "Last",
+                            "first": "First"
+                        }
+                    },
+                    "pagingType": "bootstrap_number",
+                    "columnDefs": [
+                    ],
+                    "order": [[0, 'asc']]
+                },
+
+            });
+        };
+
+        hanleReloadGrid = function () {
+            $("#piano_batch_grid").DataTable().ajax.reload(null, true);
+        };
+
+        return {
+            initBatchGrid: function () {
+                handleInitBatchGrid();
+            },
+
+            initLoadGrid: function () {
+                hanleReloadGrid();
+            }
+        }
+
+    }();
+
+    var fileUploads = function () {
+
+        handleConfigureUploads = function () {
+            var selectedFile;
+            var inputfile = $('#linkFile');
+            var btnUpload = $('#linkUpload');
+            var linkDownload = $('#linkDownload');
+            var linkDelete = $('#linkDelete');
+            var linkPrint = $('#linkPrintFiles');
+            
+
+            inputfile.change(function (e) {
+
+                var isSelected = false;
+                
+                if (e.target.files.length > 0) {
+                    if (((e.target.files[0].type === "application/vnd.ms-excel") ||
+                        (e.target.files[0].type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+                        &&
+                        ((e.target.files[0].name.match(".xlsx$")) ||
+                        (e.target.files[0].name.match(".xls$")))) {
+                        selectedFile = e.target.files[0];
+                        isSelected = true;
+                    }
+                    else {
+                        wfp.showError("Please select valid csv file to upload.");
+                        isSelected = false;
+                    }
+                }
+                else {
+                    selectedFile = null;
+                }
+
+                return isSelected;
+            });
+
+            btnUpload.click(function (e) {
+
+                btnUpload.prop('disabled', true);
+
+                e.preventDefault();
+
+                if (selectedFile) {
+
+                    if (window.FormData !== undefined) {
+                        var formData = new FormData();
+
+                        formData.append('selectedFile', selectedFile);
+
+                        $.ajax({
+                            type: "POST",
+                            url: '/File/UploadFile',
+                            contentType: false,
+                            processData: false,
+                            data: formData,
+                            success: function (result) {
+                                if (result.IsSucess === true) {
+                                    wfp.showSuccess('Uploaded Successfully.');
+                                    btnUpload.prop('disabled', false);
+                                    linkDownload.attr('href', '/File/DownloadFile?file=' + result.Result);
+                                    linkDelete.data('file', result.Result);
+                                    linkDownload.show();
+                                    linkDelete.show();
+                                    $('#grid_file_name').val(result.Result);
+                                   
+                                    batchUpload.initLoadGrid();
+                                }
+                                else {
+                                    wfp.showError(result.ErrorMessage);
+                                }
+                            },
+                            error: function (xhr, status, p3, p4) {
+                            
+                                var err = "Error " + " " + status + " " + p3 + " " + p4;
+                                if (xhr.responseText && xhr.responseText[0] === "{")
+                                    err = JSON.parse(xhr.responseText).Message;
+                                console.log(err);
+                                wfp.showError('There is erorr in service call.');
+                            },
+                            failure: function (response) {
+                               
+                                wfp.showError('There is erorr in service call.');
+                            },
+                            complete: function () {
+                            }
+                        });
+                    } else {
+                        wfp.showError("This browser doesn't support HTML5 file uploads!");
+                        btnUpload.prop('disabled', false);
+
+                    }
+                }
+                else {
+                    wfp.showError("Please select file to upload.");
+                    btnUpload.prop('disabled', false);
+
+                }
+
+            });
+
+            linkDelete.click(function (e) {
+
+                linkDelete.prop('disabled', true);
+
+                e.preventDefault();
+
+                var dataToPost = {
+                    file: linkDelete.data('file')
+                };
+
+                $.ajax({
+                    type: "POST",
+                    data: JSON.stringify(dataToPost),
+                    contentType: "application/json; charset=utf-8",
+                    url: '/File/DeleteFile',
+                    success: function (result) {
+                        if (result.IsSucess === true) {
+                            wfp.showSuccess('File has been deleted Successfully.');
+                            linkDelete.prop('disabled', false);
+                            linkDownload.hide();
+                            linkDelete.hide();
+                            $('#grid_file_name').val('');
+                            batchUpload.initLoadGrid();
+                        }
+                        else {
+                            wfp.showError(result.ErrorMessage);
+                        }
+                    },
+                    error: function (xhr, status, p3, p4) {
+                         var err = "Error " + " " + status + " " + p3 + " " + p4;
+                        if (xhr.responseText && xhr.responseText[0] === "{")
+                            err = JSON.parse(xhr.responseText).Message;
+                        console.log(err);
+                        wfp.showError('There is erorr in service call.');
+                    },
+                    failure: function (response) {
+
+                        wfp.showError('There is erorr in service call.');
+                    },
+                    complete: function () {
+                    }
+                });
+
+            });
+
+            linkPrint.click(function (e) {
+                linkDelete.prop('disabled', true);
+                debugger
+                e.preventDefault();
+
+                var dataToPost = printData;
+             
+                $.ajax({
+                    type: "POST",
+                    data: JSON.stringify(printData),
+                    contentType: "application/json; charset=utf-8",
+                    url: '/Inventory/PrintLabels',
+                    success: function (result) {
+
+                        linkDelete.prop('disabled', false);
+                    },
+                    error: function (xhr, status, p3, p4) {
+                        var err = "Error " + " " + status + " " + p3 + " " + p4;
+                        if (xhr.responseText && xhr.responseText[0] === "{")
+                            err = JSON.parse(xhr.responseText).Message;
+                        console.log(err);
+                        wfp.showError('There is erorr in service call.');
+                    },
+                    failure: function (response) {
+
+                        wfp.showError('There is erorr in service call.');
+                    },
+                    complete: function () {
+                    }
+                });
+            });
+        };
+
+        return {
+            initConfigureUploads: function () {
+                handleConfigureUploads();
+            }
+        }
+
+    }();
+</script>

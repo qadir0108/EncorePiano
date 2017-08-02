@@ -15,8 +15,7 @@ namespace WFP.ICT.Data.Entities
         public Guid? VehicleId { get; set; }
         public virtual Vehicle Vehicle { get; set; }
 
-        public Guid? DriverId { get; set; }
-        public virtual Driver Driver { get; set; }
+        public virtual ICollection<Driver> Drivers { get; set; }
 
         public Guid? PianoOrderId { get; set; }
         public virtual PianoOrder PianoOrder { get; set; }
@@ -37,6 +36,7 @@ namespace WFP.ICT.Data.Entities
         public PianoAssignment()
         {
             Route = new HashSet<PianoAssignmentRoute>();
+            Drivers = new HashSet<Driver>();
         }
     }
 }

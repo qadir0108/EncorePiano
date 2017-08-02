@@ -27,6 +27,9 @@ namespace WFP.ICT.Web.Models
         [Required(ErrorMessage = "Piano make is required")]
         public string PianoMake { get; set; }
 
+        [Required(ErrorMessage = "Piano finish is required")]
+        public string PianoFinish { get; set; }
+
         public string SerialNumber { get; set; }
 
         public string WarehouseSerialNumber { get; set; }

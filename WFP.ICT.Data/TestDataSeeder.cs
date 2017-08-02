@@ -35,6 +35,26 @@ namespace WFP.ICT.Data
             }
             context.SaveChanges();
 
+            // Piano Finish
+            foreach (var finish in EnumHelper.GetEnumTextValues(typeof(PianoFinishEnum)))
+            {
+
+                var already = context.PianoFinish.FirstOrDefault(m => m.Code == finish.Value);
+                if (already == null)
+                {
+
+                    context.PianoFinish.Add(new PianoFinish()
+                    {
+                        Id = Guid.NewGuid(),
+                        Code = finish.Value,
+                        Name = finish.Text,
+                        CreatedAt = DateTime.Now,
+                    });
+                }
+            }
+            context.SaveChanges();
+
+
             //PianoSizes
             context.PianoSize.Add(new PianoSize()
             {

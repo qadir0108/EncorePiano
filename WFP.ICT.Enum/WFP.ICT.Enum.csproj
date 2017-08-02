@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ChargesTypeEnum.cs" />
+    <Compile Include="PianoFinishEnum.cs" />
     <Compile Include="PianoMakeEnum.cs" />
     <Compile Include="PianoTypeEnum.cs" />
     <Compile Include="ShuttleEnum.cs" />

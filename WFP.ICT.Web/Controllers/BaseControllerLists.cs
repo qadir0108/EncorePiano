@@ -224,6 +224,30 @@ namespace WFP.ICT.Web.Controllers
             }
         }
 
+        private static List<SelectListItem> _pianoFinish;
+        public IEnumerable<SelectListItem> PianoFinishList
+        {
+            get
+            {
+                if (_pianoFinish == null)
+                {
+                    _pianoFinish = db.PianoFinish
+                        .OrderBy(x => x.CreatedAt).Select(
+                             x => new SelectListItem()
+                             {
+                                 Text = x.Name,
+                                 Value = x.Id.ToString()
+                             }).ToList();
+                    _pianoFinish.Insert(0, new SelectListItem()
+                    {
+                        Text = "Select Finish",
+                        Value = string.Empty
+                    });
+                }
+                return _pianoFinish;
+            }
+        }
+
         private static List<SelectListItem> _pianoCategoryType;
         public IEnumerable<SelectListItem> PianoCategoryTypesList
         {

@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Data.Entity;
 using System.Web.Mvc;
-using Hangfire;
-using Nelibur.ObjectMapper;
 using WFP.ICT.Data.Entities;
 using WFP.ICT.Web.Models;
 using WFP.ICT.Enum;
 using WFP.ICT.Enums;
-using WFP.ICT.Web.Async;
 using WFP.ICT.Common;
+using System.Web;
+using System.IO;
 
 namespace WFP.ICT.Web.Controllers
 {
@@ -122,7 +121,7 @@ namespace WFP.ICT.Web.Controllers
                 ThirdParty = order.InvoiceBillingPartyId.ToString(),
                 Dealer = order.InvoiceClientId.ToString(),
 
-
+                DeliverForm = order.DeliveryForm,
 
                 PickupAddress = pickupAddress,
                 DeliveryAddress = deliveryAddress,
@@ -144,6 +143,7 @@ namespace WFP.ICT.Web.Controllers
                 pianoVm.PianoTypeId = piano.PianoTypeId.ToString();
                 pianoVm.PianoCategoryType = piano.PianoCategoryType.ToString();
                 pianoVm.Notes = piano.Notes;
+                pianoVm.PianoFinish = piano.PianoFinishId.ToString();
                 pianoVm.PianoSize = piano.PianoSizeId.ToString();
                 // pianoVm.PianoCategoryType = piano.PianoType.ToString();
 
@@ -164,14 +164,10 @@ namespace WFP.ICT.Web.Controllers
             return View("Private", orderVm);
         }
 
-
         [HttpPost]
         public ActionResult Save(OrderVm orderVm)
         {
-            IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
-            var errors = ModelState.Select(x => x.Value.Errors)
-                                     .Where(y => y.Count > 0)
-                                     .ToList();
+
             try
             {
                 if (orderVm.Id != null)
@@ -203,7 +199,7 @@ namespace WFP.ICT.Web.Controllers
                     AlternateContact = orderVm.PickupAddress.AlternateContact,
                     AlternatePhone = orderVm.PickupAddress.AlternatePhone,
                     WarehouseId = Guid.Parse(orderVm.PickupAddress.Warehouse),
-                    
+
 
                 };
                 db.Addresses.Add(pickupAddress);
@@ -224,7 +220,7 @@ namespace WFP.ICT.Web.Controllers
                     PhoneNumber = orderVm.DeliveryAddress.PhoneNumber,
                     AlternateContact = orderVm.DeliveryAddress.AlternateContact,
                     AlternatePhone = orderVm.DeliveryAddress.AlternatePhone,
-                    WarehouseId =  Guid.Parse(orderVm.DeliveryAddress.Warehouse),
+                    WarehouseId = Guid.Parse(orderVm.DeliveryAddress.Warehouse),
                 };
                 db.Addresses.Add(deliveryAddress);
                 db.SaveChanges();
@@ -302,6 +298,12 @@ namespace WFP.ICT.Web.Controllers
 
                     });
                     db.SaveChanges();
+                }
+
+                foreach (string selectedFile in Request.Files)
+                {
+                    HttpPostedFileBase fileContent = Request.Files[selectedFile];
+                    UploadFile(fileContent, order.OrderNumber);
                 }
 
                 // var orderVmSaved = OrderVm.FromOrder(order, PianoTypesList);
@@ -427,6 +429,12 @@ namespace WFP.ICT.Web.Controllers
 
                     });
                     db.SaveChanges();
+
+                    foreach (string selectedFile in Request.Files)
+                    {
+                        HttpPostedFileBase fileContent = Request.Files[selectedFile];
+                        UploadFile(fileContent, order.OrderNumber);
+                    }
                 }
                 return Json(new { key = true }, JsonRequestBehavior.AllowGet);
             }
@@ -436,7 +444,6 @@ namespace WFP.ICT.Web.Controllers
             }
 
         }
-
         public void PopulateViewData()
         {
             TempData["Customers"] = new SelectList(CustomersList, "Value", "Text");
@@ -455,6 +462,8 @@ namespace WFP.ICT.Web.Controllers
 
             TempData["PianoType"] = new SelectList(PianoTypesList, "Value", "Text");
 
+            TempData["PianoFinish"] = new SelectList(PianoFinishList, "Value", "Text");
+
         }
         private void InsertPiano(PianoVm vm, Guid orderId)
         {
@@ -468,14 +477,17 @@ namespace WFP.ICT.Web.Controllers
             //TypeID from table
             obj.PianoTypeId = string.IsNullOrEmpty(vm.PianoTypeId) ? (Guid?)null : Guid.Parse(vm.PianoTypeId);
 
+            obj.PianoFinishId = vm.PianoFinish == null ? (Guid?)null : Guid.Parse(vm.PianoFinish);
+
             obj.Model = vm.PianoModel;
+
             obj.PianoCategoryType = int.Parse(vm.PianoCategoryType);
 
             //make entity guid
-            obj.PianoMakeId = vm.PianoMake == null ? (Guid?)null : Guid.Parse(vm.PianoMake); 
+            obj.PianoMakeId = vm.PianoMake == null ? (Guid?)null : Guid.Parse(vm.PianoMake);
             //size guid
 
-           obj.PianoSizeId = vm.PianoSize == null ? (Guid?)null : Guid.Parse(vm.PianoSize);
+            obj.PianoSizeId = vm.PianoSize == null ? (Guid?)null : Guid.Parse(vm.PianoSize);
             obj.Notes = vm.Notes;
             //Need add piano category
             obj.SerialNumber = vm.SerialNumber;
@@ -485,10 +497,10 @@ namespace WFP.ICT.Web.Controllers
 
             db.Pianos.Add(obj);
         }
-
         public ActionResult NewPiano()
         {
             TempData["PianoMake"] = new SelectList(PianoMakeList, "Value", "Text");
+            TempData["PianoFinish"] = new SelectList(PianoFinishList, "Value", "Text");
             TempData["PianoType"] = new SelectList(PianoTypesList, "Value", "Text");
             TempData["PianoCategoryType"] = new SelectList(PianoCategoryTypesList, "Value", "Text");
             return PartialView("~/Views/Shared/Editors/_Piano.cshtml", new PianoVm());
@@ -620,7 +632,8 @@ namespace WFP.ICT.Web.Controllers
             {
                 Guid id = Guid.Parse(pianoMake);
                 var list = db.PianoSize.Where(x => x.PianoTypeId == id).ToList().
-                            Select(x => new {
+                            Select(x => new
+                            {
                                 id = x.Id,
                                 width = PianoSizeConversion.GetFeetInches(x.Width),
                             });
@@ -637,6 +650,47 @@ namespace WFP.ICT.Web.Controllers
             }
         }
 
+        public ActionResult UploadFile(HttpPostedFileBase fileContent, string OrderNumber)
+        {
+            try
+            {
+                string FileName = "";
+                string Path = Server.MapPath("~/Uploads/Forms");
+                if (!System.IO.Directory.Exists(Path)) System.IO.Directory.CreateDirectory(Path);
+
+                if (fileContent != null && fileContent.ContentLength > 0)
+                {
+                    FileName = string.Format("{0:yyyyMMdd_HHmmss}_{1}_{2}", DateTime.Now, fileContent.FileName, OrderNumber);
+                    var stream = fileContent.InputStream;
+                    string filePath = System.IO.Path.Combine(Path, FileName);
+                    using (var fileStream = System.IO.File.Create(filePath))
+                    {
+                        stream.CopyTo(fileStream);
+                    }
+                }
+
+                var order =  db.PianoOrders.Where(x => x.OrderNumber == OrderNumber).FirstOrDefault();
+                order.DeliveryForm = FileName;
+                db.SaveChanges();
+
+                return Json(new JsonResponse() { IsSucess = true, Result = FileName });
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public ActionResult Download(string fileName)
+        {
+            string PathDl = Server.MapPath("~/Uploads/Forms");
+            string filePath = Path.Combine(PathDl, Server.UrlEncode(fileName));
+            if (!System.IO.File.Exists(filePath))
+                return null;
+
+            return File(filePath, "application", fileName);
+        
+       }
 
         public OrderVm FromOrder(PianoOrder order, IEnumerable<SelectListItem> PianoTypesList)
         {
@@ -673,7 +727,7 @@ namespace WFP.ICT.Web.Controllers
                 Dealer = order.InvoiceClientId.ToString(),
                 ThirdParty = order.InvoiceBillingPartyId.ToString(),
 
-        };
+            };
 
             orderVM.Pianos = order.Pianos.OrderByDescending(x => x.CreatedAt).Select(
                 x => new PianoVm()
@@ -693,24 +747,24 @@ namespace WFP.ICT.Web.Controllers
 
             orderVM.Pianos.ForEach(x =>
             {
-                if(x.PianoMake != string.Empty)
+                if (x.PianoMake != string.Empty)
                 {
                     x.PianoMake = db.PianoMake.Where(y => y.Id.ToString() == x.PianoMake).FirstOrDefault().Name;
                 }
-              
-                if(x.PianoSize != string.Empty)
+
+                if (x.PianoSize != string.Empty)
                 {
                     x.PianoSize = db.PianoSize.Where(y => y.Id.ToString() == x.PianoSize).FirstOrDefault().Width.ToString();
                 }
-           
+
             });
 
             orderVM.Charges = order.OrderCharges.OrderBy(x => x.Id).Select(
                x => new PianoChargesVm()
                {
                    Id = x.Id.ToString(),
-                   ChargesTypeId  = x.PianoChargesId.ToString(),
-                   Amount= x.Amount.ToString()
+                   ChargesTypeId = x.PianoChargesId.ToString(),
+                   Amount = x.Amount.ToString()
                }).ToList();
 
             orderVM.Charges.ForEach(x =>
@@ -721,12 +775,12 @@ namespace WFP.ICT.Web.Controllers
                 x.ChargesType = ((ChargesTypeEnum)obj.ChargesType).ToString();
 
             });
-           
-           
+
+
             return orderVM;
         }
 
-      
-    
+
+
     }
 }
