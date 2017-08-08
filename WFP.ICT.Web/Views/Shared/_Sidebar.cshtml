@@ -72,14 +72,14 @@
                 </li>
             }
           
-            <li class="nav-item start @Html.IsSelected(actions: "New,Index,Completed", controllers: "Orders,Quotes,OrdersStatus")">
+            <li class="nav-item start @Html.IsSelected(actions: "Index,Private,Dealer,Manufacturer", controllers: "Orders,OrdersStatus")">
                     <a href="javascript:;" class="nav-link nav-toggle">
                         <i class="icon-screen-desktop"></i>
                         <span class="title">Orders</span>
                         <span class="arrow"></span>
                     </a>
                 <ul class="sub-menu">
-                    <li class="nav-item start @Html.IsSelected(actions: "New", controllers: "Orders")">
+                    <li class="nav-item start @Html.IsSelected(actions: "Private", controllers: "Orders")">
                         <a href="/Orders/Private" class="nav-link ">
                             <i class="icon-screen-desktop"></i>
                             <span class="title">
@@ -103,14 +103,6 @@
                             </span>
                         </a>
                     </li>
-                    <li class="nav-item start @Html.IsSelected(actions: "New", controllers: "Quotes")">
-                        <a href="/Quotes/New" class="nav-link ">
-                            <i class="icon-screen-desktop"></i>
-                            <span class="title">
-                                New Quote
-                            </span>
-                        </a>
-                    </li>
                     <li class="nav-item start @Html.IsSelected(actions: "Index", controllers: "Orders") ">
                         <a href="/Orders/Index" class="nav-link ">
                             <i class="icon-screen-desktop"></i>
@@ -127,21 +119,13 @@
                                 </span>
                         </a>
                     </li>
-                    <li class="nav-item start @Html.IsSelected(actions: "Completed", controllers: "OrdersStatus") ">
-                        <a href="/OrdersStatus/Completed" class="nav-link ">
-                            <i class="icon-screen-desktop"></i>
-                            <span class="title">
-                                    Orders Completed
-                                </span>
-                        </a>
-                    </li>
                 </ul>
                 </li>
             
             @if (isAdmin)
             {
 
-                <li class="nav-item start @Html.IsSelected(actions: "New,Index,PickTickets,POD", controllers: "Consignments") ">
+                <li class="nav-item start @Html.IsSelected(actions: "New,Index,PickTickets", controllers: "Consignments") ">
                     <a href="javascript:;" class="nav-link nav-toggle">
                         <i class="fa fa-truck"></i>
                         <span class="title">Delivery</span>
@@ -170,34 +154,20 @@
                                 <span class="selected"></span>
                             </a>
                         </li>
-                        <li class="nav-item start @Html.IsSelected(actions: "POD", controllers: "Consignments")">
-                            <a href="/Consignments/POD" class="nav-link ">
-                                <i class="fa fa-truck"></i>
-                                <span class="title">Proof of Delivery</span>
-                                @*<span class="badge badge-success">1</span>*@
-                            </a>
-                        </li>
                     </ul>
                 </li>
 
-                <li class="nav-item start ">
+                <li class="nav-item start @Html.IsSelected(actions: "Index,Batch,Warehouse", controllers: "Inventory") ">
                     <a href="javascript:;" class="nav-link nav-toggle">
                         <i class="icon-drawer"></i>
                         <span class="title">Inventory</span>
                         <span class="arrow"></span>
                     </a>
                     <ul class="sub-menu">
-                        <li class="nav-item start">
-                            <a href="index.html" class="nav-link ">
+                        <li class="nav-item start @Html.IsSelected(actions: "Index", controllers: "Inventory")">
+                            <a href="/Inventory/Index" class="nav-link ">
                                 <i class="fa fa-bars"></i>
                                 <span class="title">Inventory</span>
-                                <span class="selected"></span>
-                            </a>
-                        </li>
-                        <li class="nav-item start @Html.IsSelected(actions: "Index", controllers: "Inventory")" >
-                            <a href="/Inventory/Index" class="nav-link ">
-                                <i class="fa fa-university"></i>
-                                <span class="title">Warehouse</span>
                                 <span class="selected"></span>
                             </a>
                         </li>
@@ -208,23 +178,23 @@
                                 <span class="selected"></span>
                             </a>
                         </li>
+                        <li class="nav-item start @Html.IsSelected(actions: "Warehouse", controllers: "Inventory")">
+                            <a href="/Inventory/Warehouse" class="nav-link ">
+                                <i class="fa fa-university"></i>
+                                <span class="title">Warehouse</span>
+                                <span class="selected"></span>
+                            </a>
+                        </li>
                     </ul>
                 </li>
 
-                <li class="nav-item start ">
+                <li class="nav-item start @Html.IsSelected(actions: "Index,Invoice,Payments", controllers: "Accounting")">
                     <a href="javascript:;" class="nav-link nav-toggle">
                         <i class="fa fa-dollar"></i>
                         <span class="title">Accounting</span>
                         <span class="arrow"></span>
                     </a>
                     <ul class="sub-menu">
-                        <li class="nav-item start ">
-                            <a href="index.html" class="nav-link ">
-                                <i class="fa fa-dollar"></i>
-                                <span class="title">Accounts</span>
-                                <span class="selected"></span>
-                            </a>
-                        </li>
                         <li class="nav-item start @Html.IsSelected(actions: "Invoice", controllers: "Accounting")">
                             <a href="/Accounting/Invoice" class="nav-link ">
                                 <i class="fa fa-dollar"></i>
@@ -233,7 +203,7 @@
                             </a>
                         </li>
                         <li class="nav-item start ">
-                            <a href="dashboard_2.html" class="nav-link ">
+                            <a href="/Accounting/Payments" class="nav-link ">
                                 <i class="fa fa-dollar"></i>
                                 <span class="title">Payments</span>
                                 @*<span class="badge badge-success">1</span>*@
@@ -242,7 +212,7 @@
                     </ul>
                 </li>
 
-                <li class="nav-item start @Html.IsSelected(actions: "Index", controllers: "Address,AddressType,Customer,PianoType,PianoService,Warehouse,VehicleType,Vehicle,Driver")">
+                <li class="nav-item start @Html.IsSelected(actions: "Index", controllers: "Address,Customer,PianoType,PianoCharges,Warehouse,Vehicle,Driver")">
                     <a href="javascript:;" class="nav-link nav-toggle">
                         <i class="fa fa-university"></i>
                         <span class="title">Company</span>
@@ -254,14 +224,6 @@
                                 <i class="fa fa-globe"></i>
                                 <span class="title">
                                     Addresses
-                                </span>
-                            </a>
-                        </li>
-                        <li class="nav-item start @Html.IsSelected(actions: "Index", controllers: "AddressType") ">
-                            <a href="/AddressType/Index" class="nav-link ">
-                                <i class="fa fa-globe"></i>
-                                <span class="title">
-                                    Address Types
                                 </span>
                             </a>
                         </li>
@@ -281,11 +243,11 @@
                                 </span>
                             </a>
                         </li>
-                        <li class="nav-item start @Html.IsSelected(actions: "Index", controllers: "PianoService") ">
-                            <a href="/PianoService/Index" class="nav-link ">
+                        <li class="nav-item start @Html.IsSelected(actions: "Index", controllers: "PianoCharges") ">
+                            <a href="/PianoCharges/Index" class="nav-link ">
                                 <i class="fa fa-bars"></i>
                                 <span class="title">
-                                    Piano Services
+                                    Piano Charges
                                 </span>
                             </a>
                         </li>
@@ -294,14 +256,6 @@
                                 <i class="fa fa-university"></i>
                                 <span class="title">
                                     Warehouses
-                                </span>
-                            </a>
-                        </li>
-                        <li class="nav-item start @Html.IsSelected(actions: "Index", controllers: "VehicleType") ">
-                            <a href="/VehicleType/Index" class="nav-link ">
-                                <i class="fa fa-truck"></i>
-                                <span class="title">
-                                    Vehicle Types
                                 </span>
                             </a>
                         </li>
