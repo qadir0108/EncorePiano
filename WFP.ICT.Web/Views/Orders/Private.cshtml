@@ -5,9 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <style>
-    .help-block-error {
-        color: red !important;
-    }
+
 </style>
 
 <link href="~/assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css" rel="stylesheet" />
@@ -851,6 +849,9 @@
 </div>
 <!-- END CONTENT -->
 <script src="~/assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js"></script>
+
+<input hidden id="OrderPlacementType" value="@Model.OrderPlacementType "/>
+
 <script type="text/javascript">
 
     var pianoConfigs = function () {
@@ -984,14 +985,25 @@
         handleFormBegin = function (data) {
 
             $('.ignore :input').addClass('ignore');
+            debugger
+            var type = $('#OrderPlacementType').val();
+            type = parseInt(type);
 
             if ($("#frm").valid()) {
-                var formData = new FormData($("#frm").get(0))
-                var fileUpload = $("#linkFile").get(0).files;
+                var formData = new FormData($("#frm").get(0));
+                
+                if (type == 0) {
 
-                if (fileUpload.length > 0) {
-                    formData.append(fileUpload[0].name, fileUpload[0]);
                 }
+                else {
+                   
+                    var fileUpload = $("#linkFile").get(0).files;
+
+                    if (fileUpload.length > 0) {
+                        formData.append(fileUpload[0].name, fileUpload[0]);
+                    }
+                }
+
 
                 $.ajax({
                     type: 'POST',
@@ -1013,9 +1025,54 @@
 
             }
             else {
+              
+                var detailError = $('#tab_15_1').find('.input-validation-error').not(".ignore");
+                var unitsError = $('#tab_15_2').find('.input-validation-error').not(".ignore");
+                var chargesError = $('#tab_15_3').find('.input-validation-error').not(".ignore");
+                var billingError = $('#tab_15_4').find('.input-validation-error').not(".ignore");
+
+                var click = true;
+                var tabs = '';
+
+                if (detailError.length > 0) {
+                    if (click) {
+                        $('body .tabbable-line a[href="#tab_15_1"]').trigger('click');
+                        click = false;
+                    }
+                  
+                    tabs += 'Details,'
+                }
+                if (unitsError.length > 0) {
+                    if (click) {
+                        $('body .tabbable-line a["href=#tab_15_2"]').trigger('click');
+                        click = false;
+                    }
+                   
+                    tabs += 'Units,'
+                }
+                if (chargesError.length > 0) {
+              
+                    if (click) {
+                        $('body .tabbable-line a["href=#tab_15_3"]').trigger('click');
+                        click = false;
+                    }
+                    tabs += 'Charges,'
+                }
+                if (billingError.length > 0) {
+                  
+                    if (click) {
+                        $('body .tabbable-line a["href=#tab_15_4"]').trigger('click');
+                        click = false;
+                    }
+                    tabs += 'Billing,'
+                }
+
+                tabs = tabs.substring(0, tabs.length - 1);
+
+                tabs += ' tabs';
 
                 showToaster({
-                    msg: "Please fill the required fields on all tabs",
+                    msg: "Please fill the required fields on "+ tabs,
                     priority: 'error'
                 });
                 return false;

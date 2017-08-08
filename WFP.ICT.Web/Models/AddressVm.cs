@@ -27,7 +27,7 @@ namespace WFP.ICT.Web.Models
         [Required(ErrorMessage = "Pickup date required")]
         public DateTime? PickUpDate { get; set; }
 
-        [Required(ErrorMessage = "Warehouse location is required")]
+        //[Required(ErrorMessage = "Warehouse location is required")]
         public string Warehouse{ get; set; }
 
         [Required(ErrorMessage = "Contact is required")]
@@ -77,6 +77,12 @@ namespace WFP.ICT.Web.Models
                     PostCode).Trim("<br />".ToCharArray());
                 return "<br />" + pickupAddress;
             }
+        }
+
+        public AddressVm()
+        {
+            Stairs = 0;
+            Turns = 0;
         }
     }
 }

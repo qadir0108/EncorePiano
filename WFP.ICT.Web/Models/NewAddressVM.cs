@@ -37,6 +37,7 @@ namespace WFP.ICT.Web.Models
 
         public NewClientVm Client { get; set; }
 
+        public Guid? Id { get; set; }
         public NewAddressVm()
         {
             Client = new NewClientVm();
@@ -56,13 +57,14 @@ namespace WFP.ICT.Web.Models
         [Required(ErrorMessage = "Please select type")]
         public int Type { get; set; }
 
-        [Required(ErrorMessage = "Please select code")]
+        [Required(ErrorMessage = "Code is required")]
+        [Range(1, Double.MaxValue, ErrorMessage = "Code is required")]
         public int AccountCode { get; set; }
 
         [Required(ErrorMessage = "Email is required")]
         [DataType(DataType.EmailAddress, ErrorMessage = "Please Enter Valid Email")]
         public string Email { get; set; }
-        public int Notes { get; set; }
+        public String Notes { get; set; }
 
     }
 }

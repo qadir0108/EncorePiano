@@ -51,6 +51,13 @@
     <!-- END CONTENT BODY -->
 </div>
 
+<style>
+    #gmap_location {
+        height: 500px;
+        width: 500px;
+    }
+</style>
+
 <div id="LocationMap" class="modal fade" role="dialog">
     <div class="modal-dialog">
 
@@ -78,6 +85,24 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<div id="AddressModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Map</h4>
+            </div>
+            <div class="modal-body" id="AddressContainer">
+
             </div>
         </div>
 
@@ -186,8 +211,8 @@
         });
 
     });
+
     $('body').on('click', '.btnDelete', function () {
-        debugger
         var btnDelete = $(this);
         var id = btnDelete.attr('data-id');
         var dataToPost = "{id : '" + id + "'}";
@@ -202,7 +227,7 @@
                     success: function (response) {
                         if (response.IsSucess) {
 
-                            wfp.showSuccess('has been deleted successfully.');
+                            wfp.showSuccess('Address has been deleted successfully.');
                             $("#address_grid").DataTable().ajax.reload(null, true);
 
                         } else {
@@ -218,13 +243,60 @@
             });
     });
 
+    $('body').on('click', '.btnEdit', function () {
+        var btnEdit = $(this);
+        var id = btnEdit.attr('data-id');
+        var dataToPost = "{id : '" + id + "'}";
+        $("#AddressContainer").html('');
+                $.ajax({
+                    type: "POST",
+                    url: '/Address/Edit',
+                    data: dataToPost,
+                    contentType: "application/json; charset=utf-8",
+                    success: function (response) {
+                        debugger
+                        if (response.IsSucess == false) {
+                            wfp.showError(response.ErrorMessage);
+                        }
+                        else {
+                            $("#AddressContainer").html(response);
+                            $("#AddressModal").modal('show');
+                        }
+
+                    },
+                    failure: function (response) {
+                        wfp.showError('There is erorr in service call.');
+                    },
+                    complete: function () {
+                    }
+
+            });
+    });
+
     $('body').on('click', '.btnMap', function () {
-        debugger
+    
         var btnDelete = $(this);
         var lat = btnDelete.attr('data-lat');
         var lng = btnDelete.attr('data-lng');
 
     });
 
+    var AddressConfigs = function () {
+        handleEditSuccess = function (data, status) {
+            debugger
+            if (data.IsSucess) {
+                wfp.showSuccess('Address has been updated successfully.');
+            }
+            else {
+                wfp.showError(data.ErrorMessage);
+            }
+            $("#AddressModal").modal('hide');
+        };
 
+        return{
+            initEditSuccess: function (data, status) {
+                handleEditSuccess(data, status);
+            }
+        }
+    }();
 </script>

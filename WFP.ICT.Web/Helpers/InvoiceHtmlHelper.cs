@@ -229,6 +229,168 @@ namespace WFP.ICT.Common
 
         }
 
+        public static string GenerateClientInvoiceHtml(IEnumerable<PianoOrder> Orders, Client client, List<Piano> Pianos, int invoiceNumber)
+        {
+            StringBuilder html = new StringBuilder();
+
+
+            html.Append(@"<!DOCTYPE html><html><head><style>
+                                    body{border:solid 1px #efefef;}
+                                    table {color:#2C3E50;
+                                    table-layout:fixed; font-family: arial,text-
+                                    align:left; sans-serif; padding: 5px; border-
+                                    collapse:collapse; width:100%; border-spacing:0px }
+                                                                       
+                                 	table td{padding:3px;}
+
+                                    table.striped tr:nth-child(odd) {background-color: #f0f0f0 } 
+                                    table.striped tr:nth-child(even) {background-color: #f7f7f7}
+                                    table tr.header-row{background-color:#8cb1d6  !important; color :#ffffff;} 
+                                    table.bordered {border: 1px solid #dddddd;}
+                                    table.bordered td{border: 1px solid #dddddd;}
+									table td.right{ text-align:right;}
+                                    table span.bold{font-weight:600;} 
+                                    table span.blue-head{font-weight:600;
+                                    color:#5E738B;
+                                    font-size:28px;
+                                    } 
+                                     table span.under{text-decoration:underline;}
+                                     table span.bill{font-size:20px;}
+                                    table span.heading-cmp{
+                                    font-weight:600; 
+                                    font-size:28px;}
+                                    </style>
+                                    </head>
+                                    <body>");
+
+            html.AppendFormat(@"<table><tr>
+                                    <td colspan='3'><span class='heading-cmp'>{0} </span> <br /><span class='bold'>{1} <br />{2}  <br />{3} <br /><span/></td>
+                                     <td colspan='1'>
+                                    <span class='blue-head under'>Invoice</span> <br />
+                                    <span class='bold'>Date : {4} <br />
+                                    Invoice # {5} <br />
+                                    Customer Id : {6}</span><br />  </td>
+                                    </tr>   ", client.Name, client.Addresses.Address1, client.Addresses.City, client.Addresses.State, DateTime.Now.ToString("yyyy-MM-dd"), invoiceNumber,
+                                    client.AccountCode);
+
+            html.Append(@"</table>");
+
+            html.AppendFormat(@"<table><tr>
+                                    <td><span class='bold under bill'>Bill To</span><br />
+                                    {0}<br />
+                                    {1}<br />
+                                    {2}<br />
+                                    {3}<br />
+                                    </td>
+                                    </tr>", DateTime.Now.ToString("yyyy-MM-dd"), "2211", client.AccountCode,
+                        client.Name, client.CompanyLogo);
+            html.AppendFormat(@"</table>");
+            html.AppendFormat(@"<table class='striped'><tr class='header-row'>
+                                    <td style ='width:70%'><span class=bold'>Description</span><br />
+                                   
+                                    </td>
+                                    <td style ='width:15%'><span class='bold'>Taxed</span><br />
+                                   
+                                    </td>
+                                    <td style ='width:15%'><span class='bold'>Amount</span><br />
+                                   
+                                    </td>
+                                    </tr>");
+
+            long totalAmount = 0;
+
+            foreach (var item in Orders)
+            {
+                var amount = item.OrderCharges.Select(x => x.Amount).Sum();
+
+                totalAmount += amount;
+
+                html.AppendFormat(@" <tr>
+                                    <td><span class='bold'>Units </span>{0}
+                                      
+                                        <span class='bold'>Order Number </span>{2} </ br>
+                                        <span class='bold'>Date Ordered </span>{1}
+                                    </td>
+                                    <td><span class='bold'>{3}</span>
+                                   
+                                    </td>
+                                    <td><span class='bold'>{4}</span>
+                                   
+                                    </td>
+                                    </tr>   ", item.Pianos.Count, item.CreatedAt, item.OrderNumber,
+                                                "No amount", "$ " + amount);
+            }
+            html.AppendFormat(@"</table>");
+
+            html.AppendFormat(@"<table style='width: 30%; margin-left:70%;'><tr>
+                                    <td><span class='bold'>Subtotal</span><br />
+                                    </td>
+                                    <td><span class='bold'>{0}</span><br />
+                                    </td>
+                                    </tr>
+                                    <tr>
+                                    <td><span class='bold'>Taxable</span><br />
+                                    </td>
+                                    <td><span class='bold'>{1}</span><br />
+                                    </td>
+                                    </tr>
+                                    <tr>
+                                    <td><span class='bold'>Tax Rate</span><br />
+                                    </td>
+                                    <td><span class='bold'>{2}</span><br />
+                                    </td>
+                                    </tr>
+                                    <tr>
+                                    <td><span class='bold'>Tax due</span><br />
+                                    </td>
+                                    <td><span class='bold'>{3}</span><br />
+                                    </td>
+                                    </tr>
+                                    <tr>
+                                    <td><span class='bold'>Other</span><br />
+                                    </td>
+                                    <td><span class='bold'>{4}</span><br />
+                                    </td>
+                                    </tr>
+                                    <tr>
+                                    <td style='border-top:double black;'><span class='bold'>Total</span><br />
+                                    </td>
+                                    <td style='border-top: double black'><span class='bold'>{5}</span><br />
+                                    </td>
+                                    </tr>
+                                    <tr style='padding-top:10px;'>
+                                    <td colspan='2'>Make all check payable to Encore Piano Limited<br />
+                                    </td>
+                                    </table>", totalAmount, 0, 0, 0, 0, totalAmount);
+
+            html.AppendFormat(@"</table>");
+
+            html.AppendFormat(@"<table style='width: 70%; margin-top:15px;' class='bordered striped'><tr class='header-row'>
+                                    <td><span class='bold'>Other Notes</span><br />
+                                    </tr>
+                                    <tr>
+                                    <td>1 - Total payment due in 30 days <br />
+                                    </td></tr>
+                                    <tr>
+                                    <td>2 - Please include the invoice number on your check <br />
+                                    </td></tr>");
+
+            html.AppendFormat(@"</table>");
+
+
+
+            html.AppendFormat(@"<table><tr>
+                                    <td style='text-align:center;'><span class='bold'>Thank you for your business!</span><br />
+                                    </td></tr>");
+
+            html.AppendFormat(@"</table>");
+
+
+            html.Append(@"</body></html>");
+
+            return html.ToString();
+
+        }
 
     }
 }

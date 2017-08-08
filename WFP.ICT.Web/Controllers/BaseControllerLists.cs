@@ -200,6 +200,31 @@ namespace WFP.ICT.Web.Controllers
             }
         }
 
+        private static List<SelectListItem> _clientType;
+        public IEnumerable<SelectListItem> ClientTypeList
+        {
+            get
+            {
+                if (_clientType == null)
+                {
+                    _clientType = EnumHelper.GetEnumTextValues(typeof(CustomerTypeEnum)).Select(
+                             x => new SelectListItem()
+                             {
+                                 Text = x.Text,
+                                 Value = x.Value
+                             }).ToList();
+
+                    _clientType.Insert(0, new SelectListItem()
+                    {
+                        Text = "Select Type",
+                        Value = string.Empty
+                    });
+                }
+                return _clientType;
+            }
+        }
+
+
         private static List<SelectListItem> _pianoType;
         public IEnumerable<SelectListItem> PianoTypesList
         {

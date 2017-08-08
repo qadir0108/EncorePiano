@@ -34,14 +34,34 @@ namespace WFP.ICT.Web.Controllers
                 _userManager = value;
             }
         }
-        public ActionResult Index()
+        public ActionResult Add()
         {
-            TempData["Clients"] = new SelectList(CustomersList, "Value", "Text");
-
-            return View(new InvoiceViewModel());
+            TempData["AddressStates"] = new SelectList(States, "Value", "Text");
+            TempData["ClietTypes"] = new SelectList(ClientTypeList, "Value", "Text");
+            
+            return View(new NewAddressVm());
         }
 
-    
-    
+        [HttpPost]
+        public ActionResult Save(NewAddressVm address)
+        {
+            try
+            {
+
+                return Json(new JsonResponse() { IsSucess = true }, JsonRequestBehavior.AllowGet);
+
+            }
+
+            catch (Exception ex)
+            {
+                return Json(new JsonResponse() { IsSucess = false, ErrorMessage = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
+        
+
+
+
     }
 }

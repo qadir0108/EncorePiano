@@ -109,7 +109,7 @@ namespace WFP.ICT.Web.Controllers
                                     Address.OrderBy(x => x.State) :
                                      Address.OrderByDescending(x => x.State);
                     }
-                    
+
                     if (column.Data == "ZipCode")
                     {
 
@@ -169,10 +169,10 @@ namespace WFP.ICT.Web.Controllers
                         JsonRequestBehavior.AllowGet);
         }
 
-        public string GetLocationLink(string lng , string lat)
+        public string GetLocationLink(string lng, string lat)
         {
-            string action = @"<a href='#' data-tooltip='tooltip' data-toggle='modal' data-target='#LocationMap' title='Show Map' class='btnMap' data-lat='" + lat+ "' data-lng='" + lng + "'>Show Map</a>";
-            
+            string action = @"<a href='#' data-tooltip='tooltip' data-toggle='modal' data-target='#LocationMap' title='Show Map' class='btnMap' data-lat='" + lat + "' data-lng='" + lng + "'>Show Map</a>";
+
             return action;
         }
 
@@ -180,7 +180,8 @@ namespace WFP.ICT.Web.Controllers
         {
             string action = "No Link";
 
-            if (warehouse != (Guid?)null) {
+            if (warehouse != (Guid?)null)
+            {
                 action = db.Warehouses.FirstOrDefault(x => x.Id == warehouse).Name;
             }
             if (client != (Guid?)null)
@@ -200,7 +201,7 @@ namespace WFP.ICT.Web.Controllers
                           </a>
                            <a class='btnDelete' data-id={0} href='#' data-tooltip='tooltip' title='Delete Address'>
                             <span class='glyphicon glyphicon-trash'></span>
-                            </a>",id);
+                            </a>", id);
             return sb.ToString();
         }
 
@@ -209,9 +210,9 @@ namespace WFP.ICT.Web.Controllers
         {
             try
             {
-                if(db.PianoOrders.Where(x=>x.DeliveryAddressId == id || x.PickupAddressId == id).Count() > 0)
+                if (db.PianoOrders.Where(x => x.DeliveryAddressId == id || x.PickupAddressId == id).Count() > 0)
                 {
-                    return Json(new JsonResponse() { IsSucess = false, ErrorMessage = "Unable to process as there are orders against this address"}, JsonRequestBehavior.AllowGet);
+                    return Json(new JsonResponse() { IsSucess = false, ErrorMessage = "Unable to process as there are orders against this address" }, JsonRequestBehavior.AllowGet);
                 }
 
                 var address = db.Addresses.FirstOrDefault(x => x.Id == id);
@@ -230,16 +231,35 @@ namespace WFP.ICT.Web.Controllers
         {
             try
             {
-                if (db.PianoOrders.Where(x => x.DeliveryAddressId == id || x.PickupAddressId == id).Count() > 0)
-                {
-                    return Json(new JsonResponse() { IsSucess = false, ErrorMessage = "Unable to process as there are orders against this address" }, JsonRequestBehavior.AllowGet);
-                }
-
                 var address = db.Addresses.FirstOrDefault(x => x.Id == id);
-                db.Addresses.Remove(address);
-                db.SaveChanges();
-                return Json(new JsonResponse() { IsSucess = true }, JsonRequestBehavior.AllowGet);
+                TempData["AddressStates"] = new SelectList(States, "Value", "Text");
+                var model = new NewAddressVm()
+                {
+                    State = address.State,
+                    City = address.City,
+                    Address = address.Address1,
+                    Id = address.Id,
+                    Name = address.Name,
+                    PhoneNumber = address.PhoneNumber,
+                    PostCode = address.PostCode
+                };
+                return PartialView("~/Views/Address/Edit.cshtml", model);
             }
+            catch (Exception ex)
+            {
+                return Json(new JsonResponse() { IsSucess = false, ErrorMessage = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult Save(NewAddressVm address)
+        {
+            try {
+
+                return Json(new JsonResponse() { IsSucess = true}, JsonRequestBehavior.AllowGet);
+
+            }
+
             catch (Exception ex)
             {
                 return Json(new JsonResponse() { IsSucess = false, ErrorMessage = ex.Message }, JsonRequestBehavior.AllowGet);
