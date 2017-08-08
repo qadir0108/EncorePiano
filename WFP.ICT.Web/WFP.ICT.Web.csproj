@@ -361,7 +361,9 @@
     <Compile Include="Async\SMSHelper.cs" />
     <Compile Include="Async\ZingCoder.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\CustomersController.cs" />
     <Compile Include="Controllers\AccountingController.cs" />
+    <Compile Include="Controllers\AddressController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\BaseControllerLists.cs" />
     <Compile Include="Controllers\CompanyController.cs" />
@@ -415,6 +417,7 @@
     <Compile Include="Helpers\GatePassGenerator.cs" />
     <Compile Include="Models\BatchLoadVm.cs" />
     <Compile Include="Models\InvoiceViewModel.cs" />
+    <Compile Include="Models\NewAddressVm.cs" />
     <Compile Include="ViewModels\PersonEditViewModel.cs" />
     <Compile Include="ViewModels\AddressEditorViewModel.cs" />
     <Compile Include="ViewModels\WarehouseVm.cs" />
@@ -6430,6 +6433,9 @@
     <Content Include="Views\Inventory\Index.cshtml" />
     <Content Include="Views\Inventory\Batch.cshtml" />
     <Content Include="Views\Accounting\Invoice.cshtml" />
+    <Content Include="Views\Address\Index.cshtml" />
+    <Content Include="Views\Address\Map.cshtml" />
+    <Content Include="Views\Address\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

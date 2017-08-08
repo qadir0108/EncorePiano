@@ -13,8 +13,6 @@ using WFP.ICT.Web.Models;
 using TransfocusTabletApp.Helpers;
 using WFP.ICT.Web.Async;
 using WFP.ICT.Web.FCM;
-using System.Text;
-using NSERReceipts;
 using WFP.ICT.Common;
 
 namespace WFP.ICT.Web.Controllers
@@ -359,7 +357,7 @@ namespace WFP.ICT.Web.Controllers
 
                 string html = InvoiceHtmlHelper.GenerateInvoiceHtml(order, _directoryPath);
 
-                JsonResponse Path = HtmlToPdf(html);
+                JsonResponse Path = HtmlToPdf(html,order.PianoAssignment.AssignmentNumber);
                 string pathValue = Path.Result.ToString();
 
                 if (!System.IO.File.Exists(pathValue))
@@ -374,16 +372,16 @@ namespace WFP.ICT.Web.Controllers
 
          
         }
-        public JsonResponse HtmlToPdf(string html)
+        public JsonResponse HtmlToPdf(string html , string conNum)
         {
             try
             {
                 var htmlToPdf = new NReco.PdfGenerator.HtmlToPdfConverter();
                 var pdfBytes = htmlToPdf.GeneratePdf(html);
 
-                string Path = Server.MapPath("~/Uploads/Invoices");
+                string Path = Server.MapPath("~/Uploads/ConsignmentInvoices");
                 if (!System.IO.Directory.Exists(Path)) System.IO.Directory.CreateDirectory(Path);
-                string filePath = System.IO.Path.Combine(Path, "Invoice.pdf");
+                string filePath = System.IO.Path.Combine(Path, conNum +"_Invoice.pdf");
 
                 using (var fileStream = System.IO.File.Create(filePath))
                 {

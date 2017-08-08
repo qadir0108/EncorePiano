@@ -178,13 +178,7 @@ namespace WFP.ICT.Common
 
 
 
-            html.AppendFormat(@"<tr>
-                                    <td colspan='2'>
-                                      <span class='bold'>MOVE CHARGES</span> <br />
-                                       {0} 
-                                    </td>
-                                    </tr>
-                                    <tr>
+            html.AppendFormat(@"    <tr>
                                     <td colspan='2'>
                                       <span class='bold'>DISCOUNT</span> <br />
                                     </td>
@@ -192,11 +186,11 @@ namespace WFP.ICT.Common
                                     <tr>
                                     <td colspan='2'>
                                       <span class='bold'>TOTAL</span> <br />
-                                    {1}
+                                    {0}
                                     </td>
                                     </tr>
 
-                                    </table>", SumAmount, SumAmount);
+                                    </table>", SumAmount);
 
 
             html.AppendFormat(@"<table >

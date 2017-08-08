@@ -3,6 +3,17 @@
     ViewBag.Title = "Invoice";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<style>
+    .help-block-error {
+        color: red !important;
+    }
+    
+    .portlet.box .dataTables_wrapper .dt-buttons{
+        margin-top:0px;
+          margin-bottom:10px;
+    }
+    
+</style>
 <!-- BEGIN CONTENT -->
 <div class="page-content-wrapper">
 
@@ -10,32 +21,276 @@
 
         <div class="row">
             <div class="col-md-12">
-
+                <!-- BEGIN EXAMPLE TABLE PORTLET-->
                 <div class="portlet box blue-hoki">
                     <div class="portlet-title">
                         <div class="caption">
-                            <i class="fa fa-globe"></i>Invoice
+                            <i class="fa fa-globe"></i>Gnerate Client Invoice
                         </div>
-                        <div class="tools"> </div>
+
                     </div>
                     <div class="portlet-body">
+                        <div class="row">
+                            @using (Ajax.BeginForm("InitializeInvoiceGrid", "Accounting", null, new AjaxOptions { OnBegin = "return false" }, new
+                            {
+                                @id = "frm",
+                            }))
+                            {
+                                <div class="col-md-4">
+                                    <div class="form-group form-md-line-input has-success">
+                                        <div class="input-icon">
+                                            @Html.DropDownListFor(model => model.Client, TempData["Clients"] as SelectList, null, new { @class = "form-control", @id = "ClientsList" })
+                                            <label>Client<span class="required">*</span></label>
+                                            @Html.ValidationMessageFor(model => model.Client, null, new { @class = "help-block help-block-error" })
+                                            <span class="help-block">Select Client Here</span>
+                                            <i class="fa fa-user"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group form-md-line-input has-success">
+                                        <div class="input-icon">
+                                            @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control date-picker", @id = "StartDate" } })
+                                            <label>Start Date<span class="required">*</span></label>
+                                            @Html.ValidationMessageFor(model => model.StartDate, null, new { @class = "help-block help-block-error" })
+                                            <span class="help-block">Enter Start Date here</span>
+                                            <i class="fa fa-user"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group form-md-line-input has-success">
+                                        <div class="input-icon">
+                                            @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control date-picker", @id = "EndDate" } })
+                                            <label>End Date<span class="required">*</span></label>
+                                            @Html.ValidationMessageFor(model => model.EndDate, null, new { @class = "help-block help-block-error" })
+                                            <span class="help-block">Enter End Date here</span>
+                                            <i class="fa fa-home"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2" style="margin-top:20px;">
+                                    <button type="submit" class="btn blue-steel pull-right" onclick="invoiceGrid.initLoadGrid()">
+                                    <i class="fa fa-check"></i>
+                                    <span>View Records </span></button>
+                                </div>
+                            }
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table class="table table-striped table-bordered table-hover dt-responsive" id="generate_invoice_grid"></table>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <span class="invoice-number"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="pull-right">
+                                    <button onclick="report.initGenerateDownload()" class="btn green">
+                                        <i class="fa fa-print"></i>
+                                        <span>Generate & Download</span>
+                                    </button>
+                                    <button onclick="report.initGenerateSend()" class="btn green">
+                                        <i class="fa fa-send"></i>
+                                        <span>Generate & Email</span>
+                                    </button>
+                                </div>
+                              
+                            </div>
+                        </div>
 
                     </div>
                 </div>
-                <!-- END EXAMPLE TABLE PORTLET-->
             </div>
         </div>
-        <!-- END PAGE BASE CONTENT -->
     </div>
-    <!-- END CONTENT BODY -->
 </div>
-<!-- END CONTENT -->
+
 
 <script type="text/javascript">
 
     var wfp = wfp || {};
 
+    $(function () {
+        $('.date-picker').datetimepicker({
+            format: 'M/DD/YYYY hh:mm A'
+        });
+        invoiceGrid.initInvoiceGrid();
 
+
+    });
+
+    var invoiceGrid = function () {
+
+        var grid = new Datatable();
+
+        handleinitInvoiceGrid = function () {
+            grid.init({
+                src: $("#generate_invoice_grid"),
+                onSuccess: function (grid, response) {
+
+                },
+                dataTable: {
+                    "serverSide": true,
+                    "processing": true,
+                    "ajax": {
+                        "url":
+                        "/Accounting/InitializeInvoiceGrid",
+                        data: function (data) {
+                            data.Client = $('#ClientsList').val();
+                            data.StartDate = $('#StartDate').val();
+                            data.EndDate = $('#EndDate').val();
+                        }
+                    },
+                    "columns": [
+
+                     { "title": "Type", "data": "Type" },
+
+                     { "title": "Size", "data": "Size" },
+
+                     { "title": "Make", "data": "Make" },
+
+                     { "title": "Model", "data": "Model" },
+
+                     { "title": "Serial Number", "data": "SerialNumber" },
+
+                     { "title": "W/B", "data": "IsBench" },
+
+                     { "title": "Player", "data": "IsPlayer" },
+
+                     { "title": "Boxed", "data": "IsBoxed" },
+
+                     { "title": "Owner Name", "data": "Name" },
+
+                    ],
+                    "lengthMenu": [
+                                    [5, 20, 50, 100, -1],
+                                    [5, 20, 50, 100, "All"]
+                    ],
+                    "pageLength": 100,
+
+                    buttons: [
+                    {
+                        extend: 'print', exportOptions: {
+                            columns: ':visible'
+                        }, className: 'btn default'
+                    },
+                    {
+                        extend: 'pdf', exportOptions: {
+                            columns: ':visible'
+                        }, className: 'btn default'
+                    },
+                    {
+                        extend: 'csv', exportOptions: {
+                            columns: ':visible'
+                        }, className: 'btn default'
+                    },
+                    { extend: 'colvis', className: 'btn default', text: 'Columns' }
+                    ],
+                    colReorder: true,
+
+                    "dom": "<'row'<'col-md-12'B>><'row'<'col-md-6 col-sm-12'l><'col-md-6 col-sm-12'f>r><'table-scrollable't><'row'<'col-md-5 col-sm-12'i><'col-md-7 col-sm-12'>>", // horizobtal scrollable datatable
+
+                    "language": {
+                        "aria": {
+                            "sortAscending": ": activate to sort column ascending",
+                            "sortDescending": ": activate to sort column descending"
+                        },
+                        "emptyTable": "No data available in table",
+                        "info": "Showing _START_ to _END_ of _TOTAL_ records",
+                        "infoEmpty": "No records found",
+                        "infoFiltered": "(filtered1 from _MAX_ total records)",
+                        "lengthMenu": "Show _MENU_",
+                        "search": "Search:",
+                        "zeroRecords": "No matching records found",
+                        "paginate": {
+                            "previous": "Prev",
+                            "next": "Next",
+                            "last": "Last",
+                            "first": "First"
+                        }
+                    },
+                    "pagingType": "bootstrap_number",
+                    "columnDefs": [
+                    ],
+                    "order": []
+                },
+
+            });
+        };
+
+        hanleReloadGrid = function () {
+            if ($("#frm").valid()) {
+                $("#generate_invoice_grid").DataTable().ajax.reload(null, true);
+            }
+       
+        };
+
+        return {
+            initInvoiceGrid: function () {
+                handleinitInvoiceGrid();
+            },
+
+            initLoadGrid: function () {
+                hanleReloadGrid();
+            }
+        }
+
+    }();
+
+    var report = function () {
+        handleGenerateDownload = function () {
+            if ($("#frm").valid()) {
+                var data = $('#ClientsList').val();
+                var url = "/Accounting/DownloadInvoice?ClientId=" + data + "&StartDate=" + $('#StartDate').val() + "&EndDate=" + $('#EndDate').val() + "";
+                window.location = url;
+            }
+        };
+
+        handleGenerateSend = function () {
+            if ($("#frm").valid()) {
+                $.ajax({
+                    data: {
+                        ClientId: $('#ClientsList').val(),
+                        StartDate: $('#StartDate').val(),
+                        EndDate: $('#EndDate').val()
+                    },
+                    url: '/Accounting/EmailInvoice',
+                    success: function (result) {
+                        if (result.IsSucess === true) {
+                            wfp.showSuccess('Email has been sent Successfully.');
+                        }
+                        else {
+                            wfp.showError(result.ErrorMessage);
+                        }
+                    },
+                    error: function () {
+                        wfp.showError('There is erorr in service call.');
+                    },
+                    failure: function (response) {
+                        wfp.showError('There is erorr in service call.');
+                    },
+                    complete: function () {
+                    }
+                });
+            }
+           
+
+        };
+
+        return {
+            initGenerateDownload: function () {
+                handleGenerateDownload();
+            },
+            initGenerateSend: function () {
+                handleGenerateSend();
+            }
+        };
+
+    }();
 
 </script>
-
