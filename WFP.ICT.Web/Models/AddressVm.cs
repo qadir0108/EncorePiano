@@ -21,8 +21,8 @@ namespace WFP.ICT.Web.Models
 
         [Required(ErrorMessage = "City is required")]
         public string City { get; set; }
-        public int Stairs{ get; set; }
-        public int Turns { get; set; }
+        public int? Stairs{ get; set; }
+        public int? Turns { get; set; }
 
         [Required(ErrorMessage = "Pickup date required")]
         public DateTime? PickUpDate { get; set; }
@@ -81,8 +81,7 @@ namespace WFP.ICT.Web.Models
 
         public AddressVm()
         {
-            Stairs = 0;
-            Turns = 0;
+
         }
     }
 }

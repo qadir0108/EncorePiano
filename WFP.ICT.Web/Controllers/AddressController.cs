@@ -171,7 +171,7 @@ namespace WFP.ICT.Web.Controllers
 
         public string GetLocationLink(string lng, string lat)
         {
-            string action = @"<a href='#' data-tooltip='tooltip' data-toggle='modal' data-target='#LocationMap' title='Show Map' class='btnMap' data-lat='" + lat + "' data-lng='" + lng + "'>Show Map</a>";
+            string action = @"<a href='#' data-tooltip='tooltip' title='Show Map' class='btnMap' data-lat='" + lat + "' data-lng='" + lng + "'>Show Map</a>";
 
             return action;
         }

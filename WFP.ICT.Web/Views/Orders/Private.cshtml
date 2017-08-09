@@ -1007,6 +1007,15 @@
 
 
         handleFormBegin = function (data) {
+            var form = $('#frm').get(0);
+
+            $('#frm').removeData("validator")
+            $('#frm').removeData("unobtrusiveValidation");
+
+            $.validator.unobtrusive.parse('form');
+
+            var settings = $.data(form, 'validator').settings;
+            settings.ignore = '.ignore';
 
             $('.ignore :input').addClass('ignore');
             
@@ -1106,8 +1115,20 @@
 
 
         handleQouteBegin = function () {
-            $('.ignore :input').addClass('ignore');
             
+
+            var form = $('#frm').get(0);
+
+            $('#frm').removeData("validator")
+            $('#frm').removeData("unobtrusiveValidation");
+
+            $.validator.unobtrusive.parse('form');
+
+            var settings = $.data(form, 'validator').settings;
+            settings.ignore = '.ignore';
+
+            $('.ignore :input').addClass('ignore');
+
 
             var type = $('#OrderPlacementType').val();
             type = parseInt(type);
@@ -1328,12 +1349,6 @@
     });
 
 
-    $(document).ready(function () {
-        $.validator.unobtrusive.parse('form');
-        var form = $('#frm').get(0);
-        var settings = $.data(form, 'validator').settings;
-        settings.ignore = '.ignore';
-    });
 
 
     $('.pianoCategory').trigger('change');
@@ -1350,11 +1365,7 @@
         $.get('/Orders/NewPiano', function (template) {
             $('#pianoContainer').append(template);
 
-            var form = $("#frm");
-            form.removeData("validator");
-            form.removeData("unobtrusiveValidation");
-            $.validator.unobtrusive.parse(form);
-            form.validate();
+
         });
 
         e.preventDefault();
@@ -1365,11 +1376,7 @@
         $.get('/Orders/NewService', function (template) {
             $('#serviceContainer').append(template);
 
-            var form = $("#frm");
-            form.removeData("validator");
-            form.removeData("unobtrusiveValidation");
-            $.validator.unobtrusive.parse(form);
-            form.validate();
+
         });
 
         e.preventDefault();

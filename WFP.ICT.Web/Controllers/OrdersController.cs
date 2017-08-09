@@ -194,13 +194,13 @@ namespace WFP.ICT.Web.Controllers
                     Address1 = orderVm.PickupAddress.Address1,
                     City = orderVm.PickupAddress.City,
                     State = orderVm.PickupAddress.State,
-                    NumberTurns = orderVm.PickupAddress.Turns,
-                    NumberStairs = orderVm.PickupAddress.Stairs,
+                    NumberTurns = orderVm.PickupAddress.Turns == null ? 0 : orderVm.PickupAddress.Turns.Value,
+                    NumberStairs = orderVm.PickupAddress.Stairs == null ? 0 : orderVm.PickupAddress.Stairs.Value,
                     PostCode = orderVm.PickupAddress.PostCode,
                     PhoneNumber = orderVm.PickupAddress.PhoneNumber,
                     AlternateContact = orderVm.PickupAddress.AlternateContact,
                     AlternatePhone = orderVm.PickupAddress.AlternatePhone,
-                    WarehouseId = Guid.Parse(orderVm.PickupAddress.Warehouse),
+                    WarehouseId = orderVm.PickupAddress.Warehouse != null ? Guid.Parse(orderVm.PickupAddress.Warehouse) : (Guid?)null , 
 
 
                 };
@@ -216,13 +216,13 @@ namespace WFP.ICT.Web.Controllers
                     Address1 = orderVm.DeliveryAddress.Address1,
                     City = orderVm.DeliveryAddress.City,
                     State = orderVm.DeliveryAddress.State,
-                    NumberTurns = orderVm.DeliveryAddress.Turns,
-                    NumberStairs = orderVm.DeliveryAddress.Stairs,
+                    NumberTurns = orderVm.DeliveryAddress.Turns == null ? 0 : orderVm.DeliveryAddress.Turns.Value,
+                    NumberStairs = orderVm.DeliveryAddress.Stairs == null ? 0 : orderVm.DeliveryAddress.Stairs.Value,
                     PostCode = orderVm.DeliveryAddress.PostCode,
                     PhoneNumber = orderVm.DeliveryAddress.PhoneNumber,
                     AlternateContact = orderVm.DeliveryAddress.AlternateContact,
                     AlternatePhone = orderVm.DeliveryAddress.AlternatePhone,
-                    WarehouseId = Guid.Parse(orderVm.DeliveryAddress.Warehouse),
+                    WarehouseId = orderVm.DeliveryAddress.Warehouse == null ? (Guid?)null : Guid.Parse(orderVm.DeliveryAddress.Warehouse),
                 };
                 db.Addresses.Add(deliveryAddress);
                 db.SaveChanges();
@@ -374,30 +374,30 @@ namespace WFP.ICT.Web.Controllers
 
 
                     //Delivery Address
-                    order.DeliveryAddress.Name = orderVm.PickupAddress.Name;
-                    order.DeliveryAddress.Address1 = orderVm.PickupAddress.Address1;
-                    order.DeliveryAddress.City = orderVm.PickupAddress.City;
-                    order.DeliveryAddress.State = orderVm.PickupAddress.State;
-                    order.DeliveryAddress.NumberTurns = orderVm.PickupAddress.Turns;
-                    order.DeliveryAddress.NumberStairs = orderVm.PickupAddress.Stairs;
-                    order.DeliveryAddress.PostCode = orderVm.PickupAddress.PostCode;
-                    order.DeliveryAddress.PhoneNumber = orderVm.PickupAddress.PhoneNumber;
-                    order.DeliveryAddress.AlternateContact = orderVm.PickupAddress.AlternateContact;
-                    order.DeliveryAddress.AlternatePhone = orderVm.PickupAddress.AlternatePhone;
-                    order.DeliveryAddress.WarehouseId = Guid.Parse(orderVm.PickupAddress.Warehouse);
+                    order.DeliveryAddress.Name = orderVm.DeliveryAddress.Name;
+                    order.DeliveryAddress.Address1 = orderVm.DeliveryAddress.Address1;
+                    order.DeliveryAddress.City = orderVm.DeliveryAddress.City;
+                    order.DeliveryAddress.State = orderVm.DeliveryAddress.State;
+                    order.DeliveryAddress.NumberTurns = orderVm.DeliveryAddress.Turns == null ? 0 : orderVm.DeliveryAddress.Turns.Value;
+                    order.DeliveryAddress.NumberStairs = orderVm.DeliveryAddress.Turns == null ? 0 : orderVm.DeliveryAddress.Turns.Value;
+                    order.DeliveryAddress.PostCode = orderVm.DeliveryAddress.PostCode;
+                    order.DeliveryAddress.PhoneNumber = orderVm.DeliveryAddress.PhoneNumber;
+                    order.DeliveryAddress.AlternateContact = orderVm.DeliveryAddress.AlternateContact;
+                    order.DeliveryAddress.AlternatePhone = orderVm.DeliveryAddress.AlternatePhone;
+                    order.DeliveryAddress.WarehouseId = orderVm.DeliveryAddress.Warehouse == null ? (Guid?)null : Guid.Parse(orderVm.DeliveryAddress.Warehouse);
 
                     // Pickup Address
                     order.PickupAddress.Name = orderVm.PickupAddress.Name;
                     order.PickupAddress.Address1 = orderVm.PickupAddress.Address1;
                     order.PickupAddress.City = orderVm.PickupAddress.City;
                     order.PickupAddress.State = orderVm.PickupAddress.State;
-                    order.PickupAddress.NumberTurns = orderVm.PickupAddress.Turns;
-                    order.PickupAddress.NumberStairs = orderVm.PickupAddress.Stairs;
+                    order.PickupAddress.NumberTurns = orderVm.PickupAddress.Turns == null ? 0 : orderVm.PickupAddress.Turns.Value;
+                    order.PickupAddress.NumberStairs = orderVm.PickupAddress.Turns == null ? 0 : orderVm.PickupAddress.Turns.Value;
                     order.PickupAddress.PostCode = orderVm.PickupAddress.PostCode;
                     order.PickupAddress.PhoneNumber = orderVm.PickupAddress.PhoneNumber;
                     order.PickupAddress.AlternateContact = orderVm.PickupAddress.AlternateContact;
                     order.PickupAddress.AlternatePhone = orderVm.PickupAddress.AlternatePhone;
-                    order.PickupAddress.WarehouseId = Guid.Parse(orderVm.PickupAddress.Warehouse);
+                    order.PickupAddress.WarehouseId = orderVm.PickupAddress.Warehouse == null ? (Guid?)null : Guid.Parse(orderVm.PickupAddress.Warehouse);
                 };
 
                 db.SaveChanges();
@@ -793,11 +793,10 @@ namespace WFP.ICT.Web.Controllers
                 String subject = string.Format(@"Order Qoute");
 
                 StringBuilder body = new StringBuilder();
-                body.AppendFormat(@"Please find the detailed qoute for order # {0} <br/>", orderVm.OrderNumber);
-                body.AppendFormat(@"Pick Up Address : {0} <br/>" , orderVm.PickupAddress.AddressToString );
+                body.AppendFormat(@"Please find the detailed qoute for order # {0} <br/><br/>", orderVm.OrderNumber);
+                body.AppendFormat(@"Pick Up Address : {0} <br/><br/>", orderVm.PickupAddress.AddressToString );
 
-                body.AppendFormat(@"Please find the detailed qoute for order # {0} <br/>", orderVm.OrderNumber);
-                body.AppendFormat(@"Delivery Address : {0} <br/>", orderVm.DeliveryAddress.AddressToString);
+                body.AppendFormat(@"Delivery Address : {0} <br/><br/>", orderVm.DeliveryAddress.AddressToString);
 
                 body.AppendFormat(@"Units : <br/>");
                 foreach(var item in orderVm.Pianos)
@@ -807,7 +806,7 @@ namespace WFP.ICT.Web.Controllers
                     body.AppendFormat(@"Stairs? : {0} <br/>", item.IsStairs ? "Yes" : "No");
 
                     body.AppendFormat(@"Serial Number : {0} ", item.SerialNumber);
-                    body.AppendFormat(@"Category : {0} ", item.PianoCategoryType);
+                    body.AppendFormat(@"Category : {0} ", ((PianoCategoryTypeEnum)(int.Parse(item.PianoCategoryType))).ToString());
                     body.AppendFormat(@"Make : {0} ", string.IsNullOrEmpty(item.PianoMake) ? "N/A" : db.PianoMake.Where(x => x.Id.ToString() == item.PianoMake).FirstOrDefault().Name);
                     body.AppendFormat(@"Model : {0} <br/>", item.PianoModel);
 
@@ -815,7 +814,7 @@ namespace WFP.ICT.Web.Controllers
                     body.AppendFormat(@"Type : {0} ", string.IsNullOrEmpty(item.PianoTypeId) ? "N/A" : db.PianoTypes.Where(x => x.Id.ToString() == item.PianoTypeId).FirstOrDefault().Type);
                     body.AppendFormat(@"Finish : {0} <br/>", string.IsNullOrEmpty(item.PianoFinish) ? "N/A" : db.PianoFinish.Where(x => x.Id.ToString() == item.PianoFinish).FirstOrDefault().Name);
 
-                    body.AppendFormat(@"Miscellaneous : {0} ", item.Notes);
+                    body.AppendFormat(@"Miscellaneous : {0} <br/><br/>", item.Notes);
 
 
                 }
@@ -823,7 +822,7 @@ namespace WFP.ICT.Web.Controllers
 
                 foreach (var item in orderVm.Charges)
                 {
-                    body.AppendFormat(@"Charges : {0} ", db.PianoCharges.Where(x=> x.Id.ToString() == item.ChargesCode).FirstOrDefault().ChargesDetails);
+                    body.AppendFormat(@"Type : {0} ", db.PianoCharges.Where(x=> x.Id.ToString() == item.ChargesCode).FirstOrDefault().ChargesDetails);
                     body.AppendFormat(@"Amount : {0} <br/>", item.Amount);
                 }
 
