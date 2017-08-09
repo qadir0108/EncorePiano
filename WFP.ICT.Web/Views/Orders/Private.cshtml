@@ -1007,6 +1007,7 @@
 
 
         handleFormBegin = function (data) {
+            $('input').removeClass('ignore');
             var form = $('#frm').get(0);
 
             $('#frm').removeData("validator")
@@ -1116,7 +1117,7 @@
 
         handleQouteBegin = function () {
             
-
+            $('input').removeClass('ignore');
             var form = $('#frm').get(0);
 
             $('#frm').removeData("validator")
@@ -1234,6 +1235,8 @@
                 });
                 return false;
             }
+
+          
         };
 
         handleFormComplete = function (data) {
