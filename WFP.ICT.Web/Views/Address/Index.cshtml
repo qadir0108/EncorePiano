@@ -204,11 +204,7 @@
         });
 
 
-        new GMaps({
-            div: '#gmap_location',
-            lat: -12.043333,
-            lng: -77.028333
-        });
+        
 
     });
 
@@ -279,6 +275,18 @@
         var lat = btnDelete.attr('data-lat');
         var lng = btnDelete.attr('data-lng');
 
+    });
+
+    $('#LocationMap').on('shown.bs.modal', function (e) {
+        debugger;
+        var map = new GMaps({
+            el: '#gmap_location',
+            lat: 36.184164,
+            lng: 43.975181,
+            click: function (e) {
+                console.log(e.latLng.lat());
+            }
+        });
     });
 
     var AddressConfigs = function () {
