@@ -39,7 +39,7 @@
                             <div class="col-md-4">
                                 <div class="form-group form-md-line-input has-success">
                                     <div class="input-icon">
-                                        @Html.EditorFor(model => model.SerialNumber, new { htmlAttributes = new { @class = "form-control" , onkeydown = "pianoConfigs.initPopulatePiano(this)" } })
+                                        @Html.EditorFor(model => model.SerialNumber, new { htmlAttributes = new { @class = "form-control" , onkeydown = "pianoConfigs.initPopulatePiano(event,this)" } })
                                         <label>Serial Number</label>
                                         <span class="help-block">Enter Piano Serial Number here</span>
                                         <i class="fa fa-bars"></i>
@@ -49,7 +49,7 @@
                             <div class="col-md-4">
                                 <div class="form-group form-md-line-input has-success">
                                     <div class="input-icon">
-                                        @Html.DropDownListFor(model => model.PianoFinish, TempData["PianoFinish"] as SelectList, htmlAttributes: new { @class = "form-control" })
+                                        @Html.DropDownListFor(model => model.PianoFinish, TempData["PianoFinish"] as SelectList, htmlAttributes: new { @class = "form-control pianoFinish" })
 
                                         <label>Piano Finish<span class="required">*</span></label>
 
@@ -129,7 +129,7 @@
                                         <div class="md-radio-inline">
                                             <div class="md-radio">
                                                 @{string id = ViewData.TemplateInfo.GetFullHtmlFieldId("radioBenchTrue");}
-                                                @Html.RadioButtonFor(x => x.IsBench, true, new { @id = id, @class = "md-radiobtn", @name = "isBenchRadio" })
+                                                @Html.RadioButtonFor(x => x.IsBench, true, new { @id = id, @class = "md-radiobtn", @check = "isBenchRadio" })
                                                 <label for="@id">
                                                     <span></span>
                                                     <span class="check"></span>
@@ -138,7 +138,7 @@
                                             </div>
                                             <div class="md-radio">
                                                 @{ id = ViewData.TemplateInfo.GetFullHtmlFieldId("radioBenchFalse");}
-                                                @Html.RadioButtonFor(x => x.IsBench, false, new { @id = id, @class = "md-radiobtn", @name = "isBenchRadio" })
+                                                @Html.RadioButtonFor(x => x.IsBench, false, new { @id = id, @class = "md-radiobtn", @check = "isBenchRadio" })
                                                 <label for="@id">
                                                         <span></span>
                                                         <span class="check"></span>
@@ -158,7 +158,7 @@
                                         <div class="md-radio-inline">
                                             <div class="md-radio">
                                                 @{id = ViewData.TemplateInfo.GetFullHtmlFieldId("radioPlayerTrue");}
-                                                @Html.RadioButtonFor(x => x.IsPlayer, true, new { @id = id, @class = "md-radiobtn", @name = "isPlayerRadio" })
+                                                @Html.RadioButtonFor(x => x.IsPlayer, true, new { @id = id, @class = "md-radiobtn", @check = "isPlayerRadio" })
                                                 <label for="@id">
                                                     <span></span>
                                                     <span class="check"></span>
@@ -167,7 +167,7 @@
                                             </div>
                                             <div class="md-radio">
                                                 @{id = ViewData.TemplateInfo.GetFullHtmlFieldId("radioPlayerFalse");}
-                                                @Html.RadioButtonFor(x => x.IsPlayer, false, new { @id = id, @class = "md-radiobtn" ,@name = "isPlayerRadio" })
+                                                @Html.RadioButtonFor(x => x.IsPlayer, false, new { @id = id, @class = "md-radiobtn" , @check = "isPlayerRadio" })
                                                 <label for="@id">
                                                     <span></span>
                                                     <span class="check"></span>
@@ -187,7 +187,7 @@
                                         <div class="md-radio-inline">
                                             <div class="md-radio">
                                                 @{id = ViewData.TemplateInfo.GetFullHtmlFieldId("radioBoxedTrue");}
-                                               @Html.RadioButtonFor(x => x.IsBoxed, true, new { @id = id , @class = "md-radiobtn", @name = "isBoxedRadio" })
+                                               @Html.RadioButtonFor(x => x.IsBoxed, true, new { @id = id , @class = "md-radiobtn", @check = "isBoxedRadio" })
                                                 <label for="@id">
                                                     <span></span>
                                                     <span class="check"></span>
@@ -196,7 +196,7 @@
                                             </div>
                                             <div class="md-radio">
                                                 @{id = ViewData.TemplateInfo.GetFullHtmlFieldId("radioBoxedFalse");}
-                                                @Html.RadioButtonFor(x => x.IsBoxed, false, new { @id = id,@class = "md-radiobtn" , @name= "isBoxedRadio" })
+                                                @Html.RadioButtonFor(x => x.IsBoxed, false, new { @id = id,@class = "md-radiobtn" , @check = "isBoxedRadio" })
                                                 <label for="@id">
                                                     <span></span>
                                                     <span class="check"></span>

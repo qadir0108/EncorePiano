@@ -26,6 +26,7 @@
                 }))
                 {
                     @Html.HiddenFor(x => x.Id)
+                    @Html.HiddenFor(x => x.OrderNumber)
                     <div class="portlet light bordered">
                         <!-- box purple-->
                         <div class="portlet-title">
@@ -159,7 +160,7 @@
                                                                         <div class="form-group form-md-line-input has-success">
                                                                             <div class="input-icon">
                                                                                 @Html.DropDownListFor(model => model.PickupAddress.Warehouse, TempData["Warehouses"] as SelectList, null, htmlAttributes: new { @class = "form-control", onchange = "pianoConfigs.initPopulateWarehouse(this)" })
-                                                                                <label>Warehouse<span class="required">*</span></label>
+                                                                                <label>Warehouse</label>
                                                                                 @Html.ValidationMessageFor(model => model.PickupAddress.Warehouse, null, new { @class = "help-block help-block-error" })
                                                                                 <span class="help-block">Enter Warehouse here</span>
                                                                                 <i class="fa fa-home"></i>
@@ -337,7 +338,7 @@
                                                                         <div class="form-group form-md-line-input has-success">
                                                                             <div class="input-icon">
                                                                                 @Html.DropDownListFor(model => model.DeliveryAddress.Warehouse, TempData["Warehouses"] as SelectList, null, htmlAttributes: new { @class = "form-control", onchange = "pianoConfigs.initPopulateWarehouse(this)" })
-                                                                                <label>Warehouse<span class="required">*</span></label>
+                                                                                <label>Warehouse</label>
                                                                                 @Html.ValidationMessageFor(model => model.DeliveryAddress.Warehouse, null, new { @class = "help-block help-block-error" })
                                                                                 <span class="help-block">Enter Warehouse here</span>
                                                                                 <i class="fa fa-home"></i>
@@ -829,13 +830,15 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="margin-top-20">
+                            <a onclick="pianoConfigs.initFormBegin()" class="btn blue-steel ">Save Order</a>
+                            <a onclick="pianoConfigs.initQouteBegin()" class="btn blue-steel ">Send Qoute</a>
+                            <a href="/Orders" class="btn c-btn-border-1x c-btn-blue-steel">Cancel</a>
+                        </div>
                     </div>
 
 
-                    <div class="form-actions noborder">
-                        <button type="submit" onclick="pianoConfigs.initFormBegin()" class="btn blue-steel ">Save Order</button>
-                        <a href="/Orders" class="btn c-btn-border-1x c-btn-blue-steel">Cancel</a>
-                    </div>
+
 
                                                                     }
                 <!-- END SAMPLE FORM PORTLET-->
@@ -858,11 +861,16 @@
 
         handleShowData = function (elem) {
             var pianoTypeSize = $(elem).parent().parent().parent().parent().parent().find('div.pianoTypeContainer');
+            var pianoSizeContainer = $(elem).parent().parent().parent().parent().parent().find('div.pianoSizeContainer');
+
             var pianoBenchPlayer = $(elem).parent().parent().parent().parent().parent().find('div.pianoBenchPlayer');
             var pianoMakeModel = $(elem).parent().parent().parent().parent().parent().find('div.pianoMakeModel');
 
-            if (elem.value == "0") {
+            if (elem.value == "1") {
                 pianoTypeSize.removeClass('ignore').slideDown("fast", function () {
+                    pianoSizeContainer.removeClass('ignore').slideDown("fast", function () {
+
+                    });
                     pianoBenchPlayer.removeClass('ignore').slideDown("fast", function () {
                         pianoMakeModel.addClass('ignore').slideUp("fast", function () {
 
@@ -870,9 +878,12 @@
                     });
                 });
             }
-            else if (elem.value == "1") {
+            else if (elem.value == "0") {
                 pianoMakeModel.removeClass('ignore').slideDown("fast", function () {
                     pianoBenchPlayer.removeClass('ignore').slideDown("fast", function () {
+                        pianoSizeContainer.addClass('ignore').slideUp("fast", function () {
+
+                        });
                         pianoTypeSize.addClass('ignore').slideUp("fast", function () {
 
                         });
@@ -882,6 +893,9 @@
             else if (elem.value == "2") {
 
                 pianoTypeSize.removeClass('ignore').slideDown("fast", function () {
+                    pianoSizeContainer.removeClass('ignore').slideDown("fast", function () {
+
+                    });
                     pianoMakeModel.removeClass('ignore').slideDown("fast", function () {
                         pianoBenchPlayer.removeClass('ignore').slideDown("fast", function () {
 
@@ -893,7 +907,9 @@
                 pianoBenchPlayer.addClass('ignore').slideUp("fast", function () {
                     pianoMakeModel.addClass('ignore').slideUp("fast", function () {
                         pianoTypeSize.addClass('ignore').slideUp("fast", function () {
+                            pianoSizeContainer.addClass('ignore').slideUp("fast", function () {
 
+                            });
                         });
                     });
                 });
@@ -922,21 +938,28 @@
             });
         }
 
-        handlePopulatePiano = function (elem) {
-
+        handlePopulatePiano = function (event ,elem) {
+            
             var parent = $(elem).parent().parent().parent().parent().parent();
 
             if (event.keyCode == 13) {
                 $.post("/Orders/PopulatePiano", { pianoSerialNumber: elem.value }, function (data) {
                     if (data.key) {
-
+                        
                         parent.find('.pianoCategory').val(data.piano.category);
                         parent.find('.pianoCategory').trigger('change');
 
-                        parent.find('.pianoMake').val(data.piano.make);
-                        parent.find('.pianoMake').trigger('change');
+
+
+                        parent.find('.pianoFinish').val(data.piano.finish);
+
 
                         parent.find('.pianoModel').val(data.piano.model);
+
+                        setTimeout(function () {
+                            parent.find('.pianoMake').val(data.piano.make);
+                            parent.find('.pianoMake').trigger('change');
+                        }, 500);
 
                         setTimeout(function () {
                             parent.find('.pianoSize').val(data.piano.size);
@@ -945,10 +968,11 @@
                         parent.find('.pianoType').val(data.piano.type);
                         parent.find('.pianoType').trigger('change');
 
-                        parent.find("input:radio[name='isBenchRadio'][value ='" + data.piano.isBench + "']").prop('checked', true);
-                        parent.find("input:radio[name='isPlayerRadio'][value ='" + data.piano.isPlayer + "']").prop('checked', true);
-                        parent.find("input:radio[name='isBoxedRadio'][value ='" + data.piano.isBoxed + "']").prop('checked', true);
 
+                        parent.find("[check='isBenchRadio'][value ='" + data.piano.isBench + "']").prop('checked', true);
+                        parent.find("[check='isPlayerRadio'][value ='" + data.piano.isPlayer + "']").prop('checked', true);
+                        parent.find("[check='isBoxedRadio'][value ='" + data.piano.isBoxed + "']").prop('checked', true);
+              
                     }
                 });
             }
@@ -985,7 +1009,7 @@
         handleFormBegin = function (data) {
 
             $('.ignore :input').addClass('ignore');
-            debugger
+            
             var type = $('#OrderPlacementType').val();
             type = parseInt(type);
 
@@ -1080,8 +1104,119 @@
 
         };
 
+
+        handleQouteBegin = function () {
+            $('.ignore :input').addClass('ignore');
+            
+
+            var type = $('#OrderPlacementType').val();
+            type = parseInt(type);
+
+            if ($("#frm").valid()) {
+                var formData = new FormData($("#frm").get(0));
+
+                if (type == 0) {
+
+                }
+                else {
+
+                    var fileUpload = $("#linkFile").get(0).files;
+
+                    if (fileUpload.length > 0) {
+                        formData.append(fileUpload[0].name, fileUpload[0]);
+                    }
+                }
+
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/Orders/SendQoute',
+                    global: false,
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    beforeSend: function () {
+
+                    },
+                    success: function (data) {
+                        if (data.key) {
+                            showToaster({
+                                msg: "Qoute Sent Successfully",
+                                priority: 'success'
+                            });
+                            $("#frm").get(0).reset();
+                        }
+                        else {
+
+                            showToaster({
+                                msg: "There is an error in service call",
+                                priority: 'error'
+                            });
+                        }
+                    },
+                    complete: function () {
+
+                    },
+                });
+
+            }
+            else {
+
+                var detailError = $('#tab_15_1').find('.input-validation-error').not(".ignore");
+                var unitsError = $('#tab_15_2').find('.input-validation-error').not(".ignore");
+                var chargesError = $('#tab_15_3').find('.input-validation-error').not(".ignore");
+                var billingError = $('#tab_15_4').find('.input-validation-error').not(".ignore");
+
+                var click = true;
+                var tabs = '';
+
+                if (detailError.length > 0) {
+                    if (click) {
+                        $('body .tabbable-line a[href="#tab_15_1"]').trigger('click');
+                        click = false;
+                    }
+
+                    tabs += 'Details,'
+                }
+                if (unitsError.length > 0) {
+                    if (click) {
+                        $('body .tabbable-line a[href="#tab_15_2"]').trigger('click');
+                        click = false;
+                    }
+
+                    tabs += 'Units,'
+                }
+                if (chargesError.length > 0) {
+
+                    if (click) {
+                        $('body .tabbable-line a[href="#tab_15_3"]').trigger('click');
+                        click = false;
+                    }
+                    tabs += 'Charges,'
+                }
+                if (billingError.length > 0) {
+
+                    if (click) {
+                        $('body .tabbable-line a[href="#tab_15_4"]').trigger('click');
+                        click = false;
+                    }
+                    tabs += 'Billing,'
+                }
+
+                tabs = tabs.substring(0, tabs.length - 1);
+
+                tabs += ' tabs';
+
+                showToaster({
+                    msg: "Please fill the required fields on " + tabs,
+                    priority: 'error'
+                });
+                return false;
+            }
+        };
+
         handleFormComplete = function (data) {
-            debugger
+            
             if (data.key) {
                 $("#frm").get(0).reset();
                 window.location.href = '@Url.Action("Index","Orders")';
@@ -1158,8 +1293,8 @@
             initPopulateWarehouse: function (elem) {
                 handlePopulateWarehouse(elem);
             },
-            initPopulatePiano: function (elem) {
-                handlePopulatePiano(elem);
+            initPopulatePiano: function (event ,elem) {
+                handlePopulatePiano(event,elem);
             },
             initPopulateServiceCharges: function (elem) {
                 handlePopulateServiceCharges(elem);
@@ -1169,6 +1304,9 @@
             },
             initFormBegin: function () {
                 return handleFormBegin();
+            },
+            initQouteBegin: function () {
+                return handleQouteBegin();
             },
             initShowPaymentData: function (data) {
                 handleShowPaymentData(data);
@@ -1208,7 +1346,7 @@
 
 
     $('#addPiano').click(function (e) {
-        debugger
+        
         $.get('/Orders/NewPiano', function (template) {
             $('#pianoContainer').append(template);
 
@@ -1223,7 +1361,7 @@
     });
 
     $('#addServices').click(function (e) {
-        debugger
+        
         $.get('/Orders/NewService', function (template) {
             $('#serviceContainer').append(template);
 

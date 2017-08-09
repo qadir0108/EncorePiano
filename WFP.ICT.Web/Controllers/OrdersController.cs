@@ -10,6 +10,8 @@ using WFP.ICT.Enums;
 using WFP.ICT.Common;
 using System.Web;
 using System.IO;
+using WFP.ICT.Web.Async;
+using System.Text;
 
 namespace WFP.ICT.Web.Controllers
 {
@@ -559,9 +561,10 @@ namespace WFP.ICT.Web.Controllers
                         type = piano.PianoTypeId,
                         make = piano.PianoMakeId,
                         model = piano.Model,
-                        isBoxed = piano.IsBoxed,
-                        isBench = piano.IsBench,
-                        isPlayer = piano.IsPlayer,
+                        finish = piano.PianoFinishId,
+                        isBoxed = piano.IsBoxed ? "True" : "False",
+                        isBench = piano.IsBench ? "True" : "False",
+                        isPlayer = piano.IsPlayer ? "True" : "False",
                         category = piano.PianoCategoryType,
                         size = piano.PianoSizeId,
                     };
@@ -781,6 +784,60 @@ namespace WFP.ICT.Web.Controllers
         }
 
 
+        [HttpPost]
+        public ActionResult SendQoute(OrderVm orderVm)
+        {
+
+            try
+            {
+                String subject = string.Format(@"Order Qoute");
+
+                StringBuilder body = new StringBuilder();
+                body.AppendFormat(@"Please find the detailed qoute for order # {0} <br/>", orderVm.OrderNumber);
+                body.AppendFormat(@"Pick Up Address : {0} <br/>" , orderVm.PickupAddress.AddressToString );
+
+                body.AppendFormat(@"Please find the detailed qoute for order # {0} <br/>", orderVm.OrderNumber);
+                body.AppendFormat(@"Delivery Address : {0} <br/>", orderVm.DeliveryAddress.AddressToString);
+
+                body.AppendFormat(@"Units : <br/>");
+                foreach(var item in orderVm.Pianos)
+                {
+                    body.AppendFormat(@"Bench? : {0} " , item.IsBench ? "Yes" : "No");
+                    body.AppendFormat(@"Box? : {0} ", item.IsBoxed ? "Yes" : "No");
+                    body.AppendFormat(@"Stairs? : {0} <br/>", item.IsStairs ? "Yes" : "No");
+
+                    body.AppendFormat(@"Serial Number : {0} ", item.SerialNumber);
+                    body.AppendFormat(@"Category : {0} ", item.PianoCategoryType);
+                    body.AppendFormat(@"Make : {0} ", string.IsNullOrEmpty(item.PianoMake) ? "N/A" : db.PianoMake.Where(x => x.Id.ToString() == item.PianoMake).FirstOrDefault().Name);
+                    body.AppendFormat(@"Model : {0} <br/>", item.PianoModel);
+
+                    body.AppendFormat(@"Size : {0} ", string.IsNullOrEmpty(item.PianoSize) ? "N/A" : PianoSizeConversion.GetFeetInches(db.PianoSize.Where(x => x.Id.ToString() == item.PianoSize).FirstOrDefault().Width));
+                    body.AppendFormat(@"Type : {0} ", string.IsNullOrEmpty(item.PianoTypeId) ? "N/A" : db.PianoTypes.Where(x => x.Id.ToString() == item.PianoTypeId).FirstOrDefault().Type);
+                    body.AppendFormat(@"Finish : {0} <br/>", string.IsNullOrEmpty(item.PianoFinish) ? "N/A" : db.PianoFinish.Where(x => x.Id.ToString() == item.PianoFinish).FirstOrDefault().Name);
+
+                    body.AppendFormat(@"Miscellaneous : {0} ", item.Notes);
+
+
+                }
+                body.AppendFormat(@"Charges : <br/>");
+
+                foreach (var item in orderVm.Charges)
+                {
+                    body.AppendFormat(@"Charges : {0} ", db.PianoCharges.Where(x=> x.Id.ToString() == item.ChargesCode).FirstOrDefault().ChargesDetails);
+                    body.AppendFormat(@"Amount : {0} <br/>", item.Amount);
+                }
+
+                EmailHelper.SendEmail(orderVm.CallerEmail, subject, body.ToString());
+
+                return Json(new { key = true }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { key = false }, JsonRequestBehavior.AllowGet);
+
+            }
+
+        }
 
     }
 }
