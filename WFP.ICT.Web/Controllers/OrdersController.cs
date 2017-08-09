@@ -200,7 +200,7 @@ namespace WFP.ICT.Web.Controllers
                     PhoneNumber = orderVm.PickupAddress.PhoneNumber,
                     AlternateContact = orderVm.PickupAddress.AlternateContact,
                     AlternatePhone = orderVm.PickupAddress.AlternatePhone,
-                    WarehouseId = orderVm.PickupAddress.Warehouse != null ? Guid.Parse(orderVm.PickupAddress.Warehouse) : (Guid?)null , 
+                    WarehouseId = string.IsNullOrEmpty(orderVm.PickupAddress.Warehouse) ? (Guid?)null : Guid.Parse(orderVm.PickupAddress.Warehouse),
 
 
                 };
@@ -222,7 +222,7 @@ namespace WFP.ICT.Web.Controllers
                     PhoneNumber = orderVm.DeliveryAddress.PhoneNumber,
                     AlternateContact = orderVm.DeliveryAddress.AlternateContact,
                     AlternatePhone = orderVm.DeliveryAddress.AlternatePhone,
-                    WarehouseId = orderVm.DeliveryAddress.Warehouse == null ? (Guid?)null : Guid.Parse(orderVm.DeliveryAddress.Warehouse),
+                    WarehouseId = string.IsNullOrEmpty(orderVm.DeliveryAddress.Warehouse) ? (Guid?)null : Guid.Parse(orderVm.DeliveryAddress.Warehouse),
                 };
                 db.Addresses.Add(deliveryAddress);
                 db.SaveChanges();
@@ -384,7 +384,7 @@ namespace WFP.ICT.Web.Controllers
                     order.DeliveryAddress.PhoneNumber = orderVm.DeliveryAddress.PhoneNumber;
                     order.DeliveryAddress.AlternateContact = orderVm.DeliveryAddress.AlternateContact;
                     order.DeliveryAddress.AlternatePhone = orderVm.DeliveryAddress.AlternatePhone;
-                    order.DeliveryAddress.WarehouseId = orderVm.DeliveryAddress.Warehouse == null ? (Guid?)null : Guid.Parse(orderVm.DeliveryAddress.Warehouse);
+                    order.DeliveryAddress.WarehouseId = string.IsNullOrEmpty(orderVm.DeliveryAddress.Warehouse) ? (Guid?)null : Guid.Parse(orderVm.DeliveryAddress.Warehouse);
 
                     // Pickup Address
                     order.PickupAddress.Name = orderVm.PickupAddress.Name;
@@ -397,7 +397,7 @@ namespace WFP.ICT.Web.Controllers
                     order.PickupAddress.PhoneNumber = orderVm.PickupAddress.PhoneNumber;
                     order.PickupAddress.AlternateContact = orderVm.PickupAddress.AlternateContact;
                     order.PickupAddress.AlternatePhone = orderVm.PickupAddress.AlternatePhone;
-                    order.PickupAddress.WarehouseId = orderVm.PickupAddress.Warehouse == null ? (Guid?)null : Guid.Parse(orderVm.PickupAddress.Warehouse);
+                    order.PickupAddress.WarehouseId = string.IsNullOrEmpty(orderVm.PickupAddress.Warehouse) ? (Guid?)null : Guid.Parse(orderVm.PickupAddress.Warehouse);
                 };
 
                 db.SaveChanges();
