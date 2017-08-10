@@ -159,8 +159,8 @@ namespace WFP.ICT.Web.Controllers
                             State = add.State,
                             ZipCode = add.PostCode,
                             Phone = add.PhoneNumber,
-                            Location = GetLocationLink(add.Lat, add.Lng),
-                            Linked = GetLinkedTo(add.WarehouseId, add.CustomerId),
+                            Location = GetLocationLink(add.Lng, add.Lat, add.Address1, add.City, add.State),
+                            Linked = GetLinkedTo(add.WarehouseId, add.CustomerId ),
                             Actions = GetActions(add.Id)
                         });
 
@@ -169,9 +169,9 @@ namespace WFP.ICT.Web.Controllers
                         JsonRequestBehavior.AllowGet);
         }
 
-        public string GetLocationLink(string lng, string lat)
+        public string GetLocationLink(string lng, string lat , string add , string city , string state)
         {
-            string action = @"<a href='#' data-tooltip='tooltip' title='Show Map' class='btnMap' data-lat='" + lat + "' data-lng='" + lng + "'>Show Map</a>";
+            string action = @"<a href='#' data-tooltip='tooltip' title='Show Map' class='btnMap' data-lat='" + lat + "' data-add='" + add + "' data-city='" + city + "' data-state='" + state + "' data-lng='" + lng + "'>Show Map</a>";
 
             return action;
         }
@@ -241,7 +241,9 @@ namespace WFP.ICT.Web.Controllers
                     Id = address.Id,
                     Name = address.Name,
                     PhoneNumber = address.PhoneNumber,
-                    PostCode = address.PostCode
+                    PostCode = address.PostCode,
+                    lat = address.Lat,
+                    lng = address.Lng
                 };
                 return PartialView("~/Views/Address/Edit.cshtml", model);
             }
@@ -252,9 +254,21 @@ namespace WFP.ICT.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult Save(NewAddressVm address)
+        
+        public ActionResult Save(NewAddressVm NewAddressVm)
         {
             try {
+                var address = db.Addresses.FirstOrDefault(x => x.Id == NewAddressVm.Id);
+
+                address.Address1 = NewAddressVm.Address;
+                address.City = NewAddressVm.City;
+                address.State = NewAddressVm.State;
+                address.PostCode = NewAddressVm.PostCode;
+                address.Lat = NewAddressVm.lat;
+                address.Lng = NewAddressVm.lng;
+                address.Name = NewAddressVm.Name;
+                address.PhoneNumber = NewAddressVm.PhoneNumber;
+                db.SaveChanges();
 
                 return Json(new JsonResponse() { IsSucess = true}, JsonRequestBehavior.AllowGet);
 

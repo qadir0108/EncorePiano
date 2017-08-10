@@ -7,32 +7,18 @@
 
 <!-- BEGIN CONTENT -->
 
-<div class="page-content-wrapper">
-    <!-- BEGIN CONTENT BODY -->
-    <div class="page-content">
         <!-- BEGIN PAGE BASE CONTENT -->
-        <div class="portlet light bordered">
-            <!-- box purple-->
-            <div class="portlet-title">
-                <div class="caption font-red-sunglo">
-                    <span class="caption-subject bold uppercase text-info">Add Client</span>
-                </div>
-                <div class="actions">
-                    <a class="btn btn-circle btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title=""> </a>
-                </div>
-            </div>
 
-            @using (Ajax.BeginForm("Save", "Address", null, new AjaxOptions { HttpMethod = "POST", OnSuccess = "AddressConfigs.initEditSuccess(data,status)" }, new
+            @using (Ajax.BeginForm("Save", "Customers", null, new AjaxOptions { HttpMethod = "POST", OnSuccess = "AddressConfigs.initAddSuccess(data,status)" }, new
             {
                 @id = "frm",
             }))
             {
-                <div class="row">
-                    <div class="col-md-12">
+
                         <div class="portlet-body">
 
                             <div class="row">
-                                <div class="col-md-12 ">
+                                <div class="col-md-6 ">
                                     <!-- BEGIN SAMPLE FORM PORTLET-->
 
                                     <div class="portlet light bordered">
@@ -46,12 +32,11 @@
                                         </div>
                                         <div class="portlet-body form">
                                             <div class="form-body">
-                                             
                                                 <div class="row">
-                                                    <div class="col-md-4">
+                                                    <div class="col-md-12">
                                                         <div class="form-group form-md-line-input has-success">
                                                             <div class="input-icon">
-                                                                @Html.DropDownListFor(model => model.Client.Type, TempData["ClietTypes"] as SelectList, htmlAttributes: new { @class = "form-control" })
+                                                                @Html.DropDownListFor(model => model.Client.Type, TempData["ClientTypes"] as SelectList, htmlAttributes: new { @class = "form-control" })
                                                                 <label>Client Type<span class="required">*</span></label>
                                                                 @Html.ValidationMessageFor(model => model.Client.Type, null, new { @class = "help-block help-block-error" })
                                                                 <span class="help-block">Enter Client Type</span>
@@ -59,7 +44,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-4">
+                                                    <div class="col-md-12">
                                                         <div class="form-group form-md-line-input has-success">
                                                             <div class="input-icon">
                                                                 @Html.EditorFor(model => model.Client.Name, new { htmlAttributes = new { @class = "form-control" } })
@@ -70,7 +55,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-4">
+                                                    <div class="col-md-12">
                                                         <div class="form-group form-md-line-input has-success">
                                                             <div class="input-icon">
                                                                 @Html.EditorFor(model => model.Client.PhoneNumber, new { htmlAttributes = new { @class = "form-control" } })
@@ -86,7 +71,7 @@
 
                                                 <div class="row">
 
-                                                    <div class="col-md-4">
+                                                    <div class="col-md-12">
                                                         <div class="form-group form-md-line-input has-success">
                                                             <div class="input-icon">
                                                                 @Html.EditorFor(model => model.Client.AccountCode, new { htmlAttributes = new { @class = "form-control" } })
@@ -98,7 +83,7 @@
                                                         </div>
                                                     </div>
 
-                                                    <div class="col-md-4">
+                                                    <div class="col-md-12">
                                                         <div class="form-group form-md-line-input has-success">
                                                             <div class="input-icon">
                                                                 @Html.EditorFor(model => model.Client.Email, new { htmlAttributes = new { @class = "form-control" } })
@@ -116,7 +101,7 @@
                                                         <div class="form-group form-md-line-input has-success">
                                                             <div class="input-icon">
                                                                 @Html.EditorFor(model => model.Client.Notes, new { htmlAttributes = new { @class = "form-control" } })
-                                                                <label>Comments <span class="required">*</span></label>
+                                                                <label>Comments</label>
                                                                 @Html.ValidationMessageFor(model => model.Client.Notes, null, new { @class = "help-block help-block-error" })
                                                                 <span class="help-block">Enter Comments Here</span>
                                                                 <i class="fa fa-user"></i>
@@ -125,14 +110,18 @@
                                                     </div>
 
                                                 </div>
+                                   
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <button type="submit" onclick="" class="btn blue-steel">Save Address</button>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
 
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12 ">
+                                </div>
+                                <div class="col-md-6">
                                     <!-- BEGIN SAMPLE FORM PORTLET-->
                                     <div class="portlet light bordered">
                                         <div class="portlet-title">
@@ -146,7 +135,7 @@
                                         <div class="portlet-body form">
                                             <div class="form-body">
                                                 <div class="row">
-                                                    <div class="col-md-4">
+                                                    <div class="col-md-6">
                                                         <div class="form-group form-md-line-input has-success">
                                                             <div class="input-icon">
                                                                 @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
@@ -157,7 +146,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-4">
+                                                    <div class="col-md-6">
                                                         <div class="form-group form-md-line-input has-success">
                                                             <div class="input-icon">
                                                                 @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control" } })
@@ -168,7 +157,6 @@
                                                             </div>
                                                         </div>
                                                     </div>
-
                                                 </div>
 
                                                 <div class="row">
@@ -186,17 +174,7 @@
                                                 </div>
                                                 <div class="row">
 
-                                                    <div class="col-md-4">
-                                                        <div class="form-group form-md-line-input has-success">
-                                                            <div class="input-icon">
-                                                                @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control" } })
-                                                                <label>City Name <span class="required">*</span></label>
-                                                                @Html.ValidationMessageFor(model => model.City, null, new { @class = "help-block help-block-error" })
-                                                                <span class="help-block">Enter City Name</span>
-                                                                <i class="fa fa-user"></i>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                       
                                                     <div class="col-md-4">
                                                         <div class="form-group form-md-line-input has-success">
                                                             <div class="input-icon">
@@ -208,7 +186,19 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-4">
+
+                                                    <div class="col-md-5">
+                                                        <div class="form-group form-md-line-input has-success">
+                                                            <div class="input-icon">
+                                                                @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control" } })
+                                                                <label>City Name <span class="required">*</span></label>
+                                                                @Html.ValidationMessageFor(model => model.City, null, new { @class = "help-block help-block-error" })
+                                                                <span class="help-block">Enter City Name</span>
+                                                                <i class="fa fa-user"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
                                                         <div class="form-group form-md-line-input has-success">
                                                             <div class="input-icon">
                                                                 @Html.EditorFor(model => model.PostCode, new { htmlAttributes = new { @class = "form-control" } })
@@ -219,7 +209,13 @@
                                                             </div>
                                                         </div>
                                                     </div>
-
+                                                </div>
+                                                <div class="row">
+                                                        <div class="map-container-address">
+                                                            <div class="label label-danger visible-ie8"> Not supported in Internet Explorer 8 </div>
+                                                            <div id="gmap_location" class="gmaps"> </div>
+                                                        </div>
+                                                    @Html.ValidationMessageFor(model => model.lng, null, new { @class = "help-block help-block-error" })
                                                 </div>
                                             </div>
                                         </div>
@@ -231,50 +227,19 @@
 
                                     @Html.HiddenFor(x => x.lng, htmlAttributes: new { id = "AddressLng" })
 
-                                    <div class="form-actions noborder">
-                                        <button type="submit" onclick="" class="btn blue-steel pull-right">Save Address</button>
-                                    </div>
 
-
+                      
                                     <!-- END SAMPLE FORM PORTLET-->
                                 </div>
-
                             </div>
+                          
                         </div>
-
-                    </div>
-                </div>
-
+         
             }
-        </div>
+     
 
 
 
-        <!-- END PAGE BASE CONTENT -->
-    </div>
-    <!-- END CONTENT BODY -->
-</div>
-<!-- END CONTENT -->
 
 
-<script type="text/javascript">
-    var AddressConfigs = function () {
-        handleEditSuccess = function (data, status) {
-            if (data.IsSucess) {
-                wfp.showSuccess('Address has been updated successfully.');
-            }
-            else {
-                wfp.showError(data.ErrorMessage);
-            }
-        };
-
-        return {
-            initEditSuccess: function (data, status) {
-                handleEditSuccess(data, status);
-            }
-        }
-    }();
-
-
-</script>
 

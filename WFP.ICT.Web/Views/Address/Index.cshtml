@@ -25,15 +25,28 @@
         margin: 0px !important;
     }
 
-        .map-container {
+    .map-container {
         height: 500px;
         width: 100%;
     }
-        #gmap_location {
+
+    .map-container-address {
+        height: 300px;
+        width: 100%;
+    }
+
+
+
+
+    #gmap_location {
         height: 100% !important;
         width: 100% !important;
     }
 
+    #gmap_location_edit {
+        height: 100% !important;
+        width: 100% !important;
+    }
 </style>
 
 <div class="page-content-wrapper">
@@ -97,6 +110,8 @@
             <div class="modal-body" id="AddressContainer">
 
             </div>
+
+
         </div>
 
     </div>
@@ -129,7 +144,7 @@
 
                  { "title": "Street Address", "data": "Address" },
 
-                 { "title": "City", "data": "City"},
+                 { "title": "City", "data": "City" },
 
                  { "title": "State", "data": "State" },
 
@@ -143,62 +158,63 @@
 
                       { "title": "Actions", "data": "Actions", sortable: false },
 
-            ],
-            "lengthMenu": [
-                            [5, 10, 15, 20, -1],
-                            [5, 10, 15, 20, "All"]
-            ],
-            "pageLength": 10,
+                ],
+                "lengthMenu": [
+                                [5, 10, 15, 20, -1],
+                                [5, 10, 15, 20, "All"]
+                ],
+                "pageLength": 10,
 
-            buttons: [
-            {
-                extend: 'print', exportOptions: {
-                    columns: ':visible'
-                }, className: 'btn default'
-            },
-            {
-                extend: 'pdf', exportOptions: {
-                    columns: ':visible'
-                }, className: 'btn default'
-            },
-            {
-                extend: 'csv', exportOptions: {
-                    columns: ':visible'
-                }, className: 'btn default'
-            },
-            { extend: 'colvis', className: 'btn default' , text :'Columns' }
-            ],
-            colReorder: true,
-
-            "dom": "<'row'<'col-md-12'B>><'row'<'col-md-6 col-sm-12'l><'col-md-6 col-sm-12'f>r><'table-scrollable't><'row'<'col-md-5 col-sm-12'i><'col-md-7 col-sm-12'p>>", // horizobtal scrollable datatable
-
-            "language": {
-                "aria": {
-                    "sortAscending": ": activate to sort column ascending",
-                    "sortDescending": ": activate to sort column descending"
+                buttons: [
+                {
+                    extend: 'print', exportOptions: {
+                        columns: ':visible'
+                    }, className: 'btn default'
                 },
-                "emptyTable": "No data available in table",
-                "info": "Showing _START_ to _END_ of _TOTAL_ records",
-                "infoEmpty": "No records found",
-                "infoFiltered": "(filtered1 from _MAX_ total records)",
-                "lengthMenu": "Show _MENU_",
-                "search": "Search:",
-                "zeroRecords": "No matching records found",
-                "paginate": {
-                    "previous": "Prev",
-                    "next": "Next",
-                    "last": "Last",
-                    "first": "First"
-                }
-            },
-            "pagingType": "bootstrap_number",
-            "columnDefs": [
-              { "width": "10%", "targets": 8 }
-            ],
-            "order" :[[0 , 'asc']]
+                {
+                    extend: 'pdf', exportOptions: {
+                        columns: ':visible'
+                    }, className: 'btn default'
+                },
+                {
+                    extend: 'csv', exportOptions: {
+                        columns: ':visible'
+                    }, className: 'btn default'
+                },
+                { extend: 'colvis', className: 'btn default', text: 'Columns' }
+                ],
+                colReorder: true,
+
+                "dom": "<'row'<'col-md-12'B>><'row'<'col-md-6 col-sm-12'l><'col-md-6 col-sm-12'f>r><'table-scrollable't><'row'<'col-md-5 col-sm-12'i><'col-md-7 col-sm-12'p>>", // horizobtal scrollable datatable
+
+                "language": {
+                    "aria": {
+                        "sortAscending": ": activate to sort column ascending",
+                        "sortDescending": ": activate to sort column descending"
+                    },
+                    "emptyTable": "No data available in table",
+                    "info": "Showing _START_ to _END_ of _TOTAL_ records",
+                    "infoEmpty": "No records found",
+                    "infoFiltered": "(filtered1 from _MAX_ total records)",
+                    "lengthMenu": "Show _MENU_",
+                    "search": "Search:",
+                    "zeroRecords": "No matching records found",
+                    "paginate": {
+                        "previous": "Prev",
+                        "next": "Next",
+                        "last": "Last",
+                        "first": "First"
+                    }
+                },
+                "pagingType": "bootstrap_number",
+                "columnDefs": [
+                  { "width": "10%", "targets": 8 }
+                ],
+                "order": [[0, 'asc']]
             },
 
         });
+    });
 
     var googleMaps = function () {
 
@@ -251,42 +267,117 @@
         var id = btnEdit.attr('data-id');
         var dataToPost = "{id : '" + id + "'}";
         $("#AddressContainer").html('');
-                $.ajax({
-                    type: "POST",
-                    url: '/Address/Edit',
-                    data: dataToPost,
-                    contentType: "application/json; charset=utf-8",
-                    success: function (response) {
-                        debugger
-                        if (response.IsSucess == false) {
-                            wfp.showError(response.ErrorMessage);
-                        }
-                        else {
-                            $("#AddressContainer").html(response);
-                            $("#AddressModal").modal('show');
-                        }
+        $.ajax({
+            type: "POST",
+            url: '/Address/Edit',
+            data: dataToPost,
+            contentType: "application/json; charset=utf-8",
+            success: function (response) {
 
-                    },
-                    failure: function (response) {
-                        wfp.showError('There is erorr in service call.');
-                    },
-                    complete: function () {
+                if (response.IsSucess == false) {
+                    wfp.showError(response.ErrorMessage);
+                }
+                else {
+                    $("#AddressContainer").html(response);
+                    $("#AddressModal").modal('show');
+
+                    var lng = $("#AddressContainer").find('#AddressLng').val();
+                    var lat = $("#AddressContainer").find('#AddressLat').val();
+
+                    if (lng != '') {
+                        lng = parseFloat(lng);
                     }
+                    if (lat != '') {
+                        lat = parseFloat(lat);
+                    }
+                    debugger
+                    var add = $("#AddressContainer").find('#Address').val();
+                    var city = $("#AddressContainer").find('#City').val();
 
-            });
+                    $('#AddressContainer #gmap_location_edit').empty();
+                    setTimeout(function () {
+                        var map = new GMaps({
+                            el: '#gmap_location_edit',
+                            lat: lat,
+                            lng: lng,
+                        });
+
+                        map.setCenter(lat, lng);
+
+                        map.addMarker({
+                            lat: lat,
+                            draggable: true,
+                            dragend: function (event) {
+                                var lat = event.latLng.lat();
+                                var lng = event.latLng.lng();
+                                $("#AddressContainer").find('#AddressLng').val(lng);
+                                $("#AddressContainer").find('#AddressLat').val(lat);
+
+                            },
+                            lng: lng,
+                            infoWindow: {
+                                content: '<p><h2>Address</h2></p>' + add + '</p></p>' + city + '</p> </p>' + state + '</p>'
+                            }
+                        });
+                    }, 500);
+
+                }
+
+            },
+            failure: function (response) {
+                wfp.showError('There is erorr in service call.');
+            },
+            complete: function () {
+            }
+
+        });
     });
 
+    var lat;
+    var lng;
+    var city;
+    var add;
+    var state;;
+
     $('body').on('click', '.btnMap', function () {
+
         var btnDelete = $(this);
-        var lat = btnDelete.attr('data-lat');
-        var lng = btnDelete.attr('data-lng');
+
+        lat = btnDelete.attr('data-lat');
+        lng = btnDelete.attr('data-lng');
+        city = btnDelete.attr('data-city');
+        add = btnDelete.attr('data-add');
+        state = btnDelete.attr('data-state');
+
+        $('#gmap_location').empty();
+
         $('#LocationMap').modal('show');
+
+
+    });
+
+
+    $('#LocationMap').on('shown.bs.modal', function (e) {
+
+        if (lat != '') {
+            lat = parseFloat(lat);
+        }
+        if (lng != '') {
+            lng = parseFloat(lng);
+        }
         var map = new GMaps({
             el: '#gmap_location',
-            lat: 36.184164,
-            lng: 43.975181,
-            click: function (e) {
-                console.log(e.latLng.lat());
+            lat: lat,
+            lng: lng,
+        });
+
+        map.setCenter(lat, lng);
+
+        map.addMarker({
+            lat: lat,
+            lng: lng,
+            infoWindow: {
+                content: '<p><h2>Address</h2></p>' + add + '</p></p>' + city + '</p> </p>' + state + '</p>'
             }
         });
     });
@@ -294,6 +385,7 @@
     var AddressConfigs = function () {
         handleEditSuccess = function (data, status) {
             if (data.IsSucess) {
+                $("#address_grid").DataTable().ajax.reload(null, true);
                 wfp.showSuccess('Address has been updated successfully.');
             }
             else {
@@ -302,10 +394,11 @@
             $("#AddressModal").modal('hide');
         };
 
-        return{
+        return {
             initEditSuccess: function (data, status) {
                 handleEditSuccess(data, status);
             },
         }
+
     }();
 </script>

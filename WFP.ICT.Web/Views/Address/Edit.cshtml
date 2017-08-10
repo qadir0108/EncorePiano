@@ -3,22 +3,14 @@
 @{
     Layout = null;
 }
-<style>
 
-</style>
-
-<!-- BEGIN CONTENT -->
-
-
-        <!-- BEGIN PAGE BASE CONTENT -->
-        <div class="row">
+<div class="row">
             <div class="col-md-12 ">
                 <!-- BEGIN SAMPLE FORM PORTLET-->
 
                 @using (Ajax.BeginForm("Save", "Address", null, new AjaxOptions { HttpMethod = "POST", OnSuccess = "AddressConfigs.initEditSuccess(data,status)" }, new
                 {
                     @id = "frm",
-                    @enctype = "multipart/form-data"
                 }))
                 {
                     <div class="portlet light bordered">
@@ -26,7 +18,7 @@
                         <div class="portlet-body form">
                             <div class="form-body">
                                 <div class="row">
-                                        <div class="col-md-4">
+                                        <div class="col-md-8">
                                             <div class="form-group form-md-line-input has-success">
                                                 <div class="input-icon">
                                                     @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
@@ -101,6 +93,14 @@
                                         </div>
                                 
                                 </div>
+                                <div class="row">
+                                    <div class="map-container-address">
+                                        <div class="label label-danger visible-ie8"> Not supported in Internet Explorer 8 </div>
+                                        <div id="gmap_location_edit" class="gmaps"> </div>
+                                    </div>
+                                </div>
+         
+
                             </div>
                         </div>
                     </div>
@@ -120,8 +120,6 @@
             </div>
 
         </div>
-
-        <!-- END PAGE BASE CONTENT -->
 
 
 

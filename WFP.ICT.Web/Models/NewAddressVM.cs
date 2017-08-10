@@ -32,7 +32,6 @@ namespace WFP.ICT.Web.Models
         [Required(ErrorMessage = "Please select marker")]
         public string lng { get; set; }
 
-        [Required(ErrorMessage = "Please select marker")]
         public string lat { get; set; }
 
         public NewClientVm Client { get; set; }
@@ -58,13 +57,14 @@ namespace WFP.ICT.Web.Models
         public int Type { get; set; }
 
         [Required(ErrorMessage = "Code is required")]
-        [Range(1, Double.MaxValue, ErrorMessage = "Code is required")]
-        public int AccountCode { get; set; }
+        public string AccountCode { get; set; }
 
         [Required(ErrorMessage = "Email is required")]
         [DataType(DataType.EmailAddress, ErrorMessage = "Please Enter Valid Email")]
         public string Email { get; set; }
         public String Notes { get; set; }
+
+        public Guid? Id { get; set; }
 
     }
 }
