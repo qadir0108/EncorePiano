@@ -92,13 +92,9 @@
     <Compile Include="Entities\BaseEntity.cs" />
     <Compile Include="Entities\iBaseEntity.cs" />
     <Compile Include="EntityManager\CompanyManager.cs" />
-    <Compile Include="Migrations\201707300727080_UpdateIncvoice.cs" />
-    <Compile Include="Migrations\201707300727080_UpdateIncvoice.Designer.cs">
-      <DependentUpon>201707300727080_UpdateIncvoice.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201708021827541_updated-consignments.cs" />
-    <Compile Include="Migrations\201708021827541_updated-consignments.Designer.cs">
-      <DependentUpon>201708021827541_updated-consignments.cs</DependentUpon>
+    <Compile Include="Migrations\201708101016179_Initial.cs" />
+    <Compile Include="Migrations\201708101016179_Initial.Designer.cs">
+      <DependentUpon>201708101016179_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Repository\GenericRepository.cs" />
     <Compile Include="Repository\UnitOfWork.cs" />
@@ -134,11 +130,8 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201707300727080_UpdateIncvoice.resx">
-      <DependentUpon>201707300727080_UpdateIncvoice.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201708021827541_updated-consignments.resx">
-      <DependentUpon>201708021827541_updated-consignments.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201708101016179_Initial.resx">
+      <DependentUpon>201708101016179_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

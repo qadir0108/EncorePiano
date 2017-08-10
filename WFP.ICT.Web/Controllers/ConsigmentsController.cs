@@ -367,6 +367,7 @@ namespace WFP.ICT.Web.Controllers
             }
             catch (Exception ex)
             {
+                throw new Exception(ex.StackTrace);
                 return File(new byte[0] , "application/pdf", "Error.pdf");
             }
 
@@ -376,7 +377,13 @@ namespace WFP.ICT.Web.Controllers
         {
             try
             {
-                var htmlToPdf = new NReco.PdfGenerator.HtmlToPdfConverter();
+                var htmlToPdf = new NReco.PdfGenerator.HtmlToPdfConverter()
+                {
+                    Quiet = false,
+                };
+                //htmlToPdf.WkHtmlToPdfExeName = "wkhtmltopdf.exe";
+                htmlToPdf.CustomWkHtmlArgs = " --load-media-error-handling ignore ";
+                htmlToPdf.LogReceived += HtmlToPdf_LogReceived;
                 var pdfBytes = htmlToPdf.GeneratePdf(html);
 
                 string Path = Server.MapPath("~/Uploads/ConsignmentInvoices");
@@ -397,5 +404,10 @@ namespace WFP.ICT.Web.Controllers
 
         }
 
+        private void HtmlToPdf_LogReceived(object sender, System.Diagnostics.DataReceivedEventArgs e)
+        {
+            string Path = Server.MapPath("~/Uploads/ConsignmentInvoices/log.txt");
+            System.IO.File.AppendAllText(Path, e.Data);
+        }
     }
 }

@@ -79,7 +79,7 @@
                             content: '<p><h2>Pickup</h2></p><p>' + pickupAddress + '</p>'
                         }
                     });
-                    latlng2 = latlng;
+                    latlng1 = latlng;
                 }
             }
         });
@@ -87,7 +87,7 @@
         GMaps.geocode({
             address: deliveryAddress,
             callback: function (results, status) {
-                //debugger;
+                debugger;
                 if (status === 'OK') {
                     var latlng = results[0].geometry.location;
                     map.setCenter(latlng.lat(), latlng.lng());
@@ -98,29 +98,29 @@
                             content: '<p><h2>Delivery</h2></p><p>' + deliveryAddress + '</p>'
                         }
                     });
-                    //latlng2 = latlng;
+                    latlng2 = latlng;
                 }
             }
         });
 
-        GMaps.geocode({
-            address: pickupAddress,
-            callback: function (results, status) {
-                //debugger;
-                if (status === 'OK') {
-                    var latlng = results[0].geometry.location;
-                    map.setCenter(latlng.lat(), latlng.lng());
-                    map.addMarker({
-                        lat: latlng.lat(),
-                        lng: latlng.lng(),
-                        infoWindow: {
-                            content: '<p><h2>Pickup</h2></p><p>' + pickupAddress + '</p>'
-                        }
-                    });
-                    latlng1 = latlng;
-                }
-            }
-        });
+        //GMaps.geocode({
+        //    address: pickupAddress,
+        //    callback: function (results, status) {
+        //        //debugger;
+        //        if (status === 'OK') {
+        //            var latlng = results[0].geometry.location;
+        //            map.setCenter(latlng.lat(), latlng.lng());
+        //            map.addMarker({
+        //                lat: latlng.lat(),
+        //                lng: latlng.lng(),
+        //                infoWindow: {
+        //                    content: '<p><h2>Pickup</h2></p><p>' + pickupAddress + '</p>'
+        //                }
+        //            });
+        //            latlng1 = latlng;
+        //        }
+        //    }
+        //});
     };
     //var waypts = [];
     //waypts.push({

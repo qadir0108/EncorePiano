@@ -138,17 +138,15 @@ namespace WFP.ICT.Web.Controllers
                 PianoPOD = PianoPOD.Skip(requestModel.Start).Take(requestModel.Length);
             }
 
-            var result = PianoPOD.
-                         ToList()
-                        .Select(pod => new
+            var list = PianoPOD.ToList();
+            var result = list.Select(pod => new
             {
-
                 OrderNumber = pod.PianoAssignment.PianoOrder.OrderNumber,
                 ConsignmentNumber = pod.PianoAssignment.AssignmentNumber,
                 Status = ((PODStatusEnum)(pod.PodStatus)).ToString(),
                 Recieved = pod.ReceivedBy,
                 Signature = GetSignatureImage(pod.Signature),
-                RecievingDate = pod.ReceivingTime.Value.ToString("yyyy-MM-dd HH:mm:ss"),
+                RecievingDate = pod.ReceivingTime?.ToString("yyyy-MM-dd HH:mm:ss"),
                 Notes = pod.Notes,
                 Print = "Print",
                 Pictures = GetPianoImage(pod.Pictures)
@@ -164,8 +162,8 @@ namespace WFP.ICT.Web.Controllers
             StringBuilder builder = new StringBuilder();
             if(path != string.Empty)
             {
-                builder.AppendFormat("<a href='../Images/{0}' data-lightbox='signature'>", path);
-                builder.AppendFormat("<image class='grid-image' src='../Images/{0}'/>", path);
+                builder.AppendFormat("<a href='../Images/Sign/{0}' data-lightbox='signature'>", path);
+                builder.AppendFormat("<image class='grid-image' src='../Images/Sign/{0}'/>", path);
                 builder.Append("</a>");
             }
             else
@@ -181,8 +179,8 @@ namespace WFP.ICT.Web.Controllers
             {
                 Pictures.ToList().ForEach(x =>
                 {
-                    builder.AppendFormat("<a href='../Images/{0}' data-lightbox='piano-images'>", x.Picture);
-                    builder.AppendFormat("<image  class='grid-image' src='../Images/{0}'/>", x.Picture);
+                    builder.AppendFormat("<a href='../Images/Piano/{0}' data-lightbox='piano-images'>", x.Picture);
+                    builder.AppendFormat("<image  class='grid-image' src='../Images/Piano/{0}'/>", x.Picture);
                     builder.Append("</a>");
                 });
             }

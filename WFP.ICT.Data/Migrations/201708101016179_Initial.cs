@@ -3,7 +3,7 @@ namespace WFP.ICT.Data.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class UpdateIncvoice : DbMigration
+    public partial class Initial : DbMigration
     {
         public override void Up()
         {
@@ -270,7 +270,6 @@ namespace WFP.ICT.Data.Migrations
                         AssignmentNumber = c.String(),
                         WarehouseStartId = c.Guid(),
                         VehicleId = c.Guid(),
-                        DriverId = c.Guid(),
                         PianoOrderId = c.Guid(),
                         PianoPodId = c.Guid(),
                         PickupTicket = c.String(),
@@ -283,14 +282,12 @@ namespace WFP.ICT.Data.Migrations
                         CreatedBy = c.String(),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Driver", t => t.DriverId)
                 .ForeignKey("dbo.Vehicle", t => t.VehicleId)
                 .ForeignKey("dbo.Warehouse", t => t.WarehouseStartId)
                 .ForeignKey("dbo.PianoOrder", t => t.Id)
                 .Index(t => t.Id)
                 .Index(t => t.WarehouseStartId)
-                .Index(t => t.VehicleId)
-                .Index(t => t.DriverId);
+                .Index(t => t.VehicleId);
             
             CreateTable(
                 "dbo.Driver",
@@ -666,6 +663,19 @@ namespace WFP.ICT.Data.Migrations
                 .ForeignKey("dbo.AspNetUsers", t => t.UserId, cascadeDelete: true)
                 .Index(t => t.UserId);
             
+            CreateTable(
+                "dbo.DriverPianoAssignment",
+                c => new
+                    {
+                        Driver_Id = c.Guid(nullable: false),
+                        PianoAssignment_Id = c.Guid(nullable: false),
+                    })
+                .PrimaryKey(t => new { t.Driver_Id, t.PianoAssignment_Id })
+                .ForeignKey("dbo.Driver", t => t.Driver_Id, cascadeDelete: true)
+                .ForeignKey("dbo.PianoAssignment", t => t.PianoAssignment_Id, cascadeDelete: true)
+                .Index(t => t.Driver_Id)
+                .Index(t => t.PianoAssignment_Id);
+            
         }
         
         public override void Down()
@@ -705,7 +715,8 @@ namespace WFP.ICT.Data.Migrations
             DropForeignKey("dbo.Piano", "PianoFinishId", "dbo.PianoFinish");
             DropForeignKey("dbo.Piano", "OrderId", "dbo.PianoOrder");
             DropForeignKey("dbo.Piano", "ClientId", "dbo.Client");
-            DropForeignKey("dbo.PianoAssignment", "DriverId", "dbo.Driver");
+            DropForeignKey("dbo.DriverPianoAssignment", "PianoAssignment_Id", "dbo.PianoAssignment");
+            DropForeignKey("dbo.DriverPianoAssignment", "Driver_Id", "dbo.Driver");
             DropForeignKey("dbo.PianoOrderCharges", "PianoOrderId", "dbo.PianoOrder");
             DropForeignKey("dbo.PianoOrderCharges", "PianoChargesId", "dbo.PianoCharges");
             DropForeignKey("dbo.PianoOrder", "InvoiceClientId", "dbo.Client");
@@ -718,6 +729,8 @@ namespace WFP.ICT.Data.Migrations
             DropForeignKey("dbo.Client", "Addresses_Id", "dbo.Address");
             DropForeignKey("dbo.AspNetRoleClaims", "RoleID", "dbo.AspNetRoles");
             DropForeignKey("dbo.AspNetRoleClaims", "ClaimID", "dbo.AspNetClaims");
+            DropIndex("dbo.DriverPianoAssignment", new[] { "PianoAssignment_Id" });
+            DropIndex("dbo.DriverPianoAssignment", new[] { "Driver_Id" });
             DropIndex("dbo.AspNetUserLogins", new[] { "UserId" });
             DropIndex("dbo.AspNetUserClaims", new[] { "UserId" });
             DropIndex("dbo.AspNetUsers", "UserNameIndex");
@@ -745,7 +758,6 @@ namespace WFP.ICT.Data.Migrations
             DropIndex("dbo.Piano", new[] { "PianoTypeId" });
             DropIndex("dbo.PianoPOD", new[] { "PianoId" });
             DropIndex("dbo.PianoPOD", new[] { "Id" });
-            DropIndex("dbo.PianoAssignment", new[] { "DriverId" });
             DropIndex("dbo.PianoAssignment", new[] { "VehicleId" });
             DropIndex("dbo.PianoAssignment", new[] { "WarehouseStartId" });
             DropIndex("dbo.PianoAssignment", new[] { "Id" });
@@ -768,6 +780,7 @@ namespace WFP.ICT.Data.Migrations
             DropIndex("dbo.AspNetRoles", "RoleNameIndex");
             DropIndex("dbo.AspNetRoleClaims", new[] { "RoleID" });
             DropIndex("dbo.AspNetRoleClaims", new[] { "ClaimID" });
+            DropTable("dbo.DriverPianoAssignment");
             DropTable("dbo.AspNetUserLogins");
             DropTable("dbo.AspNetUserClaims");
             DropTable("dbo.AspNetUsers");
