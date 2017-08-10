@@ -27,6 +27,7 @@
                 {
                     @Html.HiddenFor(x => x.Id)
                     @Html.HiddenFor(x => x.OrderNumber)
+                    @Html.HiddenFor(x => x.OrderPlacementType)
                     <div class="portlet light bordered">
                         <!-- box purple-->
                         <div class="portlet-title">
@@ -185,7 +186,7 @@
                                                                         <div class="form-group form-md-line-input has-success">
                                                                             <div class="input-icon">
                                                                                 @Html.EditorFor(model => model.PickupAddress.PhoneNumber, new { htmlAttributes = new { @class = "form-control pianoPhone" } })
-                                                                                <label>Contact<span class="required">*</span></label>
+                                                                                <label>Phone Number<span class="required">*</span></label>
                                                                                 @Html.ValidationMessageFor(model => model.PickupAddress.PhoneNumber, null, new { @class = "help-block help-block-error" })
                                                                                 <span class="help-block">Enter Phone here</span>
                                                                                 <i class="fa fa-home"></i>
@@ -363,7 +364,7 @@
                                                                         <div class="form-group form-md-line-input has-success">
                                                                             <div class="input-icon">
                                                                                 @Html.EditorFor(model => model.DeliveryAddress.PhoneNumber, new { htmlAttributes = new { @class = "form-control pianoPhone" } })
-                                                                                <label>Contact<span class="required">*</span></label>
+                                                                                <label>Phone Number<span class="required">*</span></label>
                                                                                 @Html.ValidationMessageFor(model => model.DeliveryAddress.PhoneNumber, null, new { @class = "help-block help-block-error" })
                                                                                 <span class="help-block">Enter Phone here</span>
                                                                                 <i class="fa fa-home"></i>
@@ -527,7 +528,7 @@
                                                                         @if (Model.DeliverForm != null)
                                                                         {
                                                                             <div class="col-md-3">
-                                                                                <a href="~/Orders/Download/@Model.DeliverForm" class="btn btn-default">Download</a>
+                                                                                <a href="~/File/Download/@Model.DeliverForm" class="btn btn-default">Download</a>
                                                                             </div>
                                                                         }
 
@@ -852,8 +853,6 @@
 </div>
 <!-- END CONTENT -->
 <script src="~/assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js"></script>
-
-<input hidden id="OrderPlacementType" value="@Model.OrderPlacementType "/>
 
 <script type="text/javascript">
 

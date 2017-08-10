@@ -103,7 +103,7 @@ namespace WFP.ICT.Web.Controllers
             var orderVm = new OrderVm()
             {
                 Id = order.Id.ToString(),
-
+                OrderPlacementType = order.OrderType,
                 OrderNumber = order.OrderNumber,
                 PaymentOption = order.PaymentOption.ToString(),
 

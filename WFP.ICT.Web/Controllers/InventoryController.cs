@@ -399,6 +399,16 @@ namespace WFP.ICT.Web.Controllers
             return value;
         }
 
+        // GET: Inventory
+        public ActionResult Warehouse()
+        {
+            TempData["Customers"] = new SelectList(CustomersList, "Value", "Text");
+
+            TempData["Warehouses"] = new SelectList(WarehousesList, "Value", "Text");
+
+            return View();
+        }
+
     }
 
 }

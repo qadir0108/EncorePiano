@@ -342,9 +342,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="API\filesController.cs" />
     <Compile Include="API\Models\ConsignmentModels.cs" />
     <Compile Include="API\Models\LoginModel.cs" />
     <Compile Include="API\baseapiController.cs" />
+    <Compile Include="API\Models\UploadFileType.cs" />
     <Compile Include="API\userController.cs" />
     <Compile Include="API\consignmentsController.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -6437,14 +6439,20 @@
     <Content Include="Views\Address\Map.cshtml" />
     <Content Include="Views\Address\Edit.cshtml" />
     <Content Include="Views\Customers\Add.cshtml" />
+<<<<<<< HEAD
     <Content Include="Views\Customers\Index.cshtml" />
+=======
+    <Content Include="Views\Inventory\Warehouse.cshtml" />
+>>>>>>> 386a20750a6151c198ed7f97fa727f50752ea6fd
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="assets\apps\img\" />
     <Folder Include="assets\global\plugins\angularjs\plugins\angular-file-upload\uploads\" />
-    <Folder Include="Images\" />
+    <Folder Include="Images\Piano\" />
+    <Folder Include="Images\Sign\" />
     <Folder Include="Uploads\" />
+    <Folder Include="Views\files\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
