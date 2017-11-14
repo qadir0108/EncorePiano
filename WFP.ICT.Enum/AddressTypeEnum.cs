@@ -7,9 +7,8 @@ namespace WFP.ICT.Enum
 {
     public enum AddressTypeEnum
     {
-        PicupAddress,
-        DeliveryAddress,
-        InvoiceAddress,
-        WarehouseAddress
+        Customer,
+        Invoice,
+        Warehouse
     }
 }

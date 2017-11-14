@@ -52,7 +52,6 @@
     <Compile Include="StationeryItemData.cs" />
     <Compile Include="UserUnitData.cs" />
     <Compile Include="PrintData.cs" />
-    <Compile Include="StringConstants.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -3,7 +3,7 @@ using System.ComponentModel;
 
 namespace WFP.ICT.Enum
 {
-    public enum CustomeWareHouseStatusEnumrTypeEnum
+    public enum WareHouseStatusEnum
     {
         [Description("Coming In")]
         ComingIn = 1,

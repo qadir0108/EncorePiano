@@ -31,7 +31,7 @@ namespace WFP.ICT.Web.Controllers
 
         public void SetupLoggedInUser(string UserName)
         {
-            var user = db.Users.Include(u => u.Roles).FirstOrDefault(x => x.UserName == UserName);
+            var user = Db.Users.Include(u => u.Roles).FirstOrDefault(x => x.UserName == UserName);
             Session["user"] = user;
         }
 
@@ -51,18 +51,73 @@ namespace WFP.ICT.Web.Controllers
             }
         }
 
-        string _uploadPath = "~/Uploads";
-        public string UploadPath
+        readonly string _imagesPath = $"~/Images/";
+        protected string ImagesPath
         {
             get
             {
-                string uploadPath = Server.MapPath(_uploadPath);
-                if (!System.IO.Directory.Exists(uploadPath)) System.IO.Directory.CreateDirectory(uploadPath);
-                return uploadPath;
+                return Server.MapPath(_imagesPath);
             }
         }
 
-        public string ImagesPath
+        readonly string _signPath = $"~/Images/Sign/";
+        protected string SignPath
+        {
+            get
+            {
+                return Server.MapPath(_signPath);
+            }
+        }
+
+        readonly string _pianoImagesPath = $"~/Images/Piano/";
+        protected string PianoImagesPath
+        {
+            get
+            {
+                return Server.MapPath(_pianoImagesPath);
+            }
+        }
+
+        string _uploadsPath = "~/Uploads";
+        public string UploadsPath
+        {
+            get
+            {
+                string uploadsPath = Server.MapPath(_uploadsPath);
+                if (!System.IO.Directory.Exists(uploadsPath)) System.IO.Directory.CreateDirectory(uploadsPath);
+                return uploadsPath;
+            }
+        }
+
+        string _downloadPath = "~/Downloads";
+        public string DownloadsPath
+        {
+            get
+            {
+                string downloadPath = Server.MapPath(_downloadPath);
+                if (!System.IO.Directory.Exists(downloadPath)) System.IO.Directory.CreateDirectory(downloadPath);
+                return downloadPath;
+            }
+        }
+
+        public string UploadsFormsPath
+        {
+            get
+            {
+                return Server.MapPath("~/Uploads/Forms/");
+            }
+        }
+
+        public string DownloadsFormsPath
+        {
+            get
+            {
+                return Server.MapPath("~/Downloads/Forms/");
+            }
+        }
+
+
+        public string GlobalImagesPath
         {
             get
             {
@@ -70,6 +125,7 @@ namespace WFP.ICT.Web.Controllers
                 return uploadPath;
             }
         }
+
 
     }
 }

@@ -37,7 +37,7 @@ namespace WFP.ICT.Web.Controllers
 
         public ActionResult InitializeAddress([ModelBinder(typeof(DataTablesBinder))] IDataTablesRequest requestModel)
         {
-            IEnumerable<Address> Address = db.Addresses;
+            IEnumerable<Address> Address = Db.Addresses;
 
             var totalCount = Address.Count();
 
@@ -182,11 +182,11 @@ namespace WFP.ICT.Web.Controllers
 
             if (warehouse != (Guid?)null)
             {
-                action = db.Warehouses.FirstOrDefault(x => x.Id == warehouse).Name;
+                action = Db.Warehouses.FirstOrDefault(x => x.Id == warehouse).Name;
             }
             if (client != (Guid?)null)
             {
-                action = db.Clients.FirstOrDefault(x => x.Id == client).Name;
+                action = Db.Clients.FirstOrDefault(x => x.Id == client).Name;
             }
 
             return action;
@@ -210,14 +210,14 @@ namespace WFP.ICT.Web.Controllers
         {
             try
             {
-                if (db.PianoOrders.Where(x => x.DeliveryAddressId == id || x.PickupAddressId == id).Count() > 0)
+                if (Db.PianoOrders.Where(x => x.DeliveryAddressId == id || x.PickupAddressId == id).Count() > 0)
                 {
                     return Json(new JsonResponse() { IsSucess = false, ErrorMessage = "Unable to process as there are orders against this address" }, JsonRequestBehavior.AllowGet);
                 }
 
-                var address = db.Addresses.FirstOrDefault(x => x.Id == id);
-                db.Addresses.Remove(address);
-                db.SaveChanges();
+                var address = Db.Addresses.FirstOrDefault(x => x.Id == id);
+                Db.Addresses.Remove(address);
+                Db.SaveChanges();
                 return Json(new JsonResponse() { IsSucess = true }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
@@ -231,7 +231,7 @@ namespace WFP.ICT.Web.Controllers
         {
             try
             {
-                var address = db.Addresses.FirstOrDefault(x => x.Id == id);
+                var address = Db.Addresses.FirstOrDefault(x => x.Id == id);
                 TempData["AddressStates"] = new SelectList(States, "Value", "Text");
                 var model = new NewAddressVm()
                 {
@@ -254,11 +254,10 @@ namespace WFP.ICT.Web.Controllers
         }
 
         [HttpPost]
-        
         public ActionResult Save(NewAddressVm NewAddressVm)
         {
             try {
-                var address = db.Addresses.FirstOrDefault(x => x.Id == NewAddressVm.Id);
+                var address = Db.Addresses.FirstOrDefault(x => x.Id == NewAddressVm.Id);
 
                 address.Address1 = NewAddressVm.Address;
                 address.City = NewAddressVm.City;
@@ -268,7 +267,7 @@ namespace WFP.ICT.Web.Controllers
                 address.Lng = NewAddressVm.lng;
                 address.Name = NewAddressVm.Name;
                 address.PhoneNumber = NewAddressVm.PhoneNumber;
-                db.SaveChanges();
+                Db.SaveChanges();
 
                 return Json(new JsonResponse() { IsSucess = true}, JsonRequestBehavior.AllowGet);
 

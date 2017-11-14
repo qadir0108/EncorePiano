@@ -12,7 +12,7 @@ using WFP.ICT.Web.Models;
 
 namespace WFP.ICT.Web.API
 {
-    public class userController : baseapiController
+    public class UserController : BaseApiController
     {
         // POST: api/user/login
         [Route("api/user/login")]

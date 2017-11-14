@@ -13,8 +13,12 @@ namespace WFP.ICT.Data.Entities
         public string ReceivedBy { get; set; }
         public string Signature { get; set; }
         public DateTime? ReceivingTime { get; set; }
-        public int PodStatus { get; set; } // PODStatusEnum
         public string Notes { get; set; }
+        public bool BenchesUnloadStatus { get; set; }
+        public bool CasterCupsUnloadStatus { get; set; }
+        public bool CoverUnloadStatus { get; set; } 
+        public bool LampUnloadStatus { get; set; }
+        public bool OwnersManualUnloadStatus { get; set; } 
 
         //signed form in here
         public string PodForm { get; set; }
@@ -22,7 +26,6 @@ namespace WFP.ICT.Data.Entities
         public string AcknowledgeTo { get; set; } // Email addresses
 
         public Guid? PianoAssignmentId { get; set; }
-        
         public virtual PianoAssignment PianoAssignment { get; set; }
 
         public Guid? PianoId { get; set; }

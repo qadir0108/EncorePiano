@@ -22,7 +22,7 @@ namespace WFP.ICT.Web.Controllers
         {
             //SMSHelper.Send("+923216334272", "Hello, Kamran");
             var orderVMs = new List<OrderVm>();
-            var orders = db.PianoOrders
+            var orders = Db.PianoOrders
                 .Include(x => x.Customer)
                 .Include(x => x.Pianos)
                 .Include(x => x.PickupAddress)
@@ -83,7 +83,7 @@ namespace WFP.ICT.Web.Controllers
         }
         public ActionResult Edit(Guid? id)
         {
-            var order = db.PianoOrders
+            var order = Db.PianoOrders
                             .Include(x => x.Customer)
                             .Include(x => x.Pianos)
                             .Include(x => x.PickupAddress)
@@ -177,8 +177,8 @@ namespace WFP.ICT.Web.Controllers
                     return EditPiano(orderVm);
                 }
 
-                int newOrderNumber = db.PianoOrders.Any()
-                    ? db.PianoOrders.ToList().Max(x => int.Parse(x.OrderNumber)) + 1
+                int newOrderNumber = Db.PianoOrders.Any()
+                    ? Db.PianoOrders.ToList().Max(x => int.Parse(x.OrderNumber)) + 1
                     : 2500;
 
                 var orderId = Guid.NewGuid();
@@ -204,8 +204,8 @@ namespace WFP.ICT.Web.Controllers
 
 
                 };
-                db.Addresses.Add(pickupAddress);
-                db.SaveChanges();
+                Db.Addresses.Add(pickupAddress);
+                Db.SaveChanges();
 
                 Address deliveryAddress = new Address()
                 {
@@ -224,8 +224,8 @@ namespace WFP.ICT.Web.Controllers
                     AlternatePhone = orderVm.DeliveryAddress.AlternatePhone,
                     WarehouseId = string.IsNullOrEmpty(orderVm.DeliveryAddress.Warehouse) ? (Guid?)null : Guid.Parse(orderVm.DeliveryAddress.Warehouse),
                 };
-                db.Addresses.Add(deliveryAddress);
-                db.SaveChanges();
+                Db.Addresses.Add(deliveryAddress);
+                Db.SaveChanges();
 
                 var order = new PianoOrder();
                 {
@@ -277,18 +277,19 @@ namespace WFP.ICT.Web.Controllers
 
 
                 };
-                db.PianoOrders.Add(order);
-                db.SaveChanges();
+                Db.PianoOrders.Add(order);
+                Db.SaveChanges();
                 foreach (var piano in orderVm.Pianos)
                 {
                     InsertPiano(piano, orderId);
                 }
-                db.SaveChanges();
+                Db.SaveChanges();
 
                 foreach (var item in orderVm.Charges)
                 {
+                    if (string.IsNullOrEmpty(item.ChargesCode)) continue;
 
-                    db.PianoOrderCharges.Add(new PianoOrderCharges()
+                    Db.PianoOrderCharges.Add(new PianoOrderCharges()
                     {
                         Id = Guid.NewGuid(),
                         PianoChargesId = Guid.Parse(item.ChargesCode),
@@ -299,7 +300,7 @@ namespace WFP.ICT.Web.Controllers
                         ServiceStatus = (int)ServiceStatusEnum.Requested
 
                     });
-                    db.SaveChanges();
+                    Db.SaveChanges();
                 }
 
                 foreach (string selectedFile in Request.Files)
@@ -326,7 +327,7 @@ namespace WFP.ICT.Web.Controllers
         {
             try
             {
-                PianoOrder order = db.PianoOrders.Include(x => x.Customer)
+                PianoOrder order = Db.PianoOrders.Include(x => x.Customer)
                             .Include(x => x.Pianos)
                             .Include(x => x.PickupAddress)
                             .Include(x => x.DeliveryAddress)
@@ -400,26 +401,26 @@ namespace WFP.ICT.Web.Controllers
                     order.PickupAddress.WarehouseId = string.IsNullOrEmpty(orderVm.PickupAddress.Warehouse) ? (Guid?)null : Guid.Parse(orderVm.PickupAddress.Warehouse);
                 };
 
-                db.SaveChanges();
+                Db.SaveChanges();
 
                 foreach (var piano in order.Pianos.ToList())
-                    db.Pianos.Remove(piano);
-                db.SaveChanges();
+                    Db.Pianos.Remove(piano);
+                Db.SaveChanges();
 
                 foreach (var piano in orderVm.Pianos)
                 {
                     InsertPiano(piano, order.Id);
                 }
-                db.SaveChanges();
+                Db.SaveChanges();
 
                 foreach (var charge in order.OrderCharges.ToList())
-                    db.PianoOrderCharges.Remove(charge);
-                db.SaveChanges();
+                    Db.PianoOrderCharges.Remove(charge);
+                Db.SaveChanges();
 
                 foreach (var item in orderVm.Charges)
                 {
 
-                    db.PianoOrderCharges.Add(new PianoOrderCharges()
+                    Db.PianoOrderCharges.Add(new PianoOrderCharges()
                     {
                         Id = Guid.NewGuid(),
                         PianoChargesId = Guid.Parse(item.ChargesCode),
@@ -430,7 +431,7 @@ namespace WFP.ICT.Web.Controllers
                         ServiceStatus = (int)ServiceStatusEnum.Requested
 
                     });
-                    db.SaveChanges();
+                    Db.SaveChanges();
 
                     foreach (string selectedFile in Request.Files)
                     {
@@ -466,10 +467,13 @@ namespace WFP.ICT.Web.Controllers
 
             TempData["PianoFinish"] = new SelectList(PianoFinishList, "Value", "Text");
 
+            TempData["AdditionalItemStatus"] = new SelectList(AdditionalItemStatusList, "Value", "Text");
+
         }
         private void InsertPiano(PianoVm vm, Guid orderId)
         {
-            // if (string.IsNullOrEmpty(vm.PianoName) || string.IsNullOrEmpty(vm.PianoName.Trim())) return;
+            if (string.IsNullOrEmpty(vm.PianoCategoryType)) return;
+
             Piano obj = new Piano();
 
             obj.Id = Guid.NewGuid();
@@ -497,7 +501,7 @@ namespace WFP.ICT.Web.Controllers
             obj.IsBoxed = vm.IsBoxed;
             obj.IsPlayer = vm.IsPlayer;
 
-            db.Pianos.Add(obj);
+            Db.Pianos.Add(obj);
         }
         public ActionResult NewPiano()
         {
@@ -505,6 +509,7 @@ namespace WFP.ICT.Web.Controllers
             TempData["PianoFinish"] = new SelectList(PianoFinishList, "Value", "Text");
             TempData["PianoType"] = new SelectList(PianoTypesList, "Value", "Text");
             TempData["PianoCategoryType"] = new SelectList(PianoCategoryTypesList, "Value", "Text");
+            TempData["AdditionalItemStatus"] = new SelectList(AdditionalItemStatusList, "Value", "Text");
             return PartialView("~/Views/Shared/Editors/_Piano.cshtml", new PianoVm());
         }
         public ActionResult NewService()
@@ -519,7 +524,7 @@ namespace WFP.ICT.Web.Controllers
                 Guid id = Guid.Parse(warehouseId);
                 if (id != null)
                 {
-                    Address warehouse = db.Warehouses.Where(x => x.Id == id).Select(x => x.Address).FirstOrDefault();
+                    Address warehouse = Db.Warehouses.Where(x => x.Id == id).Select(x => x.Address).FirstOrDefault();
                     if (warehouse != null)
                     {
                         var populate = new
@@ -551,7 +556,7 @@ namespace WFP.ICT.Web.Controllers
         {
             try
             {
-                Piano piano = db.Pianos.Where(x => x.SerialNumber == pianoSerialNumber).
+                Piano piano = Db.Pianos.Where(x => x.SerialNumber == pianoSerialNumber).
                                    FirstOrDefault();
                 if (piano != null)
                 {
@@ -585,7 +590,7 @@ namespace WFP.ICT.Web.Controllers
             try
             {
                 Guid guidId = Guid.Parse(pianoServiceCode);
-                PianoCharges charges = db.PianoCharges.Where(x => x.Id == guidId).
+                PianoCharges charges = Db.PianoCharges.Where(x => x.Id == guidId).
                                    FirstOrDefault();
                 if (charges != null)
                 {
@@ -605,7 +610,7 @@ namespace WFP.ICT.Web.Controllers
             try
             {
                 Guid id = Guid.Parse(customerId);
-                Client client = db.Clients.Where(x => x.Id == id).
+                Client client = Db.Clients.Where(x => x.Id == id).
                                    FirstOrDefault();
                 if (client != null)
                 {
@@ -634,7 +639,7 @@ namespace WFP.ICT.Web.Controllers
             try
             {
                 Guid id = Guid.Parse(pianoMake);
-                var list = db.PianoSize.Where(x => x.PianoTypeId == id).ToList().
+                var list = Db.PianoSize.Where(x => x.PianoTypeId == id).ToList().
                             Select(x => new
                             {
                                 id = x.Id,
@@ -672,9 +677,9 @@ namespace WFP.ICT.Web.Controllers
                     }
                 }
 
-                var order =  db.PianoOrders.Where(x => x.OrderNumber == OrderNumber).FirstOrDefault();
+                var order =  Db.PianoOrders.Where(x => x.OrderNumber == OrderNumber).FirstOrDefault();
                 order.DeliveryForm = FileName;
-                db.SaveChanges();
+                Db.SaveChanges();
 
                 return Json(new JsonResponse() { IsSucess = true, Result = FileName });
             }
@@ -716,10 +721,12 @@ namespace WFP.ICT.Web.Controllers
                 CallerLastName = order.CallerLastName,
                 CallerPhoneNumber = order.CallerPhoneNumber,
                 CallerEmail = order.CallerEmail,
-                PickupAddressString = pickupAddress.AddressToString,
-                DeliveryAddressString = deliveryAdress.AddressToString,
+                PickupAddressString = pickupAddress.ToString,
+                DeliveryAddressString = deliveryAdress.ToString,
                 PickupDate = order.PickupDate?.ToString(),
                 DeliveryDate = order.DeliveryDate?.ToString(),
+                PickupInstructions = order.PickUpNotes,
+                DeliveryInstructions = order.DeliveryNotes,
                 Customer = order.Customer != null ? order.Customer.AccountCode + " " + order.Customer.Name : "",
 
                 IsBilledThirdParty = order.BillToDifferent,
@@ -737,11 +744,13 @@ namespace WFP.ICT.Web.Controllers
                 {
                     Id = x.Id,
                     OrderId = order.Id,
+                    PianoCategoryType = System.Enum.GetName(typeof(PianoCategoryTypeEnum),x.PianoCategoryType),
                     PianoType = PianoTypesList.FirstOrDefault(y => y.Value == x.PianoTypeId.ToString()).Text,
-                    PianoModel = x.Model,
-                    PianoMake = x.PianoMakeId.ToString(),
-                    SerialNumber = x.SerialNumber,
                     PianoSize = x.PianoSizeId.ToString(),
+                    PianoMake = x.PianoMakeId.ToString(),
+                    PianoModel = x.Model,
+                    PianoFinish = PianoFinishList.FirstOrDefault(y => y.Value == x.PianoFinishId.ToString()).Text,
+                    SerialNumber = x.SerialNumber,
                     IsBench = x.IsBench,
                     IsBoxed = x.IsBoxed,
                     IsPlayer = x.IsPlayer,
@@ -752,12 +761,12 @@ namespace WFP.ICT.Web.Controllers
             {
                 if (x.PianoMake != string.Empty)
                 {
-                    x.PianoMake = db.PianoMake.Where(y => y.Id.ToString() == x.PianoMake).FirstOrDefault().Name;
+                    x.PianoMake = Db.PianoMake.Where(y => y.Id.ToString() == x.PianoMake).FirstOrDefault().Name;
                 }
 
                 if (x.PianoSize != string.Empty)
                 {
-                    x.PianoSize = db.PianoSize.Where(y => y.Id.ToString() == x.PianoSize).FirstOrDefault().Width.ToString();
+                    x.PianoSize = Db.PianoSize.Where(y => y.Id.ToString() == x.PianoSize).FirstOrDefault().Width.ToString();
                 }
 
             });
@@ -772,7 +781,7 @@ namespace WFP.ICT.Web.Controllers
 
             orderVM.Charges.ForEach(x =>
             {
-                var obj = db.PianoCharges.Where(y => y.Id.ToString() == x.ChargesTypeId).FirstOrDefault();
+                var obj = Db.PianoCharges.Where(y => y.Id.ToString() == x.ChargesTypeId).FirstOrDefault();
                 x.ChargesCode = obj.ChargesCode.ToString();
                 x.ChargesDetails = obj.ChargesDetails.ToString();
                 x.ChargesType = ((ChargesTypeEnum)obj.ChargesType).ToString();
@@ -794,35 +803,33 @@ namespace WFP.ICT.Web.Controllers
 
                 StringBuilder body = new StringBuilder();
                 body.AppendFormat(@"Please find the detailed qoute for order # {0} <br/><br/>", orderVm.OrderNumber);
-                body.AppendFormat(@"Pick Up Address : {0} <br/><br/>", orderVm.PickupAddress.AddressToString );
+                body.AppendFormat(@"Pick Up Address : {0} <br/><br/>", orderVm.PickupAddress.ToStringWithStairTurns );
 
-                body.AppendFormat(@"Delivery Address : {0} <br/><br/>", orderVm.DeliveryAddress.AddressToString);
+                body.AppendFormat(@"Delivery Address : {0} <br/><br/>", orderVm.DeliveryAddress.ToStringWithStairTurns);
 
                 body.AppendFormat(@"Units : <br/>");
                 foreach(var item in orderVm.Pianos)
                 {
                     body.AppendFormat(@"Bench? : {0} " , item.IsBench ? "Yes" : "No");
-                    body.AppendFormat(@"Box? : {0} ", item.IsBoxed ? "Yes" : "No");
-                    body.AppendFormat(@"Stairs? : {0} <br/>", item.IsStairs ? "Yes" : "No");
+                    body.AppendFormat(@"Player? : {0} <br/>", item.IsPlayer ? "Yes" : "No");
+                    body.AppendFormat(@"Boxed? : {0} ", item.IsBoxed ? "Yes" : "No");
 
                     body.AppendFormat(@"Serial Number : {0} ", item.SerialNumber);
                     body.AppendFormat(@"Category : {0} ", ((PianoCategoryTypeEnum)(int.Parse(item.PianoCategoryType))).ToString());
-                    body.AppendFormat(@"Make : {0} ", string.IsNullOrEmpty(item.PianoMake) ? "N/A" : db.PianoMake.Where(x => x.Id.ToString() == item.PianoMake).FirstOrDefault().Name);
+                    body.AppendFormat(@"Make : {0} ", string.IsNullOrEmpty(item.PianoMake) ? "N/A" : Db.PianoMake.Where(x => x.Id.ToString() == item.PianoMake).FirstOrDefault().Name);
                     body.AppendFormat(@"Model : {0} <br/>", item.PianoModel);
-
-                    body.AppendFormat(@"Size : {0} ", string.IsNullOrEmpty(item.PianoSize) ? "N/A" : PianoSizeConversion.GetFeetInches(db.PianoSize.Where(x => x.Id.ToString() == item.PianoSize).FirstOrDefault().Width));
-                    body.AppendFormat(@"Type : {0} ", string.IsNullOrEmpty(item.PianoTypeId) ? "N/A" : db.PianoTypes.Where(x => x.Id.ToString() == item.PianoTypeId).FirstOrDefault().Type);
-                    body.AppendFormat(@"Finish : {0} <br/>", string.IsNullOrEmpty(item.PianoFinish) ? "N/A" : db.PianoFinish.Where(x => x.Id.ToString() == item.PianoFinish).FirstOrDefault().Name);
+                    body.AppendFormat(@"Size : {0} ", string.IsNullOrEmpty(item.PianoSize) ? "N/A" : PianoSizeConversion.GetFeetInches(Db.PianoSize.Where(x => x.Id.ToString() == item.PianoSize).FirstOrDefault().Width));
+                    body.AppendFormat(@"Type : {0} ", string.IsNullOrEmpty(item.PianoTypeId) ? "N/A" : Db.PianoTypes.Where(x => x.Id.ToString() == item.PianoTypeId).FirstOrDefault().Type);
+                    body.AppendFormat(@"Finish : {0} <br/>", string.IsNullOrEmpty(item.PianoFinish) ? "N/A" : Db.PianoFinish.Where(x => x.Id.ToString() == item.PianoFinish).FirstOrDefault().Name);
 
                     body.AppendFormat(@"Miscellaneous : {0} <br/><br/>", item.Notes);
-
 
                 }
                 body.AppendFormat(@"Charges : <br/>");
 
                 foreach (var item in orderVm.Charges)
                 {
-                    body.AppendFormat(@"Type : {0} ", db.PianoCharges.Where(x=> x.Id.ToString() == item.ChargesCode).FirstOrDefault().ChargesDetails);
+                    body.AppendFormat(@"Type : {0} ", Db.PianoCharges.Where(x=> x.Id.ToString() == item.ChargesCode).FirstOrDefault().ChargesDetails);
                     body.AppendFormat(@"Amount : {0} <br/>", item.Amount);
                 }
 

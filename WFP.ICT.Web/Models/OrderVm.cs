@@ -19,7 +19,7 @@ namespace WFP.ICT.Web.Models
 
         [Required(ErrorMessage = "First name is required")]
         public string CallerFirstName { get; set; }
-        [Required(ErrorMessage = "Last name is required")]
+        //[Required(ErrorMessage = "Last name is required")]
         public string CallerLastName { get; set; }
 
         public string CallerName
@@ -30,37 +30,38 @@ namespace WFP.ICT.Web.Models
         [Required(ErrorMessage = "Contact is required")]
         [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Entered phone format is not valid.")]
         public string CallerPhoneNumber { get; set; }
-
         
-        [Required(ErrorMessage = "Alternate Contact is required")]
+        //[Required(ErrorMessage = "Alternate Contact is required")]
         [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Entered phone format is not valid.")]
         public string CallerAlternatePhone { get; set; }
-        [Required(ErrorMessage = "Email is required")]
+
+        //[Required(ErrorMessage = "Email is required")]
         [DataType(DataType.EmailAddress,ErrorMessage ="Please Enter Valid Email")]
         public string CallerEmail { get; set; }
-        [Required(ErrorMessage = "Payment option is required")]
+
+        //[Required(ErrorMessage = "Payment option is required")]
         public string PaymentOption { get; set; }
 
-        [Required(ErrorMessage = "Office staff details are required")]
+        //[Required(ErrorMessage = "Office staff details are required")]
         public string OfficeStaffDetails { get; set; }
 
-        [Required(ErrorMessage = "Collectable amount is required")]
-        [Range(1, Double.MaxValue,ErrorMessage ="Collectable amount is required")]
+        //[Required(ErrorMessage = "Collectable amount is required")]
+        //[Range(1, Double.MaxValue,ErrorMessage ="Collectable amount is required")]
         public double CollectableAmount { get; set; }
 
-        [Required(ErrorMessage = "Online payment details are required")]
+        //[Required(ErrorMessage = "Online payment details are required")]
         public string OnlinePaymentDetails { get; set; }
 
         public string Customer { get; set; }
         public string PickupAddressString { get; set; }
         public string DeliveryAddressString { get; set; }
-        public string PreferredPickupDateTime { get; set; }
         public string PickupDate { get; set; }
         public string DeliveryDate { get; set; }
+        public string PickupInstructions { get; set; }
+        public string DeliveryInstructions { get; set; }
         public string Shuttle { get; set; }
 
         public string DeliverForm { get; set; }
-
 
         public AddressVm PickupAddress { get; set; }
         public AddressVm DeliveryAddress { get; set; }
@@ -72,13 +73,13 @@ namespace WFP.ICT.Web.Models
         public string ThirdParty { get; set; }
         public bool IsBilledThirdParty { get; set; }
 
-        [Required(ErrorMessage = "Sales order number is required")]
+        //[Required(ErrorMessage = "Sales order number is required")]
         public string SalesOrderNumber { get; set; }
 
-        [Required(ErrorMessage = "Carried by details are required")]
+        //[Required(ErrorMessage = "Carried by details are required")]
         public  string CarriedBy { get; set; }
 
-        [Required(ErrorMessage = "Dealer is required")]
+        //[Required(ErrorMessage = "Dealer is required")]
         public string Dealer { get; set; }
 
         public int OrderPlacementType { get; set; }

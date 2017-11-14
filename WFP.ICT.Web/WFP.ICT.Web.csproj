@@ -25,6 +25,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -46,11 +47,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AWSSDK.Core">
-      <HintPath>C:\Program Files (x86)\AWS SDK for .NET\bin\Net45\AWSSDK.Core.dll</HintPath>
+    <Reference Include="AWSSDK.Core, Version=3.3.0.0, Culture=neutral, PublicKeyToken=885c28607f98e604, processorArchitecture=MSIL">
+      <HintPath>..\packages\AWSSDK.Core.3.3.17.9\lib\net45\AWSSDK.Core.dll</HintPath>
     </Reference>
-    <Reference Include="AWSSDK.S3">
-      <HintPath>C:\Program Files (x86)\AWS SDK for .NET\bin\Net45\AWSSDK.S3.dll</HintPath>
+    <Reference Include="AWSSDK.S3, Version=3.3.0.0, Culture=neutral, PublicKeyToken=885c28607f98e604, processorArchitecture=MSIL">
+      <HintPath>..\packages\AWSSDK.S3.3.3.11\lib\net45\AWSSDK.S3.dll</HintPath>
     </Reference>
     <Reference Include="DataTables.Mvc, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\datatables.mvc5.0.1.0\lib\net45\DataTables.Mvc.dll</HintPath>
@@ -71,6 +72,9 @@
     <Reference Include="HtmlAgilityPack, Version=1.4.9.5, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
       <HintPath>..\packages\HtmlAgilityPack.1.4.9.5\lib\Net45\HtmlAgilityPack.dll</HintPath>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="itextsharp, Version=5.5.12.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\iTextSharp.5.5.12\lib\itextsharp.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
@@ -149,7 +153,6 @@
       <HintPath>..\packages\PDFsharp-MigraDoc.1.50.4000-beta3b\lib\net20\MigraDoc.RtfRendering.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="MySql.Data, Version=6.9.9.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
     <Reference Include="MyToolkit, Version=2.5.16.0, Culture=neutral, PublicKeyToken=3e349a1360994d26, processorArchitecture=MSIL">
       <HintPath>..\packages\MyToolkit.2.5.16\lib\portable-net45+wp8+win8+wpa81\MyToolkit.dll</HintPath>
       <Private>True</Private>
@@ -342,13 +345,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="API\filesController.cs" />
-    <Compile Include="API\Models\ConsignmentModels.cs" />
+    <Compile Include="API\Models\SyncModel.cs" />
+    <Compile Include="API\LogController.cs" />
+    <Compile Include="API\SyncUnitController.cs" />
+    <Compile Include="API\SyncTripController.cs" />
+    <Compile Include="API\Models\AssignmentModels.cs" />
     <Compile Include="API\Models\LoginModel.cs" />
-    <Compile Include="API\baseapiController.cs" />
+    <Compile Include="API\BaseApiController.cs" />
     <Compile Include="API\Models\UploadFileType.cs" />
-    <Compile Include="API\userController.cs" />
-    <Compile Include="API\consignmentsController.cs" />
+    <Compile Include="API\UserController.cs" />
+    <Compile Include="API\AssignmentsController.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
@@ -359,11 +365,12 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Async\EmailHelper.cs" />
     <Compile Include="Async\PdfSharpp.cs" />
+    <Compile Include="Async\PODFormsGenerater.cs" />
     <Compile Include="Async\QRCodeGenerator.cs" />
     <Compile Include="Async\SMSHelper.cs" />
     <Compile Include="Async\ZingCoder.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\CustomersController.cs" />
+    <Compile Include="Controllers\ClientsController.cs" />
     <Compile Include="Controllers\AccountingController.cs" />
     <Compile Include="Controllers\AddressController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
@@ -376,8 +383,7 @@
     <Compile Include="Controllers\ConsigmentsController.cs" />
     <Compile Include="Controllers\InventoryController.cs" />
     <Compile Include="Controllers\OrdersController.cs" />
-    <Compile Include="Controllers\OrdersStatusController.cs" />
-    <Compile Include="Controllers\Orders1Controller.cs" />
+    <Compile Include="Controllers\DeliveryStatusController.cs" />
     <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Controllers\WarehouseController.cs" />
     <Compile Include="FCM\Exceptions\FCMException.cs" />
@@ -406,6 +412,8 @@
     <Compile Include="Helpers\FileUploader.cs" />
     <Compile Include="Helpers\GeneratorHelper.cs" />
     <Compile Include="Helpers\HangfireAuthorizationFilter.cs" />
+    <Compile Include="Helpers\ImageResizer.cs" />
+    <Compile Include="Helpers\ImageUtility.cs" />
     <Compile Include="Helpers\InvoiceHtmlHelper.cs" />
     <Compile Include="Helpers\IsSelected.cs" />
     <Compile Include="Helpers\KeyGenerator.cs" />
@@ -417,6 +425,7 @@
     <Compile Include="Helpers\ExceptionHelper.cs" />
     <Compile Include="Helpers\FileHelper.cs" />
     <Compile Include="Helpers\GatePassGenerator.cs" />
+    <Compile Include="Models\StatusVm.cs" />
     <Compile Include="Models\BatchLoadVm.cs" />
     <Compile Include="Models\InvoiceViewModel.cs" />
     <Compile Include="Models\NewAddressVm.cs" />
@@ -449,6 +458,7 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="APILogs\20171111152345.txt" />
     <Content Include="assets\apps\css\inbox.css" />
     <Content Include="assets\apps\css\inbox.min.css" />
     <Content Include="assets\apps\css\ticket.css" />
@@ -5818,6 +5828,8 @@
     <Content Include="assets\sounds\bing2.mp3" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="Images\Piano\Picture1.jpg" />
+    <Content Include="Images\Sign\Signed.jpeg" />
     <Content Include="json.json" />
     <Content Include="_THEME\app_calendar.html" />
     <Content Include="_THEME\app_inbox.html" />
@@ -5999,7 +6011,6 @@
     <Content Include="_THEME\ui_toastr.html" />
     <Content Include="_THEME\ui_tree.html" />
     <Content Include="_THEME\ui_typography.html" />
-    <Content Include="assets\global\img\social\Thumbs.db" />
     <Content Include="assets\global\plugins\amcharts\amcharts\plugins\dataloader\examples\data\gauge.json" />
     <Content Include="assets\global\plugins\amcharts\amcharts\plugins\dataloader\examples\data\map.json" />
     <Content Include="assets\global\plugins\amcharts\amcharts\plugins\dataloader\examples\data\MSFT.csv" />
@@ -6343,9 +6354,6 @@
     <Content Include="assets\global\plugins\wysihtml\minified\wysihtml.min.map" />
     <Content Include="assets\global\plugins\wysihtml\minified\wysihtml.table_editing.min.map" />
     <Content Include="assets\global\plugins\wysihtml\minified\wysihtml.toolbar.min.map" />
-    <Content Include="assets\layouts\layout7\img\Thumbs.db" />
-    <Content Include="assets\pages\media\blog\Thumbs.db" />
-    <Content Include="assets\pages\media\pages\Thumbs.db" />
     <Content Include="assets\sounds\bang.ogg" />
     <Content Include="assets\sounds\bing.ogg" />
     <Content Include="assets\sounds\bing2.ogg" />
@@ -6424,7 +6432,7 @@
     <Content Include="Views\Orders\Status.cshtml" />
     <Content Include="Views\Orders\Completed.cshtml" />
     <Content Include="Views\Consignments\PickTickets.cshtml" />
-    <Content Include="Views\OrdersStatus\Index.cshtml" />
+    <Content Include="Views\DeliveryStatus\Index.cshtml" />
     <Content Include="Views\Warehouse\Index.cshtml" />
     <Content Include="Views\Warehouse\New.cshtml" />
     <Content Include="Views\Shared\Editors\_AddressEditor.cshtml" />
@@ -6438,17 +6446,17 @@
     <Content Include="Views\Address\Index.cshtml" />
     <Content Include="Views\Address\Map.cshtml" />
     <Content Include="Views\Address\Edit.cshtml" />
-    <Content Include="Views\Customers\Add.cshtml" />
-    <Content Include="Views\Customers\Index.cshtml" />
+    <Content Include="Views\Clients\Add.cshtml" />
+    <Content Include="Views\Clients\Index.cshtml" />
     <Content Include="Views\Inventory\Warehouse.cshtml" />
+    <Content Include="Views\Consignments\UnitsPickup.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="assets\apps\img\" />
     <Folder Include="assets\global\plugins\angularjs\plugins\angular-file-upload\uploads\" />
-    <Folder Include="Images\Piano\" />
-    <Folder Include="Images\Sign\" />
-    <Folder Include="Uploads\" />
+    <Folder Include="Downloads\Forms\" />
+    <Folder Include="Uploads\Forms\" />
     <Folder Include="Views\files\" />
   </ItemGroup>
   <ItemGroup>
@@ -6472,6 +6480,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Reports\Campaign.rdlc" />
   </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\packages\AWSSDK.S3.3.3.11\analyzers\dotnet\cs\AWSSDK.S3.CodeAnalysis.dll" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -6486,7 +6497,16 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <SaveServerSettingsInUserFile>True</SaveServerSettingsInUserFile>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>49590</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:63133/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
     </VisualStudio>

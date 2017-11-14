@@ -7,7 +7,13 @@ namespace WFP.ICT.Enum
 {
     public enum PianoStatusEnum
     {
-        Perfect,
-        Damaged
+        Booked,
+        Picked,
+        Dispatched,
+        Delivered,
+        Rejected,
+        ExceptionsDefacts,
+        ExceptionsScratches,
+        ExceptionsMissingAccessories,
     }
 }

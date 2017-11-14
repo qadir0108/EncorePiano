@@ -72,7 +72,7 @@
                 </li>
             }
           
-            <li class="nav-item start @Html.IsSelected(actions: "Index,Private,Dealer,Manufacturer", controllers: "Orders,OrdersStatus")">
+            <li class="nav-item start @Html.IsSelected(actions: "Index,Private,Dealer,Manufacturer", controllers: "Orders")">
                     <a href="javascript:;" class="nav-link nav-toggle">
                         <i class="icon-screen-desktop"></i>
                         <span class="title">Orders</span>
@@ -111,21 +111,14 @@
                                 </span>
                         </a>
                     </li>
-                    <li class="nav-item start @Html.IsSelected(actions: "Index", controllers: "OrdersStatus") ">
-                        <a href="/OrdersStatus/Index" class="nav-link ">
-                            <i class="icon-screen-desktop"></i>
-                            <span class="title">
-                                    Order Status
-                                </span>
-                        </a>
-                    </li>
+                    
                 </ul>
                 </li>
             
             @if (isAdmin)
             {
 
-                <li class="nav-item start @Html.IsSelected(actions: "New,Index,PickTickets", controllers: "Consignments") ">
+                <li class="nav-item start @Html.IsSelected(actions: "New,Index,Units,PickTickets", controllers: "Consignments,DeliveryStatus") ">
                     <a href="javascript:;" class="nav-link nav-toggle">
                         <i class="fa fa-truck"></i>
                         <span class="title">Delivery</span>
@@ -145,6 +138,14 @@
                                 <i class="fa fa-truck"></i>
                                 <span class="title">Assignments</span>
                                 <span class="selected"></span>
+                            </a>
+                        </li>
+                        <li class="nav-item start @Html.IsSelected(actions: "Index", controllers: "DeliveryStatus") ">
+                            <a href="/DeliveryStatus/Index" class="nav-link ">
+                                <i class="icon-screen-desktop"></i>
+                                <span class="title">
+                                    Delivery Status
+                                </span>
                             </a>
                         </li>
                         <li class="nav-item start @Html.IsSelected(actions: "PickTickets", controllers: "Consignments")">
@@ -212,7 +213,7 @@
                     </ul>
                 </li>
 
-                <li class="nav-item start @Html.IsSelected(actions: "Index", controllers: "Address,Customer,PianoType,PianoCharges,Warehouse,Vehicle,Driver")">
+                <li class="nav-item start @Html.IsSelected(actions: "Index", controllers: "Address,Clients,ClientStores,PianoType,PianoCharges,Warehouse,Vehicle,Driver")">
                     <a href="javascript:;" class="nav-link nav-toggle">
                         <i class="fa fa-university"></i>
                         <span class="title">Company</span>
@@ -227,11 +228,19 @@
                                 </span>
                             </a>
                         </li>
-                        <li class="nav-item start @Html.IsSelected(actions: "Index", controllers: "Customers")">
-                            <a href="/Customers/Index" class="nav-link ">
+                        <li class="nav-item start @Html.IsSelected(actions: "Index", controllers: "Clients")">
+                            <a href="/Clients/Index" class="nav-link ">
                                 <i class="fa fa-user-secret"></i>
                                 <span class="title">
-                                    Customers
+                                    Clients
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item start @Html.IsSelected(actions: "Index", controllers: "ClientStores")">
+                            <a href="/Clients/Index" class="nav-link ">
+                                <i class="fa fa-user-secret"></i>
+                                <span class="title">
+                                    Client Stores
                                 </span>
                             </a>
                         </li>

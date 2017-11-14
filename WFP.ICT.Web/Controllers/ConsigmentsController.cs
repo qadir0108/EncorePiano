@@ -14,6 +14,8 @@ using TransfocusTabletApp.Helpers;
 using WFP.ICT.Web.Async;
 using WFP.ICT.Web.FCM;
 using WFP.ICT.Common;
+using WFP.ICT.Enum;
+using WFP.ICT.Enums;
 
 namespace WFP.ICT.Web.Controllers
 {
@@ -21,31 +23,18 @@ namespace WFP.ICT.Web.Controllers
     public class ConsignmentsController : BaseController
     {
         int pageSize = 15;
-        private ApplicationUserManager _userManager;
-        public ApplicationUserManager UserManager
-        {
-            get
-            {
-                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
-            }
-            set
-            {
-                _userManager = value;
-            }
-        }
 
         public ActionResult Index()
         {
-
             var consigmentVms = new List<ConsigmentVm>();
-            var consignments = db.PianoAssignments
+            var consignments = Db.PianoAssignments
                 .Include(x => x.Drivers)
                 .Include(x => x.Vehicle)
-                .Include(x => x.WarehouseStart)
+                .Include(x => x.Statuses)
                 .ToList();//.Where(x => x.CreatedBy == LoggedInUser.Id)
             foreach (var consignment in consignments)
             {
-                var order = db.PianoOrders.FirstOrDefault(x => x.Id == consignment.PianoOrderId);
+                var order = Db.PianoOrders.Include(x => x.Pianos).FirstOrDefault(x => x.Id == consignment.PianoOrderId);
 
                 var consigmentVm = new ConsigmentVm()
                 {
@@ -56,11 +45,145 @@ namespace WFP.ICT.Web.Controllers
                     ConsignmentNumber = consignment.AssignmentNumber,
                     DriverName = String.Join(",", consignment.Drivers.Select(x=>x.Name).ToList()),
                     VehicleName = consignment.Vehicle?.Name,
-                    StartWarehouseName = consignment.WarehouseStart?.Name
+                    TripStatus = consignment.Statuses.Count == 0 ? TripStatusEnum.NotStarted.ToString()
+                    : ((TripStatusEnum)(consignment.Statuses.OrderByDescending(x => x.CreatedAt).FirstOrDefault().Status)).ToString(),
+                    StartTime = consignment.StartTime?.ToString(),
+                    EstimatedTime = consignment.EstimatedTime?.ToString()
                 };
+
+                foreach (var status in consignment.Statuses.OrderByDescending(x => x.CreatedAt))
+                {
+                    consigmentVm.Statuses.Add(new StatusVm()
+                    {
+                        Status = ((TripStatusEnum)status.Status).ToString(),
+                        StatusBy = status.StatusBy,
+                        StatusTime = status.StatusTime.ToString(),
+                        Comments = status.Comments
+                    });
+                }
                 consigmentVms.Add(consigmentVm);
             }
             return View(consigmentVms);
+        }
+
+        public ActionResult UnitsPickup(string orderNumber)
+        {
+            var order = Db.PianoOrders.Include(x => x.Pianos)
+                .FirstOrDefault(x => x.OrderNumber == orderNumber);
+
+            if (order == null)
+            {
+                TempData["Error"] = "Order not found.";
+                return RedirectToAction("Index", "Consignments");
+            }
+
+            var orderVM = new OrderVm()
+            {
+                Id = order.Id.ToString(),
+                OrderDate = order.CreatedAt.ToString(),
+                OrderNumber = order.OrderNumber
+             };
+
+            orderVM.Pianos = order.Pianos.OrderByDescending(x => x.CreatedAt).Select(
+               x => new PianoVm()
+               {
+                   Id = x.Id,
+                   OrderId = order.Id,
+                   PianoCategoryType = System.Enum.GetName(typeof(PianoCategoryTypeEnum), x.PianoCategoryType),
+                   PianoType = PianoTypesList.FirstOrDefault(y => y.Value == x.PianoTypeId.ToString()).Text,
+                   PianoSize = x.PianoSizeId.ToString(),
+                   PianoMake = x.PianoMakeId.ToString(),
+                   PianoModel = x.Model,
+                   PianoFinish = PianoFinishList.FirstOrDefault(y => y.Value == x.PianoFinishId.ToString()).Text,
+                   SerialNumber = x.SerialNumber,
+                   IsBench = x.IsBench,
+                   IsBoxed = x.IsBoxed,
+                   IsPlayer = x.IsPlayer,
+                   Notes = x.Notes,
+
+                   IsMainUnitLoaded = x.IsMainUnitLoaded ? "Yes" : "No",
+                   AdditionalBenchesStatus = System.Enum.GetName(typeof(AdditionalItemStatus), x.AdditionalBenchesStatus),
+                   AdditionalCasterCupsStatus = System.Enum.GetName(typeof(AdditionalItemStatus), x.AdditionalCasterCupsStatus),
+                   AdditionalCoverStatus = System.Enum.GetName(typeof(AdditionalItemStatus), x.AdditionalCoverStatus),
+                   AdditionalLampStatus = System.Enum.GetName(typeof(AdditionalItemStatus), x.AdditionalLampStatus),
+                   AdditionalOwnersManualStatus = System.Enum.GetName(typeof(AdditionalItemStatus), x.AdditionalOwnersManualStatus),
+                   LoadTimeStamp = x.LoadTimeStamp?.ToString(StringConstants.TimeStampFormatSlashes),
+               }).ToList();
+
+            orderVM.Pianos.ForEach(x =>
+            {
+                if (x.PianoMake != string.Empty)
+                {
+                    x.PianoMake = Db.PianoMake.Where(y => y.Id.ToString() == x.PianoMake).FirstOrDefault().Name;
+                }
+
+                if (x.PianoSize != string.Empty)
+                {
+                    x.PianoSize = Db.PianoSize.Where(y => y.Id.ToString() == x.PianoSize).FirstOrDefault().Width.ToString();
+                }
+            });
+
+            return View(orderVM);
+        }
+
+        public ActionResult UnitsDelivery(string orderNumber)
+        {
+            var order = Db.PianoOrders.Include(x => x.Pianos)
+                .FirstOrDefault(x => x.OrderNumber == orderNumber);
+
+            if (order == null)
+            {
+                TempData["Error"] = "Order not found.";
+                return RedirectToAction("Index", "Consignments");
+            }
+
+            var orderVM = new OrderVm()
+            {
+                Id = order.Id.ToString(),
+                OrderDate = order.CreatedAt.ToString(),
+                OrderNumber = order.OrderNumber
+            };
+
+            orderVM.Pianos = order.Pianos.OrderByDescending(x => x.CreatedAt).Select(
+               x => new PianoVm()
+               {
+                   Id = x.Id,
+                   OrderId = order.Id,
+                   PianoCategoryType = System.Enum.GetName(typeof(PianoCategoryTypeEnum), x.PianoCategoryType),
+                   PianoType = PianoTypesList.FirstOrDefault(y => y.Value == x.PianoTypeId.ToString()).Text,
+                   PianoSize = x.PianoSizeId.ToString(),
+                   PianoMake = x.PianoMakeId.ToString(),
+                   PianoModel = x.Model,
+                   PianoFinish = PianoFinishList.FirstOrDefault(y => y.Value == x.PianoFinishId.ToString()).Text,
+                   SerialNumber = x.SerialNumber,
+                   IsBench = x.IsBench,
+                   IsBoxed = x.IsBoxed,
+                   IsPlayer = x.IsPlayer,
+                   Notes = x.Notes,
+
+                   IsMainUnitLoaded = x.IsMainUnitLoaded ? "Yes" : "No",
+                   AdditionalBenchesStatus = System.Enum.GetName(typeof(AdditionalItemStatus), x.AdditionalBenchesStatus),
+                   AdditionalCasterCupsStatus = System.Enum.GetName(typeof(AdditionalItemStatus), x.AdditionalCasterCupsStatus),
+                   AdditionalCoverStatus = System.Enum.GetName(typeof(AdditionalItemStatus), x.AdditionalCoverStatus),
+                   AdditionalLampStatus = System.Enum.GetName(typeof(AdditionalItemStatus), x.AdditionalLampStatus),
+                   AdditionalOwnersManualStatus = System.Enum.GetName(typeof(AdditionalItemStatus), x.AdditionalOwnersManualStatus),
+                   LoadTimeStamp = x.LoadTimeStamp?.ToString(StringConstants.TimeStampFormatSlashes),
+               }).ToList();
+
+            orderVM.Pianos.ForEach(x =>
+            {
+                if (x.PianoMake != string.Empty)
+                {
+                    x.PianoMake = Db.PianoMake.Where(y => y.Id.ToString() == x.PianoMake).FirstOrDefault().Name;
+                }
+
+                if (x.PianoSize != string.Empty)
+                {
+                    x.PianoSize = Db.PianoSize.Where(y => y.Id.ToString() == x.PianoSize).FirstOrDefault().Width.ToString();
+                }
+            });
+
+            return View(orderVM);
         }
 
         // GET: New
@@ -83,23 +206,22 @@ namespace WFP.ICT.Web.Controllers
         {
             try
             {
-                var order = db.PianoOrders
+                var order = Db.PianoOrders
                     .Include(x => x.Customer)
                     .Include(x => x.Pianos)
                     .Include(x => x.PickupAddress)
                     .Include(x => x.DeliveryAddress)
                     .FirstOrDefault(x => x.Id == Id);
 
-                var piano = db.Pianos.Include(x => x.PianoType).FirstOrDefault(x => x.OrderId == order.Id);
-                var pickupAddress = TinyMapper.Map<AddressVm>(order.PickupAddress).AddressToStringWithOutPhone;
-                var deliveryAddress = TinyMapper.Map<AddressVm>(order.DeliveryAddress).AddressToStringWithOutPhone;
+                var piano = Db.Pianos.Include(x => x.PianoType).FirstOrDefault(x => x.OrderId == order.Id);
+                var pickupAddress = TinyMapper.Map<AddressVm>(order.PickupAddress).ToStringWithOutPhone;
+                var deliveryAddress = TinyMapper.Map<AddressVm>(order.DeliveryAddress).ToStringWithOutPhone;
 
                 var orderVM = new OrderVm()
                 {
                     Id = order.Id.ToString(),
                     OrderDate = order.CreatedAt.ToString(),
                     OrderNumber = order.OrderNumber,
-                    PreferredPickupDateTime = order.PreferredPickupDateTime?.ToString(),
                     PickupAddressString = pickupAddress,
                     DeliveryAddressString = deliveryAddress,
                     PickupDate = order.PickupDate?.ToString(),
@@ -123,13 +245,18 @@ namespace WFP.ICT.Web.Controllers
             //SetupLoggedInUser("test.user");
             if (ModelState.IsValid)
             {
+                ViewBag.Warehouses = new SelectList(WarehousesList, "Value", "Text");
+                ViewBag.Vehicles = new SelectList(VehiclesList, "Value", "Text");
+                ViewBag.Drivers = new SelectList(DriversList, "Value", "Text");
+                ViewBag.Orders = new SelectList(OrdersList, "Value", "Text");
+
                 try
                 {
-                    var order = db.PianoOrders
+                    var order = Db.PianoOrders.Include(x => x.Pianos)
                         .FirstOrDefault(x => x.Id == conVm.Orders);
 
                     PianoAssignment consignment;
-                    if (!order.PianoAssignmentId.HasValue)
+                    if (!order.PianoAssignmentId.HasValue) // New
                     {
                         consignment = new PianoAssignment()
                         {
@@ -137,23 +264,23 @@ namespace WFP.ICT.Web.Controllers
                             CreatedAt = DateTime.Now,
                             CreatedBy = LoggedInUser?.UserName,
                             PianoOrderId = conVm.Orders,
-                           // WarehouseStartId = conVm.Warehouses,
                             VehicleId = conVm.Vehicles,
                             AssignmentNumber = "CON-" + order.OrderNumber
                         };
-                        db.PianoAssignments.Add(consignment);
-                        db.SaveChanges();
-
-                   
+                        Db.PianoAssignments.Add(consignment);
+                        Db.SaveChanges();
+                        
                         conVm.Drivers.ForEach(x => {
-                            consignment.Drivers.Add(db.Drivers.FirstOrDefault(y => y.Id == x.Value));
+                            consignment.Drivers.Add(Db.Drivers.FirstOrDefault(y => y.Id == x.Value));
                         });
+                        order.PianoAssignmentId = consignment.Id;
+                        Db.SaveChanges();
 
                         int odr = 1;
                         var paths = JsonConvert.DeserializeObject<ConsignmentRouteVm[]>(conVm.Paths);
                         foreach (var path in paths)
                         {
-                            db.PianoAssignmentRoutes.Add(new PianoAssignmentRoute()
+                            Db.PianoAssignmentRoutes.Add(new PianoAssignmentRoute()
                             {
                                 Id = Guid.NewGuid(),
                                 CreatedAt = DateTime.Now,
@@ -164,41 +291,64 @@ namespace WFP.ICT.Web.Controllers
                             });
                             odr++;
                         }
-                        db.SaveChanges();
+                        Db.SaveChanges();
+                        // Save Trip Statuses
+                        Db.TripStatuses.Add(new TripStatus()
+                        {
+                            Id = Guid.NewGuid(),
+                            PianoAssignmentId = consignment.Id,
+                            CreatedAt = DateTime.Now,
+                            Status = (int)TripStatusEnum.NotStarted,
+                            StatusTime = DateTime.Now,
+                            StatusBy = LoggedInUser?.UserName
+                        });
+                        Db.SaveChanges();
+
+                        // Save Piano Statuses
+                        foreach (var piano in order.Pianos)
+                        {
+                            Db.PianoStatuses.Add(new PianoStatus()
+                            {
+                                Id = Guid.NewGuid(),
+                                PianoId = piano.Id,
+                                CreatedAt = DateTime.Now,
+                                Status = (int)PianoStatusEnum.Booked,
+                                StatusTime = DateTime.Now,
+                                StatusBy = LoggedInUser?.UserName
+                            });
+                        } 
+                        
                     }
                     else
                     {
-                        consignment = db.PianoAssignments
+                        consignment = Db.PianoAssignments
                             .Include(x => x.Route)
+                            .Include(x => x.Drivers)
                             .FirstOrDefault(x => x.Id == order.PianoAssignmentId);
 
                         consignment.PianoOrderId = conVm.Orders;
-                        consignment.WarehouseStartId = conVm.Warehouses;
                         consignment.VehicleId = conVm.Vehicles;
                         consignment.AssignmentNumber = "CON-" + order.OrderNumber;
-                        db.SaveChanges();
+                        Db.SaveChanges();
 
                         consignment.Drivers.ToList().ForEach(x => {
-                            consignment.Drivers.Remove(db.Drivers.FirstOrDefault(y => y.Id == x.Id));
+                            consignment.Drivers.Remove(Db.Drivers.FirstOrDefault(y => y.Id == x.Id));
                         });
-                        db.SaveChanges();
-
+                        Db.SaveChanges();
                         conVm.Drivers.ForEach(x => {
-                            consignment.Drivers.Add(db.Drivers.FirstOrDefault(y => y.Id == x.Value));
+                            consignment.Drivers.Add(Db.Drivers.FirstOrDefault(y => y.Id == x.Value));
                         });
 
-
-                        foreach (var route in consignment.Route)
-                        {
-                            db.PianoAssignmentRoutes.Remove(route);
-                        }
-                        db.SaveChanges();
+                        consignment.Route.ToList().ForEach(x => {
+                            consignment.Route.Remove(Db.PianoAssignmentRoutes.FirstOrDefault(y => y.Id == x.Id));
+                        });
+                        Db.SaveChanges();
 
                         int odr = 1;
                         var paths = JsonConvert.DeserializeObject<ConsignmentRouteVm[]>(conVm.Paths);
                         foreach (var path in paths)
                         {
-                            db.PianoAssignmentRoutes.Add(new PianoAssignmentRoute()
+                            Db.PianoAssignmentRoutes.Add(new PianoAssignmentRoute()
                             {
                                 Id = Guid.NewGuid(),
                                 CreatedAt = DateTime.Now,
@@ -209,11 +359,11 @@ namespace WFP.ICT.Web.Controllers
                             });
                             odr++;
                         }
-                        db.SaveChanges();
+                        Db.SaveChanges();
 
                     }
 
-                    var consignmentDrivers = db.PianoAssignments
+                    var consignmentDrivers = Db.PianoAssignments
                                               .Include(x => x.Drivers).FirstOrDefault(x => x.Id == consignment.Id);
 
                     consignmentDrivers.Drivers.ToList().ForEach(x =>
@@ -230,27 +380,23 @@ namespace WFP.ICT.Web.Controllers
                 catch (Exception ex)
                 {
                     TempData["Error"] = "This is error while creating order." + ex.Message;
+                    return RedirectToAction("Index");
                 }
             }
-            ViewBag.Warehouses = new SelectList(WarehousesList, "Value", "Text");
-            ViewBag.Vehicles = new SelectList(VehiclesList, "Value", "Text");
-            ViewBag.Drivers = new SelectList(DriversList, "Value", "Text");
-            ViewBag.Orders = new SelectList(OrdersList, "Value", "Text");
-
+           
             return View(conVm);
         }
 
         public ActionResult PickTickets()
         {
             var consigmentVms = new List<ConsigmentVm>();
-            var consignments = db.PianoAssignments
+            var consignments = Db.PianoAssignments
                 .Include(x => x.Drivers)
                 .Include(x => x.Vehicle)
-                .Include(x => x.WarehouseStart)
                 .ToList();//.Where(x => x.CreatedBy == LoggedInUser.Id)
             foreach (var consignment in consignments)
             {
-                var order = db.PianoOrders.FirstOrDefault(x => x.Id == consignment.PianoOrderId);
+                var order = Db.PianoOrders.FirstOrDefault(x => x.Id == consignment.PianoOrderId);
 
                 var consigmentVm = new ConsigmentVm()
                 {
@@ -261,7 +407,6 @@ namespace WFP.ICT.Web.Controllers
                     ConsignmentNumber = consignment.AssignmentNumber,
                     DriverName = String.Join(",", consignment.Drivers.Select(x => x.Name).ToList()),
                     VehicleName = consignment.Vehicle?.Name,
-                    StartWarehouseName = consignment.WarehouseStart?.Name
                 };
                 consigmentVms.Add(consigmentVm);
             }
@@ -270,35 +415,33 @@ namespace WFP.ICT.Web.Controllers
 
         public ActionResult Generate()
         {
-            var consignments = db.PianoAssignments
+            var consignments = Db.PianoAssignments
                 .Include(x => x.Drivers)
                 .Include(x => x.Vehicle)
-                .Include(x => x.WarehouseStart)
                 .ToList();//.Where(x => x.CreatedBy == LoggedInUser.Id)
 
             List<OrderVm> orderVMs = new List<OrderVm>();
             foreach (var consignment in consignments)
             {
-                var order = db.PianoOrders
+                var order = Db.PianoOrders
                     .Include(x => x.PickupAddress)
                     .Include(x => x.DeliveryAddress)
                     .FirstOrDefault(x => x.Id == consignment.PianoOrderId);
 
-                string prefix = consignment.WarehouseStart.Code;
+                string prefix = "ENCORE";
                 var barcode = GeneratorHelper.GenerateBarcode(prefix, int.Parse(order.OrderNumber));
                 consignment.PickupTicket = barcode;
                 consignment.PickupTicketGenerationTime = DateTime.Now;
-                db.SaveChanges();
+                Db.SaveChanges();
 
-                var pickupAddress = TinyMapper.Map<AddressVm>(order.PickupAddress).AddressToString;
-                var deliveryAddress = TinyMapper.Map<AddressVm>(order.DeliveryAddress).AddressToString;
+                var pickupAddress = TinyMapper.Map<AddressVm>(order.PickupAddress).ToString;
+                var deliveryAddress = TinyMapper.Map<AddressVm>(order.DeliveryAddress).ToString;
 
                 var orderVM = new OrderVm()
                 {
                     Id = order.Id.ToString(),
                     OrderDate = order.CreatedAt.ToString(),
                     OrderNumber = order.OrderNumber,
-                    PreferredPickupDateTime = order.PreferredPickupDateTime?.ToString(),
                     PickupAddressString = pickupAddress,
                     DeliveryAddressString = deliveryAddress,
                     PickupDate = order.PickupDate?.ToString(),
@@ -310,7 +453,7 @@ namespace WFP.ICT.Web.Controllers
                 orderVMs.Add(orderVM);
             }
             // Generate 
-            var filePath = QRCodeGenerator.Generate(ImagesPath, UploadPath, orderVMs);
+            var filePath = QRCodeGenerator.Generate(ImagesPath, UploadsPath, orderVMs);
             return File(filePath, "application/octet-stream", "PickupTickets.pdf");
 
         }
@@ -320,14 +463,13 @@ namespace WFP.ICT.Web.Controllers
         {
             try
             {
-                var consignment = db.PianoAssignments
+                var consignment = Db.PianoAssignments
                             .Include(x=> x.Drivers).FirstOrDefault(x => x.Id == id);
 
                 var driver = consignment.Drivers.ToList();
                 driver.ForEach(x =>
                 {
                     BackgroundJob.Enqueue(() => FCMUitlity.SendConsignment(x.FCMToken, consignment.Id.ToString(), consignment.AssignmentNumber));
-
                 });
               
                 return Json(new JsonResponse() { IsSucess = true }, JsonRequestBehavior.AllowGet);
@@ -342,7 +484,7 @@ namespace WFP.ICT.Web.Controllers
         {
             try
             {
-                var order = db.PianoOrders
+                var order = Db.PianoOrders
                             .Include(x => x.Customer)
                             .Include(x => x.Pianos.Select(y => y.PianoMake))
                             .Include(x => x.Pianos.Select(y => y.PianoType))
@@ -353,7 +495,7 @@ namespace WFP.ICT.Web.Controllers
                             .Include(x => x.OrderCharges.Select(y=>y.PianoCharges))
                             .FirstOrDefault(x => x.Id == id);
 
-                string _directoryPath = UploadPath + "\\InvoiceCodes";
+                string _directoryPath = UploadsPath + "\\InvoiceCodes";
 
                 string html = InvoiceHtmlHelper.GenerateInvoiceHtml(order, _directoryPath);
 

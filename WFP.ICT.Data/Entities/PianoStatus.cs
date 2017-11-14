@@ -13,9 +13,7 @@ namespace WFP.ICT.Data.Entities
         public DateTime? StatusTime { get; set; }
         public string StatusBy { get; set; }
         public string Comments { get; set; }
-
-        public string DrawingOfPiano { get; set; }
-
+        
         public Guid? PianoId { get; set; }
         //public virtual Piano Piano { get; set; }
 

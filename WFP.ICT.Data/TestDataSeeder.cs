@@ -93,6 +93,7 @@ namespace WFP.ICT.Data
             {
                 Id = customerId,
                 CreatedAt = DateTime.Now,
+                CustomerType = 1,
                 AccountCode = "456343",
                 Name = "Test Customer 1",
                 PhoneNumber = "12345678",
@@ -225,6 +226,7 @@ namespace WFP.ICT.Data
             {
                 Id = addressId,
                 CreatedAt = DateTime.Now,
+                AddressType = (int)AddressTypeEnum.Warehouse,
                 WarehouseId = warehouse.Id,
                 Name = "ENCORE PIANO MOVING Warehouse",
                 Address1 = "15915 CANARY AVE.",

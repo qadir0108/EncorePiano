@@ -203,7 +203,7 @@ namespace WFP.ICT.Web.Controllers
                 return File(new byte[0], "application/octet-stream", "PickupTickets.pdf");
             }
 
-            Client client = db.Clients.Include(x => x.Addresses).FirstOrDefault(x => x.Id.ToString() == ClientId);
+            Client client = Db.Clients.Include(x => x.Addresses).FirstOrDefault(x => x.Id.ToString() == ClientId);
 
             IEnumerable<PianoOrder> Orders = GetOrders(ClientId, StartDate, EndDate);
             List<Piano> Pianos = new List<Piano>();
@@ -214,7 +214,7 @@ namespace WFP.ICT.Web.Controllers
                 Pianos.AddRange(PianosNew);
             }
 
-            int invoiceNumber = db.CustomerInvoices.Count() + 3000 ;
+            int invoiceNumber = Db.CustomerInvoices.Count() + 3000 ;
 
             string html = InvoiceHtmlHelper.GenerateClientInvoiceHtml(Orders,client,Pianos , invoiceNumber);
 
@@ -241,7 +241,7 @@ namespace WFP.ICT.Web.Controllers
                 }
               
 
-                Client client = db.Clients.Include(x => x.Addresses).FirstOrDefault(x => x.Id.ToString() == ClientId);
+                Client client = Db.Clients.Include(x => x.Addresses).FirstOrDefault(x => x.Id.ToString() == ClientId);
 
                 IEnumerable<PianoOrder> Orders = GetOrders( ClientId, StartDate, EndDate);
                 List<Piano> Pianos = new List<Piano>();
@@ -252,7 +252,7 @@ namespace WFP.ICT.Web.Controllers
                     Pianos.AddRange(PianosNew);
                 }
 
-                int invoiceNumber = db.CustomerInvoices.Count() + 3000;
+                int invoiceNumber = Db.CustomerInvoices.Count() + 3000;
 
                 string html = InvoiceHtmlHelper.GenerateClientInvoiceHtml(Orders, client, Pianos, invoiceNumber);
 
@@ -308,7 +308,7 @@ namespace WFP.ICT.Web.Controllers
             DateTime StartDateParse = DateTime.Parse(StartDate);
             DateTime EndDateParse = DateTime.Parse(EndDate);
 
-            return db.PianoOrders
+            return Db.PianoOrders
                    .Include(y => y.Pianos.Select(z => z.PianoMake))
                    .Include(y => y.Pianos.Select(z => z.PianoType))
                    .Include(y => y.Pianos.Select(z => z.PianoSize))

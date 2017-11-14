@@ -11,7 +11,6 @@ namespace WFP.ICT.Web.Models
         [Required(ErrorMessage = "Name is required")]
         public string Name { get; set; }
 
-
         [Required(ErrorMessage = "Contact is required")]
         [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Entered phone format is not valid.")]
         public string PhoneNumber { get; set; }
@@ -47,7 +46,6 @@ namespace WFP.ICT.Web.Models
     {
         [Required(ErrorMessage = "Name is required")]
         public string Name { get; set; }
-
 
         [Required(ErrorMessage = "Contact is required")]
         [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Entered phone format is not valid.")]

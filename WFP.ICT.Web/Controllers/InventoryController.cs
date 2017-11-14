@@ -52,7 +52,7 @@ namespace WFP.ICT.Web.Controllers
                          JsonRequestBehavior.AllowGet);
             }
 
-            IQueryable<Piano> Pianos = db.Pianos;
+            IQueryable<Piano> Pianos = Db.Pianos;
             if (WareHouse != string.Empty)
             {
                 Guid id = Guid.Parse(WareHouse);
@@ -323,7 +323,7 @@ namespace WFP.ICT.Web.Controllers
         {
             List<BatchLoadVm> BatchGridData = new List<BatchLoadVm>();
 
-            using (SpreadsheetDocument doc = SpreadsheetDocument.Open(Path.Combine(UploadPath,fname), false))
+            using (SpreadsheetDocument doc = SpreadsheetDocument.Open(Path.Combine(UploadsPath,fname), false))
             {
                 Sheet sheet = doc.WorkbookPart.Workbook.Sheets.GetFirstChild<Sheet>();
                 Worksheet worksheet = (doc.WorkbookPart.GetPartById(sheet.Id.Value) as WorksheetPart).Worksheet;

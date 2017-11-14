@@ -22,8 +22,6 @@ namespace WFP.ICT.Data.Entities
 
         public string SalesOrderNumber { get; set; } // For Corporate client
         
-        public DateTime? PreferredPickupDateTime { get; set; }
-
         public DateTime? PickupDate { get; set; }
         public DateTime? DeliveryDate { get; set; }
 

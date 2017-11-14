@@ -13,7 +13,7 @@ namespace WFP.ICT.Web.Controllers
     {
         public async Task<ActionResult> Edit(Guid? id)
         {
-            IEnumerable<Address> addressEntities = db.Addresses.ToList();
+            IEnumerable<Address> addressEntities = Db.Addresses.ToList();
             var viewModel = new PersonEditViewModel
             {
                 Addresses = addressEntities.Select(a => new AddressEditorViewModel
@@ -47,7 +47,7 @@ namespace WFP.ICT.Web.Controllers
 
         public ActionResult Details(Guid? id)
         {
-            IEnumerable<Address> addressEntities = db.Addresses.ToList();
+            IEnumerable<Address> addressEntities = Db.Addresses.ToList();
             var viewModel = new PersonEditViewModel
             {
                 Addresses = addressEntities.Select(a => new AddressEditorViewModel

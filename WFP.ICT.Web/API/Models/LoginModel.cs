@@ -13,4 +13,9 @@ namespace WFP.ICT.Web.Models
         public string FCMToken { get; set; }
     }
 
+    public class LogModel
+    {
+        public string log { get; set; }
+    }
+
 }

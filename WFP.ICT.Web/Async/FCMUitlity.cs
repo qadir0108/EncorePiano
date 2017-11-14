@@ -18,7 +18,7 @@ namespace WFP.ICT.Web.FCM
     {
         public static void SendConsignment(string driverToken, string consignmentId, string consignmentNumber)
         {
-            FCMClient client = new FCMClient(ConfigurationSettings.AppSettings["FCMServerKey"]);
+            FCMClient client = new FCMClient(ConfigurationManager.AppSettings["FCMServerKey"]);
             
             var message = new Message()
             {

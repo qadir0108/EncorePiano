@@ -22,19 +22,14 @@ namespace WFP.ICT.Data.Entities
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             // The rest should not be needed - it should be done by conventions
-            //modelBuilder.Entity<Campaign>()
-            //    .HasOptional(s => s.Testing)
-            //    .WithRequired(si => si.Campaign);
 
             modelBuilder.Entity<PianoOrder>()
                 .HasOptional(s => s.PianoAssignment)
                 .WithRequired(si => si.PianoOrder);
 
-            modelBuilder.Entity<PianoAssignment>()
-                .HasOptional(s => s.PianoPod)
-                .WithRequired(si => si.PianoAssignment);
-
-
+            //modelBuilder.Entity<PianoAssignment>()
+            //    .HasOptional(s => s.PianoPod)
+            //    .WithRequired(si => si.Assignment);
 
             base.OnModelCreating(modelBuilder);
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
@@ -67,6 +62,7 @@ namespace WFP.ICT.Data.Entities
         // POD
         public DbSet<PianoAssignment> PianoAssignments { get; set; }
         public DbSet<PianoAssignmentRoute> PianoAssignmentRoutes { get; set; }
+        public DbSet<TripStatus> TripStatuses { get; set; }
         public DbSet<PianoStatus> PianoStatuses { get; set; }
         public DbSet<PianoPOD> PianoPODs { get; set; }
         public DbSet<PianoPicture> PianoPictures { get; set; }

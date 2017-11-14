@@ -53,7 +53,7 @@
                                             <a href="#tab_15_3" data-toggle="tab"> Charges </a>
                                         </li>
                                         @if (Model.OrderPlacementType == (int)WFP.ICT.Enums.OrderTypeEnum.Dealer
-                    || Model.OrderPlacementType == (int)WFP.ICT.Enums.OrderTypeEnum.Manufacturer)
+|| Model.OrderPlacementType == (int)WFP.ICT.Enums.OrderTypeEnum.Manufacturer)
                                         {
                                             <li>
                                                 <a href="#tab_15_4" data-toggle="tab"> Billing/Invoice </a>
@@ -70,7 +70,7 @@
                                                         <div class="form-group form-md-line-input has-success">
                                                             <div class="input-icon">
                                                                 @Html.EditorFor(model => model.CallerFirstName, new { htmlAttributes = new { @class = "form-control" } })
-                                                                <label>First Name</label>
+                                                                <label>First Name<span class="required">*</span></label>
                                                                 @Html.ValidationMessageFor(model => model.CallerFirstName, null, new { @class = "help-block help-block-error" })
                                                                 <span class="help-block">Enter First Name</span>
                                                                 <i class="fa fa-user"></i>
@@ -81,7 +81,7 @@
                                                         <div class="form-group form-md-line-input has-success">
                                                             <div class="input-icon">
                                                                 @Html.EditorFor(model => model.CallerLastName, new { htmlAttributes = new { @class = "form-control" } })
-                                                                <label>Last Name<span class="required">*</span></label>
+                                                                <label>Last Name</label>
                                                                 @Html.ValidationMessageFor(model => model.CallerLastName, null, new { @class = "help-block help-block-error" })
                                                                 <span class="help-block">Enter Last Name</span>
                                                                 <i class="fa fa-user"></i>
@@ -92,7 +92,7 @@
                                                         <div class="form-group form-md-line-input has-success">
                                                             <div class="input-icon">
                                                                 @Html.EditorFor(model => model.CallerPhoneNumber, new { htmlAttributes = new { @class = "form-control" } })
-                                                                <label>Via Phone Number<span class="required">*</span></label>
+                                                                <label>Phone Number<span class="required">*</span></label>
                                                                 @Html.ValidationMessageFor(model => model.CallerPhoneNumber, null, new { @class = "help-block help-block-error" })
                                                                 <span class="help-block">Enter Phone Number</span>
                                                                 <i class="fa fa-phone"></i>
@@ -107,7 +107,7 @@
                                                         <div class="form-group form-md-line-input has-success">
                                                             <div class="input-icon">
                                                                 @Html.EditorFor(model => model.CallerAlternatePhone, new { htmlAttributes = new { @class = "form-control" } })
-                                                                <label>Alternate Phone Number<span class="required">*</span></label>
+                                                                <label>Alternate Phone Number</label>
                                                                 @Html.ValidationMessageFor(model => model.CallerAlternatePhone, null, new { @class = "help-block help-block-error" })
                                                                 <span class="help-block">Enter Alternate Number</span>
                                                                 <i class="fa fa-phone"></i>
@@ -118,7 +118,7 @@
                                                         <div class="form-group form-md-line-input has-success">
                                                             <div class="input-icon">
                                                                 @Html.EditorFor(model => model.CallerEmail, new { htmlAttributes = new { @class = "form-control" } })
-                                                                <label>Via Email Address<span class="required">*</span></label>
+                                                                <label>Email Address</label>
                                                                 @Html.ValidationMessageFor(model => model.CallerEmail, null, new { @class = "help-block help-block-error" })                                                                <span class="help-block">Enter Email Address</span>
                                                                 <span class="help-block">Enter Email Address</span>
                                                                 <i class="fa fa-envelope-o"></i>
@@ -136,7 +136,7 @@
                                                         <div class="portlet-title">
                                                             <div class="caption font-blue-steel">
                                                                 <i class="icon-settings font-blue-steel"></i>
-                                                                <span class="caption-subject bold uppercase"> Pickup Adddress</span>
+                                                                <span class="caption-subject bold uppercase"> Pickup Address</span>
                                                             </div>
                                                             <div class="actions">
                                                                 <a class="btn btn-circle btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title=""> </a>
@@ -150,7 +150,7 @@
                                                                         <div class="form-group form-md-line-input has-success">
                                                                             <div class="input-icon">
                                                                                 @Html.EditorFor(model => model.PickupAddress.PickUpDate, new { htmlAttributes = new { @class = "form-control date-picker" } })
-                                                                                <label>Pickup Date<span class="required">*</span></label>
+                                                                                <label>Pickup Date</label>
                                                                                 @Html.ValidationMessageFor(model => model.PickupAddress.PickUpDate, null, new { @class = "help-block help-block-error" })
                                                                                 <span class="help-block">Enter Pickup Date here</span>
                                                                                 <i class="fa fa-user"></i>
@@ -175,7 +175,7 @@
                                                                         <div class="form-group form-md-line-input has-success">
                                                                             <div class="input-icon">
                                                                                 @Html.EditorFor(model => model.PickupAddress.Name, new { htmlAttributes = new { @class = "form-control pianoName" } })
-                                                                                <label>Name<span class="required">*</span></label>
+                                                                                <label>Name</label>
                                                                                 @Html.ValidationMessageFor(model => model.PickupAddress.Name, null, new { @class = "help-block help-block-error" })
                                                                                 <span class="help-block">Enter Name here</span>
                                                                                 <i class="fa fa-user"></i>
@@ -186,7 +186,7 @@
                                                                         <div class="form-group form-md-line-input has-success">
                                                                             <div class="input-icon">
                                                                                 @Html.EditorFor(model => model.PickupAddress.PhoneNumber, new { htmlAttributes = new { @class = "form-control pianoPhone" } })
-                                                                                <label>Phone Number<span class="required">*</span></label>
+                                                                                <label>Phone Number</label>
                                                                                 @Html.ValidationMessageFor(model => model.PickupAddress.PhoneNumber, null, new { @class = "help-block help-block-error" })
                                                                                 <span class="help-block">Enter Phone here</span>
                                                                                 <i class="fa fa-home"></i>
@@ -221,7 +221,7 @@
                                                                         <div class="form-group form-md-line-input has-success">
                                                                             <div class="input-icon">
                                                                                 @Html.EditorFor(model => model.PickupAddress.Address1, new { htmlAttributes = new { @class = "form-control pianoAddress" } })
-                                                                                <label>Address<span class="required">*</span></label>
+                                                                                <label>Address</label>
                                                                                 @Html.ValidationMessageFor(model => model.PickupAddress.Address1, null, new { @class = "help-block help-block-error" })
                                                                                 <span class="help-block">Enter Address here</span>
                                                                                 <i class="fa fa-home"></i>
@@ -236,7 +236,7 @@
                                                                                 @Html.EditorFor(model => model.PickupAddress.City, new { htmlAttributes = new { @class = "form-control pianoCity" } })
                                                                                 <label>City<span class="required">*</span></label>
                                                                                 @Html.ValidationMessageFor(model => model.PickupAddress.City, null, new { @class = "help-block help-block-error" })
-                                                                                <span class="help-block">Enter PostCode</span>
+                                                                                <span class="help-block">City Name</span>
                                                                                 <i class="fa fa-home"></i>
                                                                             </div>
                                                                         </div>
@@ -245,7 +245,7 @@
                                                                         <div class="form-group form-md-line-input has-success">
                                                                             <div class="input-icon">
                                                                                 @Html.EditorFor(model => model.PickupAddress.PostCode, new { htmlAttributes = new { @class = "form-control pianoPostCode" } })
-                                                                                <label>Zip Code<span class="required">*</span></label>
+                                                                                <label>Zip Code</label>
                                                                                 @Html.ValidationMessageFor(model => model.PickupAddress.PostCode, null, new { @class = "help-block help-block-error" })
                                                                                 <span class="help-block">Enter Zip Code</span>
                                                                                 <i class="fa fa-phone"></i>
@@ -256,7 +256,7 @@
                                                                         <div class="form-group form-md-line-input has-success">
                                                                             <div class="input-icon">
                                                                                 @Html.DropDownListFor(model => model.PickupAddress.State, TempData["AddressStates"] as SelectList, htmlAttributes: new { @class = "form-control pianoState" })
-                                                                                <label>State <span class="required">*</span></label>
+                                                                                <label>State </label>
                                                                                 @Html.ValidationMessageFor(model => model.PickupAddress.State, null, new { @class = "help-block help-block-error" })
                                                                                 <span class="help-block">Enter City Number here</span>
                                                                                 <i class="fa fa-phone"></i>
@@ -313,7 +313,7 @@
                                                         <div class="portlet-title">
                                                             <div class="caption font-blue-steel">
                                                                 <i class="icon-settings font-blue-steel"></i>
-                                                                <span class="caption-subject bold uppercase"> Delivery Adddress</span>
+                                                                <span class="caption-subject bold uppercase"> Delivery Address</span>
                                                             </div>
                                                             <div class="actions">
                                                                 <a class="btn btn-circle btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title=""> </a>
@@ -328,7 +328,7 @@
                                                                         <div class="form-group form-md-line-input has-success">
                                                                             <div class="input-icon">
                                                                                 @Html.EditorFor(model => model.DeliveryAddress.PickUpDate, new { htmlAttributes = new { @class = "form-control date-picker" } })
-                                                                                <label>Delivery Date<span class="required">*</span></label>
+                                                                                <label>Delivery Date</label>
                                                                                 @Html.ValidationMessageFor(model => model.DeliveryAddress.PickUpDate, null, new { @class = "help-block help-block-error" })
                                                                                 <span class="help-block">Enter Delivery Date here</span>
                                                                                 <i class="fa fa-user"></i>
@@ -353,7 +353,7 @@
                                                                         <div class="form-group form-md-line-input has-success">
                                                                             <div class="input-icon">
                                                                                 @Html.EditorFor(model => model.DeliveryAddress.Name, new { htmlAttributes = new { @class = "form-control pianoName" } })
-                                                                                <label>Name<span class="required">*</span></label>
+                                                                                <label>Name</label>
                                                                                 @Html.ValidationMessageFor(model => model.DeliveryAddress.Name, null, new { @class = "help-block help-block-error" })
                                                                                 <span class="help-block">Enter Name here</span>
                                                                                 <i class="fa fa-user"></i>
@@ -364,7 +364,7 @@
                                                                         <div class="form-group form-md-line-input has-success">
                                                                             <div class="input-icon">
                                                                                 @Html.EditorFor(model => model.DeliveryAddress.PhoneNumber, new { htmlAttributes = new { @class = "form-control pianoPhone" } })
-                                                                                <label>Phone Number<span class="required">*</span></label>
+                                                                                <label>Phone Number</label>
                                                                                 @Html.ValidationMessageFor(model => model.DeliveryAddress.PhoneNumber, null, new { @class = "help-block help-block-error" })
                                                                                 <span class="help-block">Enter Phone here</span>
                                                                                 <i class="fa fa-home"></i>
@@ -399,7 +399,7 @@
                                                                         <div class="form-group form-md-line-input has-success">
                                                                             <div class="input-icon">
                                                                                 @Html.EditorFor(model => model.DeliveryAddress.Address1, new { htmlAttributes = new { @class = "form-control pianoAddress" } })
-                                                                                <label>Address<span class="required">*</span></label>
+                                                                                <label>Address</label>
                                                                                 @Html.ValidationMessageFor(model => model.DeliveryAddress.Address1, null, new { @class = "help-block help-block-error" })
                                                                                 <span class="help-block">Enter Address here</span>
                                                                                 <i class="fa fa-home"></i>
@@ -414,7 +414,7 @@
                                                                                 @Html.EditorFor(model => model.DeliveryAddress.City, new { htmlAttributes = new { @class = "form-control pianoCity" } })
                                                                                 <label>City<span class="required">*</span></label>
                                                                                 @Html.ValidationMessageFor(model => model.DeliveryAddress.City, null, new { @class = "help-block help-block-error" })
-                                                                                <span class="help-block">Enter PostCode</span>
+                                                                                <span class="help-block">City Name</span>
                                                                                 <i class="fa fa-home"></i>
                                                                             </div>
                                                                         </div>
@@ -423,7 +423,7 @@
                                                                         <div class="form-group form-md-line-input has-success">
                                                                             <div class="input-icon">
                                                                                 @Html.EditorFor(model => model.DeliveryAddress.PostCode, new { htmlAttributes = new { @class = "form-control pianoPostCode" } })
-                                                                                <label>Zip Code<span class="required">*</span></label>
+                                                                                <label>Zip Code</label>
                                                                                 @Html.ValidationMessageFor(model => model.DeliveryAddress.PostCode, null, new { @class = "help-block help-block-error" })
                                                                                 <span class="help-block">Enter Zip Code</span>
                                                                                 <i class="fa fa-phone"></i>
@@ -434,7 +434,7 @@
                                                                         <div class="form-group form-md-line-input has-success">
                                                                             <div class="input-icon">
                                                                                 @Html.DropDownListFor(model => model.DeliveryAddress.State, TempData["AddressStates"] as SelectList, htmlAttributes: new { @class = "form-control pianoState" })
-                                                                                <label>State <span class="required">*</span></label>
+                                                                                <label>State </label>
                                                                                 @Html.ValidationMessageFor(model => model.DeliveryAddress.State, null, new { @class = "help-block help-block-error" })
                                                                                 <span class="help-block">Enter City Number here</span>
                                                                                 <i class="fa fa-phone"></i>
@@ -489,7 +489,7 @@
 
                                             </div>
                                             @if (Model.OrderPlacementType == (int)WFP.ICT.Enums.OrderTypeEnum.Dealer
-                                                || Model.OrderPlacementType == (int)WFP.ICT.Enums.OrderTypeEnum.Manufacturer)
+                    || Model.OrderPlacementType == (int)WFP.ICT.Enums.OrderTypeEnum.Manufacturer)
                                             {
                                                 <div class="row">
                                                     <div class="col-md-12">
@@ -584,22 +584,16 @@
                                                         <div class="portlet-title">
                                                             <div class="caption font-blue-steel">
                                                                 <i class="icon-settings font-blue-steel"></i>
-                                                                <span class="caption-subject bold uppercase"> Other Services</span>
+                                                                <span class="caption-subject bold uppercase">Services</span>
                                                             </div>
                                                             <div class="actions">
+                                                                <a id="addServices" class="btn btn-circle btn-icon-only green" data-tooltip="Add more Service" title="Add more service" href="javascript:;">
+                                                                    <i class="icon-plus"></i>
+                                                                </a>
                                                                 <a class="btn btn-circle btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title=""> </a>
                                                             </div>
                                                         </div>
                                                         <div class="portlet-body form">
-
-                                                            <div class="row">
-                                                                <div class="col-md-2 pull-right">
-                                                                    <a id="addServices" class="btn btn-circle btn-icon-only green pull-right" data-tooltip="Add more Service" title="Add more service" href="javascript:;">
-                                                                        <i class="icon-plus"></i>
-                                                                    </a>
-                                                                </div>
-
-                                                            </div>
                                                             <div class="form-body" id="serviceContainer">
                                                                 <!--Services-->
                                                                 @{Model.Charges.ForEach(service => Html.RenderPartial("Editors/_Services", service));}
@@ -617,7 +611,7 @@
                                                             <div class="form-group form-md-line-input has-success">
                                                                 <div class="input-icon">
                                                                     @Html.DropDownListFor(model => model.PaymentOption, TempData["PaymentOption"] as SelectList, htmlAttributes: new { @class = "form-control paymentOption", onchange = "pianoConfigs.initShowPaymentData(this)" })
-                                                                    <label>Payment Option<span class="required">*</span></label>
+                                                                    <label>Payment Option</label>
                                                                     @Html.ValidationMessageFor(model => model.PaymentOption, null, new { @class = "help-block help-block-error" })
                                                                     <span class="help-block">Select Payment Option</span>
                                                                     <i class="fa fa-dollar"></i>
@@ -630,9 +624,9 @@
                                                             <div class="form-group form-md-line-input has-success">
                                                                 <div class="input-icon">
                                                                     @Html.EditorFor(model => model.CollectableAmount, new { htmlAttributes = new { @class = "form-control" } })
-                                                                    <label>Amount to be collected<span class="required">*</span></label>
+                                                                    <label>C.O.D. Amount</label>
                                                                     @Html.ValidationMessageFor(model => model.CollectableAmount, null, new { @class = "help-block help-block-error" })
-                                                                    <span class="help-block">COD (Amount to be collected)</span>
+                                                                    <span class="help-block">C.O.D. Amount</span>
                                                                     <i class="fa fa-dollar"></i>
                                                                 </div>
                                                             </div>
@@ -643,7 +637,7 @@
                                                             <div class="form-group form-md-line-input has-success">
                                                                 <div class="input-icon">
                                                                     @Html.EditorFor(model => model.OfficeStaffDetails, new { htmlAttributes = new { @class = "form-control" } })
-                                                                    <label>Office Staff<span class="required">*</span></label>
+                                                                    <label>Office Staff</label>
                                                                     @Html.ValidationMessageFor(model => model.OfficeStaffDetails, null, new { @class = "help-block help-block-error" })
                                                                     <span class="help-block">Enter Office Staff Details</span>
 
@@ -657,7 +651,7 @@
                                                             <div class="form-group form-md-line-input has-success">
                                                                 <div class="input-icon">
                                                                     @Html.EditorFor(model => model.OnlinePaymentDetails, new { htmlAttributes = new { @class = "form-control" } })
-                                                                    <label>Online Payment<span class="required">*</span></label>
+                                                                    <label>Online Payment</label>
                                                                     @Html.ValidationMessageFor(model => model.OnlinePaymentDetails, null, new { @class = "help-block help-block-error" })
                                                                     <span class="help-block">Enter Online Payment Details</span>
                                                                     <i class="fa fa-dollar"></i>
@@ -670,7 +664,7 @@
 
                                         </div>
                                         @if (Model.OrderPlacementType == (int)WFP.ICT.Enums.OrderTypeEnum.Dealer
-                   || Model.OrderPlacementType == (int)WFP.ICT.Enums.OrderTypeEnum.Manufacturer)
+|| Model.OrderPlacementType == (int)WFP.ICT.Enums.OrderTypeEnum.Manufacturer)
                                         {
                                             <div class="tab-pane" id="tab_15_4">
                                                 <div class="row" style="margin-top: 5px">
@@ -689,12 +683,12 @@
                                                             <div class="portlet-body form">
                                                                 <div class="form-body">
                                                                     <div class="row" style="margin-top:5px;">
-                                                                        <div>
+                                                                        <div class="col-md-12">
                                                                             <div class="col-md-3">
                                                                                 <div class="form-group form-md-line-input has-success">
                                                                                     @Html.DropDownListFor(model => model.Dealer, TempData["Customers"] as SelectList, null, htmlAttributes: new { @class = "form-control", onchange = "pianoConfigs.initPopulateDealerCustomer(this)" })
                                                                                     @Html.ValidationMessageFor(model => model.Dealer, null, new { @class = "help-block help-block-error" })
-                                                                                    <label>Dealer<span class="required">*</span></label>
+                                                                                    <label>Dealer</label>
                                                                                     <span class="help-block">Select Dealer here</span>
                                                                                 </div>
                                                                             </div>
@@ -727,6 +721,45 @@
                                                                             </div>
                                                                         </div>
                                                                         <div class="col-md-12">
+                                                                            <div class="col-md-3">
+                                                                                <div class="form-group form-md-line-input has-success">
+                                                                                    <div class="input-icon">
+                                                                                        @Html.EditorFor(model => model.SalesOrderNumber, new { htmlAttributes = new { @class = "form-control" } })
+                                                                                        <label>Referance Number</label>
+                                                                                        @Html.ValidationMessageFor(model => model.SalesOrderNumber, null, new { @class = "help-block help-block-error" })
+                                                                                        <span class="help-block">Enter Referance Number</span>
+
+                                                                                        <i class="fa fa-dollar"></i>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-md-3">
+                                                                                <div class="form-group form-md-line-input has-success">
+                                                                                    <div class="input-icon">
+                                                                                        @Html.EditorFor(model => model.CollectableAmount, new { htmlAttributes = new { @class = "form-control" } })
+                                                                                        <label>C.O.D. Amount</label>
+                                                                                        @Html.ValidationMessageFor(model => model.CollectableAmount, null, new { @class = "help-block help-block-error" })
+                                                                                        <span class="help-block">C.O.D. Amount</span>
+                                                                                        <i class="fa fa-dollar"></i>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            @if (Model.OrderPlacementType == (int)WFP.ICT.Enums.OrderTypeEnum.Manufacturer)
+                                                                            {
+                                                                                <div class="col-md-6">
+                                                                                    <div class="form-group form-md-line-input has-success">
+                                                                                        <div class="input-icon">
+                                                                                            @Html.EditorFor(model => model.CarriedBy, new { htmlAttributes = new { @class = "form-control" } })
+                                                                                            <label>Carrier</label>
+                                                                                            @Html.ValidationMessageFor(model => model.CarriedBy, null, new { @class = "help-block help-block-error" })
+                                                                                            <span class="help-block">Enter CarrierInfo</span>
+                                                                                            <i class="fa fa-dollar"></i>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            }
+                                                                        </div>
+                                                                        <div class="col-md-12">
                                                                             <div class="form-group form-md-checkboxes">
                                                                                 <div class="md-checkbox-list">
                                                                                     <div class="md-checkbox">
@@ -741,11 +774,11 @@
                                                                                 </div>
                                                                             </div>
                                                                         </div>
-                                                                        <div>
+                                                                        <div class="col-md-12">
                                                                             <div class="col-md-3">
                                                                                 <div class="form-group form-md-line-input has-success">
                                                                                     @Html.DropDownListFor(model => model.ThirdParty, TempData["Customers"] as SelectList, null, new { @class = "form-control", onchange = "pianoConfigs.initPopulateDealerCustomer(this)" })
-                                                                                    <label>Select Billing Party<span class="required">*</span></label>
+                                                                                    <label>Select Billing Party</label>
                                                                                     <span class="help-block">Select Dealer here</span>
                                                                                 </div>
                                                                             </div>
@@ -777,43 +810,7 @@
                                                                                 </div>
                                                                             </div>
                                                                         </div>
-                                                                        <div class="col-md-3">
-                                                                            <div class="form-group form-md-line-input has-success">
-                                                                                <div class="input-icon">
-                                                                                    @Html.EditorFor(model => model.SalesOrderNumber, new { htmlAttributes = new { @class = "form-control" } })
-                                                                                    <label>Sales Order Number<span class="required">*</span></label>
-                                                                                    @Html.ValidationMessageFor(model => model.SalesOrderNumber, null, new { @class = "help-block help-block-error" })
-                                                                                    <span class="help-block">Enter Sales Order Number</span>
-
-                                                                                    <i class="fa fa-dollar"></i>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="col-md-3">
-                                                                            <div class="form-group form-md-line-input has-success">
-                                                                                <div class="input-icon">
-                                                                                    @Html.EditorFor(model => model.CollectableAmount, new { htmlAttributes = new { @class = "form-control" } })
-                                                                                    <label>Amount to be collected<span class="required">*</span></label>
-                                                                                    @Html.ValidationMessageFor(model => model.CollectableAmount, null, new { @class = "help-block help-block-error" })
-                                                                                    <span class="help-block">COD(Amount to be collected)</span>
-                                                                                    <i class="fa fa-dollar"></i>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        @if (Model.OrderPlacementType == (int)WFP.ICT.Enums.OrderTypeEnum.Manufacturer)
-                                                                        {
-                                                                            <div class="col-md-6">
-                                                                                <div class="form-group form-md-line-input has-success">
-                                                                                    <div class="input-icon">
-                                                                                        @Html.EditorFor(model => model.CarriedBy, new { htmlAttributes = new { @class = "form-control" } })
-                                                                                        <label>Carried By<span class="required">*</span></label>
-                                                                                        @Html.ValidationMessageFor(model => model.CarriedBy, null, new { @class = "help-block help-block-error" })
-                                                                                        <span class="help-block">Enter Carried By Info</span>
-                                                                                        <i class="fa fa-dollar"></i>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        }
+                                                                        
                                                                     </div>
                                                                 </div>
 
@@ -830,18 +827,16 @@
                                     <!-- End Services  -->
                                 </div>
                             </div>
-                        </div>
-                        <div class="margin-top-20">
-                            <a onclick="pianoConfigs.initFormBegin()" class="btn blue-steel ">Save Order</a>
-                            <a onclick="pianoConfigs.initQouteBegin()" class="btn blue-steel ">Send Qoute</a>
-                            <a href="/Orders" class="btn c-btn-border-1x c-btn-blue-steel">Cancel</a>
+
+                            <div class="margin-bottom-10">
+                                <a onclick="pianoConfigs.initFormBegin()" class="btn blue-steel ">Save Order</a>
+                                <a onclick="pianoConfigs.initQouteBegin()" class="btn blue-steel ">Send Quote</a>
+                                <a href="/Orders" class="btn c-btn-border-1x c-btn-blue-steel">Cancel</a>
+                            </div>
                         </div>
                     </div>
 
-
-
-
-                                                                    }
+}
                 <!-- END SAMPLE FORM PORTLET-->
             </div>
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Web;
 using System.Web.Http;
 using System.Web.Http.Results;
 using WFP.ICT.Data.Entities;
@@ -12,9 +13,52 @@ using WFP.ICT.Web.Models;
 
 namespace WFP.ICT.Web.API
 {
-    public class baseapiController : ApiController
+    public class BaseApiController : ApiController
     {
         protected WFPICTContext db = new WFPICTContext();
+
+        readonly string _imagesPath = $"~/Images/";
+        protected string ImagesPath
+        {
+            get
+            {
+                return HttpContext.Current.Server.MapPath(_imagesPath);
+            }
+        }
+
+        readonly string _signPath = $"~/Images/Sign/";
+        protected string SignPath
+        {
+            get
+            {
+                return HttpContext.Current.Server.MapPath(_signPath);
+            }
+        }
+
+        readonly string _pianoImagesPath = $"~/Images/Piano/";
+        protected string PianoImagesPath
+        {
+            get
+            {
+                return HttpContext.Current.Server.MapPath(_pianoImagesPath);
+            }
+        }
+
+        public string UploadsFormsPath
+        {
+            get
+            {
+                return HttpContext.Current.Server.MapPath("~/Uploads/Forms/");
+            }
+        }
+
+        public string DownloadsFormsPath
+        {
+            get
+            {
+                return HttpContext.Current.Server.MapPath("~/Downloads/Forms/");
+            }
+        }
 
         protected DriverLogin IsTokenValid(RequestTypeEnum requestType)
         {

@@ -309,7 +309,7 @@ namespace WFP.ICT.Web.Controllers
                         UserManager.Delete(user);
                         break;
                 }
-                db.SaveChanges();
+                Db.SaveChanges();
                 return Json(new JsonResponse() {IsSucess = true}, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
@@ -327,7 +327,7 @@ namespace WFP.ICT.Web.Controllers
                     UserManager.AddToRole(model.ID.ToString(), model.Role);
                 else if(model.Action == "remove")
                     UserManager.RemoveFromRole(model.ID.ToString(), model.Role);
-                db.SaveChanges();
+                Db.SaveChanges();
                 return Json(new JsonResponse() { IsSucess = true }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
@@ -419,7 +419,7 @@ namespace WFP.ICT.Web.Controllers
                     roleToUpdate.Description = role.Description;
                     RoleManager.Update(roleToUpdate);
                 }
-                db.SaveChanges();
+                Db.SaveChanges();
                 return Json(new JsonResponse() { IsSucess = true }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)

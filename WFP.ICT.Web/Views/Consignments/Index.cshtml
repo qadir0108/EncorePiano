@@ -74,13 +74,14 @@
                                         <th class="all">Cons Number</th>
                                         <th class="all">Order Number</th>
                                         <th class="all">Creation Date</th>
-                                        <th class="all">Warehouse</th>
                                         <th class="all">Vehicle</th>
                                         <th class="all">Driver</th>
+                                        <th class="all">Trip Status</th>
+                                        <th class="all">Departure Time</th>
+                                        <th class="all">Arrival Time</th>
                                         <th class="all">Actions</th>
-    @*
-        min-phone-l min-tablet <th class="desktop"></th>
-    <th class="none"></th>*@
+                                        <th class="none">Status History</th>
+
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -92,16 +93,45 @@
                                             <td>@order.ConsignmentNumber</td>
                                             <td>@order.OrderNumber</td>
                                             <td>@order.CreatedAt.ToString()</td>
-                                            <td>@order.StartWarehouseName</td>
                                             <td>@order.VehicleName</td>
                                             <td>@order.DriverName</td>
+                                            <td>@order.TripStatus</td>
+                                            <td>@order.StartTime</td>
+                                            <td>@order.EstimatedTime</td>
                                             <td>
+                                                <a href="/Consignments/UnitsPickup?orderNumber=@order.OrderNumber" data-tooltip="tooltip" title="Units Pickup">
+                                                    <span class="fa fa-truck"></span>
+                                                </a>
+                                                @*<a class="btn btn-primary" href="/Consignments/UnitsDelivery?orderNumber=@order.OrderNumber" data-tooltip="tooltip" title="Units Delivery">
+                                                    <span class="fa fa-truck"></span>
+                                                </a>*@
                                                 <a class="btnSend" id="@btnSend" href="#" data-number="@order.ConsignmentNumber" data-tooltip="tooltip" title="Dispatch to Device">
                                                     <span class="glyphicon glyphicon-send"></span>
                                                 </a>
                                                 <a href="/Consignments/Invoice/@order.Id" data-tooltip="tooltip" title="Print Invoice">
                                                     <span class="glyphicon glyphicon-print"></span>
                                                 </a>
+                                            </td>
+                                            <td>
+                                                <table class="m-grid">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="all m-grid-col-md-2">Time</th>
+                                                            <th class="all m-grid-col-md-2">Status</th>
+                                                            <th class="all m-grid-col-md-2">By</th>
+                                                            <th class="all m-grid-col-md-2">Comments</th>
+                                                        </tr>
+                                                    </thead>
+                                                    @foreach (var status in @order.Statuses)
+                                                    {
+                                                        <tr>
+                                                            <td class="m-grid-col-md-2">@status.StatusTime</td>
+                                                            <td class="m-grid-col-md-2">@status.Status</td>
+                                                            <td class="m-grid-col-md-1">@status.StatusBy</td>
+                                                            <td class="m-grid-col-md-1">@status.Comments</td>
+                                                        </tr>
+                                                    }
+                                                </table>
                                             </td>
                                         </tr>
                                     }

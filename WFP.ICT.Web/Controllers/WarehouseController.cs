@@ -20,7 +20,7 @@ namespace WFP.ICT.Web.Controllers
         public ActionResult Index()
         {
             var vms = new List<WarehouseVm>();
-            var entities = db.Warehouses
+            var entities = Db.Warehouses
                 .Include(x => x.Address)
                 .Include(x => x.Inventory)
                 .ToList();
@@ -346,7 +346,7 @@ namespace WFP.ICT.Web.Controllers
         {
             try
             {
-                var warehouse = db.Warehouses.Include(x => x.Address).FirstOrDefault(x => x.Id == id);
+                var warehouse = Db.Warehouses.Include(x => x.Address).FirstOrDefault(x => x.Id == id);
                 var warehouseAddressVm = TinyMapper.Map<AddressVm>(warehouse.Address);
                 return Json(new JsonResponse() { IsSucess = true, Result = warehouseAddressVm.ToJson() }, JsonRequestBehavior.AllowGet);
             }

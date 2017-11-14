@@ -18,7 +18,7 @@ namespace WFP.ICT.Web.Controllers
     public class BaseControllerLists : Controller
     {
         private WFPICTContext _db;
-        public WFPICTContext db
+        public WFPICTContext Db
         {
             get
             {
@@ -159,7 +159,7 @@ namespace WFP.ICT.Web.Controllers
                 if (_users == null)
                 {
                     var user = Session["user"] as WFPUser;
-                    _users = db.Users
+                    _users = Db.Users
                         .OrderBy(x => x.CreatedAt).Select(
                              x => new SelectListItem()
                              {
@@ -183,7 +183,7 @@ namespace WFP.ICT.Web.Controllers
             {
                 if (_customers == null)
                 {
-                    _customers = db.Clients
+                    _customers = Db.Clients
                         .OrderBy(x => x.CreatedAt).Select(
                              x => new SelectListItem()
                              {
@@ -232,7 +232,7 @@ namespace WFP.ICT.Web.Controllers
             {
                 if (_pianoType == null)
                 {
-                    _pianoType = db.PianoTypes
+                    _pianoType = Db.PianoTypes
                         .OrderBy(x => x.CreatedAt).Select(
                              x => new SelectListItem()
                              {
@@ -256,7 +256,7 @@ namespace WFP.ICT.Web.Controllers
             {
                 if (_pianoFinish == null)
                 {
-                    _pianoFinish = db.PianoFinish
+                    _pianoFinish = Db.PianoFinish
                         .OrderBy(x => x.CreatedAt).Select(
                              x => new SelectListItem()
                              {
@@ -343,6 +343,30 @@ namespace WFP.ICT.Web.Controllers
             }
         }
 
+        private static List<SelectListItem> _additionalItemStatusList;
+        public static IEnumerable<SelectListItem> AdditionalItemStatusList
+        {
+            get
+            {
+                if (_additionalItemStatusList == null)
+                {
+                    _additionalItemStatusList = EnumHelper.GetEnumTextValues(typeof(AdditionalItemStatus)).Select(
+                             x => new SelectListItem()
+                             {
+                                 Text = x.Text,
+                                 Value = x.Value
+                             }).ToList();
+
+                    _additionalItemStatusList.Insert(0, new SelectListItem()
+                    {
+                        Text = "Select Item",
+                        Value = string.Empty
+                    });
+                }
+                return _additionalItemStatusList;
+            }
+        }
+
         private static List<SelectListItem> _servicesSelectList;
         public IEnumerable<SelectListItem> ServicesSelectList
         {
@@ -350,7 +374,7 @@ namespace WFP.ICT.Web.Controllers
             {
                 if (_servicesSelectList == null)
                 {
-                    _servicesSelectList = db.PianoCharges
+                    _servicesSelectList = Db.PianoCharges
                         .OrderBy(x => x.ChargesCode).Select(
                              x => new SelectListItem()
                              {
@@ -399,7 +423,7 @@ namespace WFP.ICT.Web.Controllers
             {
                 if (_orders == null || _forceRefreshOrders)
                 {
-                    _orders = db.PianoOrders
+                    _orders = Db.PianoOrders
                         .OrderBy(x => x.CreatedAt).Select(
                              x => new SelectListItem()
                              {
@@ -424,7 +448,7 @@ namespace WFP.ICT.Web.Controllers
             {
                 if (_warehouses == null)
                 {
-                    _warehouses = db.Warehouses
+                    _warehouses = Db.Warehouses
                         .OrderBy(x => x.CreatedAt).Select(
                              x => new SelectListItem()
                              {
@@ -448,7 +472,7 @@ namespace WFP.ICT.Web.Controllers
             {
                 if (_pianoMakeList == null)
                 {
-                    _pianoMakeList = db.PianoMake
+                    _pianoMakeList = Db.PianoMake
                         .OrderBy(x => x.CreatedAt).Select(
                              x => new SelectListItem()
                              {
@@ -472,7 +496,7 @@ namespace WFP.ICT.Web.Controllers
             {
                 if (_drivers == null)
                 {
-                    _drivers = db.Drivers
+                    _drivers = Db.Drivers
                         .OrderBy(x => x.CreatedAt).Select(
                              x => new SelectListItem()
                              {
@@ -496,7 +520,7 @@ namespace WFP.ICT.Web.Controllers
             {
                 if (_vehicles == null)
                 {
-                    _vehicles = db.Vehicles
+                    _vehicles = Db.Vehicles
                         .OrderBy(x => x.CreatedAt).Select(
                              x => new SelectListItem()
                              {
@@ -519,7 +543,7 @@ namespace WFP.ICT.Web.Controllers
             {
                 if (_Warehouses == null)
                 {
-                    _Warehouses = db.Warehouses
+                    _Warehouses = Db.Warehouses
                         .OrderBy(x => x.CreatedAt).Select(
                              x => new SelectListItem()
                              {

@@ -75,13 +75,14 @@
                                         <th class="all">Order #</th>
                                         <th class="all">Type</th>
                                         <th class="all">Order Date</th>
-                                        <th class="all">Preferred Time</th>
                                         <th class="all">Pianos</th>
                                         <th class="all">Actions</th>
                                         <th class="none">Pickup Address</th>
                                         <th class="none">Delivery Address</th>
                                         <th class="none">Pickup Date</th>
                                         <th class="none">Delivery Date</th>
+                                        <th class="none">Pickup Instructions</th>
+                                        <th class="none">Delivery Instructions</th>
                                         <th class="none">Charges</th>
                                         <th class="none">Customer</th>                                    
 
@@ -95,34 +96,35 @@
                                             <td>@order.OrderNumber</td>
                                             <td>@order.OrderType</td>
                                             <td>@order.OrderDate</td>
-                                            <td>@order.PreferredPickupDateTime</td>
                                             <td>
                                                 <table class="m-grid">
                                                     <thead>
                                                     <tr>
+                                                        <th class="all m-grid-col-md-1">Category</th>
                                                         <th class="all m-grid-col-md-2">Type</th>
-                                                        <th class="all m-grid-col-md-3">Size</th>
+                                                        <th class="all m-grid-col-md-1">Size</th>
+                                                        <th class="all m-grid-col-md-1">Make</th>
+                                                        <th class="all m-grid-col-md-1">Model</th>
+                                                        <th class="all m-grid-col-md-1">Finish</th>
+                                                        <th class="all m-grid-col-md-1">Serial #</th>
                                                         <th class="all m-grid-col-md-1">Player</th>
                                                         <th class="all m-grid-col-md-1">Bench</th>
                                                         <th class="all m-grid-col-md-1">Box</th>
-                                                        <th class="all m-grid-col-md-1">Make</th>
-                                                        <th class="all m-grid-col-md-1"></th>
-
-                                                        @*<th class="none m-grid-col-md-1">Model</th>
-                                                        <th class="none m-grid-col-md-1">Color</th>*@
                                                     </tr>
                                                     </thead>
                                                     @foreach (var pianoVm in @order.Pianos)
                                                     {
                                                         <tr>
+                                                            <td class="m-grid-col-md-1">@pianoVm.PianoCategoryType</td>
                                                             <td class="m-grid-col-md-2">@pianoVm.PianoType</td>
-                                                            <td class="m-grid-col-md-3">@pianoVm.PianoSize</td>
+                                                            <td class="m-grid-col-md-1">@pianoVm.PianoSize</td>
+                                                            <td class="m-grid-col-md-1">@pianoVm.PianoMake</td>
+                                                            <td class="m-grid-col-md-1">@pianoVm.PianoModel</td>
+                                                            <td class="m-grid-col-md-1">@pianoVm.PianoFinish</td>
+                                                            <td class="m-grid-col-md-1">@pianoVm.SerialNumber</td>
                                                             <td class="m-grid-col-md-1">@(pianoVm.IsPlayer ? "Yes" : "No")</td>
                                                             <td class="m-grid-col-md-1">@(pianoVm.IsBench ? "W/B" : "N/B")</td>
                                                             <td class="m-grid-col-md-1">@(pianoVm.IsBoxed ? "Yes" : "No")</td>
-                                                            <td class="m-grid-col-md-1">@pianoVm.PianoMake</td>
-                                                            <td class="all m-grid-col-md-1"></td>
-                                                          
                                                         </tr>
                                                     }
                                                 </table>
@@ -139,7 +141,9 @@
                                             <td>@Html.Raw(order.DeliveryAddressString)</td>
                                             <td>@order.PickupDate</td>
                                             <td>@order.DeliveryDate</td>
-                                         
+                                            <td>@order.PickupInstructions</td>
+                                            <td>@order.DeliveryInstructions</td>
+
                                             <td>
                                                 <table class="m-grid">
                                                     @foreach (var service in @order.Charges)

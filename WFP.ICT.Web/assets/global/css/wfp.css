@@ -1,4 +1,17 @@
-﻿.form .form-body, .portlet-form .form-body {
+﻿.form-group.form-md-line-input
+{
+    margin: 12px !important;
+}
+
+.portlet {
+    margin-bottom: 5px !important;
+}
+
+.tabbable-line > .tab-content {
+    padding: 5px 0 !important;
+}
+
+.form .form-body, .portlet-form .form-body {
     padding: 0px !important;
 }
 

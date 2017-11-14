@@ -26,7 +26,7 @@ namespace WFP.ICT.Web.Controllers
                     {
                         FileName = string.Format("{0:yyyyMMdd_HHmmss}_{1}", DateTime.Now, fileContent.FileName);
                         var stream = fileContent.InputStream;
-                        string filePath = Path.Combine(UploadPath, FileName);
+                        string filePath = Path.Combine(UploadsPath, FileName);
                         using (var fileStream = System.IO.File.Create(filePath))
                         {
                             stream.CopyTo(fileStream);
@@ -49,7 +49,7 @@ namespace WFP.ICT.Web.Controllers
         [HttpGet]
         public virtual ActionResult DownloadFile(string file)
         {
-            string filePath = Path.Combine(UploadPath, Server.UrlEncode(file));
+            string filePath = Path.Combine(UploadsPath, Server.UrlEncode(file));
             if (!System.IO.File.Exists(filePath))
                 return null;
 
@@ -61,7 +61,7 @@ namespace WFP.ICT.Web.Controllers
         {
             try
             {
-                string fullPath = Path.Combine(UploadPath, Server.UrlEncode(file));
+                string fullPath = Path.Combine(UploadsPath, Server.UrlEncode(file));
                 if (!System.IO.File.Exists(fullPath))
                     throw new Exception("File does not exists.");
                 System.IO.File.Delete(fullPath);

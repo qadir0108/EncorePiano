@@ -40,9 +40,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdditionalItemStatus.cs" />
     <Compile Include="ChargesTypeEnum.cs" />
     <Compile Include="PianoFinishEnum.cs" />
     <Compile Include="PianoMakeEnum.cs" />
+    <Compile Include="TripStatusEnum.cs" />
     <Compile Include="PianoTypeEnum.cs" />
     <Compile Include="ShuttleEnum.cs" />
     <Compile Include="WareHouseStatusEnum.cs" />
@@ -57,7 +59,6 @@
     <Compile Include="PaymentTypeEnum.cs" />
     <Compile Include="InvoiceStatusEnum.cs" />
     <Compile Include="PianoStatusEnum.cs" />
-    <Compile Include="PODStatusEnum.cs" />
     <Compile Include="PaymentOptionEnum.cs" />
     <Compile Include="OrderMediumEnum.cs" />
     <Compile Include="EnumHelper.cs" />

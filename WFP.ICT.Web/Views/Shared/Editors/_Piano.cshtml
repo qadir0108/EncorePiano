@@ -27,7 +27,7 @@
                                     <div class="input-icon">
                                         @Html.DropDownListFor(model => model.PianoCategoryType, TempData["PianoCategoryType"] as SelectList, htmlAttributes: new { @class = "form-control pianoCategory", onchange = "pianoConfigs.initShowData(this)" })
 
-                                        <label>Piano Category<span class="required">*</span></label>
+                                        <label>Piano Category</label>
 
                                         @Html.ValidationMessageFor(model => model.PianoCategoryType, null, new { @class = "help-block help-block-error" })
                                         <span class="help-block">Enter Piano Name here</span>
@@ -51,7 +51,7 @@
                                     <div class="input-icon">
                                         @Html.DropDownListFor(model => model.PianoFinish, TempData["PianoFinish"] as SelectList, htmlAttributes: new { @class = "form-control pianoFinish" })
 
-                                        <label>Piano Finish<span class="required">*</span></label>
+                                        <label>Piano Finish</label>
 
                                         @Html.ValidationMessageFor(model => model.PianoFinish, null, new { @class = "help-block help-block-error" })
                                         <span class="help-block">Enter Piano Finish here</span>
@@ -66,7 +66,7 @@
                                 <div class="form-group form-md-line-input has-success">
                                     <div class="input-icon">
                                         @Html.DropDownListFor(model => model.PianoTypeId, TempData["PianoType"] as SelectList, htmlAttributes: new { @class = "form-control pianoType" ,onchange = "pianoConfigs.initShowSizeList(this)" })
-                                        <label>Piano Type<span class="required">*</span></label>
+                                        <label>Piano Type</label>
                                         @Html.ValidationMessageFor(model => model.PianoTypeId, null, new { @class = "help-block help-block-error" })
                                         <span class="help-block">Enter Piano Type here</span>
                                         <i class="fa fa-bars"></i>
@@ -77,7 +77,7 @@
                                 <div class="form-group form-md-line-input has-success">
                                     <div class="input-icon">
                                         @Html.DropDownListFor(model => model.PianoSize, Enumerable.Empty<SelectListItem>(), htmlAttributes: new { @class = "form-control pianoSize" })
-                                        <label>Piano Size<span class="required">*</span></label>
+                                        <label>Piano Size</label>
                                         @Html.ValidationMessageFor(model => model.PianoSize, null, new { @class = "help-block help-block-error" })
                                         <span class="help-block">Enter Piano Size here</span>
                                         <i class="fa fa-bars"></i>
@@ -92,7 +92,7 @@
                                     <div class="input-icon">
                                         
                                         @Html.DropDownListFor(model => model.PianoMake, TempData["PianoMake"] as SelectList, htmlAttributes: new { @class = "form-control pianoMake" })
-                                        <label>Piano Make<span class="required">*</span></label>
+                                        <label>Piano Make</label>
                                         @Html.ValidationMessageFor(model => model.PianoMake, null, new { @class = "help-block help-block-error" })
                                         <span class="help-block">Enter Piano Make here</span>
                                         <i class="fa fa-bars"></i>
@@ -103,7 +103,7 @@
                                 <div class="form-group form-md-line-input has-success">
                                     <div class="input-icon">
                                         @Html.EditorFor(model => model.PianoModel, new { htmlAttributes = new { @class = "form-control pianoModel" } })
-                                        <label>Piano Model<span class="required">*</span></label>
+                                        <label>Piano Model</label>
                                         @Html.ValidationMessageFor(model => model.PianoModel, null, new { @class = "help-block help-block-error" })
                                         <span class="help-block">Enter Piano Model here</span>
                                         <i class="fa fa-bars"></i>
@@ -125,7 +125,7 @@
                         <div class="row pianoBenchPlayer" style="margin-bottom: 10px;display:none;">
                             <div class="col-md-4">
                                 <div class="form-group form-md-radios">
-                                    <label class="col-md-3 control-label">Bench?<span class="required">*</span></label>
+                                    <label class="col-md-3 control-label">Bench?</label>
                                     <div class="col-md-9">
                                         <div class="md-radio-inline">
                                             <div class="md-radio">
@@ -154,7 +154,7 @@
                             <div class="col-md-4">
 
                                 <div class="form-group form-md-radios">
-                                    <label class="col-md-3 control-label">Player?<span class="required">*</span></label>
+                                    <label class="col-md-3 control-label">Player?</label>
                                     <div class="col-md-9">
                                         <div class="md-radio-inline">
                                             <div class="md-radio">
@@ -183,7 +183,7 @@
                             <div class="col-md-4">
 
                                 <div class="form-group form-md-radios">
-                                    <label class="col-md-3 control-label" >Boxed?<span class="required">*</span></label>
+                                    <label class="col-md-3 control-label" >Boxed?</label>
                                     <div class="col-md-9">
                                         <div class="md-radio-inline">
                                             <div class="md-radio">
