@@ -22,8 +22,8 @@ namespace WFP.ICT.Web.Controllers
         {
             //SMSHelper.Send("+923216334272", "Hello, Kamran");
             var orderVMs = new List<OrderVm>();
-            var orders = Db.PianoOrders
-                .Include(x => x.Customer)
+            var orders = Db.Orders
+                .Include(x => x.Client)
                 .Include(x => x.Pianos)
                 .Include(x => x.PickupAddress)
                 .Include(x => x.DeliveryAddress)
@@ -32,7 +32,7 @@ namespace WFP.ICT.Web.Controllers
             foreach (var order in orders)
             {
 
-                orderVMs.Add(FromOrder(order, PianoTypesList));
+                orderVMs.Add(FromOrder(order));
 
                 _forceRefreshOrders = true;
             }
@@ -41,15 +41,15 @@ namespace WFP.ICT.Web.Controllers
 
         public ActionResult Private()
         {
-            OrderVm model = new OrderVm();
-
+            OrderVm model = new OrderVm()
+            {
+                OrderPlacementType = (int)OrderTypeEnum.Private,
+            };
             model.Pianos.Add(new PianoVm());
+            model.Legs.Add(new LegVm() { LegNumber = 1, LegDate = DateTime.Now, LegTypeId = LegTypesList.FirstOrDefault(x => x.Text == LegTypeEnum.Pickup.ToString()).Value });
             model.Charges.Add(new PianoChargesVm());
 
             PopulateViewData();
-
-            model.OrderPlacementType = (int)OrderTypeEnum.Private;
-
 
             return View(model);
         }
@@ -58,6 +58,7 @@ namespace WFP.ICT.Web.Controllers
             OrderVm model = new OrderVm();
 
             model.Pianos.Add(new PianoVm());
+            model.Legs.Add(new LegVm() { LegNumber = 1, LegDate = DateTime.Now, LegTypeId = LegTypesList.FirstOrDefault(x => x.Text == LegTypeEnum.Pickup.ToString()).Value });
             model.Charges.Add(new PianoChargesVm());
 
             PopulateViewData();
@@ -72,6 +73,7 @@ namespace WFP.ICT.Web.Controllers
             OrderVm model = new OrderVm();
 
             model.Pianos.Add(new PianoVm());
+            model.Legs.Add(new LegVm() { LegNumber = 1, LegDate = DateTime.Now, LegTypeId = LegTypesList.FirstOrDefault(x => x.Text == LegTypeEnum.Pickup.ToString()).Value });
             model.Charges.Add(new PianoChargesVm());
 
             PopulateViewData();
@@ -83,9 +85,10 @@ namespace WFP.ICT.Web.Controllers
         }
         public ActionResult Edit(Guid? id)
         {
-            var order = Db.PianoOrders
-                            .Include(x => x.Customer)
+            var order = Db.Orders
+                            .Include(x => x.Client)
                             .Include(x => x.Pianos)
+                            .Include(x => x.Legs)
                             .Include(x => x.PickupAddress)
                             .Include(x => x.DeliveryAddress)
                             .Include(x => x.OrderCharges)
@@ -128,10 +131,8 @@ namespace WFP.ICT.Web.Controllers
                 PickupAddress = pickupAddress,
                 DeliveryAddress = deliveryAddress,
 
-                Shuttle = order.Customer != null ? order.CustomerId.ToString() : ""
+                Shuttle = order.Client != null ? order.ClientId.ToString() : ""
             };
-
-            var pianos = order.Pianos.ToList();
 
             foreach (var piano in order.Pianos)
             {
@@ -148,8 +149,21 @@ namespace WFP.ICT.Web.Controllers
                 pianoVm.PianoFinish = piano.PianoFinishId.ToString();
                 pianoVm.PianoSize = piano.PianoSizeId.ToString();
                 // pianoVm.PianoCategoryType = piano.PianoType.ToString();
-
                 orderVm.Pianos.Add(pianoVm);
+            }
+
+            foreach (var leg in order.Legs)
+            {
+                LegVm legVm = new LegVm();
+                legVm.Id = leg.Id;
+                legVm.OrderId = leg.OrderId.Value;
+                legVm.LegNumber = leg.LegNumber;
+                legVm.LegTypeId = leg.LegType.ToString();
+                legVm.FromLocationId = leg.FromLocationId?.ToString();
+                legVm.ToLocationId = leg.ToLocationId?.ToString();
+                legVm.DriverId = leg.DriverId?.ToString();
+                legVm.LegDate = leg.LegDate;
+                orderVm.Legs.Add(legVm);
             }
 
             foreach (var service in order.OrderCharges)
@@ -174,11 +188,11 @@ namespace WFP.ICT.Web.Controllers
             {
                 if (orderVm.Id != null)
                 {
-                    return EditPiano(orderVm);
+                    return EditOrder(orderVm);
                 }
 
-                int newOrderNumber = Db.PianoOrders.Any()
-                    ? Db.PianoOrders.ToList().Max(x => int.Parse(x.OrderNumber)) + 1
+                int newOrderNumber = Db.Orders.Any()
+                    ? Db.Orders.ToList().Max(x => int.Parse(x.OrderNumber)) + 1
                     : 2500;
 
                 var orderId = Guid.NewGuid();
@@ -227,7 +241,7 @@ namespace WFP.ICT.Web.Controllers
                 Db.Addresses.Add(deliveryAddress);
                 Db.SaveChanges();
 
-                var order = new PianoOrder();
+                var order = new Order();
                 {
                     order.Id = orderId;
                     order.CreatedAt = DateTime.Now;
@@ -249,7 +263,7 @@ namespace WFP.ICT.Web.Controllers
 
                     order.PickupDate = orderVm.PickupAddress.PickUpDate;
                     order.DeliveryDate = orderVm.DeliveryAddress.PickUpDate;
-                    order.CustomerId =
+                    order.ClientId =
                             string.IsNullOrEmpty(orderVm.Shuttle) ? (Guid?)null : Guid.Parse(orderVm.Shuttle);
 
                     order.PickupAddressId = pickupAddressId;
@@ -277,7 +291,7 @@ namespace WFP.ICT.Web.Controllers
 
 
                 };
-                Db.PianoOrders.Add(order);
+                Db.Orders.Add(order);
                 Db.SaveChanges();
                 foreach (var piano in orderVm.Pianos)
                 {
@@ -285,15 +299,21 @@ namespace WFP.ICT.Web.Controllers
                 }
                 Db.SaveChanges();
 
+                foreach (var leg in orderVm.Legs)
+                {
+                    InsertLeg(leg, orderId);
+                }
+                Db.SaveChanges();
+
                 foreach (var item in orderVm.Charges)
                 {
                     if (string.IsNullOrEmpty(item.ChargesCode)) continue;
 
-                    Db.PianoOrderCharges.Add(new PianoOrderCharges()
+                    Db.OrderCharges.Add(new OrderCharges()
                     {
                         Id = Guid.NewGuid(),
                         PianoChargesId = Guid.Parse(item.ChargesCode),
-                        PianoOrderId = orderId,
+                        OrderId = orderId,
                         Amount = int.Parse(item.Amount),
                         CreatedAt = DateTime.Now,
                         CreatedBy = LoggedInUser?.UserName,
@@ -323,12 +343,14 @@ namespace WFP.ICT.Web.Controllers
             }
 
         }
-        public ActionResult EditPiano(OrderVm orderVm)
+
+        public ActionResult EditOrder(OrderVm orderVm)
         {
             try
             {
-                PianoOrder order = Db.PianoOrders.Include(x => x.Customer)
+                Order order = Db.Orders.Include(x => x.Client)
                             .Include(x => x.Pianos)
+                            .Include(x => x.Legs)
                             .Include(x => x.PickupAddress)
                             .Include(x => x.DeliveryAddress)
                             .Include(x => x.OrderCharges)
@@ -350,7 +372,7 @@ namespace WFP.ICT.Web.Controllers
 
                     order.PickupDate = orderVm.PickupAddress.PickUpDate;
                     order.DeliveryDate = orderVm.DeliveryAddress.PickUpDate;
-                    order.CustomerId =
+                    order.ClientId =
                             string.IsNullOrEmpty(orderVm.Shuttle) ? (Guid?)null : Guid.Parse(orderVm.Shuttle);
 
                     order.CodAmount = orderVm.CollectableAmount;
@@ -369,11 +391,6 @@ namespace WFP.ICT.Web.Controllers
 
                     order.PickUpNotes = orderVm.PickupAddress.Notes;
                     order.DeliveryNotes = orderVm.DeliveryAddress.Notes;
-
-
-
-
-
                     //Delivery Address
                     order.DeliveryAddress.Name = orderVm.DeliveryAddress.Name;
                     order.DeliveryAddress.Address1 = orderVm.DeliveryAddress.Address1;
@@ -406,25 +423,33 @@ namespace WFP.ICT.Web.Controllers
                 foreach (var piano in order.Pianos.ToList())
                     Db.Pianos.Remove(piano);
                 Db.SaveChanges();
-
                 foreach (var piano in orderVm.Pianos)
                 {
                     InsertPiano(piano, order.Id);
                 }
                 Db.SaveChanges();
 
+                foreach (var leg in order.Legs.ToList())
+                    Db.Legs.Remove(leg);
+                Db.SaveChanges();
+                foreach (var leg in orderVm.Legs)
+                {
+                    InsertLeg(leg, order.Id);
+                }
+                Db.SaveChanges();
+
                 foreach (var charge in order.OrderCharges.ToList())
-                    Db.PianoOrderCharges.Remove(charge);
+                    Db.OrderCharges.Remove(charge);
                 Db.SaveChanges();
 
                 foreach (var item in orderVm.Charges)
                 {
 
-                    Db.PianoOrderCharges.Add(new PianoOrderCharges()
+                    Db.OrderCharges.Add(new OrderCharges()
                     {
                         Id = Guid.NewGuid(),
                         PianoChargesId = Guid.Parse(item.ChargesCode),
-                        PianoOrderId = order.Id,
+                        OrderId = order.Id,
                         Amount = int.Parse(item.Amount),
                         CreatedAt = DateTime.Now,
                         CreatedBy = LoggedInUser?.UserName,
@@ -469,6 +494,10 @@ namespace WFP.ICT.Web.Controllers
 
             TempData["AdditionalItemStatus"] = new SelectList(AdditionalItemStatusList, "Value", "Text");
 
+            TempData["LegTypes"] = new SelectList(LegTypesList, "Value", "Text");
+            TempData["Locations"] = new SelectList(LocationsList, "Value", "Text");
+            TempData["Drivers"] = new SelectList(DriversList, "Value", "Text");
+
         }
         private void InsertPiano(PianoVm vm, Guid orderId)
         {
@@ -503,6 +532,29 @@ namespace WFP.ICT.Web.Controllers
 
             Db.Pianos.Add(obj);
         }
+        private void InsertLeg(LegVm vm, Guid orderId)
+        {
+            if (vm.LegNumber <= 0) return;
+
+            Leg obj = new Leg();
+
+            obj.Id = Guid.NewGuid();
+            obj.OrderId = orderId;
+            obj.CreatedAt = DateTime.Now;
+            obj.CreatedBy = LoggedInUser?.UserName;
+            
+            //TypeID from table
+            obj.LegNumber = vm.LegNumber;
+            obj.LegType = int.Parse(vm.LegTypeId);
+
+            obj.FromLocationId = vm.FromLocationId == null ? Guid.Empty : Guid.Parse(vm.FromLocationId);
+            obj.ToLocationId = vm.ToLocationId == null ? Guid.Empty : Guid.Parse(vm.ToLocationId);
+            obj.DriverId = vm.DriverId == null ? Guid.Empty : Guid.Parse(vm.DriverId);
+
+            obj.LegDate = vm.LegDate;
+
+            Db.Legs.Add(obj);
+        }
         public ActionResult NewPiano()
         {
             TempData["PianoMake"] = new SelectList(PianoMakeList, "Value", "Text");
@@ -511,6 +563,13 @@ namespace WFP.ICT.Web.Controllers
             TempData["PianoCategoryType"] = new SelectList(PianoCategoryTypesList, "Value", "Text");
             TempData["AdditionalItemStatus"] = new SelectList(AdditionalItemStatusList, "Value", "Text");
             return PartialView("~/Views/Shared/Editors/_Piano.cshtml", new PianoVm());
+        }
+        public ActionResult NewLeg()
+        {
+            TempData["LegTypes"] = new SelectList(LegTypesList, "Value", "Text");
+            TempData["Locations"] = new SelectList(LocationsList, "Value", "Text");
+            TempData["Drivers"] = new SelectList(DriversList, "Value", "Text");
+            return PartialView("~/Views/Shared/Editors/_Leg.cshtml", new LegVm());
         }
         public ActionResult NewService()
         {
@@ -619,7 +678,7 @@ namespace WFP.ICT.Web.Controllers
                         name = client.Name,
                         contact = client.PhoneNumber,
                         //needtfrom db
-                        address = client.Addresses
+                        address = client.Address
                     };
                     return Json(new { key = true, client = populate }, JsonRequestBehavior.AllowGet);
                 }
@@ -677,7 +736,7 @@ namespace WFP.ICT.Web.Controllers
                     }
                 }
 
-                var order =  Db.PianoOrders.Where(x => x.OrderNumber == OrderNumber).FirstOrDefault();
+                var order =  Db.Orders.Where(x => x.OrderNumber == OrderNumber).FirstOrDefault();
                 order.DeliveryForm = FileName;
                 Db.SaveChanges();
 
@@ -700,16 +759,13 @@ namespace WFP.ICT.Web.Controllers
         
        }
 
-        public OrderVm FromOrder(PianoOrder order, IEnumerable<SelectListItem> PianoTypesList)
+        public OrderVm FromOrder(Order order)
         {
-
             AddressVm pickupAddress = OrderVm.PopulateAddress(order.PickupAddress);
-
             AddressVm deliveryAdress = OrderVm.PopulateAddress(order.DeliveryAddress);
 
             //pickupAddress.Notes = order.PickUpNotes;
             //deliveryAdress.Notes = order.DeliveryNotes;
-
 
             var orderVM = new OrderVm()
             {
@@ -727,7 +783,7 @@ namespace WFP.ICT.Web.Controllers
                 DeliveryDate = order.DeliveryDate?.ToString(),
                 PickupInstructions = order.PickUpNotes,
                 DeliveryInstructions = order.DeliveryNotes,
-                Customer = order.Customer != null ? order.Customer.AccountCode + " " + order.Customer.Name : "",
+                Customer = order.Client != null ? order.Client.AccountCode + " " + order.Client.Name : "",
 
                 IsBilledThirdParty = order.BillToDifferent,
                 CollectableAmount = order.CodAmount,
@@ -745,7 +801,7 @@ namespace WFP.ICT.Web.Controllers
                     Id = x.Id,
                     OrderId = order.Id,
                     PianoCategoryType = System.Enum.GetName(typeof(PianoCategoryTypeEnum),x.PianoCategoryType),
-                    PianoType = PianoTypesList.FirstOrDefault(y => y.Value == x.PianoTypeId.ToString()).Text,
+                    PianoType = x.PianoTypeId.ToString(),
                     PianoSize = x.PianoSizeId.ToString(),
                     PianoMake = x.PianoMakeId.ToString(),
                     PianoModel = x.Model,
@@ -759,12 +815,17 @@ namespace WFP.ICT.Web.Controllers
 
             orderVM.Pianos.ForEach(x =>
             {
-                if (x.PianoMake != string.Empty)
+                if (!string.IsNullOrEmpty(x.PianoType))
+                {
+                    x.PianoType = Db.PianoTypes.Where(y => y.Id.ToString() == x.PianoType).FirstOrDefault().Type;
+                }
+
+                if (!string.IsNullOrEmpty(x.PianoMake))
                 {
                     x.PianoMake = Db.PianoMake.Where(y => y.Id.ToString() == x.PianoMake).FirstOrDefault().Name;
                 }
 
-                if (x.PianoSize != string.Empty)
+                if (!string.IsNullOrEmpty(x.PianoSize))
                 {
                     x.PianoSize = Db.PianoSize.Where(y => y.Id.ToString() == x.PianoSize).FirstOrDefault().Width.ToString();
                 }
@@ -791,7 +852,6 @@ namespace WFP.ICT.Web.Controllers
 
             return orderVM;
         }
-
 
         [HttpPost]
         public ActionResult SendQoute(OrderVm orderVm)

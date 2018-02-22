@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Globalization;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using WFP.ICT.Data.Entities;
@@ -67,6 +68,22 @@ namespace WFP.ICT.Web.Controllers
             {
                 return Server.MapPath(_signPath);
             }
+        }
+
+        public string GetSignatureImage(string path)
+        {
+            StringBuilder builder = new StringBuilder();
+            if (path != string.Empty)
+            {
+                builder.AppendFormat("<a href='../Images/Sign/{0}' data-lightbox='signature'>", path);
+                builder.AppendFormat("<image class='grid-image' src='../Images/Sign/{0}'/>", path);
+                builder.Append("</a>");
+            }
+            else
+            {
+                builder.Append("Not available");
+            }
+            return builder.ToString();
         }
 
         readonly string _pianoImagesPath = $"~/Images/Piano/";

@@ -1,0 +1,52 @@
+New Trace collected :
+=====================
+ Error Report collected on : Tue Jan 16 01:51:23 GMT+05:00 2018
+
+Environment Details : 
+===================== 
+  Version  : 1.2
+  Package  : com.encore.piano
+  FilePath : /data/user/0/com.encore.piano/files
+
+  Package Data 
+      Phone Model : Android SDK built for x86
+      Android Ver : 6.0
+      Board       : unknown
+      Brand       : Android
+      Device      : generic_x86
+      Display     : sdk_google_phone_x86-userdebug 6.0 MASTER 4309849 test-keys
+      Finger Print: Android/sdk_google_phone_x86/generic_x86:6.0/MASTER/4309849:userdebug/test-keys
+      Host        : wpef22.hot.corp.google.com
+      ID          : MASTER
+      Model       : Android SDK built for x86
+      Product     : sdk_google_phone_x86
+      Tags        : test-keys
+      Time        : 1504203433000
+      Type        : userdebug
+      User        : android-build
+  Internal Memory
+      Total    : 2031440k
+      Available: 1849524k
+
+Stack : 
+======= 
+java.lang.IllegalArgumentException: width and height must be > 0
+	at android.graphics.Bitmap.createBitmap(Bitmap.java:829)
+	at android.graphics.Bitmap.createBitmap(Bitmap.java:808)
+	at android.graphics.Bitmap.createBitmap(Bitmap.java:739)
+	at android.graphics.Bitmap.createScaledBitmap(Bitmap.java:615)
+	at com.encore.piano.util.ImageResizer.getScaledBitmap(ImageResizer.java:79)
+	at com.encore.piano.views.SignatureView.saveToCard(SignatureView.java:63)
+	at com.encore.piano.activities.UnitDeliveryLoad.save(UnitDeliveryLoad.java:296)
+	at com.encore.piano.activities.UnitDeliveryLoad$2.onClick(UnitDeliveryLoad.java:222)
+	at android.view.View.performClick(View.java:5198)
+	at android.view.View$PerformClick.run(View.java:21147)
+	at android.os.Handler.handleCallback(Handler.java:739)
+	at android.os.Handler.dispatchMessage(Handler.java:95)
+	at android.os.Looper.loop(Looper.java:148)
+	at android.app.ActivityThread.main(ActivityThread.java:5417)
+	at java.lang.reflect.Method.invoke(Native Method)
+	at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:726)
+	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:616)
+
+**** End of current Report ***

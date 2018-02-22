@@ -1,0 +1,102 @@
+New Trace collected :
+=====================
+ Error Report collected on : Sat Dec 30 22:20:15 GMT+05:00 2017
+
+Environment Details : 
+===================== 
+  Version  : 1.0
+  Package  : com.encore.piano
+  FilePath : /data/user/0/com.encore.piano/files
+
+  Package Data 
+      Phone Model : Android SDK built for x86
+      Android Ver : 6.0
+      Board       : unknown
+      Brand       : Android
+      Device      : generic_x86
+      Display     : sdk_google_phone_x86-userdebug 6.0 MASTER 4309849 test-keys
+      Finger Print: Android/sdk_google_phone_x86/generic_x86:6.0/MASTER/4309849:userdebug/test-keys
+      Host        : wpef22.hot.corp.google.com
+      ID          : MASTER
+      Model       : Android SDK built for x86
+      Product     : sdk_google_phone_x86
+      Tags        : test-keys
+      Time        : 1504203433000
+      Type        : userdebug
+      User        : android-build
+  Internal Memory
+      Total    : 2031440k
+      Available: 1845660k
+
+Stack : 
+======= 
+android.database.sqlite.SQLiteException: no such column: PaymentOption (code 1): , while compiling: SELECT Id, ConsignmentNumber, VehicleCode, VehicleName, DriverCode, DriverName, OrderId, OrderNumber, OrderType, OrderedAt, CallerName, CallerPhoneNumber, CallerPhoneNumberAlt, CallerEmail, PickupDate, PickupAddress, PickupPhoneNumber, PickupAlternateContact, PickupAlternatePhone, PickupNumberStairs, PickupNumberTurns, PickupInstructions, DeliveryDate, DeliveryAddress, DeliveryPhoneNumber, DeliveryAlternateContact, DeliveryAlternatePhone, DeliveryNumberStairs, DeliveryNumberTurns, DeliveryInstructions, CustomerCode, CustomerName, PaymentOption, PaymentAmount, NumberOfItems, createdAt, tripStaus, unread, departureTime, estimatedTime, completionTime, saved, synced, paid, paymentTime FROM ASSIGNMENT WHERE tripStaus != ?  ORDER BY OrderNumber ASC
+	at android.database.sqlite.SQLiteConnection.nativePrepareStatement(Native Method)
+	at android.database.sqlite.SQLiteConnection.acquirePreparedStatement(SQLiteConnection.java:887)
+	at android.database.sqlite.SQLiteConnection.prepare(SQLiteConnection.java:498)
+	at android.database.sqlite.SQLiteSession.prepare(SQLiteSession.java:588)
+	at android.database.sqlite.SQLiteProgram.<init>(SQLiteProgram.java:58)
+	at android.database.sqlite.SQLiteQuery.<init>(SQLiteQuery.java:37)
+	at android.database.sqlite.SQLiteDirectCursorDriver.query(SQLiteDirectCursorDriver.java:44)
+	at android.database.sqlite.SQLiteDatabase.rawQueryWithFactory(SQLiteDatabase.java:1316)
+	at android.database.sqlite.SQLiteDatabase.queryWithFactory(SQLiteDatabase.java:1163)
+	at android.database.sqlite.SQLiteDatabase.query(SQLiteDatabase.java:1034)
+	at android.database.sqlite.SQLiteDatabase.query(SQLiteDatabase.java:1202)
+	at com.encore.piano.db.AssignmentDb.getAll(AssignmentDb.java:137)
+	at com.encore.piano.server.AssignmentService.getAll(AssignmentService.java:241)
+	at com.encore.piano.listview.assignment.AssignmentAdapterBase.<init>(AssignmentAdapterBase.java:48)
+	at com.encore.piano.listview.assignment.AssignmentAdapter.<init>(AssignmentAdapter.java:0)
+	at com.encore.piano.afragments.AssignmentFragment.showCompleted(AssignmentFragment.java:152)
+	at com.encore.piano.afragments.AssignmentFragment.onCreateView(AssignmentFragment.java:123)
+	at android.support.v4.app.Fragment.performCreateView(Fragment.java:2192)
+	at android.support.v4.app.FragmentManagerImpl.moveToState(FragmentManager.java:1299)
+	at android.support.v4.app.FragmentManagerImpl.moveFragmentToExpectedState(FragmentManager.java:1528)
+	at android.support.v4.app.FragmentManagerImpl.moveToState(FragmentManager.java:1595)
+	at android.support.v4.app.BackStackRecord.executeOps(BackStackRecord.java:758)
+	at android.support.v4.app.FragmentManagerImpl.executeOps(FragmentManager.java:2363)
+	at android.support.v4.app.FragmentManagerImpl.executeOpsTogether(FragmentManager.java:2149)
+	at android.support.v4.app.FragmentManagerImpl.optimizeAndExecuteOps(FragmentManager.java:2103)
+	at android.support.v4.app.FragmentManagerImpl.execSingleAction(FragmentManager.java:1984)
+	at android.support.v4.app.BackStackRecord.commitNowAllowingStateLoss(BackStackRecord.java:626)
+	at android.support.v4.app.FragmentPagerAdapter.finishUpdate(FragmentPagerAdapter.java:143)
+	at android.support.v4.view.ViewPager.populate(ViewPager.java:1268)
+	at android.support.v4.view.ViewPager.populate(ViewPager.java:1116)
+	at android.support.v4.view.ViewPager.onMeasure(ViewPager.java:1642)
+	at android.view.View.measure(View.java:18788)
+	at android.view.ViewGroup.measureChildWithMargins(ViewGroup.java:5951)
+	at android.widget.FrameLayout.onMeasure(FrameLayout.java:194)
+	at android.support.v7.widget.ContentFrameLayout.onMeasure(ContentFrameLayout.java:139)
+	at android.view.View.measure(View.java:18788)
+	at android.view.ViewGroup.measureChildWithMargins(ViewGroup.java:5951)
+	at android.support.v7.widget.ActionBarOverlayLayout.onMeasure(ActionBarOverlayLayout.java:393)
+	at android.view.View.measure(View.java:18788)
+	at android.view.ViewGroup.measureChildWithMargins(ViewGroup.java:5951)
+	at android.widget.FrameLayout.onMeasure(FrameLayout.java:194)
+	at android.view.View.measure(View.java:18788)
+	at android.view.ViewGroup.measureChildWithMargins(ViewGroup.java:5951)
+	at android.widget.LinearLayout.measureChildBeforeLayout(LinearLayout.java:1465)
+	at android.widget.LinearLayout.measureVertical(LinearLayout.java:748)
+	at android.widget.LinearLayout.onMeasure(LinearLayout.java:630)
+	at android.view.View.measure(View.java:18788)
+	at android.view.ViewGroup.measureChildWithMargins(ViewGroup.java:5951)
+	at android.widget.FrameLayout.onMeasure(FrameLayout.java:194)
+	at com.android.internal.policy.PhoneWindow$DecorView.onMeasure(PhoneWindow.java:2643)
+	at android.view.View.measure(View.java:18788)
+	at android.view.ViewRootImpl.performMeasure(ViewRootImpl.java:2100)
+	at android.view.ViewRootImpl.measureHierarchy(ViewRootImpl.java:1216)
+	at android.view.ViewRootImpl.performTraversals(ViewRootImpl.java:1452)
+	at android.view.ViewRootImpl.doTraversal(ViewRootImpl.java:1107)
+	at android.view.ViewRootImpl$TraversalRunnable.run(ViewRootImpl.java:6013)
+	at android.view.Choreographer$CallbackRecord.run(Choreographer.java:858)
+	at android.view.Choreographer.doCallbacks(Choreographer.java:670)
+	at android.view.Choreographer.doFrame(Choreographer.java:606)
+	at android.view.Choreographer$FrameDisplayEventReceiver.run(Choreographer.java:844)
+	at android.os.Handler.handleCallback(Handler.java:739)
+	at android.os.Handler.dispatchMessage(Handler.java:95)
+	at android.os.Looper.loop(Looper.java:148)
+	at android.app.ActivityThread.main(ActivityThread.java:5417)
+	at java.lang.reflect.Method.invoke(Native Method)
+	at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:726)
+	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:616)
+
+**** End of current Report ***

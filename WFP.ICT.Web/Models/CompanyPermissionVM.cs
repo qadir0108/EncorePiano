@@ -3,7 +3,7 @@ using System.Web.Mvc;
 
 namespace WFP.ICT.Web.Models
 {
-    public class CompanyPermissionVM
+    public class CompanyPermissionVm
     {
         public string Id { get; set; }
         public string ClaimValue { get; set; }
@@ -11,7 +11,5 @@ namespace WFP.ICT.Web.Models
         public string RolesCount { get; set; }
         public bool IsEditable { get; set; }
         public bool IsDeletable { get; set; }
-        
-        public IEnumerable<SelectListItem> ClaimTypes { get; set; }
     }
 }

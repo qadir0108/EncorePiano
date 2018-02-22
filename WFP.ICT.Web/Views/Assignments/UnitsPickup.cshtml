@@ -1,0 +1,181 @@
+﻿@model WFP.ICT.Web.Models.OrderVm
+@{
+    ViewBag.Title = "Order";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/assets/global/plugins/lightbox/lightbox.min.css" rel="stylesheet" />
+    <!-- BEGIN CONTENT -->
+    <div class="page-content-wrapper">
+        <!-- BEGIN CONTENT BODY -->
+        <div class="page-content">
+            <!-- BEGIN PAGE HEAD-->
+            @*<div class="page-head">
+                <!-- BEGIN PAGE TITLE -->
+                <div class="page-title">
+                    <h1>
+                        Consignments
+                        <small></small>
+                    </h1>
+                </div>
+                <!-- END PAGE TITLE -->
+            </div>*@
+            <!-- END PAGE HEAD-->
+            <!-- BEGIN PAGE BREADCRUMB -->
+            @*<ul class="page-breadcrumb breadcrumb">
+                <li>
+                    <a href="index.html">Home</a>
+                    <i class="fa fa-circle"></i>
+                </li>
+                <li>
+                    <a href="#">Consignments</a>
+                    <i class="fa fa-circle"></i>
+                </li>
+                <li>
+                    <span class="active"></span>
+                </li>
+            </ul>*@
+            <!-- END PAGE BREADCRUMB -->
+            @if (TempData["Success"] != null)
+            {
+                <div class="custom-alerts alert alert-success fade in">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
+                    <i class="fa-lg fa fa-check"></i>@TempData["Success"]
+                </div>
+            }
+            @if (TempData["Error"] != null)
+            {
+                <div class="custom-alerts alert alert-danger fade in">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
+                    <i class="fa-lg fa fa-warning"></i>@TempData["Error"]
+                </div>
+            }
+            <!-- BEGIN PAGE BASE CONTENT -->
+            @*<div class="m-heading-1 border-green m-bordered">
+                    <h3>DataTables Responsive Extension Demo</h3>
+                    <p> Responsive is an extension for DataTables that resolves that problem by optimising the table's layout for different screen sizes through the dynamic insertion and removal of columns from the table. </p>
+                    <p>
+                        For more info please check out
+                        <a class="btn red btn-outline" href="https://www.datatables.net/extensions/responsive/" target="_blank">the official documentation</a>
+                    </p>
+                </div>*@
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- BEGIN EXAMPLE TABLE PORTLET-->
+                    <div class="portlet box red">
+                        <div class="portlet-title">
+                            <div class="caption">
+                                <i class="fa fa-truck"></i> Units - Order # @Model.OrderNumber
+                            </div>
+                            <div class="tools"> </div>
+                        </div>
+                        <div class="portlet-body">
+                            <table class="table table-striped table-bordered table-hover dt-responsive" width="100%" id="sample_4">
+                                <thead>
+                                    <tr>
+                                        @*<th class="all m-grid-col-md-1">Category</th>*@
+                                        <th class="all m-grid-col-md-1">Type</th>
+                                        <th class="all m-grid-col-md-1">Make</th>
+                                        <th class="all m-grid-col-md-1">Model</th>
+                                        <th class="all m-grid-col-md-1">Finish</th>
+                                        <th class="all m-grid-col-md-1">Serial #</th>
+                                        <th class="all m-grid-col-md-1">Main Loaded</th>
+                                        <th class="all m-grid-col-md-1">Picked From</th>
+                                        <th class="all m-grid-col-md-1">Signature</th>
+                                        <th class="all m-grid-col-md-1">Loaded at</th>
+                                        <th class="all m-grid-col-md-1">Pictures</th>
+                                        <th class="none m-grid-col-md-1">Bench 1</th>
+                                        <th class="none m-grid-col-md-1">Bench 2</th>
+                                        <th class="none m-grid-col-md-1">Caster Cups</th>
+                                        <th class="none m-grid-col-md-1">Cover</th>
+                                        <th class="none m-grid-col-md-1">Lamp</th>
+                                        <th class="none m-grid-col-md-1">Owner's Manual</th>
+                                        <th class="none m-grid-col-md-1">Misc 1</th>
+                                        <th class="none m-grid-col-md-1">Misc 2</th>
+                                        <th class="none m-grid-col-md-1">Misc 3</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                @foreach (var pianoVm in Model.Pianos)
+                                {
+                                    <tr>
+                                        @*<td class="m-grid-col-md-1">@pianoVm.PianoCategoryType</td>*@
+                                        <td class="m-grid-col-md-1">@pianoVm.PianoType</td>
+                                        <td class="m-grid-col-md-1">@pianoVm.PianoMake</td>
+                                        <td class="m-grid-col-md-1">@pianoVm.PianoModel</td>
+                                        <td class="m-grid-col-md-1">@pianoVm.PianoFinish</td>
+                                        <td class="m-grid-col-md-1">@pianoVm.SerialNumber</td>
+                                        <td class="m-grid-col-md-1">@pianoVm.IsMainUnitLoaded</td>
+                                        <td class="m-grid-col-md-1">@pianoVm.PickerName</td>
+                                        <td class="m-grid-col-md-1">@Html.Raw(pianoVm.PickerSignature)</td>
+                                        <td class="m-grid-col-md-1">@pianoVm.LoadTimeStamp</td>
+                                        <td class="m-grid-col-md-1">@Html.Raw(pianoVm.Pictures)</td>
+                                        <td class="m-grid-col-md-1">@pianoVm.AdditionalBench1Status</td>
+                                        <td class="m-grid-col-md-1">@pianoVm.AdditionalBench2Status</td>
+                                        <td class="m-grid-col-md-1">@pianoVm.AdditionalCasterCupsStatus</td>
+                                        <td class="m-grid-col-md-1">@pianoVm.AdditionalCoverStatus</td>
+                                        <td class="m-grid-col-md-1">@pianoVm.AdditionalLampStatus</td>
+                                        <td class="m-grid-col-md-1">@pianoVm.AdditionalOwnersManualStatus</td>
+                                        <td class="m-grid-col-md-1">@pianoVm.AdditionalMisc1Status</td>
+                                        <td class="m-grid-col-md-1">@pianoVm.AdditionalMisc2Status</td>
+                                        <td class="m-grid-col-md-1">@pianoVm.AdditionalMisc3Status</td>
+                                    </tr>
+                                }
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- END EXAMPLE TABLE PORTLET-->
+                </div>
+            </div>
+            <!-- END PAGE BASE CONTENT -->
+        </div>
+        <!-- END CONTENT BODY -->
+    </div>
+<!-- END CONTENT -->
+
+<script type="text/javascript">
+
+    var wfp = wfp || {};
+
+   $('.btnSend').click(function () {
+
+       var btnSend = $(this);
+       var id = btnSend.attr('id').replace('btnSend', '');
+       var divRow = $('#' + id);
+       var dataToPost = "{id : '" + id + "'}";
+       var number = btnSend.data('number');
+
+       wfp.showSwal("Are you sure to send Pickup #: " + number + "?",
+           function() {
+
+               debugger;
+               $.ajax({
+                   type: "POST",
+                   url: '/Assignments/Send',
+                   data: dataToPost,
+                   contentType: "application/json; charset=utf-8",
+                   success: function(response) {
+                       debugger;
+                       if (response === "") wfp.reload();
+                       if (response.IsSucess) {
+                           wfp.showSuccess('Consignment #: '+ number +' has been sent successfully.');
+                           //divRow.fadeOut(1000).animate({ "opacity": "0" }, function() { divRow.remove(); });
+
+                       } else {
+                           wfp.showError(response.ErrorMessage);
+                       }
+                   },
+                   failure: function(response) {
+                       wfp.showError('There is erorr in service call.');
+                   },
+                   complete: function() {
+                   }
+               });
+           });
+   });
+
+
+</script>
+
+<script src="~/assets/global/plugins/lightbox/lightbox.min.js"></script>

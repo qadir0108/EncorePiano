@@ -12,12 +12,14 @@ using WFP.ICT.Enum;
 using WFP.ICT.Data.Entities;
 using WFP.ICT.Common;
 using WFP.ICT.Data.EntityManager;
+using DataTables.Mvc;
+using System.Text;
 
 namespace WFP.ICT.Web.Controllers
 {
-    [Authorize]
-    [AjaxAuthorize]
-    [AuthorizeRole(Roles = SecurityConstants.RoleAdmin)]
+    //[Authorize]
+    //[AjaxAuthorize]
+    //[AuthorizeRole(Roles = SecurityConstants.RoleAdmin)]
     public class CompanyController : BaseController
     {
 
@@ -57,142 +59,22 @@ namespace WFP.ICT.Web.Controllers
             try
             {
                 var mgr = new CompanyManager();
-                var company = mgr.GetAll().FirstOrDefault(x => x.Id == model.ID);
+                var company = mgr.GetAll().FirstOrDefault(x => x.Id == model.Id);
                 company.Name = model.Name;
                 company.Details = model.Details;
                 company.WebSite = model.WebSite;
                 company.Logo = model.Logo;
-                company.ActiveDiretoryDomain = model.ActiveDiretoryDomain;
-                company.ActiveDiretoryUserName = model.ActiveDiretoryUserName;
-                company.ActiveDiretoryPassword = model.ActiveDiretoryPassword;
-                company.EmailServer = model.EmailServer;
-                company.EmailUserName = model.EmailUserName;
-                company.EmailPassword = model.EmailPassword;
                 mgr.Update(company);
                 MvcApplication.LoadCompany();
-                return Json(new JsonResponse() { IsSucess = true }, JsonRequestBehavior.AllowGet);
+
+                TempData["Success"] = $"Settings has been saved sucessfully.";
             }
             catch (Exception ex)
             {
-                return Json(new JsonResponse() { IsSucess = false, ErrorMessage = ex.Message }, JsonRequestBehavior.AllowGet);
+                TempData["Error"] = "This is error while saving settings." + ex.Message;
             }
+            return RedirectToAction("Settings");
         }
-
-        #endregion
-
-        #region Offices
-
-        //public ActionResult Offices()
-        //{
-        //    var companyOfficeVms = new List<CompanyOfficeVM>();
-        //    var mgr = new OfficeManager();
-        //    companyOfficeVms = mgr.GetAll().OrderBy(x => x.Code).Select(x => new CompanyOfficeVM()
-        //    {
-        //        Id = x.ID.ToString(),
-        //        Code = x.Code,
-        //        OfficeName = x.OfficeName,
-        //        IsEditable = true,
-        //        IsDeletable = true,
-        //    }).ToList();
-        //    return View(companyOfficeVms);
-        //}
-
-        //[HttpPost]
-        //public ActionResult DeleteOffice(string Id)
-        //{
-        //    try
-        //    {
-        //        var mgr = new OfficeManager();
-        //        mgr.DeleteById(Guid.Parse(Id));
-        //        return Json(new JsonResponse() { IsSucess = true }, JsonRequestBehavior.AllowGet);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return Json(new JsonResponse() { IsSucess = false, ErrorMessage = ex.Message }, JsonRequestBehavior.AllowGet);
-        //    }
-        //}
-
-        //public ActionResult SaveOffice(CompanyOfficeVM officeVm)
-        //{
-        //    try
-        //    {
-        //        var mgr = new OfficeManager();
-        //        var code = (mgr.GetAll().Max(p => (int?)p.Code) ?? 0) + 1;
-
-        //        if (officeVm.Id == null)
-        //        {
-        //            mgr.Insert(new Office()
-        //            {
-        //                ID = Guid.NewGuid(),
-        //                Code = code,
-        //                OfficeName = officeVm.OfficeName,
-        //                OfficeCity = officeVm.OfficeName,
-        //                OfficeCountry = "Pakistan",
-        //                CreatedAt = DateTime.Now
-        //            });
-        //        }
-        //        else
-        //        {
-        //            var office = mgr.GetById(Guid.Parse(officeVm.Id));
-        //            office.Code = officeVm.Code;
-        //            office.OfficeName = officeVm.OfficeName;
-        //            office.OfficeCity = officeVm.OfficeName;
-        //            mgr.Update(office);
-        //        }
-        //        return Json(new JsonResponse() { IsSucess = true }, JsonRequestBehavior.AllowGet);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return Json(new JsonResponse() { IsSucess = false, ErrorMessage = ex.Message }, JsonRequestBehavior.AllowGet);
-        //    }
-        //}
-        #endregion
-
-        #region Units
-
-        //public ActionResult Units()
-        //{
-        //    List<CompanyUnitVM> units = new List<CompanyUnitVM>();
-        //    var mgr = new UnitManager();
-        //    foreach (var unit in mgr.GetAll().OrderBy(x => x.Code))
-        //    {
-        //        var unitVM = new CompanyUnitVM()
-        //        {
-        //            Id = unit.ID.ToString(),
-        //            Name = unit.UnitName,
-        //            HeadID = unit.HeadID,
-        //            FocalPersonID = unit.FocalPersonID,
-        //            IsDeletable = false,
-        //            IsEditable = false,
-        //            Users = UsersList
-        //        };
-        //        units.Add(unitVM);
-        //    }
-        //    return View(units);
-        //}
-
-        //public ActionResult ChangeUnit(CompanyUnitVM model)
-        //{
-        //    try
-        //    {
-        //        var mgr = new UnitManager();
-        //        var unit = mgr.GetById(Guid.Parse(model.Id));
-        //        if (model.Action == "changeHead")
-        //        {
-        //            unit.HeadID = model.HeadID;
-        //        }
-        //        else if (model.Action == "changeFocalPerson")
-        //        {
-        //            unit.FocalPersonID = model.FocalPersonID;
-        //        }
-        //        mgr.Update(unit);
-        //        return Json(new JsonResponse() { IsSucess = true }, JsonRequestBehavior.AllowGet);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return Json(new JsonResponse() { IsSucess = false, ErrorMessage = ex.Message }, JsonRequestBehavior.AllowGet);
-        //    }
-        //}
 
         #endregion
 
@@ -210,21 +92,26 @@ namespace WFP.ICT.Web.Controllers
             }
         }
 
-        public ActionResult Users(Guid? officeId)
+        public ActionResult Users()
         {
-            List<CompanyUsersVM> model = new List<CompanyUsersVM>();
+            return View();
+        }
 
-            List<WFPUser> users = UserManager.Users.ToList();
+        public ActionResult InitializeUsers([ModelBinder(typeof(DataTablesBinder))] IDataTablesRequest requestModel)
+        {
+            List<CompanyUsersVm> users = new List<CompanyUsersVm>();
 
+            List<WFPUser> usersList = UserManager.Users.ToList();
             List<SelectItemPair> roles = RoleManager.Roles.Select(x => new SelectItemPair() { Text = x.Name, Value = x.Id }).ToList();
 
-            //foreach (var user in users)
-            foreach (var user in users.Where(x=>x.UserName != "ictpak"))
+            foreach (var user in usersList)
             {
-                var u = new CompanyUsersVM()
+                var u = new CompanyUsersVm()
                 {
-                    ID = Guid.Parse(user.Id),
+                    Id = Guid.Parse(user.Id),
                     Name = user.UserName,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
                     Status = ((UserStatusEnum)user.Status).ToString(),
                 };
 
@@ -241,28 +128,129 @@ namespace WFP.ICT.Web.Controllers
                     rolesThisUser.Add(roleThisUser);
                 }
                 u.Roles = rolesThisUser;
-                model.Add(u);
+                users.Add(u);
             }
 
-            List<CompanyUsersGroupedVM> userGroup = 
-                model.GroupBy(x => new { x.OfficeName, x.UnitName })
-                     .Select(x => new CompanyUsersGroupedVM() {
-                         OfficeName = x.Key.OfficeName,
-                         UnitName = x.Key.UnitName,
-                         Users = x.OrderBy(y => y.Name).ToList()
-                      })
-                     .OrderBy(x => x.OfficeName).ThenBy(x => x.UnitName)
-                     .ToList();
+            var totalCount = users.Count();
 
-            return View(userGroup);
+            #region Filtering
+            // Apply filters for searching
+            if (requestModel.Search.Value != string.Empty)
+            {
+                var value = requestModel.Search.Value.Trim();
+                users = users.Where(p => p.Name.Contains(value)).ToList();
+            }
+
+            var filteredCount = users.Count();
+
+            #endregion Filtering
+
+            #region Sorting
+            // Sorting
+            var sortedColumns = requestModel.Columns.GetSortedColumns();
+            var orderByString = String.Empty;
+
+            if (sortedColumns.Count() > 0)
+            {
+                foreach (var column in sortedColumns)
+                {
+                    if (column.Data == "Name")
+                    {
+                        users = column.SortDirection.ToString() == "Ascendant" ?
+                                    users.OrderBy(x => x.Name).ToList() :
+                                    users.OrderByDescending(x => x.Name).ToList();
+                    }
+
+                    if (column.Data == "FirstName")
+                    {
+                        users = column.SortDirection.ToString() == "Ascendant" ?
+                                    users.OrderBy(x => x.FirstName ).ToList() :
+                                    users.OrderByDescending(x => x.FirstName).ToList();
+                    }
+
+                    if (column.Data == "LastName")
+                    {
+                        users = column.SortDirection.ToString() == "Ascendant" ?
+                                    users.OrderBy(x => x.LastName).ToList() :
+                                    users.OrderByDescending(x => x.LastName).ToList();
+                    }
+                }
+                orderByString = "Ordered";
+            }
+
+            if (orderByString == string.Empty)
+            {
+                users = users.OrderBy(x => x.Name).ToList();
+            }
+            #endregion Sorting
+
+            // Paging
+            if (requestModel.Length != -1)
+            {
+                users = users.Skip(requestModel.Start).Take(requestModel.Length).ToList();
+            }
+
+            var result = users.
+                         ToList()
+                        .Select(x => new
+                        {
+                            Id = x.Id.ToString(),
+                            Name = x.Name,
+                            FirstName = x.FirstName,
+                            LastName = x.LastName,
+                            Status = x.Status,
+                            Roles = GetRoles(x),
+                            Actions = GetActionsUsers(x),
+                        });
+
+            return Json(new DataTablesResponse
+            (requestModel.Draw, result, filteredCount, totalCount),
+                        JsonRequestBehavior.AllowGet);
         }
-        
-        public ActionResult SaveUser(CompanyUsersVM model)
+
+        public string GetRoles(CompanyUsersVm user)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendFormat(@"<select class='roles' multiple='multiple' style='width:100%' id='{0}'>", user.Id);
+            foreach (var item in user.Roles)
+            {
+                var selected = item.Selected ? "selected" : "";
+                sb.AppendFormat(@"<option value = '{0}' {1} > {2} </option>", item.Value, selected, item.Text);
+            }
+            sb.AppendFormat(@"</select>");
+            return sb.ToString();
+        }
+
+        public string GetActionsUsers(CompanyUsersVm user)
+        {
+            StringBuilder sb = new StringBuilder();
+            if (user.Status == "Active")
+            {
+                sb.AppendFormat(@"<a href='#' id='btnLock' class='btn btn-default btnLock' data-tooltip='tooltip' data-id='{0}' title='Lock'>
+                             <i class='fa fa-lock' aria-hidden='true'></i>
+                             </span>
+                          </a>", user.Id.ToString());
+            } else
+            {
+                sb.AppendFormat(@"<a href='#' id='btnUnLock' class='btn btn-default btnLock' data-tooltip='tooltip' data-id='{0}' title='Un-Lock'>
+                             <i class='fa fa-unlock' aria-hidden='true'></i>
+                             </span>
+                          </a>", user.Id.ToString());
+            }
+            sb.AppendFormat(@"<a href='#' id='btnOpenChangePassword' name='btnOpenChangePassword' class='btn btn-default btnOpenChangePassword' title='Change Password'
+                                       data-toggle = 'modal' data-target = '#myModal' data-id = '{0}' data-user = '{1}' ><i class='fa fa-key' aria-hidden='true'></i></a>
+                        <a class='btnDelete' data-id={0} href='#' data-tooltip='tooltip' title='Delete'>
+                        <span class='glyphicon glyphicon-trash'></span>
+                        </a>", user.Id.ToString(), user.Name);
+            return sb.ToString();
+        }
+
+        public ActionResult SaveUser(CompanyUsersVm model)
         {
             try
             {
-                var user = UserManager.FindById(model.ID.ToString());
-                switch (model.Action)
+                var user = UserManager.FindById(model.Id.ToString());
+                switch (model.ActionToTake)
                 {
                     case "lock":
                         if (user.Status == (int)UserStatusEnum.Active)
@@ -319,15 +307,30 @@ namespace WFP.ICT.Web.Controllers
             }
         }
 
-        public ActionResult ChangeUserRole(CompanyUsersVM model)
+        public ActionResult ChangeUserRole(CompanyUsersVm model)
         {
             try
             {
-                if(model.Action == "add")
-                    UserManager.AddToRole(model.ID.ToString(), model.Role);
-                else if(model.Action == "remove")
-                    UserManager.RemoveFromRole(model.ID.ToString(), model.Role);
+                if(model.ActionToTake == "add")
+                    UserManager.AddToRole(model.Id.ToString(), model.Role.Trim());
+                else if(model.ActionToTake == "remove")
+                    UserManager.RemoveFromRole(model.Id.ToString(), model.Role.Trim());
                 Db.SaveChanges();
+                return Json(new JsonResponse() { IsSucess = true }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new JsonResponse() { IsSucess = false, ErrorMessage = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult DeleteUser(string Id)
+        {
+            try
+            {
+                var user = UserManager.FindById(Id);
+                UserManager.Delete(user);
                 return Json(new JsonResponse() { IsSucess = true }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
@@ -354,11 +357,17 @@ namespace WFP.ICT.Web.Controllers
 
         public ActionResult Roles()
         {
-            List<CompanyRoleVM> companyRoles = new List<CompanyRoleVM>();
+            return View();
+        }
+
+        public ActionResult InitializeRoles([ModelBinder(typeof(DataTablesBinder))] IDataTablesRequest requestModel)
+        {
             var mgr = new AspNetClaimsManager();
+
+            List<CompanyRoleVm> roles = new List<CompanyRoleVm>();
             foreach (var role in RoleManager.Roles)
             {
-                var roleVm = new CompanyRoleVM()
+                var roleVm = new CompanyRoleVm()
                 {
                     Id = role.Id,
                     Name = role.Name,
@@ -366,7 +375,7 @@ namespace WFP.ICT.Web.Controllers
                     IsDeletable = role.IsDeletable,
                     IsEditable = role.IsEditable
                 };
-                
+
                 List<SelectItemPair> permissions = new List<SelectItemPair>();
                 foreach (var claim in mgr.GetAll("RoleClaims").ToList())
                 {
@@ -377,9 +386,123 @@ namespace WFP.ICT.Web.Controllers
                     permissions.Add(permission);
                 }
                 roleVm.Permissions = permissions;
-                companyRoles.Add(roleVm);
+                roles.Add(roleVm);
             }
-            return View(companyRoles);
+
+            var totalCount = roles.Count();
+
+            #region Filtering
+            // Apply filters for searching
+            if (requestModel.Search.Value != string.Empty)
+            {
+                var value = requestModel.Search.Value.Trim();
+                roles = roles.Where(p => p.Name.Contains(value)).ToList();
+            }
+
+            var filteredCount = roles.Count();
+
+            #endregion Filtering
+
+            #region Sorting
+            // Sorting
+            var sortedColumns = requestModel.Columns.GetSortedColumns();
+            var orderByString = String.Empty;
+
+            if (sortedColumns.Count() > 0)
+            {
+                foreach (var column in sortedColumns)
+                {
+                    if (column.Data == "Name")
+                    {
+                        roles = column.SortDirection.ToString() == "Ascendant" ?
+                                    roles.OrderBy(x => x.Name).ToList() :
+                                    roles.OrderByDescending(x => x.Name).ToList();
+                    }
+
+                    if (column.Data == "Description")
+                    {
+                        roles = column.SortDirection.ToString() == "Ascendant" ?
+                                    roles.OrderBy(x => x.Description).ToList() :
+                                    roles.OrderByDescending(x => x.Description).ToList();
+                    }
+                }
+                orderByString = "Ordered";
+            }
+
+            if (orderByString == string.Empty)
+            {
+                roles = roles.OrderBy(x => x.Name).ToList();
+            }
+            #endregion Sorting
+
+            // Paging
+            if (requestModel.Length != -1)
+            {
+                roles = roles.Skip(requestModel.Start).Take(requestModel.Length).ToList();
+            }
+
+            var result = roles.
+                         ToList()
+                        .Select(x => new
+                        {
+                            Id = x.Id.ToString(),
+                            Name = x.Name,
+                            Description = x.Description,
+                            Permissions = GetPermissions(x),
+                            Actions = GetActionsRoles(x.Id),
+                        });
+
+            return Json(new DataTablesResponse
+            (requestModel.Draw, result, filteredCount, totalCount),
+                        JsonRequestBehavior.AllowGet);
+        }
+
+        public string GetPermissions(CompanyRoleVm role)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendFormat(@"<select class='permissions' multiple='multiple' style='width:100%' id='{0}'>", role.Id);
+            foreach(var item in role.Permissions)
+            {
+                var selected = item.Selected ? "selected" : "";
+                sb.AppendFormat(@"<option value = '{0}' {1} > {2} </option>", item.Value, selected, item.Text);
+            }
+            sb.AppendFormat(@"</select>");
+            return sb.ToString();
+        }
+
+        public string GetActionsRoles(string id)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendFormat(@"<a href='#' class='btnEdit' data-tooltip='tooltip' data-id='{0}' title='Edit'>
+                             <span class='glyphicon glyphicon-pencil'>
+                             </span>
+                          </a>
+                           <a class='btnDelete' data-id={0} href='#' data-tooltip='tooltip' title='Delete'>
+                            <span class='glyphicon glyphicon-trash'></span>
+                            </a>", id);
+            return sb.ToString();
+        }
+
+        [HttpPost]
+        public ActionResult EditRole(Guid? id)
+        {
+            try
+            {
+                var role = RoleManager.Roles.ToList().FirstOrDefault(x => x.Id == id.ToSafeString());
+                var model = new CompanyRoleVm()
+                {
+                    Id = role.Id,
+                    Name = role.Name,
+                    Description = role.Description,
+                    IsDeletable = role.IsDeletable,
+                    IsEditable = role.IsEditable
+                };
+                return PartialView("~/Views/Company/RoleAdd.cshtml", model);
+            }
+            catch (Exception ex)
+            {
+                return Json(new JsonResponse() { IsSucess = false, ErrorMessage = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
         }
 
         [HttpPost]
@@ -397,7 +520,7 @@ namespace WFP.ICT.Web.Controllers
             }
         }
 
-        public ActionResult SaveRole(CompanyRoleVM role)
+        public ActionResult SaveRole(CompanyRoleVm role)
         {
             try
             {
@@ -428,7 +551,7 @@ namespace WFP.ICT.Web.Controllers
             }
         }
 
-        public ActionResult ChangeRolePermission(CompanyRoleVM model)
+        public ActionResult ChangeRolePermission(CompanyRoleVm model)
         {
             try
             {
@@ -464,19 +587,136 @@ namespace WFP.ICT.Web.Controllers
 
         public ActionResult Permissions()
         {
-            var permissions = new List<CompanyPermissionVM>();
+            TempData["ClaimTypes"] = new SelectList(ClaimTypes, "Value", "Text");
+            return View();
+        }
+
+        public ActionResult InitializePermissions([ModelBinder(typeof(DataTablesBinder))] IDataTablesRequest requestModel)
+        {
             var mgr = new AspNetClaimsManager();
-            permissions = mgr.GetAll("RoleClaims").ToList().Select(x => new CompanyPermissionVM()
+            IEnumerable<CompanyPermissionVm> permissions = mgr.GetAll("RoleClaims").Select(x => new CompanyPermissionVm()
             {
                 Id = x.Id.ToString(),
                 ClaimType = x.ClaimType,
                 ClaimValue = x.ClaimValue,
                 RolesCount = x.RoleClaims.Count.ToString(),
                 IsEditable = !SecurityConstants.ClaimsAll.Contains(x.ClaimValue),
-                IsDeletable = !SecurityConstants.ClaimsAll.Contains(x.ClaimValue),
-                ClaimTypes = ClaimTypes
+                IsDeletable = !SecurityConstants.ClaimsAll.Contains(x.ClaimValue)
             }).ToList();
-            return View(permissions);
+
+            var totalCount = permissions.Count();
+
+            #region Filtering
+            // Apply filters for searching
+            if (requestModel.Search.Value != string.Empty)
+            {
+                var value = requestModel.Search.Value.Trim();
+                permissions = permissions.AsEnumerable().
+                                          Where(p => p.ClaimValue.Contains(value)
+                                         );
+            }
+
+            var filteredCount = permissions.Count();
+
+            #endregion Filtering
+
+            #region Sorting
+            // Sorting
+            var sortedColumns = requestModel.Columns.GetSortedColumns();
+            var orderByString = String.Empty;
+
+            if (sortedColumns.Count() > 0)
+            {
+                foreach (var column in sortedColumns)
+                {
+                    if (column.Data == "ClaimValue")
+                    {
+                        permissions = column.SortDirection.ToString() == "Ascendant" ?
+                                    permissions.OrderBy(x => x.ClaimValue) :
+                                    permissions.OrderByDescending(x => x.ClaimValue);
+                    }
+
+                    if (column.Data == "ClaimType")
+                    {
+                        permissions = column.SortDirection.ToString() == "Ascendant" ?
+                                    permissions.OrderBy(x => x.ClaimType) :
+                                    permissions.OrderByDescending(x => x.ClaimType);
+                    }
+
+                    if (column.Data == "RolesCount")
+                    {
+                        permissions = column.SortDirection.ToString() == "Ascendant" ?
+                                    permissions.OrderBy(x => x.RolesCount) :
+                                     permissions.OrderByDescending(x => x.RolesCount);
+                    }
+                }
+                orderByString = "Ordered";
+            }
+
+            if (orderByString == string.Empty)
+            {
+                permissions = permissions.OrderBy(x => x.ClaimType);
+            }
+            #endregion Sorting
+
+            // Paging
+            if (requestModel.Length != -1)
+            {
+                permissions = permissions.Skip(requestModel.Start).Take(requestModel.Length);
+            }
+
+            var result = permissions.
+                         ToList()
+                        .Select(x => new
+                        {
+                            Id = x.Id.ToString(),
+                            ClaimType = x.ClaimType,
+                            ClaimValue = x.ClaimValue,
+                            RolesCount = x.RolesCount.ToString(),
+                            Actions = GetActionsPermissions(x.Id),
+                        });
+
+            return Json(new DataTablesResponse
+            (requestModel.Draw, result, filteredCount, totalCount),
+                        JsonRequestBehavior.AllowGet);
+        }
+
+        public string GetActionsPermissions(string id)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendFormat(@"<a href='#' class='btnEdit' data-tooltip='tooltip' data-id='{0}' title='Edit'>
+                             <span class='glyphicon glyphicon-pencil'>
+                             </span>
+                          </a>
+                           <a class='btnDelete' data-id={0} href='#' data-tooltip='tooltip' title='Delete'>
+                            <span class='glyphicon glyphicon-trash'></span>
+                            </a>", id);
+            return sb.ToString();
+        }
+
+        [HttpPost]
+        public ActionResult EditPermission(Guid? id)
+        {
+            try
+            {
+                var mgr = new AspNetClaimsManager();
+                var claim = mgr.GetById(id.Value, "RoleClaims");
+                var model = new CompanyPermissionVm()
+                {
+                    Id = claim.Id.ToString(),
+                    ClaimType = claim.ClaimType,
+                    ClaimValue = claim.ClaimValue,
+                    RolesCount = claim.RoleClaims.Count.ToString(),
+                    IsEditable = !SecurityConstants.ClaimsAll.Contains(claim.ClaimValue),
+                    IsDeletable = !SecurityConstants.ClaimsAll.Contains(claim.ClaimValue)
+                };
+                TempData["ClaimTypes"] = new SelectList(ClaimTypes, "Value", "Text");
+                return PartialView("~/Views/Company/PermissionAdd.cshtml", model);
+            }
+            catch (Exception ex)
+            {
+                return Json(new JsonResponse() { IsSucess = false, ErrorMessage = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
         }
 
         [HttpPost]
@@ -494,7 +734,7 @@ namespace WFP.ICT.Web.Controllers
             }
         }
 
-        public ActionResult SavePermission(CompanyPermissionVM permission)
+        public ActionResult SavePermission(CompanyPermissionVm permission)
         {
             try
             {

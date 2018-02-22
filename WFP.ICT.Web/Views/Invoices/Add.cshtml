@@ -1,0 +1,136 @@
+﻿
+@model WFP.ICT.Web.Models.NewPaymentVm
+
+<style>
+
+</style>
+
+<!-- BEGIN CONTENT -->
+
+        <!-- BEGIN PAGE BASE CONTENT -->
+
+            @using (Ajax.BeginForm("Save", "Payments", null, new AjaxOptions { HttpMethod = "POST", OnSuccess = "PaymentConfigs.initAddSuccess(data,status)" }, new
+            {
+                @id = "frm",
+            }))
+            {
+
+                        <div class="portlet-body">
+
+                            <div class="row">
+                                <div class="col-md-12 ">
+                                    <!-- BEGIN SAMPLE FORM PORTLET-->
+
+                                    <div class="portlet light bordered">
+                                        <div class="portlet-title">
+                                            <div class="caption font-red-sunglo">
+                                                <span class="caption-subject bold uppercase"> New Payment</span>
+                                            </div>
+                                            <div class="actions">
+                                                <a class="btn btn-circle btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title=""> </a>
+                                            </div>
+                                        </div>
+                                        <div class="portlet-body form">
+                                            <div class="form-body">
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-md-line-input has-success">
+                                                            <div class="input-icon">
+                                                                @Html.DropDownListFor(model => model.PaymentType, TempData["PaymentTypes"] as SelectList, htmlAttributes: new { @class = "form-control" })
+                                                                <label>Payment Type<span class="required">*</span></label>
+                                                                @Html.ValidationMessageFor(model => model.PaymentType, null, new { @class = "help-block help-block-error" })
+                                                                <span class="help-block">Enter Payment Type</span>
+                                                                <i class="fa fa-user"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-md-line-input has-success">
+                                                            <div class="input-icon">
+                                                                @Html.DropDownListFor(model => model.OrderNumber, TempData["OrderNumbers"] as SelectList, htmlAttributes: new { @class = "form-control" })
+                                                                <label>Order Number</label>
+                                                                @Html.ValidationMessageFor(model => model.OrderNumber, null, new { @class = "help-block help-block-error" })
+                                                                <span class="help-block">Enter Order Number</span>
+                                                                <i class="fa fa-user"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group form-md-line-input has-success">
+                                                            <div class="input-icon">
+                                                                @Html.DropDownListFor(model => model.InvoiceNumber, TempData["InvoiceNumbers"] as SelectList, htmlAttributes: new { @class = "form-control" })
+                                                                <label>Invoice Number</label>
+                                                                @Html.ValidationMessageFor(model => model.InvoiceNumber, null, new { @class = "help-block help-block-error" })
+                                                                <span class="help-block">Enter Invoice Number</span>
+                                                                <i class="fa fa-user"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                                @*<div class="row">
+
+                                                    <div class="col-md-12">
+                                                        <div class="form-group form-md-line-input has-success">
+                                                            <div class="input-icon">
+                                                                @Html.EditorFor(model => model.Client.AccountCode, new { htmlAttributes = new { @class = "form-control" } })
+                                                                <label>Account Code<span class="required">*</span></label>
+                                                                @Html.ValidationMessageFor(model => model.Client.AccountCode, null, new { @class = "help-block help-block-error" })
+                                                                <span class="help-block">Enter Account Code</span>
+                                                                <i class="fa fa-user"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-12">
+                                                        <div class="form-group form-md-line-input has-success">
+                                                            <div class="input-icon">
+                                                                @Html.EditorFor(model => model.Client.Email, new { htmlAttributes = new { @class = "form-control" } })
+                                                                <label>Email Account<span class="required">*</span></label>
+                                                                @Html.ValidationMessageFor(model => model.Client.Email, null, new { @class = "help-block help-block-error" })
+                                                                <span class="help-block">Enter Email Account</span>
+                                                                <i class="fa fa-user"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+
+                                                    <div class="col-md-12">
+                                                        <div class="form-group form-md-line-input has-success">
+                                                            <div class="input-icon">
+                                                                @Html.EditorFor(model => model.Client.Notes, new { htmlAttributes = new { @class = "form-control" } })
+                                                                <label>Comments</label>
+                                                                @Html.ValidationMessageFor(model => model.Client.Notes, null, new { @class = "help-block help-block-error" })
+                                                                <span class="help-block">Enter Comments Here</span>
+                                                                <i class="fa fa-user"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>*@
+                                   
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <button type="submit" onclick="" class="btn blue-steel">Save Payment</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                               
+                            </div>
+                          
+                        </div>
+         
+            }
+     
+
+
+
+
+
+

@@ -10,7 +10,7 @@ namespace WFP.ICT.Common
 {
     public class InvoiceHtmlHelper
     {
-         public static string GenerateInvoiceHtml(PianoOrder order , string _directoryPath)
+         public static string GenerateInvoiceHtml(Order order , string _directoryPath)
         {
             StringBuilder html = new StringBuilder();
 
@@ -127,9 +127,12 @@ namespace WFP.ICT.Common
 
             html.AppendFormat(@"<table style = 'width:20%;' class='bordered'>");
             var index = 1;
-            order.PianoAssignment.Drivers.ToList().ForEach(x =>
+            if(order.Assignments.Count > 0)
             {
-                html.AppendFormat(@"<tr>
+                var drivers = order.Assignments.FirstOrDefault().Drivers.ToList();
+                drivers.ForEach(x =>
+                {
+                    html.AppendFormat(@"<tr>
                                      <td style= 'width:20%' >
                                      {0}
                                     </td>
@@ -138,9 +141,10 @@ namespace WFP.ICT.Common
                                     </td>
                                     </tr>
                                    ", index, x.Name);
-                index++;
+                    index++;
 
-            });
+                });
+            }
             html.AppendFormat(@"</table>");
 
 
@@ -229,7 +233,7 @@ namespace WFP.ICT.Common
 
         }
 
-        public static string GenerateClientInvoiceHtml(IEnumerable<PianoOrder> Orders, Client client, List<Piano> Pianos, int invoiceNumber)
+        public static string GenerateClientInvoiceHtml(IEnumerable<Order> Orders, Client client, List<Piano> Pianos, int invoiceNumber, out long totalAmount)
         {
             StringBuilder html = new StringBuilder();
 
@@ -270,7 +274,7 @@ namespace WFP.ICT.Common
                                     <span class='bold'>Date : {4} <br />
                                     Invoice # {5} <br />
                                     Customer Id : {6}</span><br />  </td>
-                                    </tr>   ", client.Name, client.Addresses.Address1, client.Addresses.City, client.Addresses.State, DateTime.Now.ToString("yyyy-MM-dd"), invoiceNumber,
+                                    </tr>   ", client.Name, client.Address.Address1, client.Address.City, client.Address.State, DateTime.Now.ToString("yyyy-MM-dd"), invoiceNumber,
                                     client.AccountCode);
 
             html.Append(@"</table>");
@@ -297,7 +301,7 @@ namespace WFP.ICT.Common
                                     </td>
                                     </tr>");
 
-            long totalAmount = 0;
+            totalAmount = 0;
 
             foreach (var item in Orders)
             {

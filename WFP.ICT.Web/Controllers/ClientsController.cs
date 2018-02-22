@@ -2,38 +2,19 @@
 using System.Linq;
 using System.Linq.Dynamic;
 using System.Data.Entity;
-using System.Web;
 using System.Web.Mvc;
-using Microsoft.AspNet.Identity.Owin;
 using WFP.ICT.Data.Entities;
 using WFP.ICT.Enum;
 using DataTables.Mvc;
-using WFP.ICT.Common;
-using System.IO;
 using WFP.ICT.Web.Models;
 using System.Data;
-using DocumentFormat.OpenXml.Packaging;
-using DocumentFormat.OpenXml.Spreadsheet;
 using System.Collections.Generic;
-using WFP.ICT.Web.Async;
 using System.Text;
 
 namespace WFP.ICT.Web.Controllers
 {
     public class ClientsController : BaseController
     {
-        private ApplicationUserManager _userManager;
-        public ApplicationUserManager UserManager
-        {
-            get
-            {
-                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
-            }
-            set
-            {
-                _userManager = value;
-            }
-        }
         public ActionResult Index()
         {
             TempData["AddressStates"] = new SelectList(States, "Value", "Text");
@@ -41,9 +22,9 @@ namespace WFP.ICT.Web.Controllers
             return View();
         }
 
-        public ActionResult InitializeClients([ModelBinder(typeof(DataTablesBinder))] IDataTablesRequest requestModel)
+        public ActionResult Initialize([ModelBinder(typeof(DataTablesBinder))] IDataTablesRequest requestModel)
         {
-            IEnumerable<Client> Clients = Db.Clients.Include(x => x.Addresses);
+            IEnumerable<Client> Clients = Db.Clients.Include(x => x.Address);
 
             var totalCount = Clients.Count();
 
@@ -56,11 +37,11 @@ namespace WFP.ICT.Web.Controllers
                                           Where(p => p.Name.Contains(value) ||
                                          p.PhoneNumber.Contains(value) ||
                                          p.EmailAddress.Contains(value) ||
-                                         p.Addresses.Address1.Contains(value) ||
+                                         p.Address.Address1.Contains(value) ||
                                          p.AccountCode.Contains(value) ||
                                          p.CreatedAt.ToString("yyyy-MM-dd").Contains(value) ||
                                          p.Comment.Contains(value) ||
-                                         ((CustomerTypeEnum)(p.CustomerType)).ToString().ToLower().Contains(value.ToLower())
+                                         ((CustomerTypeEnum)(p.ClientType)).ToString().ToLower().Contains(value.ToLower())
                                          );
             }
 
@@ -81,8 +62,8 @@ namespace WFP.ICT.Web.Controllers
                     {
 
                         Clients = column.SortDirection.ToString() == "Ascendant" ?
-                                    Clients.OrderBy(x => x.CustomerType) :
-                                    Clients.OrderByDescending(x => x.CustomerType);
+                                    Clients.OrderBy(x => x.ClientType) :
+                                    Clients.OrderByDescending(x => x.ClientType);
                     }
 
                     if (column.Data == "Name")
@@ -128,8 +109,8 @@ namespace WFP.ICT.Web.Controllers
                     {
 
                         Clients = column.SortDirection.ToString() == "Ascendant" ?
-                                    Clients.OrderBy(x => x.Addresses.Address1) :
-                                     Clients.OrderByDescending(x => x.Addresses.Address1);
+                                    Clients.OrderBy(x => x.Address.Address1) :
+                                     Clients.OrderByDescending(x => x.Address.Address1);
                     }
 
                 }
@@ -153,13 +134,13 @@ namespace WFP.ICT.Web.Controllers
                          ToList()
                         .Select(client => new
                         {
-                            Type = ((CustomerTypeEnum)(client.CustomerType)).ToString(),
+                            Type = ((CustomerTypeEnum)(client.ClientType)).ToString(),
                             Name = client.Name,
                             Created = client.CreatedAt.ToString("yyyy-MM-dd"),
                             Phone = client.PhoneNumber,
                             Account = client.AccountCode ,
                             Comment = client.Comment,
-                            Address = client.Addresses?.Address1 + "," + client.Addresses?.City + "," + client.Addresses?.State + ".",
+                            Address = client.Address?.Address1 + "," + client.Address?.City + "," + client.Address?.State + ".",
                             Actions = GetActions(client.Id),
                         });
 
@@ -171,11 +152,11 @@ namespace WFP.ICT.Web.Controllers
         public string GetActions(Guid? id)
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendFormat(@"<a href='#' class='btnEdit' data-tooltip='tooltip' data-id='{0}' title='Edit Address'>
+            sb.AppendFormat(@"<a href='#' class='btnEdit' data-tooltip='tooltip' data-id='{0}' title='Edit'>
                              <span class='glyphicon glyphicon-pencil'>
                              </span>
                           </a>
-                           <a class='btnDelete' data-id={0} href='#' data-tooltip='tooltip' title='Delete Address'>
+                           <a class='btnDelete' data-id={0} href='#' data-tooltip='tooltip' title='Delete'>
                             <span class='glyphicon glyphicon-trash'></span>
                             </a>", id);
             return sb.ToString();
@@ -196,7 +177,7 @@ namespace WFP.ICT.Web.Controllers
                 client.Name = NewAddressVm.Client.Name;
                 client.AccountCode = NewAddressVm.Client.AccountCode;
                 client.Comment = NewAddressVm.Client.Notes;
-                client.CustomerType = NewAddressVm.Client.Type;
+                client.ClientType = NewAddressVm.Client.Type;
                 client.PhoneNumber = NewAddressVm.Client.PhoneNumber;
                 client.EmailAddress = NewAddressVm.Client.Email;
                 client.CreatedAt = DateTime.Now;
@@ -206,7 +187,7 @@ namespace WFP.ICT.Web.Controllers
                 Db.SaveChanges();
 
                 address.Id = addressId;
-                address.CustomerId = clientId;
+                address.ClientId = clientId;
                 address.PhoneNumber = NewAddressVm.PhoneNumber;
                 address.Address1 = NewAddressVm.Address;
                 address.State = NewAddressVm.State;
@@ -231,21 +212,20 @@ namespace WFP.ICT.Web.Controllers
             }
         }
 
-
         [HttpPost]
         public ActionResult Delete(Guid? id)
         {
             try
             {
-                if (Db.PianoOrders.Count(x => x.CustomerId == id) > 0 ||
-                    Db.CustomerPayments.Count(x => x.CustomerId == id) > 0 ||
-                    Db.CustomerInvoices.Count(x => x.CustomerId == id) > 0 )
+                if (Db.Orders.Count(x => x.ClientId == id) > 0 ||
+                    Db.Payments.Count(x => x.ClientId == id) > 0 ||
+                    Db.Invoices.Count(x => x.ClientId == id) > 0 )
                 {
                     return Json(new JsonResponse() { IsSucess = false, ErrorMessage = "Unable to process as there are orders, payments, invoices against this client" }, JsonRequestBehavior.AllowGet);
                 }
 
-                var client = Db.Clients.Include(x => x.Addresses).FirstOrDefault(x => x.Id == id);
-                Db.Addresses.Remove(client.Addresses);
+                var client = Db.Clients.Include(x => x.Address).FirstOrDefault(x => x.Id == id);
+                Db.Addresses.Remove(client.Address);
                 Db.SaveChanges();
 
                 Db.Clients.Remove(client);
@@ -263,7 +243,7 @@ namespace WFP.ICT.Web.Controllers
         {
             try
             {
-                var client = Db.Clients.Include(x => x.Addresses ).FirstOrDefault(x => x.Id == id);
+                var client = Db.Clients.Include(x => x.Address ).FirstOrDefault(x => x.Id == id);
                 TempData["AddressStates"] = new SelectList(States, "Value", "Text");
                 var model = new NewClientVm()
                 {
@@ -271,7 +251,7 @@ namespace WFP.ICT.Web.Controllers
                     AccountCode = client.AccountCode,
                     Notes = client.Comment,
                     Id = client.Id,
-                    Type = client.CustomerType,
+                    Type = client.ClientType,
                     PhoneNumber = client.PhoneNumber,
                     Email = client.EmailAddress,
                 };

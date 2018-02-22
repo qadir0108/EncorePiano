@@ -1,0 +1,108 @@
+New Trace collected :
+=====================
+ Error Report collected on : Sun Nov 19 21:52:07 GMT+05:00 2017
+
+Environment Details : 
+===================== 
+  Version  : 1.0
+  Package  : com.encore.piano
+  FilePath : /data/user/0/com.encore.piano/files
+
+  Package Data 
+      Phone Model : Android SDK built for x86
+      Android Ver : 6.0
+      Board       : unknown
+      Brand       : Android
+      Device      : generic_x86
+      Display     : sdk_google_phone_x86-userdebug 6.0 MASTER 4309849 test-keys
+      Finger Print: Android/sdk_google_phone_x86/generic_x86:6.0/MASTER/4309849:userdebug/test-keys
+      Host        : wpef22.hot.corp.google.com
+      ID          : MASTER
+      Model       : Android SDK built for x86
+      Product     : sdk_google_phone_x86
+      Tags        : test-keys
+      Time        : 1504203433000
+      Type        : userdebug
+      User        : android-build
+  Internal Memory
+      Total    : 2031440k
+      Available: 1830156k
+
+Stack : 
+======= 
+java.lang.RuntimeException: Unable to start activity ComponentInfo{com.encore.piano/com.encore.piano.activities.AssignmentUnits}: java.lang.IllegalStateException: Couldn't read row 0, col 45 from CursorWindow.  Make sure the Cursor is initialized correctly before accessing data from it.
+	at android.app.ActivityThread.performLaunchActivity(ActivityThread.java:2416)
+	at android.app.ActivityThread.handleLaunchActivity(ActivityThread.java:2476)
+	at android.app.ActivityThread.-wrap11(ActivityThread.java)
+	at android.app.ActivityThread$H.handleMessage(ActivityThread.java:1344)
+	at android.os.Handler.dispatchMessage(Handler.java:102)
+	at android.os.Looper.loop(Looper.java:148)
+	at android.app.ActivityThread.main(ActivityThread.java:5417)
+	at java.lang.reflect.Method.invoke(Native Method)
+	at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:726)
+	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:616)
+Caused by: java.lang.IllegalStateException: Couldn't read row 0, col 45 from CursorWindow.  Make sure the Cursor is initialized correctly before accessing data from it.
+	at android.database.CursorWindow.nativeGetString(Native Method)
+	at android.database.CursorWindow.getString(CursorWindow.java:438)
+	at android.database.AbstractWindowedCursor.getString(AbstractWindowedCursor.java:51)
+	at com.encore.piano.db.UnitDb.getUnits(UnitDb.java:212)
+	at com.encore.piano.db.UnitDb.getUnitsByAssignmentId(UnitDb.java:99)
+	at com.encore.piano.server.UnitService.getUnitsByAssignmentId(UnitService.java:48)
+	at com.encore.piano.listview.unit.UnitAdapterBase.<init>(UnitAdapterBase.java:39)
+	at com.encore.piano.listview.unit.UnitAdapter.<init>(UnitAdapter.java:0)
+	at com.encore.piano.activities.AssignmentUnits.onCreate(AssignmentUnits.java:27)
+	at android.app.Activity.performCreate(Activity.java:6237)
+	at android.app.Instrumentation.callActivityOnCreate(Instrumentation.java:1107)
+	at android.app.ActivityThread.performLaunchActivity(ActivityThread.java:2369)
+	... 9 more
+
+Cause : 
+======= 
+java.lang.RuntimeException: Unable to start activity ComponentInfo{com.encore.piano/com.encore.piano.activities.AssignmentUnits}: java.lang.IllegalStateException: Couldn't read row 0, col 45 from CursorWindow.  Make sure the Cursor is initialized correctly before accessing data from it.
+	at android.app.ActivityThread.performLaunchActivity(ActivityThread.java:2416)
+	at android.app.ActivityThread.handleLaunchActivity(ActivityThread.java:2476)
+	at android.app.ActivityThread.-wrap11(ActivityThread.java)
+	at android.app.ActivityThread$H.handleMessage(ActivityThread.java:1344)
+	at android.os.Handler.dispatchMessage(Handler.java:102)
+	at android.os.Looper.loop(Looper.java:148)
+	at android.app.ActivityThread.main(ActivityThread.java:5417)
+	at java.lang.reflect.Method.invoke(Native Method)
+	at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:726)
+	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:616)
+Caused by: java.lang.IllegalStateException: Couldn't read row 0, col 45 from CursorWindow.  Make sure the Cursor is initialized correctly before accessing data from it.
+	at android.database.CursorWindow.nativeGetString(Native Method)
+	at android.database.CursorWindow.getString(CursorWindow.java:438)
+	at android.database.AbstractWindowedCursor.getString(AbstractWindowedCursor.java:51)
+	at com.encore.piano.db.UnitDb.getUnits(UnitDb.java:212)
+	at com.encore.piano.db.UnitDb.getUnitsByAssignmentId(UnitDb.java:99)
+	at com.encore.piano.server.UnitService.getUnitsByAssignmentId(UnitService.java:48)
+	at com.encore.piano.listview.unit.UnitAdapterBase.<init>(UnitAdapterBase.java:39)
+	at com.encore.piano.listview.unit.UnitAdapter.<init>(UnitAdapter.java:0)
+	at com.encore.piano.activities.AssignmentUnits.onCreate(AssignmentUnits.java:27)
+	at android.app.Activity.performCreate(Activity.java:6237)
+	at android.app.Instrumentation.callActivityOnCreate(Instrumentation.java:1107)
+	at android.app.ActivityThread.performLaunchActivity(ActivityThread.java:2369)
+	... 9 more
+java.lang.IllegalStateException: Couldn't read row 0, col 45 from CursorWindow.  Make sure the Cursor is initialized correctly before accessing data from it.
+	at android.database.CursorWindow.nativeGetString(Native Method)
+	at android.database.CursorWindow.getString(CursorWindow.java:438)
+	at android.database.AbstractWindowedCursor.getString(AbstractWindowedCursor.java:51)
+	at com.encore.piano.db.UnitDb.getUnits(UnitDb.java:212)
+	at com.encore.piano.db.UnitDb.getUnitsByAssignmentId(UnitDb.java:99)
+	at com.encore.piano.server.UnitService.getUnitsByAssignmentId(UnitService.java:48)
+	at com.encore.piano.listview.unit.UnitAdapterBase.<init>(UnitAdapterBase.java:39)
+	at com.encore.piano.listview.unit.UnitAdapter.<init>(UnitAdapter.java:0)
+	at com.encore.piano.activities.AssignmentUnits.onCreate(AssignmentUnits.java:27)
+	at android.app.Activity.performCreate(Activity.java:6237)
+	at android.app.Instrumentation.callActivityOnCreate(Instrumentation.java:1107)
+	at android.app.ActivityThread.performLaunchActivity(ActivityThread.java:2369)
+	at android.app.ActivityThread.handleLaunchActivity(ActivityThread.java:2476)
+	at android.app.ActivityThread.-wrap11(ActivityThread.java)
+	at android.app.ActivityThread$H.handleMessage(ActivityThread.java:1344)
+	at android.os.Handler.dispatchMessage(Handler.java:102)
+	at android.os.Looper.loop(Looper.java:148)
+	at android.app.ActivityThread.main(ActivityThread.java:5417)
+	at java.lang.reflect.Method.invoke(Native Method)
+	at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:726)
+	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:616)
+**** End of current Report ***

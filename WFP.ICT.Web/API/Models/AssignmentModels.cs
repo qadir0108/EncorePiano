@@ -5,10 +5,16 @@
         Id
     }
 
+    public class AssignmentPianoResponse
+    {
+        public AssignmentResponse[] Assignments { get; set; }
+        public PianoResponse[] Pianos { get; set; }
+    }
+
     public class AssignmentResponse
     {
         public string Id { get; set; }
-        public string ConsignmentNumber { get; set; }
+        public string AssignmentNumber { get; set; }
         public  string VehicleCode { get; set; }
         public string VehicleName { get; set; }
         public string DriverCode { get; set; }
@@ -22,7 +28,8 @@
         public string CallerPhoneNumber { get; set; }
         public string CallerPhoneNumberAlt { get; set; }
         public string CallerEmail { get; set; }
-        
+
+        public string PickupName { get; set; }
         public string PickupDate { get; set; }
         public string PickupAddress { get; set; }
         public string PickupPhoneNumber { get; set; }
@@ -32,6 +39,7 @@
         public int PickupNumberTurns { get; set; }
         public string PickupInstructions { get; set; }
 
+        public string DeliveryName { get; set; }
         public string DeliveryDate { get; set; }
         public string DeliveryAddress { get; set; }
         public string DeliveryPhoneNumber { get; set; }
@@ -43,16 +51,21 @@
 
         public string CustomerCode { get; set; }
         public string CustomerName { get; set; }
+        public string PaymentOption { get; set; }
+        public string PaymentAmount { get; set; }
+
+        public string LegDate { get; set; }
+        public string LegFromLocation { get; set; }
+        public string LegToLocation { get; set; }
 
         public int NumberOfItems { get; set; }
-        public PianoResponse[] Pianos { get; set; }
         public RouteResponse[] Route { get; set; }
     }
 
     public class PianoResponse
     {
         public string Id { get; set; }
-        public string ConsignmentId { get; set; }
+        public string OrderId { get; set; }
         public string Category { get; set; }
         public string Type { get; set; }
         public string Size { get; set; }

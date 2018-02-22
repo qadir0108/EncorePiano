@@ -8,7 +8,7 @@ namespace WFP.ICT.Web.Models
     {
         public Guid Id { get; set; }
         public string OrderId { get; set; }
-        public string CreatedAt { get; set; }
+        public string LegDate { get; set; }
         public string ConsignmentNumber { get; set; }
         public string OrderNumber { get; set; }
 

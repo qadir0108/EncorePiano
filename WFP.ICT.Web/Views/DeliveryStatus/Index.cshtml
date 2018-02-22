@@ -5,13 +5,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <style>
-    img.grid-image {
-        display: inline-block;
-        height: 40px;
-        width: 40px;
-        margin-right: 5%;
-        margin-bottom: 5%;
-    }
      #orders_status_grid_paginate{
         float:right !important;
 
@@ -83,20 +76,26 @@
                  { "title": "Notes", "data": "Notes" },
 
                  {
-                     "title": "POD", "data": "Print", sortable: false, "render": function (data, type, row) {
+                     "title": "POD", "data": "Form", sortable: false, "render": function (data, type, row) {
                          debugger;
-                         var myUrl = "/DeliveryStatus/GeneratePOD?id=" + row.Id;
-                         return "<a target='_blank' href=\"" + myUrl + "\" >" + data + "</a>";
+                         if (data === "" || data === null) return "";
+
+                         var url = "/DeliveryStatus/GeneratePOD?id=" + row.Id;
+                         return "<a target='_blank' href=\"" + url + "\" >Print</a>";
                      }
                  },
 
                  { "title": "Pictures", "data": "Pictures", sortable: false },
 
-                 { "title": "Benches Unload", "data": "BenchesUnloadStatus", "class": "none" },
+                 { "title": "Bench 1 Unload", "data": "Bench1UnloadStatus", "class": "none" },
+                 { "title": "Bench 2 Unload", "data": "Bench2UnloadStatus", "class": "none" },
                  { "title": "CasterCups Unload", "data": "CasterCupsUnloadStatus", "class": "none" },
                  { "title": "Cover Unload", "data": "CoverUnloadStatus", "class": "none" },
                  { "title": "Lamp Unload", "data": "LampUnloadStatus", "class": "none" },
-                 { "title": "OwnersManual Unload", "data": "OwnersManualUnloadStatus", "class" :"none" },
+                 { "title": "OwnersManual Unload", "data": "OwnersManualUnloadStatus", "class": "none" },
+                 { "title": "Misc.1 Unload", "data": "Misc1UnloadStatus", "class": "none" },
+                 { "title": "Misc.2 Unload", "data": "Misc2UnloadStatus", "class": "none" },
+                 { "title": "Misc.3 Unload", "data": "Misc3UnloadStatus", "class": "none" },
 
            
             ],

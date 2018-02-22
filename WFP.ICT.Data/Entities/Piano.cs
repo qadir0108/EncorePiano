@@ -29,15 +29,6 @@ namespace WFP.ICT.Data.Entities
         public Guid? PianoFinishId { get; set; }
         public PianoFinish PianoFinish { get; set; }
 
-        // Load
-        public bool IsMainUnitLoaded { get; set; }
-        public int AdditionalBenchesStatus { get; set; } // AdditionalItemStatus
-        public int AdditionalCasterCupsStatus { get; set; } // AdditionalItemStatus
-        public int AdditionalCoverStatus { get; set; } // AdditionalItemStatus
-        public int AdditionalLampStatus { get; set; } // AdditionalItemStatus
-        public int AdditionalOwnersManualStatus { get; set; } // AdditionalItemStatus
-        public DateTime? LoadTimeStamp { get; set; }
-
         // Warehouse
         public string DrawingOfPiano { get; set; }
         public int WareHouseStatus { get; set; } // WareHouseStatusEnum
@@ -49,7 +40,7 @@ namespace WFP.ICT.Data.Entities
         public Guid? ClientId { get; set; } // if in Warehouse, if not in warehouse np
         public virtual Client Client { get; set; }
         public Guid? OrderId { get; set; }
-        public virtual PianoOrder Order { get; set; }
+        public virtual Order Order { get; set; }
 
         public virtual ICollection<PianoPicture> Pictures { get; set; }
         public virtual ICollection<PianoStatus> Statuses { get; set; }

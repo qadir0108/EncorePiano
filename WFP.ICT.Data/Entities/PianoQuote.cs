@@ -24,11 +24,11 @@ namespace WFP.ICT.Data.Entities
         public Guid? DeliveryAddressId { get; set; }
         public virtual Address DeliveryAddress { get; set; }
 
-        public Guid? CustomerId { get; set; } // If it is dealer/manfcaturer
-        public virtual Client Customer { get; set; }
+        public Guid? ClientId { get; set; } // If it is dealer/manfcaturer
+        public virtual Client Client { get; set; }
 
-        public Guid? PianoOrderBillingId { get; set; } // when it will be billed to customer
-        public virtual PianoOrderBilling Billing { get; set; }
+        public Guid? OrderBillingId { get; set; } // when it will be billed to client
+        public virtual OrderBilling Billing { get; set; }
 
         public virtual ICollection<Piano> Items { get; set; }
 

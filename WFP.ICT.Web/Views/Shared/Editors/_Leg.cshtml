@@ -1,0 +1,107 @@
+﻿@model WFP.ICT.Web.Models.LegVm
+@using MyToolkit.Html
+
+<!-- Start Leg -->
+@using (Html.BeginCollectionItem("Legs"))
+{
+    <div class="row" style="margin-top: 5px">
+        <div class="col-md-12">
+            <div class="portlet light bordered" id="p2">
+                <!-- box purple-->
+                <div class="portlet-title">
+                    <div class="caption font-red-sunglo">
+                        <span class="caption-subject bold uppercase"> Leg Details</span>
+                    </div>
+                    <div class="actions">
+                        <a class="btn btn-circle btn-icon-only red" data-tooltip="tooltip" title="Delete this leg" value="Delete"
+                           onclick="$(this).parent().parent().parent().parent().parent().remove();">
+                            <i class="icon-trash"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="portlet-body form">
+                    <div class="form-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group form-md-line-input has-success">
+                                    <div class="input-icon">
+                                        @Html.EditorFor(model => model.LegNumber, new { htmlAttributes = new { @class = "form-control" } })
+                                        <label>Number</label>
+                                        <span class="help-block">Enter Number here</span>
+                                        <i class="fa fa-bars"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group form-md-line-input has-success">
+                                    <div class="input-icon">
+                                        @Html.DropDownListFor(model => model.LegTypeId, TempData["LegTypes"] as SelectList, htmlAttributes: new { @class = "form-control legType" })
+                                        <label>Type</label>
+                                        @Html.ValidationMessageFor(model => model.LegTypeId, null, new { @class = "help-block help-block-error" })
+                                        <span class="help-block">Enter Piano Name here</span>
+                                        <i class="fa fa-bars"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group form-md-line-input has-success">
+                                    <div class="input-icon">
+                                        @Html.DropDownListFor(model => model.DriverId, TempData["Drivers"] as SelectList, htmlAttributes: new { @class = "form-control driverId" })
+                                        <label>Driver</label>
+                                        @Html.ValidationMessageFor(model => model.DriverId, null, new { @class = "help-block help-block-error" })
+                                        <span class="help-block"></span>
+                                        <i class="fa fa-bars"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group form-md-line-input has-success">
+                                    <div class="input-icon">
+                                        @Html.EditorFor(model => model.LegDate, new { htmlAttributes = new { @class = "form-control date-picker" } })
+                                        <label>Leg Date</label>
+                                        <span class="help-block">Enter Leg Date here</span>
+                                        <i class="fa fa-bars"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group form-md-line-input has-success">
+                                    <div class="input-icon">
+                                        @Html.DropDownListFor(model => model.FromLocationId, TempData["Locations"] as SelectList, htmlAttributes: new { @class = "form-control fromLocation" })
+                                        <label>From</label>
+                                        @Html.ValidationMessageFor(model => model.FromLocationId, null, new { @class = "help-block help-block-error" })
+                                        <span class="help-block">Enter From Location here</span>
+                                        <i class="fa fa-bars"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group form-md-line-input has-success">
+                                    <div class="input-icon">
+                                        @Html.DropDownListFor(model => model.ToLocationId, TempData["Locations"] as SelectList, htmlAttributes: new { @class = "form-control toLocation" })
+                                        <label>To</label>
+                                        @Html.ValidationMessageFor(model => model.ToLocationId, null, new { @class = "help-block help-block-error" })
+                                        <span class="help-block"></span>
+                                        <i class="fa fa-bars"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<!-- End Leg -->
+
+<script>
+    $(document).ready(function () {
+        $('.date-picker').datetimepicker({
+            format: 'M/DD/YYYY hh:mm A'
+        });
+    });
+</script>

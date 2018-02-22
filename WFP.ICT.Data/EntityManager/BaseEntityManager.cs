@@ -113,6 +113,7 @@ namespace WFP.ICT.Data.EntityManager
             }
             catch(Exception ex)
             {
+                Console.WriteLine(ex.StackTrace);
                 _retData=null;
             }
 
@@ -142,6 +143,7 @@ namespace WFP.ICT.Data.EntityManager
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.StackTrace);
                 entity = null;
             }
             return entity;
@@ -160,6 +162,7 @@ namespace WFP.ICT.Data.EntityManager
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.StackTrace);
                 SaveChangesSuccess = false;
                 retValue = 0;
             }

@@ -1,4 +1,12 @@
-﻿.form-group.form-md-line-input
+﻿img.grid-image {
+    display: inline-block;
+    height: 40px;
+    width: 40px;
+    margin-right: 5%;
+    margin-bottom: 5%;
+}
+
+.form-group.form-md-line-input
 {
     margin: 12px !important;
 }

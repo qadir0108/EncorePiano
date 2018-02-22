@@ -19,10 +19,10 @@ namespace WFP.ICT.Data.Entities
         public virtual Piano Piano { get; set; }
 
         /// <summary>
-        /// For Assignment POD it will be USED
+        /// For Assignment Proof it will be USED
         /// </summary>
-        public Guid? PianoPodId { get; set; }
-        public virtual PianoPOD PianoPod { get; set; }
+        public Guid? ProofId { get; set; }
+        public virtual Proof Proof { get; set; }
         
         public PianoPicture()
         {

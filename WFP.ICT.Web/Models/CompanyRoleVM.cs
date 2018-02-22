@@ -3,7 +3,7 @@ using WFP.ICT.Enum;
 
 namespace WFP.ICT.Web.Models
 {
-    public class CompanyRoleVM
+    public class CompanyRoleVm
     {
         public string Id { get; set; }
         public string Name { get; set; }

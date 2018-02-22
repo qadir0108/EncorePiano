@@ -1,0 +1,72 @@
+New Trace collected :
+=====================
+ Error Report collected on : Sun Jan 14 22:31:22 GMT+05:00 2018
+
+Environment Details : 
+===================== 
+  Version  : 1.2
+  Package  : com.encore.piano
+  FilePath : /data/user/0/com.encore.piano/files
+
+  Package Data 
+      Phone Model : Android SDK built for x86
+      Android Ver : 6.0
+      Board       : unknown
+      Brand       : Android
+      Device      : generic_x86
+      Display     : sdk_google_phone_x86-userdebug 6.0 MASTER 4309849 test-keys
+      Finger Print: Android/sdk_google_phone_x86/generic_x86:6.0/MASTER/4309849:userdebug/test-keys
+      Host        : wpef22.hot.corp.google.com
+      ID          : MASTER
+      Model       : Android SDK built for x86
+      Product     : sdk_google_phone_x86
+      Tags        : test-keys
+      Time        : 1504203433000
+      Type        : userdebug
+      User        : android-build
+  Internal Memory
+      Total    : 2031440k
+      Available: 1844376k
+
+Stack : 
+======= 
+java.lang.RuntimeException: An error occurred while executing doInBackground()
+	at android.os.AsyncTask$3.done(AsyncTask.java:309)
+	at java.util.concurrent.FutureTask.finishCompletion(FutureTask.java:354)
+	at java.util.concurrent.FutureTask.setException(FutureTask.java:223)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:242)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1113)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:588)
+	at java.lang.Thread.run(Thread.java:818)
+Caused by: java.lang.ArrayIndexOutOfBoundsException: length=1; index=1
+	at com.encore.piano.activities.AssignmentGallery$FetchImages.doInBackground(AssignmentGallery.java:144)
+	at com.encore.piano.activities.AssignmentGallery$FetchImages.doInBackground(AssignmentGallery.java:134)
+	at android.os.AsyncTask$2.call(AsyncTask.java:295)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:237)
+	... 3 more
+
+Cause : 
+======= 
+java.lang.RuntimeException: An error occurred while executing doInBackground()
+	at android.os.AsyncTask$3.done(AsyncTask.java:309)
+	at java.util.concurrent.FutureTask.finishCompletion(FutureTask.java:354)
+	at java.util.concurrent.FutureTask.setException(FutureTask.java:223)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:242)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1113)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:588)
+	at java.lang.Thread.run(Thread.java:818)
+Caused by: java.lang.ArrayIndexOutOfBoundsException: length=1; index=1
+	at com.encore.piano.activities.AssignmentGallery$FetchImages.doInBackground(AssignmentGallery.java:144)
+	at com.encore.piano.activities.AssignmentGallery$FetchImages.doInBackground(AssignmentGallery.java:134)
+	at android.os.AsyncTask$2.call(AsyncTask.java:295)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:237)
+	... 3 more
+java.lang.ArrayIndexOutOfBoundsException: length=1; index=1
+	at com.encore.piano.activities.AssignmentGallery$FetchImages.doInBackground(AssignmentGallery.java:144)
+	at com.encore.piano.activities.AssignmentGallery$FetchImages.doInBackground(AssignmentGallery.java:134)
+	at android.os.AsyncTask$2.call(AsyncTask.java:295)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:237)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1113)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:588)
+	at java.lang.Thread.run(Thread.java:818)
+**** End of current Report ***

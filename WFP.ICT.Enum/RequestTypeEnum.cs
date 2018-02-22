@@ -2,15 +2,21 @@
 {
     public enum RequestTypeEnum
     {
-        Login = 1,
-        RegisterToken = 2,
-        GetAssignments = 3,
-        GetAssignment = 4,
-        UploadSign = 5,
-        UploadPianoImage = 6,
-        SyncTripStart = 7,
-        SyncLoad = 8,
-        SyncDeliver = 9,
-        SyncImage = 10,
+        Login = 101,
+        RegisterToken = 102,
+        GetAssignments = 103,
+        GetAssignment = 104,
+        GetUnits = 105,
+        GetUnit = 106,
+
+        UploadSign = 201,
+        UploadPianoImage = 202,
+        SyncTripStart = 203,
+        SyncLoad = 204,
+        SyncDeliver = 205,
+        SyncImage = 206,
+
+        PaymentProcess = 301,
+        PaymentSaveCard = 302,
     }
 }

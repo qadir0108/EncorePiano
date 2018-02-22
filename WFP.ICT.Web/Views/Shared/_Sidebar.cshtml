@@ -72,7 +72,7 @@
                 </li>
             }
           
-            <li class="nav-item start @Html.IsSelected(actions: "Index,Private,Dealer,Manufacturer", controllers: "Orders")">
+            <li class="nav-item start @Html.IsSelected(actions: "Index,Private,Dealer,Manufacturer,Edit", controllers: "Orders")">
                     <a href="javascript:;" class="nav-link nav-toggle">
                         <i class="icon-screen-desktop"></i>
                         <span class="title">Orders</span>
@@ -118,23 +118,23 @@
             @if (isAdmin)
             {
 
-                <li class="nav-item start @Html.IsSelected(actions: "New,Index,Units,PickTickets", controllers: "Consignments,DeliveryStatus") ">
+                <li class="nav-item start @Html.IsSelected(actions: "New,Index,Units,PickTickets", controllers: "Assignments,DeliveryStatus") ">
                     <a href="javascript:;" class="nav-link nav-toggle">
                         <i class="fa fa-truck"></i>
                         <span class="title">Delivery</span>
                         <span class="arrow"></span>
                     </a>
                     <ul class="sub-menu">
-                        <li class="nav-item start @Html.IsSelected(actions: "New", controllers: "Consignments")">
-                            <a href="/Consignments/New" class="nav-link ">
+                        <li class="nav-item start @Html.IsSelected(actions: "New", controllers: "Assignments")">
+                            <a href="/Assignments/New" class="nav-link ">
                                 <i class="fa fa-truck"></i>
                                 <span class="title">
                                     New Assignment
                                 </span>
                             </a>
                         </li>
-                        <li class="nav-item start @Html.IsSelected(actions: "Index", controllers: "Consignments")">
-                            <a href="/Consignments/Index" class="nav-link ">
+                        <li class="nav-item start @Html.IsSelected(actions: "Index", controllers: "Assignments")">
+                            <a href="/Assignments/Index" class="nav-link ">
                                 <i class="fa fa-truck"></i>
                                 <span class="title">Assignments</span>
                                 <span class="selected"></span>
@@ -148,8 +148,8 @@
                                 </span>
                             </a>
                         </li>
-                        <li class="nav-item start @Html.IsSelected(actions: "PickTickets", controllers: "Consignments")">
-                            <a href="/Consignments/PickTickets" class="nav-link ">
+                        <li class="nav-item start @Html.IsSelected(actions: "PickTickets", controllers: "Assignments")">
+                            <a href="/Assignments/PickTickets" class="nav-link ">
                                 <i class="fa fa-bars"></i>
                                 <span class="title">Pick Tickets</span>
                                 <span class="selected"></span>
@@ -189,7 +189,7 @@
                     </ul>
                 </li>
 
-                <li class="nav-item start @Html.IsSelected(actions: "Index,Invoice,Payments", controllers: "Accounting")">
+                <li class="nav-item start @Html.IsSelected(actions: "Index,Invoice,Payments", controllers: "Accounting,Payments,Invoices")">
                     <a href="javascript:;" class="nav-link nav-toggle">
                         <i class="fa fa-dollar"></i>
                         <span class="title">Accounting</span>
@@ -199,12 +199,19 @@
                         <li class="nav-item start @Html.IsSelected(actions: "Invoice", controllers: "Accounting")">
                             <a href="/Accounting/Invoice" class="nav-link ">
                                 <i class="fa fa-dollar"></i>
+                                <span class="title">New Invoice</span>
+                                @*<span class="badge badge-success">1</span>*@
+                            </a>
+                        </li>
+                        <li class="nav-item start @Html.IsSelected(actions: "Index", controllers: "Invoices")">
+                            <a href="/Invoices/Index" class="nav-link ">
+                                <i class="fa fa-dollar"></i>
                                 <span class="title">Invoices</span>
                                 @*<span class="badge badge-success">1</span>*@
                             </a>
                         </li>
-                        <li class="nav-item start ">
-                            <a href="/Accounting/Payments" class="nav-link ">
+                        <li class="nav-item start @Html.IsSelected(actions: "Index", controllers: "Payments")">
+                            <a href="/Payments/Index" class="nav-link ">
                                 <i class="fa fa-dollar"></i>
                                 <span class="title">Payments</span>
                                 @*<span class="badge badge-success">1</span>*@

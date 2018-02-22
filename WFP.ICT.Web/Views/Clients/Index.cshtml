@@ -102,6 +102,7 @@
 <script type="text/javascript">
 
     $(function () {
+        debugger;
         $.validator.unobtrusive.parse('form');
         var form = $('#frm').get(0);
         var settings = $.data(form, 'validator').settings;
@@ -139,7 +140,7 @@
                     "processing": true,
                     "ajax": {
                         "url":
-                        "/Clients/InitializeClients",
+                        "/Clients/Initialize",
                     },
                     "columns": [
 

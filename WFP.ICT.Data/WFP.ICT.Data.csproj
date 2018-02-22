@@ -60,32 +60,35 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\ClientPaymentCard.cs" />
     <Compile Include="Entities\ClientStore.cs" />
     <Compile Include="Entities\APIRequestLog.cs" />
     <Compile Include="Entities\Address.cs" />
+    <Compile Include="Entities\Location.cs" />
+    <Compile Include="Entities\Leg.cs" />
     <Compile Include="Entities\PianoFinish.cs" />
     <Compile Include="Entities\PianoMake.cs" />
-    <Compile Include="Entities\PianoOrderCharges.cs" />
+    <Compile Include="Entities\OrderCharges.cs" />
     <Compile Include="Entities\ClientPayment.cs" />
     <Compile Include="Entities\ClientInvoice.cs" />
     <Compile Include="Entities\Client.cs" />
     <Compile Include="Entities\DriverLogin.cs" />
     <Compile Include="Entities\Driver.cs" />
-    <Compile Include="Entities\PianoAssignment.cs" />
-    <Compile Include="Entities\PianoAssignmentRoute.cs" />
-    <Compile Include="Entities\PianoOrderBilling.cs" />
+    <Compile Include="Entities\Assignment.cs" />
+    <Compile Include="Entities\AssignmentRoute.cs" />
+    <Compile Include="Entities\OrderBilling.cs" />
     <Compile Include="Entities\PianoQuote.cs" />
     <Compile Include="Entities\PianoCharges.cs" />
     <Compile Include="Entities\PianoSize.cs" />
     <Compile Include="Entities\TripStatus.cs" />
     <Compile Include="Entities\PianoStatus.cs" />
-    <Compile Include="Entities\PianoPOD.cs" />
+    <Compile Include="Entities\Proof.cs" />
     <Compile Include="Entities\Warehouse.cs" />
     <Compile Include="Entities\PianoType.cs" />
     <Compile Include="Entities\PianoPicture.cs" />
     <Compile Include="Entities\Vehicle.cs" />
     <Compile Include="Entities\VehicleType.cs" />
-    <Compile Include="Entities\PianoOrder.cs" />
+    <Compile Include="Entities\Order.cs" />
     <Compile Include="Entities\Piano.cs" />
     <Compile Include="Entities\Company.cs" />
     <Compile Include="Entities\AspNetClaims.cs" />
@@ -93,9 +96,9 @@
     <Compile Include="Entities\BaseEntity.cs" />
     <Compile Include="Entities\iBaseEntity.cs" />
     <Compile Include="EntityManager\CompanyManager.cs" />
-    <Compile Include="Migrations\201711131526137_Initial.cs" />
-    <Compile Include="Migrations\201711131526137_Initial.Designer.cs">
-      <DependentUpon>201711131526137_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\201801151608506_Initial.cs" />
+    <Compile Include="Migrations\201801151608506_Initial.Designer.cs">
+      <DependentUpon>201801151608506_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Repository\GenericRepository.cs" />
     <Compile Include="Repository\UnitOfWork.cs" />
@@ -131,8 +134,8 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201711131526137_Initial.resx">
-      <DependentUpon>201711131526137_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201801151608506_Initial.resx">
+      <DependentUpon>201801151608506_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

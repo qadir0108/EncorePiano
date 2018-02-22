@@ -7,7 +7,8 @@ namespace WFP.ICT.Enums
 {
     public enum PictureTypeEnum
     {
-        Piano,
-        Container
+        Pickup,
+        Delivery,
+        Warehouse
     }
 }

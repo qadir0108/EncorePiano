@@ -65,8 +65,6 @@ namespace WFP.ICT.Web.Models
 
         public AddressVm PickupAddress { get; set; }
         public AddressVm DeliveryAddress { get; set; }
-        public List<PianoVm> Pianos { get; set; }
-        public List<PianoChargesVm> Charges { get; set; }
         public string PickupTicket { get; set; }
 
         //Fields for dealer and manufacturer
@@ -84,11 +82,17 @@ namespace WFP.ICT.Web.Models
 
         public int OrderPlacementType { get; set; }
 
+        public List<PianoVm> Pianos { get; set; }
+        public List<LegVm> Legs { get; set; }
+        public List<PianoChargesVm> Charges { get; set; }
+
         public OrderVm()
         {
             Charges = new List<PianoChargesVm>();
             Pianos = new List<PianoVm>();
+            Legs = new List<LegVm>();
         }
+
         public static AddressVm PopulateAddress(Address address)
         {
             return new AddressVm

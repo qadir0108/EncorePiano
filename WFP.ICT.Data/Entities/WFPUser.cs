@@ -35,6 +35,7 @@ namespace WFP.ICT.Data.Entities
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.StackTrace);
             }
             return userIdentity;
         }
@@ -48,8 +49,8 @@ namespace WFP.ICT.Data.Entities
         public int Status { get; set; } // UserStatusEnum
         public int UserType { get; set; } // UserTypeEnum
 
-        public Guid? CustomerId { get; set; } // If user is of Dealer/Manufacturer
-        public virtual Client Customer { get; set; }
+        public Guid? ClientId { get; set; } // If user is of Dealer/Manufacturer
+        public virtual Client Client { get; set; }
 
         public DateTime CreatedAt { get; set; }
         public string CreatedByID { get; set; }

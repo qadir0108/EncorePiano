@@ -50,6 +50,9 @@
                                             <a href="#tab_15_2" data-toggle="tab"> Units </a>
                                         </li>
                                         <li>
+                                            <a href="#tab_15_5" data-toggle="tab"> Legs </a>
+                                        </li>
+                                        <li>
                                             <a href="#tab_15_3" data-toggle="tab"> Charges </a>
                                         </li>
                                         @if (Model.OrderPlacementType == (int)WFP.ICT.Enums.OrderTypeEnum.Dealer
@@ -572,6 +575,22 @@
 
                                             <div id="pianoContainer">
                                                 @{Model.Pianos.ForEach(piano => Html.RenderPartial("Editors/_Piano", piano));}
+                                            </div>
+                                        </div>
+
+                                        <div class="tab-pane" id="tab_15_5">
+                                            <div class="row">
+                                                <div class="col-md-2 pull-right">
+                                                    <div class="col-md-12">
+                                                        <a id="addLeg" class="btn btn-circle btn-icon-only green pull-right" data-tooltip="Add leg" title="Add leg" href="javascript:;">
+                                                            <i class="icon-plus"></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div id="legContainer">
+                                                @{Model.Legs.ForEach(leg => Html.RenderPartial("Editors/_Leg", leg));}
                                             </div>
                                         </div>
 
@@ -1340,7 +1359,6 @@
     }();
 
 
-
     $('.date-picker').datetimepicker({
         format: 'M/DD/YYYY hh:mm A'
     });
@@ -1358,24 +1376,22 @@
 
 
     $('#addPiano').click(function (e) {
-        
         $.get('/Orders/NewPiano', function (template) {
             $('#pianoContainer').append(template);
-
-
         });
-
         e.preventDefault();
     });
 
+    $('#addLeg').click(function (e) {
+        $.get('/Orders/NewLeg', function (template) {
+            $('#legContainer').append(template);
+        });
+        e.preventDefault();
+    });
     $('#addServices').click(function (e) {
-        
         $.get('/Orders/NewService', function (template) {
             $('#serviceContainer').append(template);
-
-
         });
-
         e.preventDefault();
     });
 

@@ -59,7 +59,7 @@ namespace WFP.ICT.Web.Controllers
 
         public ActionResult Edit(Guid? id)
         {
-            //var order = db.PianoOrders
+            //var order = db.Orders
             //                .Include(x => x.Customer)
             //                .Include(x => x.Pianos)
             //                .Include(x => x.PickupAddress)
@@ -132,8 +132,8 @@ namespace WFP.ICT.Web.Controllers
 
             //        if (string.IsNullOrEmpty(orderVm.Id))
             //        {
-            //            int newOrderNumber = db.PianoOrders.Any()
-            //                ? db.PianoOrders.ToList().Max(x => int.Parse(x.OrderNumber)) + 1
+            //            int newOrderNumber = db.Orders.Any()
+            //                ? db.Orders.ToList().Max(x => int.Parse(x.OrderNumber)) + 1
             //                : 2500;
 
             //            var orderId = Guid.NewGuid();
@@ -170,7 +170,7 @@ namespace WFP.ICT.Web.Controllers
             //            db.Addresses.Add(deliveryAddress);
             //            db.SaveChanges();
 
-            //            var order = new PianoOrder()
+            //            var order = new Order()
             //            {
             //                Id = orderId,
             //                CreatedAt = DateTime.Now,
@@ -189,7 +189,7 @@ namespace WFP.ICT.Web.Controllers
             //                PickupAddressId = pickupAddressId,
             //                DeliveryAddressId = deliveryAddressId,
             //            };
-            //            db.PianoOrders.Add(order);
+            //            db.Orders.Add(order);
             //            db.SaveChanges();
 
             //            InsertPiano(orderVm.P1, orderId);
@@ -202,14 +202,14 @@ namespace WFP.ICT.Web.Controllers
             //            foreach (var code in serviceCodes)
             //            {
             //                var service =
-            //                    db.PianoServices.FirstOrDefault(x => !x.PianoOrderId.HasValue && x.ServiceCode == code);
+            //                    db.PianoServices.FirstOrDefault(x => !x.OrderId.HasValue && x.ServiceCode == code);
             //                long serviceCharge = serviceCharges.Length >= (code / 100) ? serviceCharges[(code / 100) - 1] : service.ServiceCharges;
             //                db.PianoServices.Add(new PianoService()
             //                {
             //                    Id = Guid.NewGuid(),
             //                    CreatedAt = DateTime.Now,
             //                    CreatedBy = LoggedInUser?.UserName,
-            //                    PianoOrderId = orderId,
+            //                    OrderId = orderId,
             //                    ServiceCode = service.ServiceCode,
             //                    ServiceType = service.ServiceType,
             //                    ServiceDetails = service.ServiceDetails,
@@ -225,7 +225,7 @@ namespace WFP.ICT.Web.Controllers
             //        }
             //        else
             //        {
-            //            var order = db.PianoOrders
+            //            var order = db.Orders
             //                .Include(x => x.Customer)
             //                .Include(x => x.Pianos)
             //                .Include(x => x.PickupAddress)
@@ -274,14 +274,14 @@ namespace WFP.ICT.Web.Controllers
             //            foreach (var code in serviceCodes)
             //            {
             //                var service =
-            //                    db.PianoServices.FirstOrDefault(x => !x.PianoOrderId.HasValue && x.ServiceCode == code);
+            //                    db.PianoServices.FirstOrDefault(x => !x.OrderId.HasValue && x.ServiceCode == code);
             //                long serviceCharge = serviceCharges.Length >= (code / 100) ? serviceCharges[(code / 100) - 1] : service.ServiceCharges;
             //                db.PianoServices.Add(new PianoService()
             //                {
             //                    Id = Guid.NewGuid(),
             //                    CreatedAt = DateTime.Now,
             //                    CreatedBy = LoggedInUser?.UserName,
-            //                    PianoOrderId = order.Id,
+            //                    OrderId = order.Id,
             //                    ServiceCode = service.ServiceCode,
             //                    ServiceType = service.ServiceType,
             //                    ServiceDetails = service.ServiceDetails,
@@ -320,7 +320,7 @@ namespace WFP.ICT.Web.Controllers
         {
             try
             {
-                //var order = db.PianoOrders
+                //var order = db.Orders
                 //    .Include(x => x.Pianos)
                 //    .Include(x => x.PickupAddress)
                 //    .Include(x => x.DeliveryAddress)
@@ -332,7 +332,7 @@ namespace WFP.ICT.Web.Controllers
                 //foreach (var service in order.Services.ToList())
                 //    db.PianoServices.Remove(service);
 
-                //db.PianoOrders.Remove(order);
+                //db.Orders.Remove(order);
                 //db.SaveChanges();
                 return Json(new JsonResponse() { IsSucess = true }, JsonRequestBehavior.AllowGet);
             }

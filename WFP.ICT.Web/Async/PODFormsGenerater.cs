@@ -15,17 +15,17 @@ namespace WFP.ICT.Web.Async
     {
         public static void GeneratePODForm(WFPICTContext Db, string UploadsFormsPath, string DownloadsFormsPath, string SignPath, Guid Id)
         {
-            PianoPOD pod = Db.PianoPODs
-                                            .Include(x => x.PianoAssignment)
-                                            .Include(x => x.PianoAssignment.PianoOrder)
+            Proof pod = Db.Proofs
+                                            .Include(x => x.Assignment)
+                                            .Include(x => x.Assignment.Order)
                                             .Include(x => x.Pictures)
                                             .Include(x => x.Piano)
                                             .Include(x => x.Piano.Statuses)
                                             .FirstOrDefault(x => x.Id == Id)
                                             ;
 
-            string templateFormsPath = Path.Combine(UploadsFormsPath, pod.PianoAssignment.PianoOrder.DeliveryForm);
-            string podFileName = "POD" + pod.PianoAssignment.PianoOrder.OrderNumber + ".pdf";
+            string templateFormsPath = Path.Combine(UploadsFormsPath, pod.Assignment.Order.DeliveryForm);
+            string podFileName = "POD" + pod.Assignment.Order.OrderNumber + ".pdf";
             string podFilePath = Path.Combine(DownloadsFormsPath, pod.Id.ToString() + ".pdf");
 
             string signature = Path.Combine(SignPath, pod.Signature);
@@ -36,7 +36,7 @@ namespace WFP.ICT.Web.Async
 
             GeneratePODForm(templateFormsPath, podFilePath, pod.ReceivedBy, pod.ReceivingTime?.ToString(), signatureResized);
 
-            EmailHelper.SendEmail(pod.PianoAssignment.PianoOrder.CallerEmail, "Signed POD Form "+ podFileName, "Please find attached Signed Delivery Form " + podFileName, "", new string[] { podFilePath }.ToList() );
+            EmailHelper.SendEmail(pod.Assignment.Order.CallerEmail, "Signed POD Form "+ podFileName, "Please find attached Signed Delivery Form " + podFileName, "", new string[] { podFilePath }.ToList() );
         }
 
         public static void GeneratePODForm(string templateFormsPath, string podFilePath, string receivedBy, string receivingTime, string signature)

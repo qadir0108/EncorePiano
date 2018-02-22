@@ -14,8 +14,8 @@ namespace WFP.ICT.Data.Entities
         public string StatusBy { get; set; }
         public string Comments { get; set; }
 
-        public Guid? PianoAssignmentId { get; set; }
-        public virtual PianoAssignment PianoAssignment { get; set; }
+        public Guid? AssignmentId { get; set; }
+        public virtual Assignment Assignment { get; set; }
 
         public TripStatus()
         {

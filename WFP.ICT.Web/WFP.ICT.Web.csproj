@@ -185,9 +185,13 @@
       <HintPath>..\packages\PDFsharp-MigraDoc.1.50.4000-beta3b\lib\net20\PdfSharp.Charting.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Stripe.net, Version=11.10.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Stripe.net.11.10.0\lib\net45\Stripe.net.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.IdentityModel.Tokens.Jwt, Version=5.1.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\System.IdentityModel.Tokens.Jwt.5.1.2\lib\net451\System.IdentityModel.Tokens.Jwt.dll</HintPath>
@@ -213,6 +217,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http.WebRequest" />
     <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
       <Private>True</Private>
@@ -345,16 +350,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="API\Models\PaymentModel.cs" />
     <Compile Include="API\Models\SyncModel.cs" />
-    <Compile Include="API\LogController.cs" />
-    <Compile Include="API\SyncUnitController.cs" />
-    <Compile Include="API\SyncTripController.cs" />
+    <Compile Include="API\LogApiController.cs" />
+    <Compile Include="API\SyncPaymentApiController.cs" />
+    <Compile Include="API\SyncUnitApiController.cs" />
+    <Compile Include="API\SyncTripApiController.cs" />
     <Compile Include="API\Models\AssignmentModels.cs" />
     <Compile Include="API\Models\LoginModel.cs" />
     <Compile Include="API\BaseApiController.cs" />
     <Compile Include="API\Models\UploadFileType.cs" />
-    <Compile Include="API\UserController.cs" />
-    <Compile Include="API\AssignmentsController.cs" />
+    <Compile Include="API\UserApiController.cs" />
+    <Compile Include="API\AssignmentsApiController.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
@@ -370,6 +377,8 @@
     <Compile Include="Async\SMSHelper.cs" />
     <Compile Include="Async\ZingCoder.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\InvoicesController.cs" />
+    <Compile Include="Controllers\PaymentsController.cs" />
     <Compile Include="Controllers\ClientsController.cs" />
     <Compile Include="Controllers\AccountingController.cs" />
     <Compile Include="Controllers\AddressController.cs" />
@@ -380,7 +389,7 @@
     <Compile Include="Controllers\FileController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\ConsigmentsController.cs" />
+    <Compile Include="Controllers\AssigmentsController.cs" />
     <Compile Include="Controllers\InventoryController.cs" />
     <Compile Include="Controllers\OrdersController.cs" />
     <Compile Include="Controllers\DeliveryStatusController.cs" />
@@ -425,10 +434,13 @@
     <Compile Include="Helpers\ExceptionHelper.cs" />
     <Compile Include="Helpers\FileHelper.cs" />
     <Compile Include="Helpers\GatePassGenerator.cs" />
+    <Compile Include="Models\NewPaymentVm.cs" />
+    <Compile Include="Models\LegVm.cs" />
     <Compile Include="Models\StatusVm.cs" />
     <Compile Include="Models\BatchLoadVm.cs" />
     <Compile Include="Models\InvoiceViewModel.cs" />
     <Compile Include="Models\NewAddressVm.cs" />
+    <Compile Include="Security\AppSecurity.cs" />
     <Compile Include="ViewModels\PersonEditViewModel.cs" />
     <Compile Include="ViewModels\AddressEditorViewModel.cs" />
     <Compile Include="ViewModels\WarehouseVm.cs" />
@@ -441,11 +453,11 @@
     <Compile Include="Models\CompanyUnitVM.cs" />
     <Compile Include="Models\OrderVm.cs" />
     <Compile Include="Models\AddressVm.cs" />
-    <Compile Include="Models\CompanyPermissionVM.cs" />
+    <Compile Include="Models\CompanyPermissionVm.cs" />
     <Compile Include="Models\CompanyUsersGroupedVM.cs" />
-    <Compile Include="Models\CompanyRoleVM.cs" />
+    <Compile Include="Models\CompanyRoleVm.cs" />
     <Compile Include="Models\OfficeUserVM.cs" />
-    <Compile Include="Models\CompanyUsersVM.cs" />
+    <Compile Include="Models\CompanyUsersVm.cs" />
     <Compile Include="Models\JsonResponse.cs" />
     <Compile Include="Models\UserProfileVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -458,7 +470,7 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="APILogs\20171111152345.txt" />
+    <Content Include="APILogs\20171119215207.txt" />
     <Content Include="assets\apps\css\inbox.css" />
     <Content Include="assets\apps\css\inbox.min.css" />
     <Content Include="assets\apps\css\ticket.css" />
@@ -475,6 +487,7 @@
     <Content Include="assets\apps\scripts\todo-2.min.js" />
     <Content Include="assets\apps\scripts\todo.js" />
     <Content Include="assets\apps\scripts\todo.min.js" />
+    <Content Include="assets\global\css\card.css" />
     <Content Include="assets\global\css\components-md.css" />
     <Content Include="assets\global\css\components-md.min.css" />
     <Content Include="assets\global\css\components-rounded.css" />
@@ -5007,8 +5020,10 @@
     <Content Include="assets\global\plugins\wysihtml\wysihtml.toolbar.js" />
     <Content Include="assets\global\scripts\app.js" />
     <Content Include="assets\global\scripts\app.min.js" />
+    <Content Include="assets\global\scripts\card.js" />
     <Content Include="assets\global\scripts\datatable.js" />
     <Content Include="assets\global\scripts\datatable.min.js" />
+    <Content Include="assets\global\scripts\jquery.card.js" />
     <Content Include="assets\global\scripts\wfp.js" />
     <Content Include="assets\layouts\global\scripts\cookie-consent.js" />
     <Content Include="assets\layouts\global\scripts\cookie-consent.min.js" />
@@ -6416,22 +6431,20 @@
     <Content Include="Views\Orders\Index.cshtml" />
     <Content Include="Views\Company\Offices.cshtml" />
     <Content Include="Views\Company\Permissions.cshtml" />
-    <Content Include="Views\Company\Roles.cshtml" />
     <Content Include="Views\Company\Settings.cshtml" />
     <Content Include="Views\Company\Units.cshtml" />
-    <Content Include="Views\Company\Users.cshtml" />
     <Content Include="Views\Company\_Search.cshtml" />
     <Content Include="Views\Account\LoginAdmin.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Admin\Index2.cshtml" />
     <Content Include="Views\Admin\Index3.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Consignments\Index.cshtml" />
-    <Content Include="Views\Consignments\New.cshtml" />
-    <Content Include="Views\Consignments\Map.cshtml" />
+    <Content Include="Views\Assignments\Index.cshtml" />
+    <Content Include="Views\Assignments\New.cshtml" />
+    <Content Include="Views\Assignments\Map.cshtml" />
     <Content Include="Views\Orders\Status.cshtml" />
     <Content Include="Views\Orders\Completed.cshtml" />
-    <Content Include="Views\Consignments\PickTickets.cshtml" />
+    <Content Include="Views\Assignments\PickTickets.cshtml" />
     <Content Include="Views\DeliveryStatus\Index.cshtml" />
     <Content Include="Views\Warehouse\Index.cshtml" />
     <Content Include="Views\Warehouse\New.cshtml" />
@@ -6449,7 +6462,17 @@
     <Content Include="Views\Clients\Add.cshtml" />
     <Content Include="Views\Clients\Index.cshtml" />
     <Content Include="Views\Inventory\Warehouse.cshtml" />
-    <Content Include="Views\Consignments\UnitsPickup.cshtml" />
+    <Content Include="Views\Assignments\UnitsPickup.cshtml" />
+    <Content Include="Views\Payments\Add.cshtml" />
+    <Content Include="Views\Payments\Index.cshtml" />
+    <Content Include="Views\Invoices\Add.cshtml" />
+    <Content Include="Views\Invoices\Index.cshtml" />
+    <Content Include="Views\Shared\Editors\_Leg.cshtml" />
+    <Content Include="Views\Company\PermissionAdd.cshtml" />
+    <Content Include="Views\Company\Roles.cshtml" />
+    <Content Include="Views\Company\RoleAdd.cshtml" />
+    <Content Include="Views\Company\Users.cshtml" />
+    <Content Include="Views\Company\UserAdd.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -6501,7 +6524,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>49590</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:63133/</IISUrl>
+          <IISUrl>http://localhost:49817/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

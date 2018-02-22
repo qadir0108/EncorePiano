@@ -12,11 +12,17 @@ namespace WFP.ICT.Data.Entities
 
         public int PaymentType { get; set; } // PaymentTypeEnum
         public string CheckNumber { get; set; }
-        public DateTime PaymentDate { get; set; }
+        public DateTime PaymentDate { get; set; } // TransactionDate
         public long Amount { get; set; }
 
-        public Guid? CustomerId { get; set; }
-        //public virtual Customer Customer { get; set; }
+        // For Credit Card payment
+        public string TransactionNumber { get; set; }
+
+        public Guid? ClientId { get; set; } //
+        public virtual Client Client { get; set; }
+
+        public Guid? ClientInvoiceId { get; set; }
+        public Guid? OrderId { get; set; }
 
         public ClientPayment()
         {

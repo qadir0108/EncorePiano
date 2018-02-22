@@ -209,7 +209,7 @@ namespace WFP.ICT.Web.Controllers
             Session.Clear();
             Session.Abandon();
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("Login", "Account");
+            return RedirectToAction("LoginAdmin", "Account");
         }
 
         ////

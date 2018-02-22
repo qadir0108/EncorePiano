@@ -42,8 +42,10 @@
   <ItemGroup>
     <Compile Include="AdditionalItemStatus.cs" />
     <Compile Include="ChargesTypeEnum.cs" />
+    <Compile Include="LegTypeEnum.cs" />
     <Compile Include="PianoFinishEnum.cs" />
     <Compile Include="PianoMakeEnum.cs" />
+    <Compile Include="ProofTypeEnum.cs" />
     <Compile Include="TripStatusEnum.cs" />
     <Compile Include="PianoTypeEnum.cs" />
     <Compile Include="ShuttleEnum.cs" />

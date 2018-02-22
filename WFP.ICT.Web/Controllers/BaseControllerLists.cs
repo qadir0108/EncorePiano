@@ -224,6 +224,29 @@ namespace WFP.ICT.Web.Controllers
             }
         }
 
+        private static List<SelectListItem> _paymentTypes;
+        public IEnumerable<SelectListItem> PaymentTypeList
+        {
+            get
+            {
+                if (_paymentTypes == null)
+                {
+                    _paymentTypes = EnumHelper.GetEnumTextValues(typeof(PaymentTypeEnum)).Select(
+                             x => new SelectListItem()
+                             {
+                                 Text = x.Text,
+                                 Value = x.Value
+                             }).ToList();
+
+                    _paymentTypes.Insert(0, new SelectListItem()
+                    {
+                        Text = "Select Type",
+                        Value = string.Empty
+                    });
+                }
+                return _paymentTypes;
+            }
+        }
 
         private static List<SelectListItem> _pianoType;
         public IEnumerable<SelectListItem> PianoTypesList
@@ -319,6 +342,55 @@ namespace WFP.ICT.Web.Controllers
                 return _orderType;
             }
         }
+
+        private static List<SelectListItem> _orderNumbers;
+        public IEnumerable<SelectListItem> OrderNumbersList
+        {
+            get
+            {
+                if (_orderNumbers == null)
+                {
+                    _orderNumbers = Db.Orders
+                        .OrderByDescending(x => x.CreatedAt).Select(
+                             x => new SelectListItem()
+                             {
+                                 Text = x.OrderNumber,
+                                 Value = x.Id.ToString()
+                             }).ToList();
+                    _orderNumbers.Insert(0, new SelectListItem()
+                    {
+                        Text = "Select Order Number",
+                        Value = string.Empty
+                    });
+                }
+                return _orderNumbers;
+            }
+        }
+
+        private static List<SelectListItem> _invoiceNumbers;
+        public IEnumerable<SelectListItem> InvoiceNumbersList
+        {
+            get
+            {
+                if (_invoiceNumbers == null)
+                {
+                    _invoiceNumbers = Db.Invoices
+                        .OrderByDescending(x => x.CreatedAt).Select(
+                             x => new SelectListItem()
+                             {
+                                 Text = x.InvoiceNumber,
+                                 Value = x.Id.ToString()
+                             }).ToList();
+                    _invoiceNumbers.Insert(0, new SelectListItem()
+                    {
+                        Text = "Select Invoice Number",
+                        Value = string.Empty
+                    });
+                }
+                return _invoiceNumbers;
+            }
+        }
+
 
         private static List<SelectListItem> _orderMedium;
         public IEnumerable<SelectListItem> OrderMediumList
@@ -423,7 +495,7 @@ namespace WFP.ICT.Web.Controllers
             {
                 if (_orders == null || _forceRefreshOrders)
                 {
-                    _orders = Db.PianoOrders
+                    _orders = Db.Orders
                         .OrderBy(x => x.CreatedAt).Select(
                              x => new SelectListItem()
                              {
@@ -557,6 +629,54 @@ namespace WFP.ICT.Web.Controllers
                     });
                 }
                 return _Warehouses;
+            }
+        }
+
+        private static List<SelectListItem> _legTypes;
+        public IEnumerable<SelectListItem> LegTypesList
+        {
+            get
+            {
+                if (_legTypes == null)
+                {
+                    _legTypes = EnumHelper.GetEnumTextValues(typeof(LegTypeEnum)).Select(
+                             x => new SelectListItem()
+                             {
+                                 Text = x.Text,
+                                 Value = x.Value
+                             }).ToList();
+
+                    _legTypes.Insert(0, new SelectListItem()
+                    {
+                        Text = "Select Type",
+                        Value = string.Empty
+                    });
+                }
+                return _legTypes;
+            }
+        }
+
+        private static List<SelectListItem> _locations;
+        public IEnumerable<SelectListItem> LocationsList
+        {
+            get
+            {
+                if (_locations == null)
+                {
+                    _locations = Db.Locations
+                        .OrderBy(x => x.CreatedAt).Select(
+                             x => new SelectListItem()
+                             {
+                                 Text = x.Name,
+                                 Value = x.Id.ToString()
+                             }).ToList();
+                    _locations.Insert(0, new SelectListItem()
+                    {
+                        Text = "Select Location",
+                        Value = string.Empty
+                    });
+                }
+                return _locations;
             }
         }
     }

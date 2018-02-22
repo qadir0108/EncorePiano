@@ -128,8 +128,8 @@ namespace WFP.ICT.Web.Controllers
                     {
 
                         Address = column.SortDirection.ToString() == "Ascendant" ?
-                                    Address.OrderBy(x => x.WarehouseId).ThenBy(x => x.CustomerId) :
-                                     Address.OrderByDescending(x => x.WarehouseId).ThenByDescending(x => x.CustomerId);
+                                    Address.OrderBy(x => x.WarehouseId).ThenBy(x => x.ClientId) :
+                                     Address.OrderByDescending(x => x.WarehouseId).ThenByDescending(x => x.ClientId);
                     }
                 }
                 orderByString = "Ordered";
@@ -160,7 +160,7 @@ namespace WFP.ICT.Web.Controllers
                             ZipCode = add.PostCode,
                             Phone = add.PhoneNumber,
                             Location = GetLocationLink(add.Lng, add.Lat, add.Address1, add.City, add.State),
-                            Linked = GetLinkedTo(add.WarehouseId, add.CustomerId ),
+                            Linked = GetLinkedTo(add.WarehouseId, add.ClientId ),
                             Actions = GetActions(add.Id)
                         });
 
@@ -210,7 +210,7 @@ namespace WFP.ICT.Web.Controllers
         {
             try
             {
-                if (Db.PianoOrders.Where(x => x.DeliveryAddressId == id || x.PickupAddressId == id).Count() > 0)
+                if (Db.Orders.Where(x => x.DeliveryAddressId == id || x.PickupAddressId == id).Count() > 0)
                 {
                     return Json(new JsonResponse() { IsSucess = false, ErrorMessage = "Unable to process as there are orders against this address" }, JsonRequestBehavior.AllowGet);
                 }

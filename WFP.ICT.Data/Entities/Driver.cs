@@ -14,15 +14,14 @@ namespace WFP.ICT.Data.Entities
         public string Name { get; set; }
         public string Description { get; set; }
         public string Password { get; set; }
-        public Guid? DefaultVehicleID { get; set; }
-
         public string FCMToken { get; set; }
 
-        public virtual ICollection<PianoAssignment> Assignments { get; set; }
+        public Guid? WarehouseId { get; set; }
+        public virtual ICollection<Assignment> Assignments { get; set; }
 
         public Driver()
         {
-            Assignments = new HashSet<PianoAssignment>();
+            Assignments = new HashSet<Assignment>();
         }
     }
 }

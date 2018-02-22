@@ -8,7 +8,7 @@ namespace WFP.ICT.Web.Models
         public string OfficeName { get; set; }
         public string UnitName { get; set; }
 
-        public List<CompanyUsersVM> Users { get; set; }
+        public List<CompanyUsersVm> Users { get; set; }
         
     }
 }

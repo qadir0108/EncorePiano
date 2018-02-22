@@ -23,8 +23,8 @@
         public string Lat { get; set; }
         public string Lng { get; set; }
         public int AddressType { get; set; }
-        public Guid? CustomerId { get; set; }
-      //  public virtual Customer Customer { get; set; }
+        public Guid? ClientId { get; set; }
+        //  public virtual Client Client { get; set; }
 
         public Guid? WarehouseId { get; set; }
         //public virtual Warehouse Warehouse { get; set; }

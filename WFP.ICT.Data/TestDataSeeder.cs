@@ -65,6 +65,15 @@ namespace WFP.ICT.Data
             });
             context.SaveChanges();
 
+            context.PianoSize.Add(new PianoSize()
+            {
+                Id = Guid.NewGuid(),
+                PianoTypeId = typeID,
+                Width = 180.34,
+                CreatedAt = DateTime.Now,
+            });
+            context.SaveChanges();
+
             // Piano Charges
             int code = 100;
             foreach (var ptype in EnumHelper.GetEnumTextValues(typeof(ChargesTypeEnum)))
@@ -87,46 +96,29 @@ namespace WFP.ICT.Data
             }
             context.SaveChanges();
 
-            // Test Customers
-            var customerId = Guid.NewGuid();
+            // Test Client
+            var clientId = Guid.NewGuid();
+            var addressId = Guid.NewGuid();
             context.Clients.Add(new Client()
             {
-                Id = customerId,
+                Id = clientId,
                 CreatedAt = DateTime.Now,
-                CustomerType = 1,
+                ClientType = 1,
                 AccountCode = "456343",
-                Name = "Test Customer 1",
+                Name = "Test Client 1",
                 PhoneNumber = "12345678",
-                EmailAddress = "customer@test.com",
-                Comment = "Its test Customer",
+                EmailAddress = "client@test.com",
+                Comment = "Its test Client",
             });
             context.SaveChanges();
-
-            // Address Types  -- Not Currently in use
-            //foreach (var ptype in EnumHelper.GetEnumTextValues(typeof(AddressTypeEnum)))
-            //{
-            //    string addressTypeCode = ptype.Value;
-            //    var already = context.AddressTypes.FirstOrDefault(m => m.Code == addressTypeCode);
-            //    if (already == null)
-            //    {
-            //        context.AddressTypes.Add(new AddressType()
-            //        {
-            //            Id = Guid.NewGuid(),
-            //            CreatedAt = DateTime.Now,
-            //            Code = ptype.Value,
-            //            Name = ptype.Text,
-            //        });
-            //    }
-            //}
-            //context.SaveChanges();
-
+            
             // Test Address
             context.Addresses.Add(new Address()
             {
-                Id = Guid.NewGuid(),
+                Id = addressId,
                 CreatedAt = DateTime.Now,
-                CustomerId = customerId,
-                Name = "Customer Person Name",
+                ClientId = clientId,
+                Name = "Client Person Name",
                 Address1 = "Complete Address",
                 PhoneNumber = "1234",
                 PostCode = "123",
@@ -136,6 +128,13 @@ namespace WFP.ICT.Data
                 Lng="-117.221566",
             });
             context.SaveChanges();
+
+            var client = context.Clients.FirstOrDefault();
+            if(client != null)
+            {
+                client.AddressId = addressId;
+                context.SaveChanges();
+            }
 
             #endregion
 
@@ -221,10 +220,10 @@ namespace WFP.ICT.Data
             };
             context.Warehouses.Add(warehouse);
 
-            var addressId = Guid.NewGuid();
+            var addressIdWarehouse = Guid.NewGuid();
             context.Addresses.Add(new Address()
             {
-                Id = addressId,
+                Id = addressIdWarehouse,
                 CreatedAt = DateTime.Now,
                 AddressType = (int)AddressTypeEnum.Warehouse,
                 WarehouseId = warehouse.Id,
@@ -237,7 +236,7 @@ namespace WFP.ICT.Data
                 Lat = "33.892162",
                 Lng = "-118.024756"
             });
-            warehouse.AddressId = addressId;
+            warehouse.AddressId = addressIdWarehouse;
             context.SaveChanges();
 
             //Piano Make
@@ -254,6 +253,18 @@ namespace WFP.ICT.Data
                         CreatedAt = DateTime.Now,
                     });
                 }
+            }
+            context.SaveChanges();
+
+            var locations = new string[] { "Los Angeles", "San Francisco", "Anaheim" };
+            foreach (var l in locations)
+            {
+                context.Locations.Add(new Location()
+                {
+                    Id = Guid.NewGuid(),
+                    CreatedAt = DateTime.Now,
+                    Name = l
+                });
             }
             context.SaveChanges();
 

@@ -3,6 +3,7 @@
     public partial class StringConstants
     {
         public const string System = "System";
+        public const string EncorePianoApp = "Encore Piano App";
 
         public const string DateFormatComma = "MMM dd, yyyy";
         public const string DateFormatSlashes = "M/d/yyyy";

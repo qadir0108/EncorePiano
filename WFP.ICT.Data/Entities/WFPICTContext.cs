@@ -22,14 +22,9 @@ namespace WFP.ICT.Data.Entities
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             // The rest should not be needed - it should be done by conventions
-
-            modelBuilder.Entity<PianoOrder>()
-                .HasOptional(s => s.PianoAssignment)
-                .WithRequired(si => si.PianoOrder);
-
-            //modelBuilder.Entity<PianoAssignment>()
-            //    .HasOptional(s => s.PianoPod)
-            //    .WithRequired(si => si.Assignment);
+            //modelBuilder.Entity<Order>()
+            //    .HasOptional(s => s.Assignment)
+            //    .WithRequired(si => si.Order);
 
             base.OnModelCreating(modelBuilder);
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
@@ -43,37 +38,39 @@ namespace WFP.ICT.Data.Entities
         // Order
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Client> Clients { get; set; }
+        public DbSet<Location> Locations { get; set; }
         public DbSet<PianoType> PianoTypes { get; set; }
         public DbSet<Piano> Pianos { get; set; }
-        public DbSet<PianoOrder> PianoOrders { get; set; }
+        public DbSet<Leg> Legs { get; set; }
+        public DbSet<Order> Orders { get; set; }
         public DbSet<PianoCharges> PianoCharges { get; set; }
 
-        public DbSet<PianoOrderCharges> PianoOrderCharges { get; set; }
-        public DbSet<PianoOrderBilling> PianoOrderBillings { get; set; }
+        public DbSet<OrderCharges> OrderCharges { get; set; }
+        public DbSet<OrderBilling> OrderBillings { get; set; }
         public DbSet<PianoQuote> PianoQuotes { get; set; }
 
-        // POD Lookups
+        // Lookups
         public DbSet<Warehouse> Warehouses { get; set; }
         public DbSet<VehicleType> VehicleTypes { get; set; }
         public DbSet<Vehicle> Vehicles { get; set; }
         public DbSet<Driver> Drivers { get; set; }
         public DbSet<DriverLogin> DriverLogins { get; set; }
 
-        // POD
-        public DbSet<PianoAssignment> PianoAssignments { get; set; }
-        public DbSet<PianoAssignmentRoute> PianoAssignmentRoutes { get; set; }
+        // Proof of Pickup and Delivery
+        public DbSet<Assignment> Assignments { get; set; }
+        public DbSet<AssignmentRoute> AssignmentRoutes { get; set; }
         public DbSet<TripStatus> TripStatuses { get; set; }
         public DbSet<PianoStatus> PianoStatuses { get; set; }
-        public DbSet<PianoPOD> PianoPODs { get; set; }
+        public DbSet<Proof> Proofs { get; set; }
         public DbSet<PianoPicture> PianoPictures { get; set; }
         public DbSet<PianoMake> PianoMake { get; set; }
-
         public DbSet<PianoSize> PianoSize { get; set; }
         public DbSet<PianoFinish> PianoFinish{ get; set; }
 
         // Accounting
-        public DbSet<ClientInvoice> CustomerInvoices { get; set; }
-        public DbSet<ClientPayment> CustomerPayments { get; set; }
+        public DbSet<ClientInvoice> Invoices { get; set; }
+        public DbSet<ClientPayment> Payments { get; set; }
+        public DbSet<ClientPaymentCard> Cards { get; set; }
 
         public static WFPICTContext Create()
         {

@@ -22,19 +22,6 @@ namespace WFP.ICT.Web.Controllers
 {
     public class AccountingController : BaseController
     {
-        private ApplicationUserManager _userManager;
-        public ApplicationUserManager UserManager
-        {
-            get
-            {
-                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
-            }
-            set
-            {
-                _userManager = value;
-            }
-        }
-
         // GET: Accounting
         public ActionResult Invoice()
         {
@@ -55,7 +42,7 @@ namespace WFP.ICT.Web.Controllers
                               JsonRequestBehavior.AllowGet);
             }
 
-            IEnumerable<PianoOrder> Orders = GetOrders(Client, StartDate, EndDate);
+            IEnumerable<Order> Orders = GetOrders(Client, StartDate, EndDate);
 
             List<Piano> Pianos = new List<Piano>();
 
@@ -200,12 +187,13 @@ namespace WFP.ICT.Web.Controllers
         {
             if (ClientId == string.Empty || StartDate == null || EndDate == null)
             {
-                return File(new byte[0], "application/octet-stream", "PickupTickets.pdf");
+                return File(new byte[0], "application/octet-stream", "Error.pdf");
             }
 
-            Client client = Db.Clients.Include(x => x.Addresses).FirstOrDefault(x => x.Id.ToString() == ClientId);
+            Client client = Db.Clients.Include(x => x.Address).FirstOrDefault(x => x.Id.ToString() == ClientId);
 
-            IEnumerable<PianoOrder> Orders = GetOrders(ClientId, StartDate, EndDate);
+            IEnumerable<Order> Orders = GetOrders(ClientId, StartDate, EndDate);
+            
             List<Piano> Pianos = new List<Piano>();
 
             foreach (var item in Orders)
@@ -214,21 +202,51 @@ namespace WFP.ICT.Web.Controllers
                 Pianos.AddRange(PianosNew);
             }
 
-            int invoiceNumber = Db.CustomerInvoices.Count() + 3000 ;
-
-            string html = InvoiceHtmlHelper.GenerateClientInvoiceHtml(Orders,client,Pianos , invoiceNumber);
+            int invoiceNumber = Db.Invoices.Count() + 3000 ;
+            long totalAmount = 0;
+            string html = InvoiceHtmlHelper.GenerateClientInvoiceHtml(Orders,client,Pianos , invoiceNumber, out totalAmount);
 
             JsonResponse Path = HtmlToPdf(html, invoiceNumber.ToString());
 
-            string pathValue = Path.Result.ToString();
+            SaveInvoice(ClientId, StartDate, EndDate, invoiceNumber, totalAmount, InvoiceStatusEnum.Generated);
 
+            string pathValue = Path.Result.ToString();
             if (!System.IO.File.Exists(pathValue))
                 return File(new byte[0], "application/octet-stream", "Error.pdf");
-
+            
             return File(pathValue, "application/pdf", "Invoice.pdf");
 
+        }
 
-          ;
+        private void SaveInvoice(string ClientId, string StartDate, string EndDate, int InvoiceNumber, long totalAmount, InvoiceStatusEnum status)
+        {
+            DateTime StartDateParse = DateTime.Parse(StartDate);
+            DateTime EndDateParse = DateTime.Parse(EndDate);
+
+            var ifExists = Db.Invoices.Any(x => x.ClientId.ToString() == ClientId && x.StartDate == StartDateParse && x.EndDate == EndDateParse);
+            if (ifExists) return;
+
+            var invoice = new ClientInvoice()
+            {
+                Id = Guid.NewGuid(),
+                CreatedAt = DateTime.Now,
+
+                ClientId = Guid.Parse(ClientId),
+                StartDate = StartDateParse,
+                EndDate = EndDateParse,
+                GeneratedAt = DateTime.Now,
+
+                InvoiceNumber = InvoiceNumber.ToString(),
+                Amount = totalAmount,
+                Status = (int)status,
+                Notes = "System generated invoice",
+            };
+
+            if (status == InvoiceStatusEnum.Sent)
+                invoice.SentOn = DateTime.Now;
+            
+            Db.Invoices.Add(invoice);
+            Db.SaveChanges();
         }
 
         public ActionResult EmailInvoice(string ClientId, string StartDate, string EndDate)
@@ -241,9 +259,9 @@ namespace WFP.ICT.Web.Controllers
                 }
               
 
-                Client client = Db.Clients.Include(x => x.Addresses).FirstOrDefault(x => x.Id.ToString() == ClientId);
+                Client client = Db.Clients.Include(x => x.Address).FirstOrDefault(x => x.Id.ToString() == ClientId);
 
-                IEnumerable<PianoOrder> Orders = GetOrders( ClientId, StartDate, EndDate);
+                IEnumerable<Order> Orders = GetOrders( ClientId, StartDate, EndDate);
                 List<Piano> Pianos = new List<Piano>();
 
                 foreach (var item in Orders)
@@ -252,9 +270,9 @@ namespace WFP.ICT.Web.Controllers
                     Pianos.AddRange(PianosNew);
                 }
 
-                int invoiceNumber = Db.CustomerInvoices.Count() + 3000;
-
-                string html = InvoiceHtmlHelper.GenerateClientInvoiceHtml(Orders, client, Pianos, invoiceNumber);
+                int invoiceNumber = Db.Invoices.Count() + 3000;
+                long totalAmount = 0;
+                string html = InvoiceHtmlHelper.GenerateClientInvoiceHtml(Orders, client, Pianos, invoiceNumber, out totalAmount);
 
                 JsonResponse Path = HtmlToPdf(html, invoiceNumber.ToString());
 
@@ -269,6 +287,8 @@ namespace WFP.ICT.Web.Controllers
 
                 EmailHelper.SendEmail(client.EmailAddress, subject, body, null, attachment);
 
+                SaveInvoice(ClientId, StartDate, EndDate, invoiceNumber, totalAmount, InvoiceStatusEnum.Sent);
+
                 return Json(new { IsSucess = true }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
@@ -278,6 +298,7 @@ namespace WFP.ICT.Web.Controllers
             }
 
         }
+
         public JsonResponse HtmlToPdf(string html, string InvoiceNumber)
         {
             try
@@ -285,7 +306,7 @@ namespace WFP.ICT.Web.Controllers
                 var htmlToPdf = new NReco.PdfGenerator.HtmlToPdfConverter();
                 var pdfBytes = htmlToPdf.GeneratePdf(html);
 
-                string Path = Server.MapPath("~/Uploads/ClientInvoices");
+                string Path = Server.MapPath("~/Downloads/ClientInvoices");
                 if (!System.IO.Directory.Exists(Path)) System.IO.Directory.CreateDirectory(Path);
                 string filePath = System.IO.Path.Combine(Path, InvoiceNumber+".pdf");
 
@@ -303,19 +324,19 @@ namespace WFP.ICT.Web.Controllers
 
         }
 
-        public IEnumerable<PianoOrder> GetOrders(string ClientId, string StartDate, string EndDate)
+        public IEnumerable<Order> GetOrders(string ClientId, string StartDate, string EndDate)
         {
             DateTime StartDateParse = DateTime.Parse(StartDate);
             DateTime EndDateParse = DateTime.Parse(EndDate);
 
-            return Db.PianoOrders
+            return Db.Orders
                    .Include(y => y.Pianos.Select(z => z.PianoMake))
                    .Include(y => y.Pianos.Select(z => z.PianoType))
                    .Include(y => y.Pianos.Select(z => z.PianoSize))
                     .Include(y => y.Pianos.Select(z => z.Client))
                     .Include(y => y.OrderCharges)
                    .AsEnumerable()
-                   .Where(x => x.CustomerId.ToString() == ClientId &&
+                   .Where(x => x.ClientId.ToString() == ClientId &&
                     x.CreatedAt.Date >= StartDateParse.Date &&
                     x.CreatedAt <= EndDateParse.Date);
 

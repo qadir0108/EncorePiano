@@ -13,6 +13,7 @@ using DataTables.Mvc;
 using System.IO;
 using WFP.ICT.Web.Async;
 using ADSDataDirect.Web.Helpers;
+using WFP.ICT.Enums;
 
 namespace WFP.ICT.Web.Controllers
 {
@@ -26,24 +27,25 @@ namespace WFP.ICT.Web.Controllers
 
         public ActionResult InitiliazeOrders([ModelBinder(typeof(DataTablesBinder))] IDataTablesRequest requestModel)
         {
-            IQueryable<PianoPOD> PianoPOD = Db.PianoPODs
-                                            .Include(x => x.PianoAssignment)
-                                            .Include(x => x.PianoAssignment.PianoOrder)
+            IQueryable<Proof> Proofs = Db.Proofs
+                                            .Include(x => x.Assignment)
+                                            .Include(x => x.Assignment.Order)
                                             .Include(x => x.Pictures)
                                             .Include(x => x.Piano)
                                             .Include(x => x.Piano.Statuses)
+                                            .Where(x => x.ProofType == (int)ProofTypeEnum.Delivery)
                                             ;
 
-            var totalCount = PianoPOD.Count();
+            var totalCount = Proofs.Count();
 
             #region Filtering
             // Apply filters for searching
             if (requestModel.Search.Value != string.Empty)
             {
                 var value = requestModel.Search.Value.Trim();
-                PianoPOD = PianoPOD.AsEnumerable().
-                                          Where(p => p.PianoAssignment.PianoOrder.OrderNumber.Contains(value) ||
-                                          p.PianoAssignment.AssignmentNumber.Contains(value) ||
+                Proofs = Proofs.AsEnumerable().
+                                          Where(p => p.Assignment.Order.OrderNumber.Contains(value) ||
+                                          p.Assignment.AssignmentNumber.Contains(value) ||
                                           p.Notes.Contains(value) ||
                                           p.ReceivedBy.Contains(value) ||
                                           p.ReceivingTime.Value.ToString("yyyy-MM-dd HH:mm:ss").Contains(value) ||
@@ -51,7 +53,7 @@ namespace WFP.ICT.Web.Controllers
                                          ).AsQueryable();
             }
 
-            var filteredCount = PianoPOD.Count();
+            var filteredCount = Proofs.Count();
 
             #endregion Filtering
 
@@ -67,56 +69,56 @@ namespace WFP.ICT.Web.Controllers
                     if (column.Data == "OrderNumber")
                     {
 
-                        PianoPOD = column.SortDirection.ToString() == "Ascendant" ?
-                                    PianoPOD.OrderBy(x => x.PianoAssignment.PianoOrder.OrderNumber) :
-                                    PianoPOD.OrderByDescending(x => x.PianoAssignment.PianoOrder.OrderNumber) ;
+                        Proofs = column.SortDirection.ToString() == "Ascendant" ?
+                                    Proofs.OrderBy(x => x.Assignment.Order.OrderNumber) :
+                                    Proofs.OrderByDescending(x => x.Assignment.Order.OrderNumber) ;
                     }
 
                     if (column.Data == "ConsignmentNumber")
                     {
 
-                        PianoPOD = column.SortDirection.ToString() == "Ascendant" ?
-                                    PianoPOD.OrderBy(x => x.PianoAssignment.AssignmentNumber) :
-                                    PianoPOD.OrderByDescending(x => x.PianoAssignment.AssignmentNumber) ;
+                        Proofs = column.SortDirection.ToString() == "Ascendant" ?
+                                    Proofs.OrderBy(x => x.Assignment.AssignmentNumber) :
+                                    Proofs.OrderByDescending(x => x.Assignment.AssignmentNumber) ;
                     }
 
                     if (column.Data == "Status")
                     {
 
-                        PianoPOD = column.SortDirection.ToString() == "Ascendant" ? 
-                                    PianoPOD.OrderBy(x => x.Piano.Statuses) :
-                                     PianoPOD.OrderByDescending(x => x.Piano.Statuses);
+                        Proofs = column.SortDirection.ToString() == "Ascendant" ? 
+                                    Proofs.OrderBy(x => x.Piano.Statuses) :
+                                     Proofs.OrderByDescending(x => x.Piano.Statuses);
                     }
 
                     if (column.Data == "Recieved")
                     {
 
-                        PianoPOD = column.SortDirection.ToString() == "Ascendant" ? 
-                                    PianoPOD.OrderBy(x => x.ReceivedBy) :
-                                     PianoPOD.OrderByDescending(x => x.ReceivedBy);
+                        Proofs = column.SortDirection.ToString() == "Ascendant" ? 
+                                    Proofs.OrderBy(x => x.ReceivedBy) :
+                                     Proofs.OrderByDescending(x => x.ReceivedBy);
                     }
 
                     if (column.Data == "RecievingDate")
                     {
 
-                        PianoPOD = column.SortDirection.ToString() == "Ascendant" ?
-                                    PianoPOD.OrderBy(x => x.ReceivingTime) :
-                                     PianoPOD.OrderByDescending(x => x.ReceivingTime);
+                        Proofs = column.SortDirection.ToString() == "Ascendant" ?
+                                    Proofs.OrderBy(x => x.ReceivingTime) :
+                                     Proofs.OrderByDescending(x => x.ReceivingTime);
                     }
                     if (column.Data == "Notes")
                     {
 
-                        PianoPOD = column.SortDirection.ToString() == "Ascendant" ? 
-                                    PianoPOD.OrderBy(x => x.Notes) :
-                                     PianoPOD.OrderByDescending(x => x.Notes);
+                        Proofs = column.SortDirection.ToString() == "Ascendant" ? 
+                                    Proofs.OrderBy(x => x.Notes) :
+                                     Proofs.OrderByDescending(x => x.Notes);
                     }
                 }
                 orderByString = "Ordered";
             }
 
             if (orderByString == string.Empty) {
-                PianoPOD = PianoPOD.OrderBy( x=> 
-                                    x.PianoAssignment.PianoOrder.OrderNumber);
+                Proofs = Proofs.OrderBy( x=> 
+                                    x.Assignment.Order.OrderNumber);
             }
 
 
@@ -126,29 +128,33 @@ namespace WFP.ICT.Web.Controllers
             // Paging
             if (requestModel.Length != -1)
             {
-                PianoPOD = PianoPOD.Skip(requestModel.Start).Take(requestModel.Length);
+                Proofs = Proofs.Skip(requestModel.Start).Take(requestModel.Length);
             }
 
-            var list = PianoPOD.ToList();
+            var list = Proofs.ToList();
             var result = list.Where(pod => pod != null)
                 .Select(pod => new
                 {
                     Id = pod.Id,
-                    OrderNumber = pod.PianoAssignment.PianoOrder.OrderNumber,
-                    ConsignmentNumber = pod.PianoAssignment.AssignmentNumber,
+                    OrderNumber = pod.Assignment.Order.OrderNumber,
+                    ConsignmentNumber = pod.Assignment.AssignmentNumber,
                     Status = ((PianoStatusEnum)(pod.Piano.Statuses.OrderByDescending(y => y.CreatedAt).FirstOrDefault().Status)).ToString(),
                     Recieved = pod.ReceivedBy,
                     Signature = GetSignatureImage(pod.Signature),
                     RecievingDate = pod.ReceivingTime?.ToString("yyyy-MM-dd HH:mm:ss"),
                     Notes = pod.Notes,
-                    Print = "Print",
+                    Form = pod.Assignment.Order.DeliveryForm,
                     Pictures = GetPianoImage(pod.Pictures),
 
-                    BenchesUnloadStatus = pod.BenchesUnloadStatus ? "Yes" : "No",
+                    Bench1UnloadStatus = pod.Bench1UnloadStatus ? "Yes" : "No",
+                    Bench2UnloadStatus = pod.Bench2UnloadStatus ? "Yes" : "No",
                     CasterCupsUnloadStatus = pod.CasterCupsUnloadStatus ? "Yes" : "No",
                     CoverUnloadStatus = pod.CoverUnloadStatus ? "Yes" : "No",
                     LampUnloadStatus = pod.LampUnloadStatus ? "Yes" : "No",
-                    OwnersManualUnloadStatus = pod.OwnersManualUnloadStatus ? "Yes" : "No"
+                    OwnersManualUnloadStatus = pod.OwnersManualUnloadStatus ? "Yes" : "No",
+                    Misc1UnloadStatus = pod.Misc1UnloadStatus ? "Yes" : "No",
+                    Misc2UnloadStatus = pod.Misc2UnloadStatus ? "Yes" : "No",
+                    Misc3UnloadStatus = pod.Misc3UnloadStatus ? "Yes" : "No"
                 });
 
             return Json(new DataTablesResponse
@@ -156,21 +162,6 @@ namespace WFP.ICT.Web.Controllers
                         JsonRequestBehavior.AllowGet);
         }
 
-        public string GetSignatureImage(string path)
-        {
-            StringBuilder builder = new StringBuilder();
-            if(path != string.Empty)
-            {
-                builder.AppendFormat("<a href='../Images/Sign/{0}' data-lightbox='signature'>", path);
-                builder.AppendFormat("<image class='grid-image' src='../Images/Sign/{0}'/>", path);
-                builder.Append("</a>");
-            }
-            else
-            {
-                builder.Append("Not available");
-            }
-            return builder.ToString();
-        }
         public string GetPianoImage(ICollection<PianoPicture> Pictures)
         {
             StringBuilder builder = new StringBuilder();
@@ -192,17 +183,17 @@ namespace WFP.ICT.Web.Controllers
 
         public ActionResult GeneratePOD(Guid? id)
         {
-            PianoPOD pod = Db.PianoPODs
-                                            .Include(x => x.PianoAssignment)
-                                            .Include(x => x.PianoAssignment.PianoOrder)
+            Proof pod = Db.Proofs
+                                            .Include(x => x.Assignment)
+                                            .Include(x => x.Assignment.Order)
                                             .Include(x => x.Pictures)
                                             .Include(x => x.Piano)
                                             .Include(x => x.Piano.Statuses)
                                             .FirstOrDefault(x => x.Id == id)
                                             ;
 
-            string templateFormsPath = Path.Combine(UploadsFormsPath, pod.PianoAssignment.PianoOrder.DeliveryForm);
-            string podFileName = "POD" + pod.PianoAssignment.PianoOrder.OrderNumber + ".pdf";
+            string templateFormsPath = Path.Combine(UploadsFormsPath, pod.Assignment.Order.DeliveryForm);
+            string podFileName = "POD" + pod.Assignment.Order.OrderNumber + ".pdf";
             string podFilePath = Path.Combine(DownloadsFormsPath, pod.Id.ToString() + ".pdf");
 
             string signature = Path.Combine(SignPath, pod.Signature);

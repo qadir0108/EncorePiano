@@ -41,8 +41,6 @@ namespace WFP.ICT.Data.Migrations
                     CreatedAt = DateTime.Now,
                     Name = companyName,
                     Details = "Encore Piano Moving",
-                    EmailUserName = "aspillan@movemypiano.com",
-                    EmailPassword = "secrete",
                     Logo = "logo.jpg",
                     WebSite = "www.movemypiano.com",
                     //Theme = (int) ThemesEnum.Default

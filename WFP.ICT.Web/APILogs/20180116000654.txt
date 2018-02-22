@@ -1,0 +1,114 @@
+New Trace collected :
+=====================
+ Error Report collected on : Tue Jan 16 00:06:54 GMT+05:00 2018
+
+Environment Details : 
+===================== 
+  Version  : 1.2
+  Package  : com.encore.piano
+  FilePath : /data/user/0/com.encore.piano/files
+
+  Package Data 
+      Phone Model : Android SDK built for x86
+      Android Ver : 6.0
+      Board       : unknown
+      Brand       : Android
+      Device      : generic_x86
+      Display     : sdk_google_phone_x86-userdebug 6.0 MASTER 4309849 test-keys
+      Finger Print: Android/sdk_google_phone_x86/generic_x86:6.0/MASTER/4309849:userdebug/test-keys
+      Host        : wpef22.hot.corp.google.com
+      ID          : MASTER
+      Model       : Android SDK built for x86
+      Product     : sdk_google_phone_x86
+      Tags        : test-keys
+      Time        : 1504203433000
+      Type        : userdebug
+      User        : android-build
+  Internal Memory
+      Total    : 2031440k
+      Available: 1852388k
+
+Stack : 
+======= 
+java.lang.RuntimeException: Unable to start activity ComponentInfo{com.encore.piano/com.encore.piano.activities.UnitDeliveryLoad}: java.lang.IllegalArgumentException: the bind value at index 1 is null
+	at android.app.ActivityThread.performLaunchActivity(ActivityThread.java:2416)
+	at android.app.ActivityThread.handleLaunchActivity(ActivityThread.java:2476)
+	at android.app.ActivityThread.-wrap11(ActivityThread.java)
+	at android.app.ActivityThread$H.handleMessage(ActivityThread.java:1344)
+	at android.os.Handler.dispatchMessage(Handler.java:102)
+	at android.os.Looper.loop(Looper.java:148)
+	at android.app.ActivityThread.main(ActivityThread.java:5417)
+	at java.lang.reflect.Method.invoke(Native Method)
+	at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:726)
+	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:616)
+Caused by: java.lang.IllegalArgumentException: the bind value at index 1 is null
+	at android.database.sqlite.SQLiteProgram.bindString(SQLiteProgram.java:164)
+	at android.database.sqlite.SQLiteProgram.bindAllArgsAsStrings(SQLiteProgram.java:200)
+	at android.database.sqlite.SQLiteDirectCursorDriver.query(SQLiteDirectCursorDriver.java:47)
+	at android.database.sqlite.SQLiteDatabase.rawQueryWithFactory(SQLiteDatabase.java:1316)
+	at android.database.sqlite.SQLiteDatabase.queryWithFactory(SQLiteDatabase.java:1163)
+	at android.database.sqlite.SQLiteDatabase.query(SQLiteDatabase.java:1034)
+	at android.database.sqlite.SQLiteDatabase.query(SQLiteDatabase.java:1202)
+	at com.encore.piano.db.AssignmentDb.getAll(AssignmentDb.java:145)
+	at com.encore.piano.server.AssignmentService.getAll(AssignmentService.java:219)
+	at com.encore.piano.activities.UnitDeliveryLoad.Load(UnitDeliveryLoad.java:131)
+	at com.encore.piano.activities.UnitDeliveryLoad.onCreate(UnitDeliveryLoad.java:114)
+	at android.app.Activity.performCreate(Activity.java:6237)
+	at android.app.Instrumentation.callActivityOnCreate(Instrumentation.java:1107)
+	at android.app.ActivityThread.performLaunchActivity(ActivityThread.java:2369)
+	... 9 more
+
+Cause : 
+======= 
+java.lang.RuntimeException: Unable to start activity ComponentInfo{com.encore.piano/com.encore.piano.activities.UnitDeliveryLoad}: java.lang.IllegalArgumentException: the bind value at index 1 is null
+	at android.app.ActivityThread.performLaunchActivity(ActivityThread.java:2416)
+	at android.app.ActivityThread.handleLaunchActivity(ActivityThread.java:2476)
+	at android.app.ActivityThread.-wrap11(ActivityThread.java)
+	at android.app.ActivityThread$H.handleMessage(ActivityThread.java:1344)
+	at android.os.Handler.dispatchMessage(Handler.java:102)
+	at android.os.Looper.loop(Looper.java:148)
+	at android.app.ActivityThread.main(ActivityThread.java:5417)
+	at java.lang.reflect.Method.invoke(Native Method)
+	at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:726)
+	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:616)
+Caused by: java.lang.IllegalArgumentException: the bind value at index 1 is null
+	at android.database.sqlite.SQLiteProgram.bindString(SQLiteProgram.java:164)
+	at android.database.sqlite.SQLiteProgram.bindAllArgsAsStrings(SQLiteProgram.java:200)
+	at android.database.sqlite.SQLiteDirectCursorDriver.query(SQLiteDirectCursorDriver.java:47)
+	at android.database.sqlite.SQLiteDatabase.rawQueryWithFactory(SQLiteDatabase.java:1316)
+	at android.database.sqlite.SQLiteDatabase.queryWithFactory(SQLiteDatabase.java:1163)
+	at android.database.sqlite.SQLiteDatabase.query(SQLiteDatabase.java:1034)
+	at android.database.sqlite.SQLiteDatabase.query(SQLiteDatabase.java:1202)
+	at com.encore.piano.db.AssignmentDb.getAll(AssignmentDb.java:145)
+	at com.encore.piano.server.AssignmentService.getAll(AssignmentService.java:219)
+	at com.encore.piano.activities.UnitDeliveryLoad.Load(UnitDeliveryLoad.java:131)
+	at com.encore.piano.activities.UnitDeliveryLoad.onCreate(UnitDeliveryLoad.java:114)
+	at android.app.Activity.performCreate(Activity.java:6237)
+	at android.app.Instrumentation.callActivityOnCreate(Instrumentation.java:1107)
+	at android.app.ActivityThread.performLaunchActivity(ActivityThread.java:2369)
+	... 9 more
+java.lang.IllegalArgumentException: the bind value at index 1 is null
+	at android.database.sqlite.SQLiteProgram.bindString(SQLiteProgram.java:164)
+	at android.database.sqlite.SQLiteProgram.bindAllArgsAsStrings(SQLiteProgram.java:200)
+	at android.database.sqlite.SQLiteDirectCursorDriver.query(SQLiteDirectCursorDriver.java:47)
+	at android.database.sqlite.SQLiteDatabase.rawQueryWithFactory(SQLiteDatabase.java:1316)
+	at android.database.sqlite.SQLiteDatabase.queryWithFactory(SQLiteDatabase.java:1163)
+	at android.database.sqlite.SQLiteDatabase.query(SQLiteDatabase.java:1034)
+	at android.database.sqlite.SQLiteDatabase.query(SQLiteDatabase.java:1202)
+	at com.encore.piano.db.AssignmentDb.getAll(AssignmentDb.java:145)
+	at com.encore.piano.server.AssignmentService.getAll(AssignmentService.java:219)
+	at com.encore.piano.activities.UnitDeliveryLoad.Load(UnitDeliveryLoad.java:131)
+	at com.encore.piano.activities.UnitDeliveryLoad.onCreate(UnitDeliveryLoad.java:114)
+	at android.app.Activity.performCreate(Activity.java:6237)
+	at android.app.Instrumentation.callActivityOnCreate(Instrumentation.java:1107)
+	at android.app.ActivityThread.performLaunchActivity(ActivityThread.java:2369)
+	at android.app.ActivityThread.handleLaunchActivity(ActivityThread.java:2476)
+	at android.app.ActivityThread.-wrap11(ActivityThread.java)
+	at android.app.ActivityThread$H.handleMessage(ActivityThread.java:1344)
+	at android.os.Handler.dispatchMessage(Handler.java:102)
+	at android.os.Looper.loop(Looper.java:148)
+	at android.app.ActivityThread.main(ActivityThread.java:5417)
+	at java.lang.reflect.Method.invoke(Native Method)
+	at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:726)
+	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:616)
+**** End of current Report ***
