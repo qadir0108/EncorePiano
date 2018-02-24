@@ -583,7 +583,7 @@ namespace WFP.ICT.Web.Controllers
                 Guid id = Guid.Parse(warehouseId);
                 if (id != null)
                 {
-                    Address warehouse = Db.Warehouses.Where(x => x.Id == id).Select(x => x.Address).FirstOrDefault();
+                    Warehouse warehouse = Db.Warehouses.Where(x => x.Id == id).FirstOrDefault();
                     if (warehouse != null)
                     {
                         var populate = new
@@ -592,14 +592,10 @@ namespace WFP.ICT.Web.Controllers
                             phone = warehouse.PhoneNumber,
                             state = warehouse.State,
                             city = warehouse.City,
-                            stairs = warehouse.NumberStairs,
-                            turns = warehouse.NumberTurns,
                             name = warehouse.Name,
                             altName = warehouse.AlternateContact,
                             altPhone = warehouse.AlternatePhone,
                             postCode = warehouse.PostCode,
-
-
                         };
                         return Json(new { key = true, warehouse = populate }, JsonRequestBehavior.AllowGet);
                     }

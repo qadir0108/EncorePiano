@@ -377,6 +377,11 @@
     <Compile Include="Async\SMSHelper.cs" />
     <Compile Include="Async\ZingCoder.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\PianoTypesController.cs" />
+    <Compile Include="Controllers\VehiclesController.cs" />
+    <Compile Include="Controllers\WarehousesController.cs" />
+    <Compile Include="Controllers\LocationsController.cs" />
+    <Compile Include="Controllers\DriversController.cs" />
     <Compile Include="Controllers\InvoicesController.cs" />
     <Compile Include="Controllers\PaymentsController.cs" />
     <Compile Include="Controllers\ClientsController.cs" />
@@ -394,7 +399,6 @@
     <Compile Include="Controllers\OrdersController.cs" />
     <Compile Include="Controllers\DeliveryStatusController.cs" />
     <Compile Include="Controllers\TestController.cs" />
-    <Compile Include="Controllers\WarehouseController.cs" />
     <Compile Include="FCM\Exceptions\FCMException.cs" />
     <Compile Include="FCM\Exceptions\FCMUnauthorizedException.cs" />
     <Compile Include="Async\FCMUitlity.cs" />
@@ -434,12 +438,18 @@
     <Compile Include="Helpers\ExceptionHelper.cs" />
     <Compile Include="Helpers\FileHelper.cs" />
     <Compile Include="Helpers\GatePassGenerator.cs" />
+    <Compile Include="Models\Company\NewPianoTypeVm.cs" />
+    <Compile Include="Models\Company\NewVehicleVm.cs" />
+    <Compile Include="Models\Company\NewWarehouseVm.cs" />
+    <Compile Include="Models\Company\NewLocationVm.cs" />
+    <Compile Include="Models\Company\NewDriverVm.cs" />
+    <Compile Include="Models\Company\NewClientVm.cs" />
     <Compile Include="Models\NewPaymentVm.cs" />
     <Compile Include="Models\LegVm.cs" />
     <Compile Include="Models\StatusVm.cs" />
     <Compile Include="Models\BatchLoadVm.cs" />
     <Compile Include="Models\InvoiceViewModel.cs" />
-    <Compile Include="Models\NewAddressVm.cs" />
+    <Compile Include="Models\Company\NewAddressVm.cs" />
     <Compile Include="Security\AppSecurity.cs" />
     <Compile Include="ViewModels\PersonEditViewModel.cs" />
     <Compile Include="ViewModels\AddressEditorViewModel.cs" />
@@ -448,16 +458,15 @@
     <Compile Include="Models\ConsignmentRouteVm.cs" />
     <Compile Include="Models\PianoVm.cs" />
     <Compile Include="Models\PianoChargesVm.cs" />
-    <Compile Include="Models\CompanyOfficeVM.cs" />
-    <Compile Include="Models\CompanySettingsVM.cs" />
-    <Compile Include="Models\CompanyUnitVM.cs" />
+    <Compile Include="Models\Settings\CompanyOfficeVM.cs" />
+    <Compile Include="Models\Settings\CompanySettingsVM.cs" />
+    <Compile Include="Models\Settings\CompanyUnitVM.cs" />
     <Compile Include="Models\OrderVm.cs" />
     <Compile Include="Models\AddressVm.cs" />
-    <Compile Include="Models\CompanyPermissionVm.cs" />
-    <Compile Include="Models\CompanyUsersGroupedVM.cs" />
-    <Compile Include="Models\CompanyRoleVm.cs" />
+    <Compile Include="Models\Settings\CompanyPermissionVm.cs" />
+    <Compile Include="Models\Settings\CompanyRoleVm.cs" />
     <Compile Include="Models\OfficeUserVM.cs" />
-    <Compile Include="Models\CompanyUsersVm.cs" />
+    <Compile Include="Models\Settings\CompanyUsersVm.cs" />
     <Compile Include="Models\JsonResponse.cs" />
     <Compile Include="Models\UserProfileVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -6403,7 +6412,7 @@
     <Content Include="Views\Account\ExternalLoginFailure.cshtml" />
     <Content Include="Views\Account\ForgotPassword.cshtml" />
     <Content Include="Views\Account\ForgotPasswordConfirmation.cshtml" />
-    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Account\LoginClient.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Account\ResetPassword.cshtml" />
     <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
@@ -6434,7 +6443,7 @@
     <Content Include="Views\Company\Settings.cshtml" />
     <Content Include="Views\Company\Units.cshtml" />
     <Content Include="Views\Company\_Search.cshtml" />
-    <Content Include="Views\Account\LoginAdmin.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Admin\Index2.cshtml" />
     <Content Include="Views\Admin\Index3.cshtml" />
@@ -6446,8 +6455,7 @@
     <Content Include="Views\Orders\Completed.cshtml" />
     <Content Include="Views\Assignments\PickTickets.cshtml" />
     <Content Include="Views\DeliveryStatus\Index.cshtml" />
-    <Content Include="Views\Warehouse\Index.cshtml" />
-    <Content Include="Views\Warehouse\New.cshtml" />
+    <Content Include="Views\Warehouses\Index.cshtml" />
     <Content Include="Views\Shared\Editors\_AddressEditor.cshtml" />
     <Content Include="Views\Test\Edit.cshtml" />
     <Content Include="Views\Shared\Editors\_Piano.cshtml" />
@@ -6473,6 +6481,15 @@
     <Content Include="Views\Company\RoleAdd.cshtml" />
     <Content Include="Views\Company\Users.cshtml" />
     <Content Include="Views\Company\UserAdd.cshtml" />
+    <Content Include="Views\Drivers\Add.cshtml" />
+    <Content Include="Views\Drivers\Index.cshtml" />
+    <Content Include="Views\Locations\Add.cshtml" />
+    <Content Include="Views\Locations\Index.cshtml" />
+    <Content Include="Views\Warehouses\Add.cshtml" />
+    <Content Include="Views\Vehicles\Add.cshtml" />
+    <Content Include="Views\Vehicles\Index.cshtml" />
+    <Content Include="Views\PianoTypes\Add.cshtml" />
+    <Content Include="Views\PianoTypes\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -6480,7 +6497,6 @@
     <Folder Include="assets\global\plugins\angularjs\plugins\angular-file-upload\uploads\" />
     <Folder Include="Downloads\Forms\" />
     <Folder Include="Uploads\Forms\" />
-    <Folder Include="Views\files\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

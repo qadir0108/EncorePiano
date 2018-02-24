@@ -608,6 +608,31 @@ namespace WFP.ICT.Web.Controllers
                 return _vehicles;
             }
         }
+
+        private static List<SelectListItem> _vehicleTypes;
+        public IEnumerable<SelectListItem> VehicleTypesList
+        {
+            get
+            {
+                if (_vehicleTypes == null)
+                {
+                    _vehicleTypes = Db.VehicleTypes
+                        .OrderBy(x => x.CreatedAt).Select(
+                             x => new SelectListItem()
+                             {
+                                 Text = x.Code + " " + x.Name,
+                                 Value = x.Id.ToString()
+                             }).ToList();
+                    _vehicleTypes.Insert(0, new SelectListItem()
+                    {
+                        Text = "Select Vehicle Type",
+                        Value = string.Empty
+                    });
+                }
+                return _vehicleTypes;
+            }
+        }
+
         private static List<SelectListItem> _Warehouses;
         public IEnumerable<SelectListItem> Warehouses
         {

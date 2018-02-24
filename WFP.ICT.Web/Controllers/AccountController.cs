@@ -56,7 +56,7 @@ namespace WFP.ICT.Web.Controllers
         //
         // GET: /Account/Login
         [AllowAnonymous]
-        public ActionResult Login(string returnUrl)
+        public ActionResult LoginClient(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
             if (LoggedInUser != null)
@@ -75,7 +75,7 @@ namespace WFP.ICT.Web.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
+        public async Task<ActionResult> LoginClient(LoginViewModel model, string returnUrl)
         {
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
@@ -130,7 +130,7 @@ namespace WFP.ICT.Web.Controllers
         //
         // GET: /Account/Login
         [AllowAnonymous]
-        public ActionResult LoginAdmin(string returnUrl)
+        public ActionResult Login(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
             if (LoggedInUser != null)
@@ -149,7 +149,7 @@ namespace WFP.ICT.Web.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> LoginAdmin(LoginViewModel model, string returnUrl)
+        public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
@@ -209,7 +209,7 @@ namespace WFP.ICT.Web.Controllers
             Session.Clear();
             Session.Abandon();
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("LoginAdmin", "Account");
+            return RedirectToAction("Login", "Account");
         }
 
         ////

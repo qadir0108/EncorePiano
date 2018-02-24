@@ -501,15 +501,22 @@ namespace WFP.ICT.Data.Migrations
                 c => new
                     {
                         Id = c.Guid(nullable: false),
-                        Name = c.String(),
                         Code = c.String(),
-                        AddressId = c.Guid(),
+                        Name = c.String(),
+                        AlternateContact = c.String(),
+                        PhoneNumber = c.String(),
+                        AlternatePhone = c.String(),
+                        Address1 = c.String(),
+                        City = c.String(),
+                        PostCode = c.String(),
+                        State = c.String(),
+                        Notes = c.String(),
+                        Lat = c.String(),
+                        Lng = c.String(),
                         CreatedAt = c.DateTime(nullable: false),
                         CreatedBy = c.String(),
                     })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Address", t => t.AddressId)
-                .Index(t => t.AddressId);
+                .PrimaryKey(t => t.Id);
             
             CreateTable(
                 "dbo.TripStatus",
@@ -785,7 +792,6 @@ namespace WFP.ICT.Data.Migrations
             DropForeignKey("dbo.Leg", "ToLocationId", "dbo.Location");
             DropForeignKey("dbo.Order", "PickupAddressId", "dbo.Address");
             DropForeignKey("dbo.Piano", "WarehouseId", "dbo.Warehouse");
-            DropForeignKey("dbo.Warehouse", "AddressId", "dbo.Address");
             DropForeignKey("dbo.PianoStatus", "PianoId", "dbo.Piano");
             DropForeignKey("dbo.PianoPicture", "ProofId", "dbo.Proof");
             DropForeignKey("dbo.Proof", "PianoId", "dbo.Piano");
@@ -836,7 +842,6 @@ namespace WFP.ICT.Data.Migrations
             DropIndex("dbo.AspNetRoleClaims", new[] { "ClaimID" });
             DropIndex("dbo.Vehicle", new[] { "VehicleTypeId" });
             DropIndex("dbo.TripStatus", new[] { "AssignmentId" });
-            DropIndex("dbo.Warehouse", new[] { "AddressId" });
             DropIndex("dbo.PianoStatus", new[] { "PianoId" });
             DropIndex("dbo.Proof", new[] { "AssignmentId" });
             DropIndex("dbo.Proof", new[] { "PianoId" });

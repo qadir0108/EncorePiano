@@ -27,6 +27,5 @@
         //  public virtual Client Client { get; set; }
 
         public Guid? WarehouseId { get; set; }
-        //public virtual Warehouse Warehouse { get; set; }
     }
 }

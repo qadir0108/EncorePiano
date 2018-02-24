@@ -7,9 +7,9 @@ namespace WFP.ICT.Enum
 {
     public enum ChargesTypeEnum
     {
-        Crate_For_International_Shipping,
-        Piano_Tuning,
-        Paino_Repairing,
-        Other_Service
+        Piano_Tuning = 1,
+        Paino_Repairing = 2,
+        Crate_For_International_Shipping = 3,
+        Other_Service = 4
     }
 }

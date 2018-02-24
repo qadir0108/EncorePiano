@@ -1,0 +1,108 @@
+﻿@model WFP.ICT.Web.Models.NewVehicleVm
+<!-- BEGIN CONTENT -->
+
+<!-- BEGIN PAGE BASE CONTENT -->
+@using (Ajax.BeginForm("Save", "Vehicles", null, new AjaxOptions { HttpMethod = "POST", OnSuccess = "addSuccess(data,status)" }, new
+{
+    @id = "frm",
+}))
+{
+    @Html.HiddenFor(x => x.Id)
+
+            <div class="portlet-body">
+
+                <div class="row">
+                    <div class="col-md-12 ">
+                        <!-- BEGIN SAMPLE FORM PORTLET-->
+
+                        <div class="portlet light bordered">
+                            <div class="portlet-title">
+                                <div class="caption font-red-sunglo">
+                                    <span class="caption-subject bold uppercase"><label id="lblNewEdit"></label> Vehicle</span>
+                                </div>
+                                <div class="actions">
+                                    @*<a class="btn btn-circle btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title=""> </a>*@
+                                </div>
+                            </div>
+                            <div class="portlet-body form">
+                                <div class="form-body">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group form-md-line-input has-success">
+                                                <div class="input-icon">
+                                                    @Html.DropDownListFor(model => model.VehicleTypeId, TempData["VehicleTypes"] as SelectList, htmlAttributes: new { @class = "form-control" })
+                                                    <label>Type <span class="required">*</span></label>
+                                                    @Html.ValidationMessageFor(model => model.VehicleTypeId, null, new { @class = "help-block help-block-error" })
+                                                    <span class="help-block">Select Vehicle Type</span>
+                                                    <i class="fa fa-user"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <div class="form-group form-md-line-input has-success">
+                                                <div class="input-icon">
+                                                    @Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control" } })
+                                                    <label>Code <span class="required">*</span></label>
+                                                    @Html.ValidationMessageFor(model => model.Code, null, new { @class = "help-block help-block-error" })
+                                                    <span class="help-block">Enter Code</span>
+                                                    <i class="fa fa-user"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group form-md-line-input has-success">
+                                                <div class="input-icon">
+                                                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                                                    <label>Name <span class="required">*</span></label>
+                                                    @Html.ValidationMessageFor(model => model.Name, null, new { @class = "help-block help-block-error" })
+                                                    <span class="help-block">Enter Name</span>
+                                                    <i class="fa fa-user"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                                   
+                                    </div>
+
+                                    <div class="row">
+
+                                        <div class="col-md-12">
+                                            <div class="form-group form-md-line-input has-success">
+                                                <div class="input-icon">
+                                                    @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                                                    <label>Description</label>
+                                                    @Html.ValidationMessageFor(model => model.Description, null, new { @class = "help-block help-block-error" })
+                                                    <span class="help-block">Enter Description</span>
+                                                    <i class="fa fa-user"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <div class="form-group form-md-line-input has-success">
+                                                <div class="input-icon">
+                                                    @Html.EditorFor(model => model.Active, new { htmlAttributes = new { @class = "form-control" } })
+                                                    <label>Active</label>
+                                                    @Html.ValidationMessageFor(model => model.Active, null, new { @class = "help-block help-block-error" })
+                                                    <span class="help-block">Select</span>
+                                                    <i class="fa fa-user"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                </div>
+                                <div class="col-md-6">
+                                    <button type="submit" onclick="validateSave()" class="btn blue-steel pull-right">Save</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                          
+            </div>
+}

@@ -19,17 +19,32 @@ namespace WFP.ICT.Data
             // Piano Types
             foreach (var ptype in EnumHelper.GetEnumTextValues(typeof(PianoTypeEnum)))
             {
-
                 var already = context.PianoTypes.FirstOrDefault(m => m.Code == ptype.Value);
                 if (already == null)
                 {
-                   
                     context.PianoTypes.Add(new PianoType()
                     { 
                         Id = ptype.Text == "Spinet" ? typeID : Guid.NewGuid(),
                         CreatedAt = DateTime.Now,
                         Code = ptype.Value,
                         Type = ptype.Text,
+                    });
+                }
+            }
+            context.SaveChanges();
+
+            //Piano Make
+            foreach (var ptype in EnumHelper.GetEnumTextValues(typeof(PianoMakeEnum)))
+            {
+                var already = context.PianoMake.FirstOrDefault(m => m.Name == ptype.Text);
+                if (already == null)
+                {
+                    context.PianoMake.Add(new PianoMake()
+                    {
+                        Id = Guid.NewGuid(),
+                        Code = ptype.Value,
+                        Name = ptype.Text,
+                        CreatedAt = DateTime.Now,
                     });
                 }
             }
@@ -167,7 +182,7 @@ namespace WFP.ICT.Data
                 Id = vehicle1,
                 CreatedAt = DateTime.Now,
                 Code = "5876",
-                Name = "Truck ABC-5876",
+                Name = "Truck ABC",
                 VehicleTypeId = vehicleTypeId1
             });
             context.Vehicles.Add(new Vehicle()
@@ -175,7 +190,7 @@ namespace WFP.ICT.Data
                 Id = vehicle2,
                 CreatedAt = DateTime.Now,
                 Code = "4272",
-                Name = "Truck XYZ-4272",
+                Name = "Truck XYZ",
                 VehicleTypeId = vehicleTypeId1
             });
             context.Vehicles.Add(new Vehicle()
@@ -183,7 +198,7 @@ namespace WFP.ICT.Data
                 Id = vehicle3,
                 CreatedAt = DateTime.Now,
                 Code = "633",
-                Name = "Trailer X-633",
+                Name = "Trailer X",
                 VehicleTypeId = vehicleTypeId2
             });
             context.SaveChanges();
@@ -216,18 +231,7 @@ namespace WFP.ICT.Data
                 Id = Guid.NewGuid(),
                 CreatedAt = DateTime.Now,
                 Code = "W101",
-                Name = "Warehouse 101",
-            };
-            context.Warehouses.Add(warehouse);
-
-            var addressIdWarehouse = Guid.NewGuid();
-            context.Addresses.Add(new Address()
-            {
-                Id = addressIdWarehouse,
-                CreatedAt = DateTime.Now,
-                AddressType = (int)AddressTypeEnum.Warehouse,
-                WarehouseId = warehouse.Id,
-                Name = "ENCORE PIANO MOVING Warehouse",
+                Name = "ENCORE PIANO MOVING Warehouse 101",
                 Address1 = "15915 CANARY AVE.",
                 PhoneNumber = "(714) 739-4717",
                 PostCode = "90638",
@@ -235,27 +239,9 @@ namespace WFP.ICT.Data
                 City = "LA MIRADA",
                 Lat = "33.892162",
                 Lng = "-118.024756"
-            });
-            warehouse.AddressId = addressIdWarehouse;
-            context.SaveChanges();
-
-            //Piano Make
-            foreach (var ptype in EnumHelper.GetEnumTextValues(typeof(PianoMakeEnum)))
-            {
-                var already = context.PianoMake.FirstOrDefault(m => m.Name == ptype.Text);
-                if (already == null)
-                {
-                    context.PianoMake.Add(new PianoMake()
-                    {
-                        Id = Guid.NewGuid(),
-                        Code = ptype.Value,
-                        Name = ptype.Text,
-                        CreatedAt = DateTime.Now,
-                    });
-                }
-            }
-            context.SaveChanges();
-
+            };
+            context.Warehouses.Add(warehouse);
+            
             var locations = new string[] { "Los Angeles", "San Francisco", "Anaheim" };
             foreach (var l in locations)
             {

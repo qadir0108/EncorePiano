@@ -7,8 +7,8 @@ namespace WFP.ICT.Enums
 {
     public enum PianoFinishEnum
     {
-       Red,
-       Black,
-       Blue
+       Red = 1,
+       Black = 2,
+       Blue = 3
     }
 }

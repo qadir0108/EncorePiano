@@ -7,8 +7,7 @@ namespace WFP.ICT.Enum
 {
     public enum AddressTypeEnum
     {
-        Customer,
+        Client,
         Invoice,
-        Warehouse
     }
 }

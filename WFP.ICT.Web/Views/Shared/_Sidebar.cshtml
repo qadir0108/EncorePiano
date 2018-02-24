@@ -220,21 +220,13 @@
                     </ul>
                 </li>
 
-                <li class="nav-item start @Html.IsSelected(actions: "Index", controllers: "Address,Clients,ClientStores,PianoType,PianoCharges,Warehouse,Vehicle,Driver")">
+                <li class="nav-item start @Html.IsSelected(actions: "Index", controllers: "Locations,Address,Clients,ClientStores,Warehouses,Vehicles,Drivers,PianoTypes,PianoMakes,PianoFinishs,PianoCharges")">
                     <a href="javascript:;" class="nav-link nav-toggle">
                         <i class="fa fa-university"></i>
                         <span class="title">Company</span>
                         <span class="arrow"></span>
                     </a>
                     <ul class="sub-menu">
-                        <li class="nav-item start @Html.IsSelected(actions: "Index", controllers: "Address") ">
-                            <a href="/Address/Index" class="nav-link ">
-                                <i class="fa fa-globe"></i>
-                                <span class="title">
-                                    Addresses
-                                </span>
-                            </a>
-                        </li>
                         <li class="nav-item start @Html.IsSelected(actions: "Index", controllers: "Clients")">
                             <a href="/Clients/Index" class="nav-link ">
                                 <i class="fa fa-user-secret"></i>
@@ -251,11 +243,69 @@
                                 </span>
                             </a>
                         </li>
-                        <li class="nav-item start @Html.IsSelected(actions: "Index", controllers: "PianoType") ">
-                            <a href="/PianoType/Index" class="nav-link ">
+                        <li class="nav-item start @Html.IsSelected(actions: "Index", controllers: "Address") ">
+                            <a href="/Address/Index" class="nav-link ">
+                                <i class="fa fa-globe"></i>
+                                <span class="title">
+                                    Addresses
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item start @Html.IsSelected(actions: "Index", controllers: "Locations") ">
+                            <a href="/Locations/Index" class="nav-link ">
+                                <i class="fa fa-university"></i>
+                                <span class="title">
+                                    Locations
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item start @Html.IsSelected(actions: "Index", controllers: "Warehouses") ">
+                            <a href="/Warehouses/Index" class="nav-link ">
+                                <i class="fa fa-university"></i>
+                                <span class="title">
+                                    Warehouses
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item start @Html.IsSelected(actions: "Index", controllers: "Vehicles") ">
+                            <a href="/Vehicles/Index" class="nav-link ">
+                                <i class="fa fa-truck"></i>
+                                <span class="title">
+                                    Vehicles
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item start @Html.IsSelected(actions: "Index", controllers: "Drivers") ">
+                            <a href="/Drivers/Index" class="nav-link ">
+                                <i class="fa fa-user"></i>
+                                <span class="title">
+                                    Drivers
+                                </span>
+                            </a>
+                        </li>
+
+
+                        <li class="nav-item start @Html.IsSelected(actions: "Index", controllers: "PianoTypes") ">
+                            <a href="/PianoTypes/Index" class="nav-link ">
                                 <i class="fa fa-bars"></i>
                                 <span class="title">
                                     Piano Types
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item start @Html.IsSelected(actions: "Index", controllers: "PianoMakes") ">
+                            <a href="/PianoMakes/Index" class="nav-link ">
+                                <i class="fa fa-bars"></i>
+                                <span class="title">
+                                    Piano Make
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item start @Html.IsSelected(actions: "Index", controllers: "PianoFinishs") ">
+                            <a href="/PianoFinishs/Index" class="nav-link ">
+                                <i class="fa fa-bars"></i>
+                                <span class="title">
+                                    Piano Finish
                                 </span>
                             </a>
                         </li>
@@ -264,30 +314,6 @@
                                 <i class="fa fa-bars"></i>
                                 <span class="title">
                                     Piano Charges
-                                </span>
-                            </a>
-                        </li>
-                        <li class="nav-item start @Html.IsSelected(actions: "Index", controllers: "Warehouse") ">
-                            <a href="/Warehouse/Index" class="nav-link ">
-                                <i class="fa fa-university"></i>
-                                <span class="title">
-                                    Warehouses
-                                </span>
-                            </a>
-                        </li>
-                        <li class="nav-item start @Html.IsSelected(actions: "Index", controllers: "Vehicle") ">
-                            <a href="/Vehicle/Index" class="nav-link ">
-                                <i class="fa fa-truck"></i>
-                                <span class="title">
-                                    Vehicles
-                                </span>
-                            </a>
-                        </li>
-                        <li class="nav-item start @Html.IsSelected(actions: "Index", controllers: "Driver") ">
-                            <a href="/Driver/Index" class="nav-link ">
-                                <i class="fa fa-user"></i>
-                                <span class="title">
-                                    Drivers
                                 </span>
                             </a>
                         </li>
