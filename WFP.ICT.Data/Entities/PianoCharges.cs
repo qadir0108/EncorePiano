@@ -9,9 +9,8 @@ namespace WFP.ICT.Data.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public Guid Id { get; set; }
 
-        public int ChargesCode { get; set; }
-        public int ChargesType { get; set; } // ChargesTypeEnum
-        public string ChargesDetails { get; set; }
+        public string Code { get; set; }
+        public string Details { get; set; } // ChargesTypeEnum for data seed only 
         public long Amount { get; set; }
 
         public PianoCharges()

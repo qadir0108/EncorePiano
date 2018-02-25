@@ -14,10 +14,12 @@ using System.IO;
 using WFP.ICT.Web.Async;
 using ADSDataDirect.Web.Helpers;
 using WFP.ICT.Enums;
+using WFP.ICT.Web.Helpers;
 
 namespace WFP.ICT.Web.Controllers
 {
-    //[Authorize]
+    [Authorize]
+    [AjaxAuthorize]
     public class DeliveryStatusController : BaseController
     {
         public ActionResult Index()

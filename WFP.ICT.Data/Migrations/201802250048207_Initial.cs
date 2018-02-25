@@ -310,9 +310,8 @@ namespace WFP.ICT.Data.Migrations
                 c => new
                     {
                         Id = c.Guid(nullable: false),
-                        ChargesCode = c.Int(nullable: false),
-                        ChargesType = c.Int(nullable: false),
-                        ChargesDetails = c.String(),
+                        Code = c.String(),
+                        Details = c.String(),
                         Amount = c.Long(nullable: false),
                         CreatedAt = c.DateTime(nullable: false),
                         CreatedBy = c.String(),

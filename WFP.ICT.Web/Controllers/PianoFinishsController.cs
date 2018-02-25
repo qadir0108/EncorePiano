@@ -16,7 +16,7 @@ namespace WFP.ICT.Web.Controllers
     [Authorize]
     [AjaxAuthorize]
     //[AuthorizeRole(Roles = SecurityConstants.RoleAdmin)]
-    public class PianoTypesController : BaseController
+    public class PianoFinishsController : BaseController
     {
         public ActionResult Index()
         {
@@ -25,23 +25,23 @@ namespace WFP.ICT.Web.Controllers
 
         public ActionResult Initialize([ModelBinder(typeof(DataTablesBinder))] IDataTablesRequest requestModel)
         {
-            IEnumerable<PianoType> pianoTypes = Db.PianoTypes;
+            IEnumerable<PianoFinish> pianoFinishs = Db.PianoFinish;
 
-            var totalCount = pianoTypes.Count();
+            var totalCount = pianoFinishs.Count();
 
             #region Filtering
             // Apply filters for searching
             if (requestModel.Search.Value != string.Empty)
             {
                 var value = requestModel.Search.Value.Trim();
-                pianoTypes = pianoTypes.AsEnumerable().
+                pianoFinishs = pianoFinishs.AsEnumerable().
                                           Where(p =>
                                           p.Code.Contains(value) ||
-                                          p.Type.Contains(value)
+                                          p.Name.Contains(value)
                                          );
             }
 
-            var filteredCount = pianoTypes.Count();
+            var filteredCount = pianoFinishs.Count();
 
             #endregion Filtering
 
@@ -56,16 +56,16 @@ namespace WFP.ICT.Web.Controllers
                 {
                     if (column.Data == "Code")
                     {
-                        pianoTypes = column.SortDirection.ToString() == "Ascendant" ?
-                                    pianoTypes.OrderBy(x => x.Code) :
-                                    pianoTypes.OrderByDescending(x => x.Code);
+                        pianoFinishs = column.SortDirection.ToString() == "Ascendant" ?
+                                    pianoFinishs.OrderBy(x => x.Code) :
+                                    pianoFinishs.OrderByDescending(x => x.Code);
                     }
 
-                    if (column.Data == "Type")
+                    if (column.Data == "Name")
                     {
-                        pianoTypes = column.SortDirection.ToString() == "Ascendant" ?
-                                    pianoTypes.OrderBy(x => x.Type) :
-                                    pianoTypes.OrderByDescending(x => x.Type);
+                        pianoFinishs = column.SortDirection.ToString() == "Ascendant" ?
+                                    pianoFinishs.OrderBy(x => x.Name) :
+                                    pianoFinishs.OrderByDescending(x => x.Name);
                     }
                 }
                 orderByString = "Ordered";
@@ -73,23 +73,23 @@ namespace WFP.ICT.Web.Controllers
 
             if (orderByString == string.Empty)
             {
-                pianoTypes = pianoTypes.OrderBy(x =>
-                                         x.Type);
+                pianoFinishs = pianoFinishs.OrderBy(x =>
+                                         x.Name);
             }
             #endregion Sorting
 
             // Paging
             if (requestModel.Length != -1)
             {
-                pianoTypes = pianoTypes.Skip(requestModel.Start).Take(requestModel.Length);
+                pianoFinishs = pianoFinishs.Skip(requestModel.Start).Take(requestModel.Length);
             }
 
-            var result = pianoTypes.
+            var result = pianoFinishs.
                          ToList()
                         .Select(location => new
                         {
                             Code = location.Code,
-                            Type = location.Type,
+                            Name = location.Name,
                             Created = location.CreatedAt.ToString("yyyy-MM-dd"),
                             Actions = GetActions(location.Id),
                         });
@@ -113,27 +113,27 @@ namespace WFP.ICT.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult Save(NewPianoTypeVm vm)
+        public ActionResult Save(NewPianoMakeVm vm)
         {
             try
             {
                 if (vm.Id == null)
                 {
-                    PianoType pianoType = new PianoType()
+                    PianoFinish pianoFinish = new PianoFinish()
                     {
                         Id = Guid.NewGuid(),
                         Code = vm.Code,
-                        Type = vm.Type,
+                        Name = vm.Name,
                         CreatedAt = DateTime.Now,
                         CreatedBy = LoggedInUser?.UserName
                     };
-                    Db.PianoTypes.Add(pianoType);
+                    Db.PianoFinish.Add(pianoFinish);
                 }
                 else
                 {
-                    var pianoType = Db.PianoTypes.FirstOrDefault(x => x.Id == vm.Id);
-                    pianoType.Code = vm.Code;
-                    pianoType.Type = vm.Type;
+                    var pianoFinish = Db.PianoFinish.FirstOrDefault(x => x.Id == vm.Id);
+                    pianoFinish.Code = vm.Code;
+                    pianoFinish.Name = vm.Name;
                 }
                 Db.SaveChanges();
 
@@ -150,19 +150,15 @@ namespace WFP.ICT.Web.Controllers
         {
             try
             {
-                var pianoType = Db.PianoTypes.FirstOrDefault(x => x.Id == id);
-                var pianos = Db.Pianos.Where(x => x.PianoTypeId == pianoType.Id );
+                var pianoFinish = Db.PianoFinish.FirstOrDefault(x => x.Id == id);
+                var pianos = Db.Pianos.Where(x => x.PianoMakeId == pianoFinish.Id);
 
                 if (pianos.Count() > 0)
                 {
                     return Json(new JsonResponse() { IsSucess = false, ErrorMessage = "Unable to process as there are pianos against this record" }, JsonRequestBehavior.AllowGet);
                 }
 
-                var pianoSizes = Db.PianoSize.Where(x => x.PianoTypeId == pianoType.Id);
-                Db.PianoSize.RemoveRange(pianoSizes);
-                Db.SaveChanges();
-
-                Db.PianoTypes.Remove(pianoType);
+                Db.PianoFinish.Remove(pianoFinish);
                 Db.SaveChanges();
                 return Json(new JsonResponse() { IsSucess = true }, JsonRequestBehavior.AllowGet);
             }
@@ -177,14 +173,14 @@ namespace WFP.ICT.Web.Controllers
         {
             try
             {
-                var pianoType = Db.PianoTypes.FirstOrDefault(x => x.Id == id);
-                var model = new NewPianoTypeVm()
+                var pianoFinish = Db.PianoFinish.FirstOrDefault(x => x.Id == id);
+                var model = new NewPianoMakeVm()
                 {
-                    Id = pianoType.Id,
-                    Code = pianoType.Code,
-                    Type = pianoType.Type,
+                    Id = pianoFinish.Id,
+                    Code = pianoFinish.Code,
+                    Name = pianoFinish.Name,
                 };
-                return PartialView("~/Views/PianoTypes/Add.cshtml", model);
+                return PartialView("~/Views/PianoFinishs/Add.cshtml", model);
             }
             catch (Exception ex)
             {

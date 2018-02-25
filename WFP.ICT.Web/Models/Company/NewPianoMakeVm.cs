@@ -6,16 +6,16 @@ using System.Web;
 
 namespace WFP.ICT.Web.Models
 {
-    public class NewPianoTypeVm
+    public class NewPianoMakeVm
     {
         [Required(ErrorMessage = "Code is required")]
         public string Code { get; set; }
 
-        [Required(ErrorMessage = "Type is required")]
-        public string Type { get; set; }
+        [Required(ErrorMessage = "Name is required")]
+        public string Name { get; set; }
         
         public Guid? Id { get; set; }
-        public NewPianoTypeVm()
+        public NewPianoMakeVm()
         {
         }
     }

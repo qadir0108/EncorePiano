@@ -17,8 +17,8 @@ using System.Text;
 
 namespace WFP.ICT.Web.Controllers
 {
-    //[Authorize]
-    //[AjaxAuthorize]
+    [Authorize]
+    [AjaxAuthorize]
     //[AuthorizeRole(Roles = SecurityConstants.RoleAdmin)]
     public class CompanyController : BaseController
     {

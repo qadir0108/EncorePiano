@@ -1072,6 +1072,7 @@
             else {
               
                 var detailError = $('#tab_15_1').find('.input-validation-error').not(".ignore");
+                var legsError = $('#tab_15_5').find('.input-validation-error').not(".ignore");
                 var unitsError = $('#tab_15_2').find('.input-validation-error').not(".ignore");
                 var chargesError = $('#tab_15_3').find('.input-validation-error').not(".ignore");
                 var billingError = $('#tab_15_4').find('.input-validation-error').not(".ignore");
@@ -1084,15 +1085,20 @@
                         $('body .tabbable-line a[href="#tab_15_1"]').trigger('click');
                         click = false;
                     }
-                  
                     tabs += 'Details,'
+                }
+                if (legsError.length > 0) {
+                    if (click) {
+                        $('body .tabbable-line a[href="#tab_15_5"]').trigger('click');
+                        click = false;
+                    }
+                    tabs += 'Legs,'
                 }
                 if (unitsError.length > 0) {
                     if (click) {
                         $('body .tabbable-line a[href="#tab_15_2"]').trigger('click');
                         click = false;
                     }
-                   
                     tabs += 'Units,'
                 }
                 if (chargesError.length > 0) {

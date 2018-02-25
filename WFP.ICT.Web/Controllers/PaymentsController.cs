@@ -10,9 +10,12 @@ using WFP.ICT.Web.Models;
 using System.Data;
 using System.Collections.Generic;
 using System.Text;
+using WFP.ICT.Web.Helpers;
 
 namespace WFP.ICT.Web.Controllers
 {
+    [Authorize]
+    [AjaxAuthorize]
     public class PaymentsController : BaseController
     {
         public ActionResult Index()

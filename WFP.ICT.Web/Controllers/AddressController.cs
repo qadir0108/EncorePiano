@@ -11,9 +11,12 @@ using WFP.ICT.Enum;
 using System.Text;
 using DataTables.Mvc;
 using WFP.ICT.Web.Models;
+using WFP.ICT.Web.Helpers;
 
 namespace WFP.ICT.Web.Controllers
 {
+    [Authorize]
+    [AjaxAuthorize]
     public class AddressController : BaseController
     {
         private ApplicationUserManager _userManager;
@@ -37,27 +40,27 @@ namespace WFP.ICT.Web.Controllers
 
         public ActionResult InitializeAddress([ModelBinder(typeof(DataTablesBinder))] IDataTablesRequest requestModel)
         {
-            IEnumerable<Address> Address = Db.Addresses;
+            IEnumerable<Address> addresses = Db.Addresses;
 
-            var totalCount = Address.Count();
+            var totalCount = addresses.Count();
 
             #region Filtering
             // Apply filters for searching
             if (requestModel.Search.Value != string.Empty)
             {
                 var value = requestModel.Search.Value.Trim();
-                Address = Address.AsEnumerable().
-                                          Where(p => p.Name.Contains(value) ||
-                                         p.City.Contains(value) ||
-                                         p.State.Contains(value) ||
-                                         p.PostCode.Contains(value) ||
-                                         p.PhoneNumber.Contains(value) ||
-                                         p.Address1.Contains(value) ||
-                                         ((AddressTypeEnum)(p.AddressType)).ToString().ToLower().Contains(value.ToLower())
-                                         );
+                addresses = addresses.AsEnumerable().
+                                          Where(p => ( (!string.IsNullOrEmpty(p.Name) && p.Name.Contains(value)) ||
+                                          (!string.IsNullOrEmpty(p.City) && p.City.Contains(value)) ||
+                                          (!string.IsNullOrEmpty(p.State) && p.State.Contains(value)) ||
+                                          (!string.IsNullOrEmpty(p.PostCode) && p.PostCode.Contains(value)) ||
+                                          (!string.IsNullOrEmpty(p.PhoneNumber) && p.PhoneNumber.Contains(value)) ||
+                                          (!string.IsNullOrEmpty(p.Address1) && p.Address1.Contains(value))
+                                          //((AddressTypeEnum)(p.AddressType)).ToString().ToLower().Contains(value.ToLower()))
+                                         ));
             }
 
-            var filteredCount = Address.Count();
+            var filteredCount = addresses.Count();
 
             #endregion Filtering
 
@@ -73,63 +76,63 @@ namespace WFP.ICT.Web.Controllers
                     if (column.Data == "Type")
                     {
 
-                        Address = column.SortDirection.ToString() == "Ascendant" ?
-                                    Address.OrderBy(x => x.AddressType) :
-                                    Address.OrderByDescending(x => x.AddressType);
+                        addresses = column.SortDirection.ToString() == "Ascendant" ?
+                                    addresses.OrderBy(x => x.AddressType) :
+                                    addresses.OrderByDescending(x => x.AddressType);
                     }
 
                     if (column.Data == "Name")
                     {
 
-                        Address = column.SortDirection.ToString() == "Ascendant" ?
-                                    Address.OrderBy(x => x.Name) :
-                                    Address.OrderByDescending(x => x.Name);
+                        addresses = column.SortDirection.ToString() == "Ascendant" ?
+                                    addresses.OrderBy(x => x.Name) :
+                                    addresses.OrderByDescending(x => x.Name);
                     }
 
                     if (column.Data == "Address")
                     {
 
-                        Address = column.SortDirection.ToString() == "Ascendant" ?
-                                    Address.OrderBy(x => x.Address1) :
-                                     Address.OrderByDescending(x => x.Address1);
+                        addresses = column.SortDirection.ToString() == "Ascendant" ?
+                                    addresses.OrderBy(x => x.Address1) :
+                                     addresses.OrderByDescending(x => x.Address1);
                     }
 
                     if (column.Data == "City")
                     {
 
-                        Address = column.SortDirection.ToString() == "Ascendant" ?
-                                    Address.OrderBy(x => x.City) :
-                                     Address.OrderByDescending(x => x.City);
+                        addresses = column.SortDirection.ToString() == "Ascendant" ?
+                                    addresses.OrderBy(x => x.City) :
+                                     addresses.OrderByDescending(x => x.City);
                     }
 
                     if (column.Data == "State")
                     {
 
-                        Address = column.SortDirection.ToString() == "Ascendant" ?
-                                    Address.OrderBy(x => x.State) :
-                                     Address.OrderByDescending(x => x.State);
+                        addresses = column.SortDirection.ToString() == "Ascendant" ?
+                                    addresses.OrderBy(x => x.State) :
+                                     addresses.OrderByDescending(x => x.State);
                     }
 
                     if (column.Data == "ZipCode")
                     {
 
-                        Address = column.SortDirection.ToString() == "Ascendant" ?
-                                    Address.OrderBy(x => x.PostCode) :
-                                     Address.OrderByDescending(x => x.PostCode);
+                        addresses = column.SortDirection.ToString() == "Ascendant" ?
+                                    addresses.OrderBy(x => x.PostCode) :
+                                     addresses.OrderByDescending(x => x.PostCode);
                     }
                     if (column.Data == "Phone")
                     {
 
-                        Address = column.SortDirection.ToString() == "Ascendant" ?
-                                    Address.OrderBy(x => x.PhoneNumber) :
-                                     Address.OrderByDescending(x => x.PhoneNumber);
+                        addresses = column.SortDirection.ToString() == "Ascendant" ?
+                                    addresses.OrderBy(x => x.PhoneNumber) :
+                                     addresses.OrderByDescending(x => x.PhoneNumber);
                     }
                     if (column.Data == "Linked")
                     {
 
-                        Address = column.SortDirection.ToString() == "Ascendant" ?
-                                    Address.OrderBy(x => x.WarehouseId).ThenBy(x => x.ClientId) :
-                                     Address.OrderByDescending(x => x.WarehouseId).ThenByDescending(x => x.ClientId);
+                        addresses = column.SortDirection.ToString() == "Ascendant" ?
+                                    addresses.OrderBy(x => x.WarehouseId).ThenBy(x => x.ClientId) :
+                                     addresses.OrderByDescending(x => x.WarehouseId).ThenByDescending(x => x.ClientId);
                     }
                 }
                 orderByString = "Ordered";
@@ -137,7 +140,7 @@ namespace WFP.ICT.Web.Controllers
 
             if (orderByString == string.Empty)
             {
-                Address = Address.OrderBy(x =>
+                addresses = addresses.OrderBy(x =>
                                          x.Name);
             }
             #endregion Sorting
@@ -145,10 +148,10 @@ namespace WFP.ICT.Web.Controllers
             // Paging
             if (requestModel.Length != -1)
             {
-                Address = Address.Skip(requestModel.Start).Take(requestModel.Length);
+                addresses = addresses.Skip(requestModel.Start).Take(requestModel.Length);
             }
 
-            var result = Address.
+            var result = addresses.
                          ToList()
                         .Select(add => new
                         {
@@ -160,7 +163,7 @@ namespace WFP.ICT.Web.Controllers
                             ZipCode = add.PostCode,
                             Phone = add.PhoneNumber,
                             Location = GetLocationLink(add.Lng, add.Lat, add.Address1, add.City, add.State),
-                            Linked = GetLinkedTo(add.WarehouseId, add.ClientId ),
+                            Linked = GetLinkedTo(add.Id, add.WarehouseId, add.ClientId ),
                             Actions = GetActions(add.Id)
                         });
 
@@ -176,20 +179,26 @@ namespace WFP.ICT.Web.Controllers
             return action;
         }
 
-        public string GetLinkedTo(Guid? warehouse, Guid? client)
+        public string GetLinkedTo(Guid? addressId, Guid? warehouse, Guid? client)
         {
-            string action = "No Link";
+            string linkedTo = "No Link";
 
+            if (addressId != (Guid?)null)
+            {
+                var order = Db.Orders.FirstOrDefault(x => x.DeliveryAddressId == addressId || x.PickupAddressId == addressId);
+                linkedTo = $"Order # {order?.OrderNumber}";
+            }
             if (warehouse != (Guid?)null)
             {
-                action = Db.Warehouses.FirstOrDefault(x => x.Id == warehouse).Name;
+                var warehouseDb = Db.Warehouses.FirstOrDefault(x => x.Id == warehouse);
+                linkedTo = warehouseDb?.Name;
             }
             if (client != (Guid?)null)
             {
-                action = Db.Clients.FirstOrDefault(x => x.Id == client).Name;
+                var clientDb = Db.Clients.FirstOrDefault(x => x.Id == client);
+                linkedTo = clientDb?.Name;
             }
-
-            return action;
+            return linkedTo;
         }
 
         public string GetActions(Guid? id)
@@ -213,6 +222,12 @@ namespace WFP.ICT.Web.Controllers
                 if (Db.Orders.Where(x => x.DeliveryAddressId == id || x.PickupAddressId == id).Count() > 0)
                 {
                     return Json(new JsonResponse() { IsSucess = false, ErrorMessage = "Unable to process as there are orders against this address" }, JsonRequestBehavior.AllowGet);
+                }
+
+                var client = Db.Clients.FirstOrDefault(x => x.AddressId == id);
+                if(client != null)
+                {
+                    return Json(new JsonResponse() { IsSucess = false, ErrorMessage = "Unable to process as there is client against this address" }, JsonRequestBehavior.AllowGet);
                 }
 
                 var address = Db.Addresses.FirstOrDefault(x => x.Id == id);

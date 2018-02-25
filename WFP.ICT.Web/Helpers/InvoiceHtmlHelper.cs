@@ -176,7 +176,7 @@ namespace WFP.ICT.Common
                                      {1}
                                     </td>
                                     </tr>
-                                   ", x.PianoCharges.ChargesDetails, x.Amount);
+                                   ", x.PianoCharges.Details, x.Amount);
                 SumAmount += x.Amount;
             });
 

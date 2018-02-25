@@ -377,6 +377,9 @@
     <Compile Include="Async\SMSHelper.cs" />
     <Compile Include="Async\ZingCoder.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\PianoFinishsController.cs" />
+    <Compile Include="Controllers\PianoChargesController.cs" />
+    <Compile Include="Controllers\PianoMakesController.cs" />
     <Compile Include="Controllers\PianoTypesController.cs" />
     <Compile Include="Controllers\VehiclesController.cs" />
     <Compile Include="Controllers\WarehousesController.cs" />
@@ -438,6 +441,8 @@
     <Compile Include="Helpers\ExceptionHelper.cs" />
     <Compile Include="Helpers\FileHelper.cs" />
     <Compile Include="Helpers\GatePassGenerator.cs" />
+    <Compile Include="Models\Company\NewPianoChargesVm.cs" />
+    <Compile Include="Models\Company\NewPianoMakeVm.cs" />
     <Compile Include="Models\Company\NewPianoTypeVm.cs" />
     <Compile Include="Models\Company\NewVehicleVm.cs" />
     <Compile Include="Models\Company\NewWarehouseVm.cs" />
@@ -6490,6 +6495,12 @@
     <Content Include="Views\Vehicles\Index.cshtml" />
     <Content Include="Views\PianoTypes\Add.cshtml" />
     <Content Include="Views\PianoTypes\Index.cshtml" />
+    <Content Include="Views\PianoMakes\Add.cshtml" />
+    <Content Include="Views\PianoMakes\Index.cshtml" />
+    <Content Include="Views\PianoFinishs\Add.cshtml" />
+    <Content Include="Views\PianoFinishs\Index.cshtml" />
+    <Content Include="Views\PianoCharges\Add.cshtml" />
+    <Content Include="Views\PianoCharges\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,5 +1,4 @@
-﻿
-@model WFP.ICT.Web.Models.NewAddressVm
+﻿@model WFP.ICT.Web.Models.NewAddressVm
 
 <style>
 
@@ -9,7 +8,7 @@
 
         <!-- BEGIN PAGE BASE CONTENT -->
 
-            @using (Ajax.BeginForm("Save", "Clients", null, new AjaxOptions { HttpMethod = "POST", OnSuccess = "AddressConfigs.initAddSuccess(data,status)" }, new
+            @using (Ajax.BeginForm("Save", "Clients", null, new AjaxOptions { HttpMethod = "POST", OnSuccess = "epm.initAddSuccess(data,status)" }, new
             {
                 @id = "frm",
             }))
@@ -115,7 +114,7 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-md-6">
-                                                <button type="submit" onclick="" class="btn blue-steel">Save Address</button>
+                                                <button type="submit" onclick="" class="btn blue-steel">Save</button>
                                             </div>
                                         </div>
                                     </div>

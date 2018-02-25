@@ -10,9 +10,12 @@ using WFP.ICT.Web.Models;
 using System.Data;
 using System.Collections.Generic;
 using System.Text;
+using WFP.ICT.Web.Helpers;
 
 namespace WFP.ICT.Web.Controllers
 {
+    [Authorize]
+    [AjaxAuthorize]
     public class ClientsController : BaseController
     {
         public ActionResult Index()
@@ -202,6 +205,10 @@ namespace WFP.ICT.Web.Controllers
                 Db.Addresses.Add(address);
                 Db.SaveChanges();
 
+                var client1 = Db.Clients.FirstOrDefault(x => x.Id == clientId);
+                client1.AddressId = addressId;
+                Db.SaveChanges();
+
                 return Json(new JsonResponse() { IsSucess = true }, JsonRequestBehavior.AllowGet);
 
             }
@@ -225,8 +232,11 @@ namespace WFP.ICT.Web.Controllers
                 }
 
                 var client = Db.Clients.Include(x => x.Address).FirstOrDefault(x => x.Id == id);
-                Db.Addresses.Remove(client.Address);
-                Db.SaveChanges();
+                if(client.Address != null)
+                {
+                    Db.Addresses.Remove(client.Address);
+                    Db.SaveChanges();
+                }
 
                 Db.Clients.Remove(client);
                 Db.SaveChanges();

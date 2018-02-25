@@ -15,9 +15,12 @@ using System.Data;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
 using System.Collections.Generic;
+using WFP.ICT.Web.Helpers;
 
 namespace WFP.ICT.Web.Controllers
 {
+    [Authorize]
+    [AjaxAuthorize]
     public class InventoryController : BaseController
     {
         private ApplicationUserManager _userManager;

@@ -20,7 +20,7 @@ using WebGrease.Css.Extensions;
 
 namespace WFP.ICT.Web.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class AssignmentsController : BaseController
     {
         int pageSize = 15;

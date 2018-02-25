@@ -27,8 +27,7 @@ namespace WFP.ICT.Web.Models
         [Required(ErrorMessage = "City is required")]
         public string City { get; set; }
 
-
-        [Required(ErrorMessage = "Please select marker")]
+        //[Required(ErrorMessage = "Please select marker")]
         public string lng { get; set; }
 
         public string lat { get; set; }

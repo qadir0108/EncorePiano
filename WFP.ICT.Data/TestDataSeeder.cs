@@ -94,17 +94,18 @@ namespace WFP.ICT.Data
             foreach (var ptype in EnumHelper.GetEnumTextValues(typeof(ChargesTypeEnum)))
             {
                 string officeCode = ptype.Value;
-                var already = context.PianoCharges.FirstOrDefault(m => m.ChargesType.ToString() == officeCode);
+                var already = context.PianoCharges.FirstOrDefault(m => m.Details.ToString() == officeCode);
                 if (already == null)
                 {
+                    var rnd = new Random(DateTime.Now.Millisecond);
+
                     context.PianoCharges.Add(new PianoCharges()
                     {
                         Id = Guid.NewGuid(),
                         CreatedAt = DateTime.Now,
-                        ChargesCode = code,
-                        ChargesType = int.Parse(ptype.Value),
-                        ChargesDetails = ptype.Text,
-                        Amount = 100
+                        Code = code.ToString(),
+                        Details = ptype.Text,
+                        Amount = rnd.Next(1000)
                     });
                     code += 100;
                 }

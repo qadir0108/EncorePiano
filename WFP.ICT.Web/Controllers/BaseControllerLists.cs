@@ -447,10 +447,10 @@ namespace WFP.ICT.Web.Controllers
                 if (_servicesSelectList == null)
                 {
                     _servicesSelectList = Db.PianoCharges
-                        .OrderBy(x => x.ChargesCode).Select(
+                        .OrderBy(x => x.Code).Select(
                              x => new SelectListItem()
                              {
-                                 Text = x.ChargesDetails,
+                                 Text = x.Details,
                                  Value = x.Id.ToString()
                              }).ToList();
                     _servicesSelectList.Insert(0, new SelectListItem()

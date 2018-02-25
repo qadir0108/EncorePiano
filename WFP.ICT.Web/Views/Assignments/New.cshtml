@@ -57,7 +57,6 @@
                 }))
                 {
                     @Html.AntiForgeryToken()
-                    <input type="hidden" id="Paths" name="Paths"/>
                     <div class="row">
                         <div class="col-md-6">
                             <div class="portlet light bordered">
@@ -67,7 +66,7 @@
                                         <span class="caption-subject bold uppercase"> New Assignment</span>
                                     </div>
                                     <div class="actions">
-                                        <a class="btn btn-circle btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title=""> </a>
+                                        @*<a class="btn btn-circle btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title=""> </a>*@
                                     </div>
                                 </div>
                                 <div class="portlet-body form">
@@ -211,6 +210,9 @@
                     focusInvalid: false, // do not focus the last invalid input
                     ignore: "", // validate all fields including form hidden input
                     messages: {
+                        'Paths': {
+                            required: 'Please calculate route first.',
+                        }
                     },
                     rules: {
                         Drivers: {

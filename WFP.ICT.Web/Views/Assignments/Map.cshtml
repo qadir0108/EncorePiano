@@ -29,17 +29,18 @@
 <body>
     
 <!-- BEGIN ROUTES PORTLET-->
-<div class="portlet light portlet-fit bordered">
+<div class="portlet light bordered">
     <div class="portlet-title">
-        <div class="caption">
-            <i class="icon-layers font-blue"></i>
-            <span class="caption-subject font-blue bold uppercase">Route</span>
+        <div class="caption font-red-sunglo">
+            <span class="caption-subject bold uppercase"> Route</span>
         </div>
         <div class="actions">
-            <input type="button" id="gmap_routes_start" class="btn green" value="Calculate Route" />
+            @*<a class="btn btn-circle btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title=""> </a>*@
+            <input type="button" id="gmap_routes_start" class="btn blue-steel" value="Calculate Route" />
         </div>
     </div>
     <div class="portlet-body">
+        <input type="hidden" id="Paths" name="Paths" />
         <div class="label label-danger visible-ie8"> Not supported in Internet Explorer 8 </div>
         <div id="gmap_routes" class="gmaps"> </div>
         <ol id="gmap_routes_instructions"> </ol>

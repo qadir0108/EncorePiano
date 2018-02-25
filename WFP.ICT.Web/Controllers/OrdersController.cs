@@ -12,9 +12,12 @@ using System.Web;
 using System.IO;
 using WFP.ICT.Web.Async;
 using System.Text;
+using WFP.ICT.Web.Helpers;
 
 namespace WFP.ICT.Web.Controllers
 {
+    [Authorize]
+    [AjaxAuthorize]
     public class OrdersController : BaseController
     {
         // GET: Orders
@@ -839,9 +842,9 @@ namespace WFP.ICT.Web.Controllers
             orderVM.Charges.ForEach(x =>
             {
                 var obj = Db.PianoCharges.Where(y => y.Id.ToString() == x.ChargesTypeId).FirstOrDefault();
-                x.ChargesCode = obj.ChargesCode.ToString();
-                x.ChargesDetails = obj.ChargesDetails.ToString();
-                x.ChargesType = ((ChargesTypeEnum)obj.ChargesType).ToString();
+                x.ChargesCode = obj.Code.ToString();
+                x.ChargesDetails = obj.Details.ToString();
+                //x.ChargesType = ((ChargesTypeEnum)obj.ChargesType).ToString();
 
             });
 
@@ -885,7 +888,7 @@ namespace WFP.ICT.Web.Controllers
 
                 foreach (var item in orderVm.Charges)
                 {
-                    body.AppendFormat(@"Type : {0} ", Db.PianoCharges.Where(x=> x.Id.ToString() == item.ChargesCode).FirstOrDefault().ChargesDetails);
+                    body.AppendFormat(@"Type : {0} ", Db.PianoCharges.Where(x=> x.Id.ToString() == item.ChargesCode).FirstOrDefault().Details);
                     body.AppendFormat(@"Amount : {0} <br/>", item.Amount);
                 }
 
